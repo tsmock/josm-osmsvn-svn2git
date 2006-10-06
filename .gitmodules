@@ -1,0 +1,4 @@
+[submodule "applications/editors/josm/core"]
+  path = applications/editors/josm/core
+  url = ../josm.git
+  branch = master
