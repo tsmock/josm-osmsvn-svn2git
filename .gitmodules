@@ -2,3 +2,11 @@
   path = applications/editors/josm/core
   url = ../josm.git
   branch = master
+[submodule "applications/editors/josm/plugins/landsat"]
+  path = applications/editors/josm/plugins/landsat
+  url = ../landsat
+  branch = master
+[submodule "applications/editors/josm/plugins/mappaint"]
+  path = applications/editors/josm/plugins/mappaint
+  url = ../mappaint
+  branch = master
