@@ -10,3 +10,7 @@
   path = applications/editors/josm/plugins/mappaint
   url = ../mappaint
   branch = master
+[submodule "applications/editors/josm/plugins/osmarender"]
+  path = applications/editors/josm/plugins/osmarender
+  url = ../osmarender
+  branch = master
