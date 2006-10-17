@@ -2,6 +2,10 @@
   path = applications/editors/josm/core
   url = ../josm.git
   branch = master
+[submodule "applications/editors/josm/plugins/grid"]
+  path = applications/editors/josm/plugins/grid
+  url = ../grid
+  branch = master
 [submodule "applications/editors/josm/plugins/landsat"]
   path = applications/editors/josm/plugins/landsat
   url = ../landsat
