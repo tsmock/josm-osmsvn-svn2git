@@ -10,21 +10,9 @@
   path = applications/editors/josm/plugins/landsat
   url = ../landsat
   branch = master
-[submodule "applications/editors/josm/plugins/lang-de"]
-  path = applications/editors/josm/plugins/lang-de
-  url = ../lang-de
-  branch = master
-[submodule "applications/editors/josm/plugins/lang-en_GB"]
-  path = applications/editors/josm/plugins/lang-en_GB
-  url = ../lang-en_GB
-  branch = master
-[submodule "applications/editors/josm/plugins/lang-fr"]
-  path = applications/editors/josm/plugins/lang-fr
-  url = ../lang-fr
-  branch = master
-[submodule "applications/editors/josm/plugins/lang-ro"]
-  path = applications/editors/josm/plugins/lang-ro
-  url = ../lang-ro
+[submodule "applications/editors/josm/plugins/lang"]
+  path = applications/editors/josm/plugins/lang
+  url = ../lang
   branch = master
 [submodule "applications/editors/josm/plugins/mappaint"]
   path = applications/editors/josm/plugins/mappaint
