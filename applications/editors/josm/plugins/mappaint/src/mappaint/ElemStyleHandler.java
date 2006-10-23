@@ -16,6 +16,7 @@ public class ElemStyleHandler extends DefaultHandler
     ElemStyle curStyle;
     ElemStyles styles;
     String curWidth, curKey, curValue;
+    int curMinZoom;
     ImageIcon curIcon;
     Color curColour;
     boolean curAnnotate;
@@ -49,7 +50,7 @@ public class ElemStyleHandler extends DefaultHandler
     }
 
     @Override public void startElement(String uri,String name, String qName, 
-                                    Attributes atts)	
+                                    Attributes atts)    
     {
         if(inDoc==true)
         {
@@ -63,9 +64,9 @@ public class ElemStyleHandler extends DefaultHandler
                 for(int count=0; count<atts.getLength(); count++)
                 {
                     if(atts.getQName(count).equals("k"))
-                        curKey = atts.getValue(count);		
+                        curKey = atts.getValue(count);        
                     else if(atts.getQName(count).equals("v"))
-                        curValue = atts.getValue(count);		
+                        curValue = atts.getValue(count);        
                 }
             }
             else if (qName.equals("line"))
@@ -79,6 +80,15 @@ public class ElemStyleHandler extends DefaultHandler
                         curColour=ColorHelper.html2color(atts.getValue(count));
                 }
             }
+            else if (qName.equals("zoom"))
+            {
+                curMinZoom = 0;
+                for(int count=0; count<atts.getLength(); count++)
+                {
+                    if(atts.getQName(count).equals("min"))
+                        curMinZoom = Integer.parseInt(atts.getValue(count));
+                }
+            }	
             else if (qName.equals("icon"))
             {
                 inIcon = true;
@@ -117,17 +127,18 @@ public class ElemStyleHandler extends DefaultHandler
         else if (inLine && qName.equals("line"))
         {
             inLine = false;
-            curStyle = new LineElemStyle(Integer.parseInt(curWidth), curColour);
+            curStyle = new LineElemStyle(Integer.parseInt(curWidth), curColour,
+                                        curMinZoom);
         }
         else if (inIcon && qName.equals("icon"))
         {
             inIcon = false;
-            curStyle = new IconElemStyle(curIcon,curAnnotate);
+            curStyle = new IconElemStyle(curIcon,curAnnotate,curMinZoom);
         }
         else if (inArea && qName.equals("area"))
         {
             inArea = false;
-            curStyle = new AreaElemStyle (curColour);
+            curStyle = new AreaElemStyle (curColour,curMinZoom);
         }
 
     }
