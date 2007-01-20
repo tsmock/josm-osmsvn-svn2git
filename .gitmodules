@@ -14,6 +14,10 @@
   path = applications/editors/josm/plugins/lang
   url = ../lang
   branch = master
+[submodule "applications/editors/josm/plugins/livegps"]
+  path = applications/editors/josm/plugins/livegps
+  url = ../livegps
+  branch = master
 [submodule "applications/editors/josm/plugins/mappaint"]
   path = applications/editors/josm/plugins/mappaint
   url = ../mappaint
