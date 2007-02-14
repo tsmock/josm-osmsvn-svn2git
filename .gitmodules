@@ -38,3 +38,7 @@
   path = applications/editors/josm/plugins/waypoints
   url = ../waypoints
   branch = master
+[submodule "applications/editors/josm/plugins/wmsplugin"]
+  path = applications/editors/josm/plugins/wmsplugin
+  url = ../wmsplugin
+  branch = master
