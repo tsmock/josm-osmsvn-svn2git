@@ -46,3 +46,7 @@
   path = applications/editors/josm/plugins/wmsplugin
   url = ../wmsplugin
   branch = master
+[submodule "applications/editors/josm/plugins/ywms"]
+  path = applications/editors/josm/plugins/ywms
+  url = ../ywms
+  branch = master
