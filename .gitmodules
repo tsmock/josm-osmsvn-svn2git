@@ -22,6 +22,10 @@
   path = applications/editors/josm/plugins/mappaint
   url = ../mappaint
   branch = master
+[submodule "applications/editors/josm/plugins/namefinder"]
+  path = applications/editors/josm/plugins/namefinder
+  url = ../namefinder
+  branch = master
 [submodule "applications/editors/josm/plugins/nearclick"]
   path = applications/editors/josm/plugins/nearclick
   url = ../nearclick
