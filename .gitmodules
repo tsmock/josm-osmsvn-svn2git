@@ -42,6 +42,10 @@
   path = applications/editors/josm/plugins/slippymap
   url = ../slippymap
   branch = master
+[submodule "applications/editors/josm/plugins/surveyor"]
+  path = applications/editors/josm/plugins/surveyor
+  url = ../surveyor
+  branch = master
 [submodule "applications/editors/josm/plugins/tagging-preset-tester"]
   path = applications/editors/josm/plugins/tagging-preset-tester
   url = ../tagging-preset-tester
