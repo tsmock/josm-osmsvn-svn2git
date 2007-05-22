@@ -1,0 +1,11 @@
+<project name="annotation-tester" default="build" basedir=".">
+
+	<target name="build">
+		<jar destfile="${user.home}/.josm/plugins/annotation-tester.jar" 
+			 basedir="bin"
+			 manifest="src/org/openstreetmap/josm/plugins/annotationtester/MANIFEST.MF">
+			<fileset dir="."><include name="images/*"/></fileset>
+		</jar>
+	</target>
+
+</project>
