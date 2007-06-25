@@ -2,6 +2,10 @@
   path = applications/editors/josm/core
   url = ../josm.git
   branch = master
+[submodule "applications/editors/josm/plugins/colorscheme"]
+  path = applications/editors/josm/plugins/colorscheme
+  url = ../colorscheme
+  branch = master
 [submodule "applications/editors/josm/plugins/grid"]
   path = applications/editors/josm/plugins/grid
   url = ../grid
@@ -37,6 +41,10 @@
 [submodule "applications/editors/josm/plugins/plastic_laf"]
   path = applications/editors/josm/plugins/plastic_laf
   url = ../plastic_laf
+  branch = master
+[submodule "applications/editors/josm/plugins/pluginmanager"]
+  path = applications/editors/josm/plugins/pluginmanager
+  url = ../pluginmanager
   branch = master
 [submodule "applications/editors/josm/plugins/slippymap"]
   path = applications/editors/josm/plugins/slippymap
