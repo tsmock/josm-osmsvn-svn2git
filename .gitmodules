@@ -10,10 +10,6 @@
   path = applications/editors/josm/plugins/grid
   url = ../grid
   branch = master
-[submodule "applications/editors/josm/plugins/landsat"]
-  path = applications/editors/josm/plugins/landsat
-  url = ../landsat
-  branch = master
 [submodule "applications/editors/josm/plugins/lang"]
   path = applications/editors/josm/plugins/lang
   url = ../lang
