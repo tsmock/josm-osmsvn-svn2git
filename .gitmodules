@@ -6,6 +6,10 @@
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
   branch = master
+[submodule "applications/editors/josm/plugins/duplicateway"]
+  path = applications/editors/josm/plugins/duplicateway
+  url = ../duplicateway
+  branch = master
 [submodule "applications/editors/josm/plugins/grid"]
   path = applications/editors/josm/plugins/grid
   url = ../grid
