@@ -66,10 +66,6 @@
   path = applications/editors/josm/plugins/tagging-preset-tester
   url = ../tagging-preset-tester
   branch = master
-[submodule "applications/editors/josm/plugins/tways"]
-  path = applications/editors/josm/plugins/tways
-  url = ../tways
-  branch = master
 [submodule "applications/editors/josm/plugins/validator"]
   path = applications/editors/josm/plugins/validator
   url = ../validator
