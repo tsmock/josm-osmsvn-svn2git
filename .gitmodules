@@ -42,6 +42,10 @@
   path = applications/editors/josm/plugins/nearclick
   url = ../nearclick
   branch = master
+[submodule "applications/editors/josm/plugins/openvisible"]
+  path = applications/editors/josm/plugins/openvisible
+  url = ../openvisible
+  branch = master
 [submodule "applications/editors/josm/plugins/osmarender"]
   path = applications/editors/josm/plugins/osmarender
   url = ../osmarender
