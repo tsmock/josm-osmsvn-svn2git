@@ -10,18 +10,17 @@ import java.net.URLConnection;
 
 /**
  * Class that contains information about one single slippy map tile.
- *
+ * 
  * @author Frederik Ramm <frederik@remote.org>
- *
+ * 
  */
 public class SlippyMapTile
 {
+    private Image  tileImage;
 
-    private Image tileImage;
-
-    int x;
-    int y;
-    int z;
+    int            x;
+    int            y;
+    int            z;
 
     private String metadata;
 
@@ -41,7 +40,9 @@ public class SlippyMapTile
     {
         try
         {
-            tileImage = Toolkit.getDefaultToolkit().createImage(new URL("http://tah.openstreetmap.org/Tiles/tile/"+z+"/"+x+"/"+y+".png"));
+            tileImage = Toolkit.getDefaultToolkit().createImage(
+                    new URL("http://tah.openstreetmap.org/Tiles/tile/" + z
+                            + "/" + x + "/" + y + ".png"));
         }
         catch (MalformedURLException mfu)
         {
@@ -58,10 +59,12 @@ public class SlippyMapTile
     {
         try
         {
-            URL dev = new URL("http://tah.openstreetmap.org/Tiles/info_short.php?x=" +
-                x + "&y=" + y + "&z=12/layer=tile");
+            URL dev = new URL(
+                    "http://tah.openstreetmap.org/Tiles/info_short.php?x=" + x
+                            + "&y=" + y + "&z=12/layer=tile");
             URLConnection devc = dev.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(devc.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(devc
+                    .getInputStream()));
             metadata = in.readLine();
         }
         catch (Exception ex)
@@ -75,11 +78,12 @@ public class SlippyMapTile
     {
         try
         {
-            URL dev = new URL("http://tah.openstreetmap.org/NeedRender?x=" +
-                x + "&y=" + y + "&priority=1&src=slippymap_plugin");
+            URL dev = new URL("http://tah.openstreetmap.org/NeedRender?x=" + x
+                    + "&y=" + y + "&priority=1&src=slippymap_plugin");
             URLConnection devc = dev.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(devc.getInputStream()));
-            metadata = "requested: "+ in.readLine();
+            BufferedReader in = new BufferedReader(new InputStreamReader(devc
+                    .getInputStream()));
+            metadata = "requested: " + in.readLine();
         }
         catch (Exception ex)
         {
@@ -89,9 +93,9 @@ public class SlippyMapTile
 
     public boolean equals(Object o)
     {
-        if (!(o instanceof SlippyMapTile)) return false;
+        if (!(o instanceof SlippyMapTile))
+            return false;
         SlippyMapTile other = (SlippyMapTile) o;
         return (this.x == other.x && this.y == other.y && this.z == other.z);
     }
-
 }
