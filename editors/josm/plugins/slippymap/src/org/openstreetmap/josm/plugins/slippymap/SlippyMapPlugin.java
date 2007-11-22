@@ -8,16 +8,16 @@ import org.openstreetmap.josm.plugins.Plugin;
  * Main class for the slippy map plugin.
  * 
  * @author Frederik Ramm <frederik@remote.org>
- *
+ * 
  */
-public class SlippyMapPlugin extends Plugin 
-{    
-    public SlippyMapPlugin() 
+public class SlippyMapPlugin extends Plugin
+{
+    public SlippyMapPlugin()
     {
-            
+
     }
-    
-    public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) 
+
+    public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame)
     {
         SlippyMapLayer smlayer;
         smlayer = new SlippyMapLayer();
