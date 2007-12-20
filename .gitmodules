@@ -26,10 +26,6 @@
   path = applications/editors/josm/plugins/livegps
   url = ../livegps
   branch = master
-[submodule "applications/editors/josm/plugins/mappaint"]
-  path = applications/editors/josm/plugins/mappaint
-  url = ../mappaint
-  branch = master
 [submodule "applications/editors/josm/plugins/namefinder"]
   path = applications/editors/josm/plugins/namefinder
   url = ../namefinder
