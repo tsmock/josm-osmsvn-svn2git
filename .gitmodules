@@ -58,6 +58,10 @@
   path = applications/editors/josm/plugins/pluginmanager
   url = ../pluginmanager
   branch = master
+[submodule "applications/editors/josm/plugins/remotecontrol"]
+  path = applications/editors/josm/plugins/remotecontrol
+  url = ../remotecontrol
+  branch = master
 [submodule "applications/editors/josm/plugins/slippy_map_chooser"]
   path = applications/editors/josm/plugins/slippy_map_chooser
   url = ../slippy_map_chooser
