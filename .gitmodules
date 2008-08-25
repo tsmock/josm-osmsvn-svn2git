@@ -2,6 +2,10 @@
   path = applications/editors/josm/core
   url = ../josm.git
   branch = master
+[submodule "applications/editors/josm/plugins/agpifoj"]
+  path = applications/editors/josm/plugins/agpifoj
+  url = ../agpifoj
+  branch = master
 [submodule "applications/editors/josm/plugins/colorscheme"]
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
