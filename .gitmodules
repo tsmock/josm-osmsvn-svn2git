@@ -54,6 +54,10 @@
   path = applications/editors/josm/plugins/openlayers
   url = ../openlayers
   branch = master
+[submodule "applications/editors/josm/plugins/openstreetbugs"]
+  path = applications/editors/josm/plugins/openstreetbugs
+  url = ../openstreetbugs
+  branch = master
 [submodule "applications/editors/josm/plugins/openvisible"]
   path = applications/editors/josm/plugins/openvisible
   url = ../openvisible
