@@ -2,6 +2,10 @@
   path = applications/editors/josm/core
   url = ../josm.git
   branch = master
+[submodule "applications/editors/josm/i18n"]
+  path = applications/editors/josm/i18n
+  url = ../i18n
+  branch = master
 [submodule "applications/editors/josm/plugins/agpifoj"]
   path = applications/editors/josm/plugins/agpifoj
   url = ../agpifoj
@@ -25,10 +29,6 @@
 [submodule "applications/editors/josm/plugins/lakewalker"]
   path = applications/editors/josm/plugins/lakewalker
   url = ../lakewalker
-  branch = master
-[submodule "applications/editors/josm/plugins/lang"]
-  path = applications/editors/josm/plugins/lang
-  url = ../lang
   branch = master
 [submodule "applications/editors/josm/plugins/livegps"]
   path = applications/editors/josm/plugins/livegps
