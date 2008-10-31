@@ -70,6 +70,7 @@ public class OsbPlugin extends Plugin implements LayerChangeListener {
     private DownloadAction download = new DownloadAction();
     
     public OsbPlugin() {
+        super();
         initConfig();
         dataSet = new DataSet();
         uploadHook = new OsbUploadHook();
