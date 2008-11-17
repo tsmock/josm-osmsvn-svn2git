@@ -6,6 +6,10 @@
   path = applications/editors/josm/i18n
   url = ../i18n
   branch = master
+[submodule "applications/editors/josm/plugins/DirectUpload"]
+  path = applications/editors/josm/plugins/DirectUpload
+  url = ../DirectUpload
+  branch = master
 [submodule "applications/editors/josm/plugins/agpifoj"]
   path = applications/editors/josm/plugins/agpifoj
   url = ../agpifoj
