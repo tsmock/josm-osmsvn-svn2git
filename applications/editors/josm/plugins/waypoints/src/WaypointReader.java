@@ -1,4 +1,4 @@
-package waypoints; 
+package waypoints;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
@@ -32,7 +32,7 @@ public class WaypointReader {
         private String curWptName;
         private  boolean inName = false;
 
-        // NW start	
+        // NW start
         // data now has two components: the GPS points and an OsmDataLayer.
         // This is to allow us to convert waypoints straight to nodes.
         // The way this works is that waypoints with a name not beginning
@@ -45,8 +45,8 @@ public class WaypointReader {
         }
         // NW end
 
-        @Override public void startElement(String namespaceURI, 
-                String localName, String qName, Attributes atts) 
+        @Override public void startElement(String namespaceURI,
+                String localName, String qName, Attributes atts)
                     throws SAXException {
             if (qName.equals("wpt")) {
                 try {
@@ -54,11 +54,11 @@ public class WaypointReader {
                     double lon = Double.parseDouble(atts.getValue("lon"));
                     if (Math.abs(lat) > 90)
                         throw new SAXException
-                        (tr("Data error: lat value \"{0}\" is out of bound.", 
+                        (tr("Data error: lat value \"{0}\" is out of bound.",
                             lat));
                     if (Math.abs(lon) > 180)
                         throw new SAXException
-                        (tr("Data error: lon value \"{0}\" is out of bound.", 
+                        (tr("Data error: lon value \"{0}\" is out of bound.",
                             lon));
                     currentLatLon = new LatLon(lat, lon);
                 } catch (NumberFormatException e) {
@@ -68,8 +68,8 @@ public class WaypointReader {
             }
             else if (qName.equals("name")) {
                 inName = true;
-                curWptName = "";	
-            }	
+                curWptName = "";
+            }
         }
 
         @Override public void characters(char[] ch, int start, int length) {
@@ -82,9 +82,9 @@ public class WaypointReader {
 
         @Override public void endElement(String namespaceURI, String localName,
                                         String qName) {
-            if (qName.equals("wpt") && curWptName!="") { 
+            if (qName.equals("wpt") && curWptName!="") {
                 // create a new node from the latitude and longitude
-                System.out.println("Found a waypoint to convert to a node: " 
+                System.out.println("Found a waypoint to convert to a node: "
                                         + curWptName);
                 Node node = new Node(currentLatLon);
                 node.put("name",curWptName);
@@ -99,7 +99,7 @@ public class WaypointReader {
     /**
      * Parse and return the read data
      */
-    public static DataSet parse(InputStream source) 
+    public static DataSet parse(InputStream source)
             throws SAXException, IOException, ParserConfigurationException {
         Parser parser = new Parser();
         SAXParserFactory.newInstance().newSAXParser().parse(new InputSource(new InputStreamReader(source, "UTF-8")), parser);

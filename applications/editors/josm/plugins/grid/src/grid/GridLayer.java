@@ -44,7 +44,7 @@ import org.openstreetmap.josm.tools.GBC;
  * This is a layer that draws a grid
  */
 public class GridLayer extends Layer {
-    
+
     private static Icon icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(GridPlugin.class.getResource("/images/grid.png")));
     private LatLon origin, pole;
     private float gridunits;
@@ -60,12 +60,12 @@ public class GridLayer extends Layer {
         gridtoworld = new Helmert(0.0, 0.0, 0);
         //worldtogrid = new Helmert(0.0, 0.0, 0);
     }
-    
-    //	private void setGrid(LatLon origin, LatLon pole){
-    //	this.origin = origin;
-    //	this.pole = pole;
+
+    //  private void setGrid(LatLon origin, LatLon pole){
+    //  this.origin = origin;
+    //  this.pole = pole;
         //need to check pole is perpendicular from origin;
-    //	}
+    //  }
     private void setGrid(double a, double b, double c){
         System.out.println("Setting grid to :" + a + ", " + b + ", " + c);
         this.origin = origin;
@@ -75,8 +75,8 @@ public class GridLayer extends Layer {
         this.b=b;
         this.c=c;
         gridtoworld = new Helmert(a, b, c);
-        System.out.println(new LatLon(10,10) + "->" + 
-                   gridtoworld.transform(new LatLon(10,10)) + "->" + 
+        System.out.println(new LatLon(10,10) + "->" +
+                   gridtoworld.transform(new LatLon(10,10)) + "->" +
                    gridtoworld.inverseTransform(gridtoworld.transform(new LatLon(10,10))));
         //worldtogrid = new Helmert(-a, -b, -c);
     }
@@ -88,7 +88,7 @@ public class GridLayer extends Layer {
     private void setUnitsToLatLon(){
         gridunits = 0;
     }
-    
+
 
     private void toggleLabels(){
         drawLabels=!drawLabels;
@@ -163,13 +163,13 @@ public class GridLayer extends Layer {
             int answer = JOptionPane.showOptionDialog(Main.parent, c, tr("Choose a color"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
             switch (answer) {
             case 0:
-//				Main.pref.put("color.layer "+name, ColorHelper.color2html(c.getColor()));
+//              Main.pref.put("color.layer "+name, ColorHelper.color2html(c.getColor()));
                 majcol = c.getColor();
                 break;
             case 1:
                 return;
             case 2:
-//				Main.pref.put("color.layer "+name, null);
+//              Main.pref.put("color.layer "+name, null);
                 majcol = Color.RED;
                 break;
             }
@@ -196,7 +196,7 @@ public class GridLayer extends Layer {
             p.add(lonText, GBC.eol());
             p.add(new JLabel(tr("Grid rotation")));
             p.add(devText, GBC.eol());
-            Object[] options = new Object[]{tr("OK"), tr("Cancel"), tr("World")};	
+            Object[] options = new Object[]{tr("OK"), tr("Cancel"), tr("World")};
             int answer = JOptionPane.showOptionDialog(Main.parent, p,tr("Grid layout"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
             switch (answer) {
             case 0:
@@ -217,7 +217,7 @@ public class GridLayer extends Layer {
     @Override public Icon getIcon() {
         return icon;
     }
-    
+
     @Override public String getToolTipText() {
         return tr("Grid layer:" + a + "," + b + "," + c);
     }
@@ -238,16 +238,16 @@ public class GridLayer extends Layer {
             LatLon tl = mv.getLatLon(0,0);
             LatLon br = mv.getLatLon(w,h);
 
-            //establish max visible world coordinates 
+            //establish max visible world coordinates
             double wminlat = Math.max(Math.min(tl.lat(),br.lat()),-Main.proj.MAX_LAT);
             double wmaxlat = Math.min(Math.max(tl.lat(),br.lat()), Main.proj.MAX_LAT);
             double wminlon = Math.max(Math.min(tl.lon(),br.lon()),-Main.proj.MAX_LON);
             double wmaxlon = Math.min(Math.max(tl.lon(),br.lon()), Main.proj.MAX_LON);
-        
+
         //establish viewport grid coordinates
         //because grid is arbitrarily orientated and may be curved check several points on border
         double minlat = 180, maxlat=-180, minlon=90, maxlon=-90;
-        
+
         for(double x=0;x<=1;x+=0.2){
             LatLon[] p = new LatLon[] {
                 gridtoworld.inverseTransform(new LatLon(wminlat, x*wminlon+(1-x)*wmaxlon)),
@@ -261,18 +261,18 @@ public class GridLayer extends Layer {
                 minlon=Math.min(p[i].lon(),minlon);
             }
         }
-       
+
         //also check if the singularities are visible
         LatLon northpole = gridtoworld.transform(new LatLon(90,0));
         LatLon southpole = gridtoworld.transform(new LatLon(-90,0));
         if((northpole.lat()>=wminlat) && (northpole.lat()<=wmaxlat) && (northpole.lon()>=wminlon) && (northpole.lon()<=wmaxlon)){
             maxlat=90;
-            minlon=-180; 
+            minlon=-180;
             maxlon=180;
         }
         if((southpole.lat()>=wminlat) && (southpole.lat()<=wmaxlat) && (southpole.lon()>=wminlon) && (southpole.lon()<=wmaxlon)){
             minlat=-90;
-            minlon=-180; 
+            minlon=-180;
             maxlon=180;
         }
 
@@ -295,10 +295,10 @@ public class GridLayer extends Layer {
 
         g.setFont (new Font("Helvetica", Font.PLAIN, 8));
         FontMetrics fm = g.getFontMetrics();
-//	    g.setWidth(0);
+//      g.setWidth(0);
         for(double lat=latspacing*Math.floor(minlat/latspacing);lat<maxlat;lat+=latspacing){
         for(double lon=lonspacing*Math.floor(minlon/lonspacing);lon<maxlon;lon+=lonspacing){
-            LatLon ll0, lli, llj; 
+            LatLon ll0, lli, llj;
             ll0 = gridtoworld.transform(new LatLon(lat,lon));
             lli = gridtoworld.transform(new LatLon(lat+latspacing,lon));
             llj = gridtoworld.transform(new LatLon(lat,lon+lonspacing));
@@ -323,12 +323,12 @@ public class GridLayer extends Layer {
 
             if((Math.round(lon/lonspacing))%lonmaj==0 && (Math.round(lat/latspacing))%latmaj==0 && drawLabels){
             String label = nf.format(lat);
-            int tw = fm.stringWidth(label); 
+            int tw = fm.stringWidth(label);
             g.drawString(label,p0.x-tw,p0.y-8);
             label = nf.format(lon);
             g.drawString(label,p0.x+2,p0.y+8);
             }
-        }		
+        }
         }
 
     }

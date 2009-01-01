@@ -1,18 +1,18 @@
 /* Copyright (c) 2008, Henrik Niehaus
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. Neither the name of the project nor the names of its 
- *    contributors may be used to endorse or promote products derived from this 
+ * 3. Neither the name of the project nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -49,17 +49,17 @@ public class NewIssueAction extends OsbAction implements MouseListener {
     private static final long serialVersionUID = 1L;
 
     private NewAction newAction = new NewAction();
-    
+
     private JToggleButton button;
-    
+
     private OsbPlugin plugin;
-    
+
     public NewIssueAction(JToggleButton button, OsbPlugin plugin) {
         super(tr("New issue"));
         this.button = button;
         this.plugin = plugin;
     }
-    
+
     @Override
     protected void doActionPerformed(ActionEvent e) throws IOException {
         if(button.isSelected()) {
@@ -99,13 +99,13 @@ public class NewIssueAction extends OsbAction implements MouseListener {
                 Main.pref.put(ConfigKeys.OSB_NICKNAME, nickname);
             }
         }
-        
+
         // get the comment
         String result = JOptionPane.showInputDialog(Main.parent,
                 tr("Describe the problem precisely"),
                 tr("Create issue"),
                 JOptionPane.QUESTION_MESSAGE);
-        
+
         if(result != null && result.length() > 0) {
             try {
                 result = result.concat(" [").concat(nickname).concat("]");
@@ -124,7 +124,7 @@ public class NewIssueAction extends OsbAction implements MouseListener {
                         JOptionPane.ERROR_MESSAGE);
             }
         }
-        
+
         reset();
     }
 

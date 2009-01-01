@@ -27,7 +27,7 @@ public class SlippyMapChooserPlugin extends Plugin implements PreferenceChangedL
         // File pluginFolder = new File(iPluginFolder);
         // if(!pluginFolder.exists())
         // pluginFolder.mkdir();
-        //		
+        //      
         // //init the logger
         // Logger.setLogFile(iPluginFolder+"\\slippy_map_chooser.log");
 

@@ -1,18 +1,18 @@
 /* Copyright (c) 2008, Henrik Niehaus
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. Neither the name of the project nor the names of its 
- *    contributors may be used to endorse or promote products derived from this 
+ * 3. Neither the name of the project nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -61,13 +61,13 @@ import org.openstreetmap.josm.plugins.osb.gui.action.PopupFactory;
 import org.openstreetmap.josm.tools.ColorHelper;
 
 public class OsbLayer extends Layer implements MouseListener {
-    
+
     private DataSet data;
-    
+
     private Collection<? extends OsmPrimitive> selection;
-    
+
     private JToolTip tooltip = new JToolTip();
-    
+
     public OsbLayer(DataSet dataSet, String name) {
         super(name);
         this.data = dataSet;
@@ -76,10 +76,10 @@ public class OsbLayer extends Layer implements MouseListener {
                 selection = newSelection;
             }
         });
-        
+
         Main.map.mapView.addMouseListener(this);
     }
-    
+
     @Override
     public Object getInfoComponent() {
         return getToolTipText();
@@ -114,27 +114,27 @@ public class OsbLayer extends Layer implements MouseListener {
         Object[] nodes = data.nodes.toArray();
         for (int i = 0; i < nodes.length; i++) {
             Node node = (Node) nodes[i];
-            
+
             // don't paint deleted nodes
             if(node.deleted) {
                 continue;
             }
-            
+
             Point p = mv.getPoint(node.eastNorth);
-            
+
             ImageIcon icon = OsbPlugin.loadIcon("icon_error16.png");
             if("1".equals(node.get("state"))) {
                 icon = OsbPlugin.loadIcon("icon_valid16.png");
             }
             int width = icon.getIconWidth();
             int height = icon.getIconHeight();
-            
+
             g.drawImage(icon.getImage(), p.x - (width / 2), p.y - (height / 2), new ImageObserver() {
                 public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
                     return false;
                 }
             });
-            
+
 
             if(selection != null && selection.contains(node)) {
                 // draw description
@@ -146,7 +146,7 @@ public class OsbLayer extends Layer implements MouseListener {
                     sb.append(desc.replaceAll("<hr />", "<hr>"));
                     sb.append("</html>");
                     desc = sb.toString();
-                    
+
                     // determine tooltip dimensions
                     int tooltipWidth = 0;
                     Rectangle2D fontBounds = null;
@@ -160,12 +160,12 @@ public class OsbLayer extends Layer implements MouseListener {
                     // FIXME hiehgt calculations doesn't work with all LAFs
                     int lineCount = lines.length;
                     int HR_SIZE = 10;
-                    int tooltipHeight = lineCount * (int)fontBounds.getHeight() + HR_SIZE * (lineCount - 1); 
-                    
+                    int tooltipHeight = lineCount * (int)fontBounds.getHeight() + HR_SIZE * (lineCount - 1);
+
                     // draw description as a tooltip
                     tooltip.setTipText(desc);
                     tooltip.setSize(tooltipWidth+10, tooltipHeight + 6);
-                    
+
                     int tx = p.x + (width / 2) + 5;
                     int ty = (int)(p.y - height / 2);
                     g.translate(tx, ty);
@@ -179,7 +179,7 @@ public class OsbLayer extends Layer implements MouseListener {
             }
         }
     }
-    
+
     @Override
     public void visitBoundingBox(BoundingXYVisitor v) {}
 
@@ -187,7 +187,7 @@ public class OsbLayer extends Layer implements MouseListener {
     public Icon getIcon() {
         return OsbPlugin.loadIcon("icon_error16.png");
     }
-    
+
     private Node getNearestNode(Point p) {
         double snapDistance = 10;
         double minDistanceSq = Double.MAX_VALUE;
@@ -220,7 +220,7 @@ public class OsbLayer extends Layer implements MouseListener {
             }
         }
     }
-    
+
     public void mousePressed(MouseEvent e) {
         mayTriggerPopup(e);
     }
@@ -228,7 +228,7 @@ public class OsbLayer extends Layer implements MouseListener {
     public void mouseReleased(MouseEvent e) {
         mayTriggerPopup(e);
     }
-    
+
     private void mayTriggerPopup(MouseEvent e) {
         if(e.isPopupTrigger()) {
             if(Main.map.mapView.getActiveLayer() == this) {
@@ -240,7 +240,7 @@ public class OsbLayer extends Layer implements MouseListener {
             }
         }
     }
-    
+
     public void mouseEntered(MouseEvent e) {}
 
     public void mouseExited(MouseEvent e) {}

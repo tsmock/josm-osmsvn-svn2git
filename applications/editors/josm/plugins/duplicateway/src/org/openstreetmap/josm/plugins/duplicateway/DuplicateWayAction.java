@@ -33,27 +33,27 @@ import org.openstreetmap.josm.tools.JVector;
 
 /**
  * Duplicate an existing set of ordered ways, offset by a specified distance.
- * 
+ *
  * This basic version just creates a completely seperate way and makes no
  * attempt to attach it to any other ways.
- * 
+ *
  * Planned Improvements:
- * 
+ *
  * 1. After creation of the duplicate way and while it is still selected allow
  * the Mouse wheel, or the up and down arrow (probably in association with the
  * shift key) to increase/decrease the offset distance. Clicking anywhere, or
  * moving the mouse out of the view window should finish this mode.
- * 
+ *
  * 2. Locate points close to the end points and pop up a dialog asking of these
  * should be joined.
- * 
+ *
  * 3. Handle intersecting ways. Pop up a dialog for each asking if the
  * intersecting way should be carried accross to intersect the newly created
  * way. Handle multiple intersecting ways at a point.
- * 
- * 
+ *
+ *
  * @author Brent Easton
- * 
+ *
  */
 public class DuplicateWayAction extends MapMode implements
         SelectionChangedListener, MouseListener {
@@ -63,12 +63,12 @@ public class DuplicateWayAction extends MapMode implements
     protected Cursor oldCursor;
 
     protected List<Way> selectedWays;
-    
+
     protected MapMode previousMode;
 
     /**
      * Create new DuplicateWay Action
-     * 
+     *
      * @param name
      */
     public DuplicateWayAction() {
@@ -91,7 +91,7 @@ public class DuplicateWayAction extends MapMode implements
 
     /**
      * The Duplicate Way button has been clicked
-     * 
+     *
      * @param e
      *            Action Event
      */
@@ -132,7 +132,7 @@ public class DuplicateWayAction extends MapMode implements
 
     /**
      * Create a new Node object at a specified Easting/Northing location
-     * 
+     *
      * @param east
      *            Easting of new Node
      * @param north
@@ -146,7 +146,7 @@ public class DuplicateWayAction extends MapMode implements
     /**
      * Duplicate the selected ways. The distance to be offset is determined by
      * finding the distance of the 'offset' point from the nearest segment.
-     * 
+     *
      * @param clickPoint
      *            The point in screen co-ordinates used to calculate the offset
      *            distance
@@ -244,7 +244,7 @@ public class DuplicateWayAction extends MapMode implements
 
     /**
      * Enable the "Duplicate way" menu option if at least one way is selected
-     * 
+     *
      * @param newSelection
      */
     public void selectionChanged(Collection<? extends OsmPrimitive> newSelection) {
@@ -260,7 +260,7 @@ public class DuplicateWayAction extends MapMode implements
     /**
      * User has clicked on map to indicate the offset. Create the
      * duplicate way and exit duplicate mode
-     * 
+     *
      * @param e
      */
     public void mouseClicked(MouseEvent e) {

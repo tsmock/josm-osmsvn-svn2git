@@ -1,18 +1,18 @@
 /* Copyright (c) 2008, Henrik Niehaus
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. Neither the name of the project nor the names of its 
- *    contributors may be used to endorse or promote products derived from this 
+ * 3. Neither the name of the project nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -40,9 +40,9 @@ import org.openstreetmap.josm.plugins.osb.ConfigKeys;
 import org.openstreetmap.josm.plugins.osb.api.util.HttpUtils;
 
 public class DownloadAction {
-    
+
     private final String CHARSET = "UTF-8";
-    
+
     public void execute(DataSet dataset, Bounds bounds) throws IOException {
         // create the URI for the data download
         String uri = Main.pref.get(ConfigKeys.OSB_API_URI_DOWNLOAD);
@@ -50,8 +50,8 @@ public class DownloadAction {
         // check zoom level
         if(Main.map.mapView.zoom() > 15 || Main.map.mapView.zoom() < 9) {
             return;
-        } 
-        
+        }
+
         // add query params to the uri
         StringBuilder sb = new StringBuilder(uri)
             .append("?b=").append(bounds.min.lat())
@@ -62,12 +62,12 @@ public class DownloadAction {
 
         // download the data
         String content = HttpUtils.get(uri, null, CHARSET);
-        
+
         // clear dataset
         dataset.nodes.clear();
         dataset.relations.clear();
         dataset.ways.clear();
-        
+
         // parse the data
         parseData(dataset, content);
     }
@@ -81,7 +81,7 @@ public class DownloadAction {
         while(m.find()) {
             double lat = Double.parseDouble(m.group(3));
             double lon = Double.parseDouble(m.group(2));
-            LatLon latlon = new LatLon(lat, lon); 
+            LatLon latlon = new LatLon(lat, lon);
             Node osmNode = new Node(latlon);
             osmNode.id = Long.parseLong(m.group(1));
             osmNode.put("id", m.group(1));
@@ -89,6 +89,6 @@ public class DownloadAction {
             osmNode.put("openstreetbug", "FIXME");
             osmNode.put("state", m.group(5));
             dataSet.addPrimitive(osmNode);
-        } 
+        }
     }
 }

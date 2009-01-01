@@ -48,11 +48,11 @@ public class PlaceSelection implements DownloadSelection {
     };
     private JTable searchResultDisplay = new JTable(searchResults);
     private boolean updatingSelf;
-    
+
     /**
      * Data storage for search results.
      */
-    class SearchResult 
+    class SearchResult
     {
         public String name;
         public String type;
@@ -62,9 +62,9 @@ public class PlaceSelection implements DownloadSelection {
         public double lon;
         public int zoom;
     }
-    
+
     /**
-     * A very primitive parser for the name finder's output. 
+     * A very primitive parser for the name finder's output.
      * Structure of xml described here:  http://wiki.openstreetmap.org/index.php/Name_finder
      *
      */
@@ -75,19 +75,19 @@ public class PlaceSelection implements DownloadSelection {
         private int depth = 0;
         /**
          * Detect starting elements.
-         * 
+         *
          */
-        @Override public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException 
+        @Override public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException
         {
             depth++;
-            try 
+            try
             {
-                if (qName.equals("searchresults")) 
+                if (qName.equals("searchresults"))
                 {
                     searchResults.setRowCount(0);
                 }
                 else if (qName.equals("named") && (depth == 2))
-                {	
+                {
                     currentResult = new PlaceSelection.SearchResult();
                     currentResult.name = atts.getValue("name");
                     currentResult.type = atts.getValue("info");
@@ -109,24 +109,24 @@ public class PlaceSelection implements DownloadSelection {
                     }
                 }
             }
-            catch (NumberFormatException x) 
+            catch (NumberFormatException x)
             {
                 x.printStackTrace(); // SAXException does not chain correctly
                 throw new SAXException(x.getMessage(), x);
-            } 
-            catch (NullPointerException x) 
+            }
+            catch (NullPointerException x)
             {
                 x.printStackTrace(); // SAXException does not chain correctly
                 throw new SAXException(tr("NullPointerException, Possibly some missing tags."), x);
             }
         }
-        /** 
+        /**
          * Detect ending elements.
          */
         @Override public void endElement(String namespaceURI, String localName, String qName) throws SAXException
         {
 
-            if (qName.equals("searchresults")) 
+            if (qName.equals("searchresults"))
             {
             }
             else if (qName.equals("description") && description != null)
@@ -137,26 +137,26 @@ public class PlaceSelection implements DownloadSelection {
             depth--;
 
         }
-        /** 
+        /**
          * Read characters for description.
          */
         @Override public void characters(char[] data, int start, int length) throws org.xml.sax.SAXException
         {
-            if (description != null) 
+            if (description != null)
             {
                 description.append(data, start, length);
             }
         }
     }
-    
+
     /**
-     * This queries David Earl's server. Needless to say, stuff should be configurable, and 
+     * This queries David Earl's server. Needless to say, stuff should be configurable, and
      * error handling improved.
      */
     public void queryServer(final JComponent component)
     {
         final Cursor oldCursor = component.getCursor();
-        
+
         // had to put this in a thread as it wouldn't update the cursor properly before.
         Runnable r = new Runnable() {
             public void run() {
@@ -181,7 +181,7 @@ public class PlaceSelection implements DownloadSelection {
                         SAXParserFactory.newInstance().newSAXParser().parse(inputSource, new Parser());
                     }
                 }
-                catch (Exception x) 
+                catch (Exception x)
                 {
                     JOptionPane.showMessageDialog(Main.parent,tr("Cannot read place search results from server"));
                     x.printStackTrace();
@@ -191,16 +191,16 @@ public class PlaceSelection implements DownloadSelection {
         };
         new Thread(r).start();
     }
-    
+
     /**
      * Adds a new tab to the download dialog in JOSM.
-     * 
+     *
      * This method is, for all intents and purposes, the constructor for this class.
      */
     public void addGui(final DownloadDialog gui) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        
+
         // this is manually tuned so that it looks nice on a GNOME
         // desktop - maybe needs some cross platform proofing.
         panel.add(new JLabel(tr("Enter a place name to search for:")), GBC.eol().insets(5, 5, 5, 5));
@@ -209,41 +209,41 @@ public class PlaceSelection implements DownloadSelection {
         Dimension btnSize = submitSearch.getPreferredSize();
         btnSize.setSize(btnSize.width, btnSize.height * 0.8);
         submitSearch.setPreferredSize(btnSize);
-        
+
         GBC c = GBC.std().fill().insets(5, 0, 5, 5);
         c.gridwidth = 2;
         JScrollPane scrollPane = new JScrollPane(searchResultDisplay);
         scrollPane.setPreferredSize(new Dimension(200,200));
         panel.add(scrollPane, c);
         gui.tabpane.add(panel, tr("Places"));
-        
+
         scrollPane.setPreferredSize(scrollPane.getPreferredSize());
-        
+
         // when the button is clicked
         submitSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 queryServer(gui);
             }
         });
-        
+
         searchTerm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 queryServer(gui);
             }
         });
-    
+
         searchResults.addColumn(tr("name"));
         searchResults.addColumn(tr("type"));
         searchResults.addColumn(tr("near"));
         searchResults.addColumn(tr("zoom"));
-        
+
         // TODO - this is probably not the coolest way to set relative sizes?
         searchResultDisplay.getColumn(tr("name")).setPreferredWidth(200);
         searchResultDisplay.getColumn(tr("type")).setPreferredWidth(100);
         searchResultDisplay.getColumn(tr("near")).setPreferredWidth(100);
         searchResultDisplay.getColumn(tr("zoom")).setPreferredWidth(50);
         searchResultDisplay.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         // display search results in a table. for simplicity, the table contains
         // the same SearchResult object in each of the four columns, but it is rendered
         // differently depending on the column.
@@ -254,7 +254,7 @@ public class PlaceSelection implements DownloadSelection {
                 if (value != null) {
                     SearchResult sr = (SearchResult) value;
                     switch(column) {
-                    case 0: 
+                    case 0:
                         setText(sr.name);
                         break;
                     case 1:
@@ -272,13 +272,13 @@ public class PlaceSelection implements DownloadSelection {
                 return this;
             }
         });
-        
+
         // if item is selected in list, notify dialog
         searchResultDisplay.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent lse) {
                 if (lse.getValueIsAdjusting()) return;
                 SearchResult r = null;
-                try 
+                try
                 {
                     r = (SearchResult) searchResults.getValueAt(lse.getFirstIndex(), 0);
                 }
@@ -299,7 +299,7 @@ public class PlaceSelection implements DownloadSelection {
                 }
             }
         });
-        
+
         // TODO - we'd like to finish the download dialog upon double-click but
         // don't know how to bypass the JOptionPane in which the whole thing is
         // displayed.

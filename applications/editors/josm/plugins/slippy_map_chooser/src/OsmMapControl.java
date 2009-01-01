@@ -71,9 +71,9 @@ public class OsmMapControl extends MouseAdapter implements MouseMotionListener, 
         
     }
 
-    public void mouseDragged(MouseEvent e) {		
+    public void mouseDragged(MouseEvent e) {        
         if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK){
-            if (iStartSelectionPoint != null) {				
+            if (iStartSelectionPoint != null) {             
                 iEndSelectionPoint = e.getPoint();
                 iSlippyMapChooser.setSelection(iStartSelectionPoint, iEndSelectionPoint);
             }

@@ -16,13 +16,13 @@ import org.openstreetmap.josm.tools.ImageProvider;
 
 /**
  * Utility class
- * 
+ *
  */
-public class Util 
+public class Util
 {
     /**
      * Utility method to retrieve the plugin for classes that can't access to the plugin object directly.
-     * 
+     *
      * @param clazz The plugin class
      * @return The YWMS plugin
      */
@@ -38,10 +38,10 @@ public class Util
         }
         return null;
     }
-    
-    /** 
+
+    /**
      * Returns the plugin's directory of the plugin
-     * 
+     *
      * @return The directory of the plugin
      */
     public static String getPluginDir()
@@ -56,7 +56,7 @@ public class Util
     public static Version getVersion()
     {
         PluginInformation info = PluginInformation.getLoaded("ywms");
-        if (info == null) 
+        if (info == null)
             return null;
 
         return new Version(info.version, info.attr.get("Plugin-Date"));
@@ -64,7 +64,7 @@ public class Util
 
     /**
      * Utility class for displaying versions
-     * 
+     *
      * @author frsantos
      */
     public static class Version
@@ -73,13 +73,13 @@ public class Util
         public String revision;
         /** The build time */
         public String time;
-        
+
         /**
          * Constructor
          * @param revision
          * @param time
          */
-        public Version(String revision, String time) 
+        public Version(String revision, String time)
         {
             this.revision = revision;
             this.time = time;

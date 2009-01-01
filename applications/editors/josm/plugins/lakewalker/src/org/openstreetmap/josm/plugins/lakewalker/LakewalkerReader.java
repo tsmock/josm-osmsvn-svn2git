@@ -66,7 +66,7 @@ public class LakewalkerReader {
           String[] tokens = line.split(" ");
           
           if(tn==null){
-              try {        	
+              try {         
                 LatLon ll = new LatLon(Double.parseDouble(tokens[1])+northOffset, Double.parseDouble(tokens[2])+eastOffset);
                 n = new Node(ll);
                 if(fn==null){
@@ -82,7 +82,7 @@ public class LakewalkerReader {
             // If there is a last node, and this node has the same coordinates
             // then we substitute for the previous node
             n = tn;
-            tn = null;       	
+            tn = null;          
           }
           
           way.nodes.add(n);
@@ -105,7 +105,7 @@ public class LakewalkerReader {
           
           break;
         
-        case 't':      	
+        case 't':       
             way = new Way();
             tn = n;
             break;

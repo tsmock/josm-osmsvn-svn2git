@@ -7,9 +7,9 @@ import org.openstreetmap.josm.plugins.Plugin;
 
 /**
  * Main class for the slippy map plugin.
- * 
+ *
  * @author Frederik Ramm <frederik@remote.org>
- * 
+ *
  */
 public class SlippyMapPlugin extends Plugin
 {
@@ -29,7 +29,7 @@ public class SlippyMapPlugin extends Plugin
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.openstreetmap.josm.plugins.Plugin#getPreferenceSetting()
      */
     @Override

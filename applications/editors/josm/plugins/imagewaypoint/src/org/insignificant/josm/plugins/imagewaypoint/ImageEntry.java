@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.insignificant.josm.plugins.imagewaypoint;
 

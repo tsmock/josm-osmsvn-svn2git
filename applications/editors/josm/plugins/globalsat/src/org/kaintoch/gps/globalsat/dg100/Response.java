@@ -24,7 +24,7 @@ public class Response
     private Dg100Config config = null;
     private List data = new ArrayList(100);
     private long id = 0;
-    
+
     private Response(int typeOfResponse)
     {
         this.typeOfResponse = typeOfResponse;

@@ -27,7 +27,7 @@ public class UtilsPlugin extends Plugin {
         SimplifyWay = MainMenu.add(Main.main.menu.toolsMenu, new SimplifyWayAction());
         SimplifyWay.setEnabled(false);
     }
-    
+
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
         if (oldFrame == null && newFrame != null) {
