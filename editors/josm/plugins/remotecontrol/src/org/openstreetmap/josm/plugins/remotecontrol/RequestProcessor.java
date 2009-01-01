@@ -29,58 +29,58 @@ import org.openstreetmap.josm.gui.download.DownloadDialog.DownloadTask;
 /**
  * Processes HTTP "remote control" requests.
  */
-public class RequestProcessor extends Thread 
+public class RequestProcessor extends Thread
 {
     /** The socket this processor listens on */
     private Socket request;
-    
+
     private class AlreadyLoadedException extends Exception {};
     private class DeniedException extends Exception {};
     private class LoadDeniedException extends Exception {};
-  
+
     /**
      * Constructor
-     * 
-     * @param request 
+     *
+     * @param request
      */
-    public RequestProcessor(Socket request) 
+    public RequestProcessor(Socket request)
     {
         super("RemoteControl request processor");
         this.setDaemon(true);
         this.request = request;
     }
-  
+
     /**
      * Spawns a new thread for the request
-     * 
+     *
      * @param request The WMS request
      */
-    public static void processRequest(Socket request) 
+    public static void processRequest(Socket request)
     {
         RequestProcessor processor = new RequestProcessor(request);
         processor.start();
-    }  
-  
+    }
+
     /**
      * The work is done here.
      */
-    public void run() 
+    public void run()
     {
         Writer out = null;
-        try 
-        {            
-            OutputStream raw = new BufferedOutputStream( request.getOutputStream());         
+        try
+        {
+            OutputStream raw = new BufferedOutputStream( request.getOutputStream());
             out = new OutputStreamWriter(raw);
             Reader in = new InputStreamReader(new BufferedInputStream(request.getInputStream()), "ASCII");
-            
+
             StringBuffer requestLine = new StringBuffer();
-            while (true) 
+            while (true)
             {
                 int c = in.read();
                 if (c == '\r' || c == '\n') break;
                 requestLine.append((char) c);
             }
-            
+
             System.out.println("RemoteControl received: " + requestLine);
             String get = requestLine.toString();
             StringTokenizer st = new StringTokenizer(get);
@@ -93,7 +93,7 @@ public class RequestProcessor extends Thread
             }
 
             st = new StringTokenizer(url, "&?");
-            String command = null; 
+            String command = null;
             HashMap<String,String> args = new HashMap<String,String>();
             while (st.hasMoreTokens())
             {
@@ -105,7 +105,7 @@ public class RequestProcessor extends Thread
                     if (eq>-1) args.put(param.substring(0,eq), param.substring(eq+1));
                 }
             }
-            
+
             if (command.equals("/load_and_zoom")) {
                 if (Main.pref.getBoolean("remotecontrol.always-confirm", false)) {
                     if (JOptionPane.showConfirmDialog(Main.parent,
@@ -118,11 +118,11 @@ public class RequestProcessor extends Thread
                     }
                 }
                 DownloadTask osmTask = new DownloadOsmTask();
-                if (!(args.containsKey("bottom") && args.containsKey("top") && 
+                if (!(args.containsKey("bottom") && args.containsKey("top") &&
                     args.containsKey("left") && args.containsKey("right"))) {
                     sendBadRequest(out);
                     System.out.println("load_and_zoom remote control request must have bottom,top,left,right parameters");
-                    return;	
+                    return;
                 }
                 double minlat = 0;
                 double maxlat = 0;
@@ -133,10 +133,10 @@ public class RequestProcessor extends Thread
                     maxlat = Double.parseDouble(args.get("top"));
                     minlon = Double.parseDouble(args.get("left"));
                     maxlon = Double.parseDouble(args.get("right"));
-                    
+
                     if (!Main.pref.getBoolean("remotecontrol.permission.load-data", true))
                         throw new LoadDeniedException();
-                    
+
                     // find out whether some data has already been downloaded
                     Area present = Main.ds.getDataSourceArea();
                     if (present != null && !present.isEmpty()) {
@@ -171,7 +171,7 @@ public class RequestProcessor extends Thread
                             HashSet<Long> relations = new HashSet<Long>();
                             HashSet<OsmPrimitive> newSel = new HashSet<OsmPrimitive>();
                             for (String item : selection.split(",")) {
-                                if (item.startsWith("way"))	{
+                                if (item.startsWith("way")) {
                                     ways.add(Long.parseLong(item.substring(3)));
                                 } else if (item.startsWith("node")) {
                                     nodes.add(Long.parseLong(item.substring(4)));
@@ -183,7 +183,7 @@ public class RequestProcessor extends Thread
                             }
                             for (Way w : Main.ds.ways) if (ways.contains(w.id)) newSel.add(w);
                             for (Node n : Main.ds.nodes) if (nodes.contains(n.id)) newSel.add(n);
-                            for (Relation r : Main.ds.relations) if (relations.contains(r.id)) newSel.add(r);	
+                            for (Relation r : Main.ds.relations) if (relations.contains(r.id)) newSel.add(r);
                             Main.ds.setSelected(newSel);
                             if (Main.pref.getBoolean("remotecontrol.permission.change-viewport", true))
                                 new AutoScaleAction("selection").actionPerformed(null);
@@ -193,7 +193,7 @@ public class RequestProcessor extends Thread
                     // after downloading, zoom to downloaded area.
                     final LatLon min = new LatLon(minlat, minlon);
                     final LatLon max = new LatLon(maxlat, maxlon);
-                    
+
                     Main.worker.execute(new Runnable() {
                         public void run() {
                             BoundingXYVisitor bbox = new BoundingXYVisitor();
@@ -206,8 +206,8 @@ public class RequestProcessor extends Thread
             } else if (command.equals("/import")) {
                 if (Main.pref.getBoolean("remotecontrol.always-confirm", false)) {
                     if (JOptionPane.showConfirmDialog(Main.parent,
-                        "<html>" + tr("Remote Control has been asked to import data from the following URL:") + 
-                        "<br>" + url + 
+                        "<html>" + tr("Remote Control has been asked to import data from the following URL:") +
+                        "<br>" + url +
                         "<br>" + tr("Do you want to allow this?"),
                         tr("Confirm Remote Control action"),
                         JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
@@ -218,12 +218,12 @@ public class RequestProcessor extends Thread
                 if (!(args.containsKey("url"))) {
                     sendBadRequest(out);
                     System.out.println("'import' remote control request must have url parameter");
-                    return;	
+                    return;
                 }
                 try {
                     if (!Main.pref.getBoolean("remotecontrol.permission.import", true))
                         throw new LoadDeniedException();
-                    
+
                     DownloadTask osmTask = new DownloadOsmTask();
                     osmTask.loadUrl(false, URLDecoder.decode(args.get("url"), "UTF-8"));
                 } catch (LoadDeniedException ex) {
@@ -250,8 +250,8 @@ public class RequestProcessor extends Thread
             } catch (IOException e1) { }
         } finally {
             try {
-                request.close();        
-            } catch (IOException e) {} 
+                request.close();
+            } catch (IOException e) {}
         }
     }
 
@@ -321,10 +321,10 @@ public class RequestProcessor extends Thread
         out.write("</BODY></HTML>\r\n");
         out.flush();
     }
-    
+
     /**
      * Send common HTTP headers to the client.
-     * 
+     *
      * @param out The Writer
      * @param status The status string ("200 OK", "500", etc)
      * @param contentType The content type of the data sent

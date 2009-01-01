@@ -53,10 +53,10 @@ public class CacheableHttpRequest implements HttpRequest {
 
     public synchronized String getResponseText() {
     if( response == null ) return null;
-    
+
     byte[] bytes = this.response.responseBytes;
     String encoding = this.response.encoding;
-    
+
     try {
         return bytes == null ? null : new String(bytes, encoding);
     } catch (UnsupportedEncodingException uee) {
@@ -160,7 +160,7 @@ public class CacheableHttpRequest implements HttpRequest {
 
     /**
      * Opens the request. Call {@link #send(String)} to complete it.
-     * 
+     *
      * @param method The request method.
      * @param url The request URL.
      * @param asyncFlag Whether the request should be asynchronous.
@@ -173,13 +173,13 @@ public class CacheableHttpRequest implements HttpRequest {
 
     HttpResponse response = HttpResponse.lookup(url);
     URLConnection c = null;
-    
+
     if( response == null )
     {
         c = proxy == null || proxy == Proxy.NO_PROXY ? url.openConnection() : url.openConnection(proxy);
         response = new HttpResponse();
     }
-        
+
     synchronized (this) {
         this.connection = c;
         this.isAsync = asyncFlag;
@@ -188,7 +188,7 @@ public class CacheableHttpRequest implements HttpRequest {
         this.requestPassword = password;
         this.requestURL = url;
         this.response = response;
-        
+
         if( response.loaded )
         changeState(HttpRequest.STATE_LOADING);
         else
@@ -200,7 +200,7 @@ public class CacheableHttpRequest implements HttpRequest {
      * Sends POST content, if any, and causes the request to proceed.
      * <p>
      * In the case of asynchronous requests, a new thread is created.
-     * 
+     *
      * @param content POST content or <code>null</code> if there's no such
      *        content.
      */
@@ -237,7 +237,7 @@ public class CacheableHttpRequest implements HttpRequest {
     /**
      * This is a synchronous implementation of {@link #send(String)} method
      * functionality. It may be overridden to change the behavior of the class.
-     * 
+     *
      * @param content POST content if any. It may be <code>null</code>.
      * @throws IOException
      */
@@ -250,7 +250,7 @@ public class CacheableHttpRequest implements HttpRequest {
         changeState(HttpRequest.STATE_COMPLETE);
         return;
     }
-    
+
     try {
         URLConnection c;
         synchronized (this) {
@@ -260,7 +260,7 @@ public class CacheableHttpRequest implements HttpRequest {
         int istatus = 0;
         String istatusText = "";
         InputStream err = null;
-        
+
         if (c instanceof HttpURLConnection) {
         HttpURLConnection hc = (HttpURLConnection) c;
         String method = requestMethod.toUpperCase();
@@ -305,7 +305,7 @@ public class CacheableHttpRequest implements HttpRequest {
         }
     });
     }
-    
+
     protected void changeState(int readyState, int status, String statusMessage, byte[] bytes) {
         synchronized (this) {
             this.readyState = readyState;

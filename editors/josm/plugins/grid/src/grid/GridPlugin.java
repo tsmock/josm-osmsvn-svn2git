@@ -35,7 +35,7 @@ public class GridPlugin extends Plugin {
     }
     private JMenu edit;
     private JMenuItem addGridMenu = new JMenuItem(new Action());
-    
+
     public GridPlugin() {
     JMenuBar menu = Main.main.menu;
     edit = null;

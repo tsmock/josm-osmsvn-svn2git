@@ -29,7 +29,7 @@ public class Dg100Config
 //  mm: 01=disable logging if distance < nn nn nn nn;
 //  nn nn nn nn: distance in m
 //  xx xx: checksum
-//	A0 A2 00 35 B7 jj kk ll ll ll ll mm nn nn nn nn
+//  A0 A2 00 35 B7 jj kk ll ll ll ll mm nn nn nn nn
 //  aa aa aa aa bb bb bb bb cc cc cc cc 00 00 gg hh
 //  ii dd dd dd dd ee ee ee ee ff ff ff ff 01 61 01
 //  01 0C D5 0D 00 04 CC B0 B3
@@ -105,7 +105,7 @@ public class Dg100Config
 
     public String toString()
     {
-        return 
+        return
             "[Dg100Config: logFormat = " + logFormat
             + ",disableLogSpeed = " + disableLogSpeed
             + ",speedThres = " + speedThres

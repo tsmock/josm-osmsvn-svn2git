@@ -15,14 +15,14 @@ public class MeasurementPlugin extends Plugin {
     private MeasurementMode mode;
     protected static MeasurementDialog measurementDialog;
     protected static MeasurementLayer currentLayer;
-    
+
     public MeasurementPlugin() {
         mode = new MeasurementMode(Main.map, "measurement", tr("measurement mode"));
         btn = new IconToggleButton(mode);
         btn.setVisible(true);
         measurementDialog = new MeasurementDialog();
     }
-    
+
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
         if(newFrame != null)

@@ -25,7 +25,7 @@ public class SizeButton{
     
     public SizeButton(){
         enlargeImage = ImageProvider.get("", "view-fullscreen.png");
-        shrinkImage = ImageProvider.get("", "view-fullscreen-revert.png");		
+        shrinkImage = ImageProvider.get("", "view-fullscreen-revert.png");      
     }
     
     public void paint(Graphics g){
@@ -44,7 +44,7 @@ public class SizeButton{
     
     public boolean hit(Point point){
         if(x < point.x && point.x < x + enlargeImage.getIconWidth()){
-            if(y < point.y && point.y < y + enlargeImage.getIconHeight() ){				
+            if(y < point.y && point.y < y + enlargeImage.getIconHeight() ){             
                 return true;
             }
         }

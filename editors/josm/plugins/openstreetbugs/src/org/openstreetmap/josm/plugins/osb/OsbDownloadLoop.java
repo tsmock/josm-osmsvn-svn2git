@@ -1,18 +1,18 @@
 /* Copyright (c) 2008, Henrik Niehaus
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. Neither the name of the project nor the names of its 
- *    contributors may be used to endorse or promote products derived from this 
+ * 3. Neither the name of the project nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -35,37 +35,37 @@ import java.util.concurrent.TimeUnit;
 import org.openstreetmap.josm.Main;
 
 public class OsbDownloadLoop extends Thread {
-    
+
     private static OsbDownloadLoop instance;
-    
+
     private long countdown = TimeUnit.SECONDS.toMillis(1);
-    
+
     private boolean downloadDone = false;
-    
+
     private final int INTERVAL = 100;
-    
+
     private OsbPlugin plugin;
-    
+
     private Point2D lastCenter;
-    
+
     public OsbDownloadLoop() {
         setName(tr("OpenStreetBugs download loop"));
         start();
     }
-    
+
     public static synchronized OsbDownloadLoop getInstance() {
         if(instance == null) {
             instance = new OsbDownloadLoop();
         }
         return instance;
     }
-    
+
     @Override
     public void run() {
         try {
             while(true) {
                 countdown -= INTERVAL;
-                
+
                 // if the center of the map has changed, the user has dragged or
                 // zoomed the map
                 if(Main.map != null && Main.map.mapView != null) {
@@ -75,7 +75,7 @@ public class OsbDownloadLoop extends Thread {
                         lastCenter = currentCenter;
                     }
                 }
-                
+
                 // auto download if configured
                 if( Main.pref.getBoolean(ConfigKeys.OSB_AUTO_DOWNLOAD) && OsbPlugin.active ) {
                     if(countdown < 0) {
@@ -89,14 +89,14 @@ public class OsbDownloadLoop extends Thread {
                         }
                     }
                 }
-                
+
                 Thread.sleep(INTERVAL);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void resetCountdown() {
         downloadDone = false;
         countdown = TimeUnit.SECONDS.toMillis(1);

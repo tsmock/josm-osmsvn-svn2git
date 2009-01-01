@@ -128,7 +128,7 @@ public class ColorSchemePreference implements PreferenceSetting {
                 sb.append(";"+schemesList.getModel().getElementAt(i));
             Main.pref.put(PREF_KEY_SCHEMES_NAMES, sb.toString().substring(1));
         } else
-            Main.pref.put(PREF_KEY_SCHEMES_NAMES, null);	    
+            Main.pref.put(PREF_KEY_SCHEMES_NAMES, null);        
     }
 
     public boolean ok() {
@@ -144,7 +144,7 @@ public class ColorSchemePreference implements PreferenceSetting {
         Map<String, String> colors = Main.pref.getAllPrefix(PREF_KEY_SCHEMES_PREFIX + schemeName + ".");
         for(String key : colors.keySet()) {
             Main.pref.put(key, null);
-        }	    
+        }       
     }
     
     /**

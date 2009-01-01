@@ -12,7 +12,7 @@ public class ByteHelper
 {
 
     /**
-     * 
+     *
      * @param src
      * @param startS
      * @param len
@@ -32,7 +32,7 @@ public class ByteHelper
     }
 
     /**
-     * 
+     *
      * @param byt
      * @return
      */
@@ -42,7 +42,7 @@ public class ByteHelper
     }
 
     /**
-     * 
+     *
      * @param nibble
      */
     private static char nibble2Char(int nibble)
@@ -68,11 +68,11 @@ public class ByteHelper
         case 14: chr = 'E'; break;
         case 15: chr = 'F'; break;
         }
-        return chr; 
+        return chr;
     }
 
     /**
-     * 
+     *
      * @return
      */
     public static String byte2StringUnsigned(byte byt)
@@ -86,7 +86,7 @@ public class ByteHelper
     }
 
     /**
-     * 
+     *
      * @param byt
      */
     public static String byteArray2String(byte byt[])
@@ -95,7 +95,7 @@ public class ByteHelper
     }
 
     /**
-     * 
+     *
      * @param byt
      * @param cnt
      */

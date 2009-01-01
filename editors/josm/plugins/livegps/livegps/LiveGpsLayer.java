@@ -34,7 +34,7 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
     //JLabel lbl;
     boolean autocenter;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-    
+
     public LiveGpsLayer(GpxData data)
     {
         super (data, LAYER_NAME);
@@ -44,7 +44,7 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
         trackBeingWritten.trackSegs.add(trackSegment);
         data.tracks.add(trackBeingWritten);
     }
-    
+
     void setCurrentPosition(double lat, double lon)
     {
         //System.out.println("adding pos " + lat + "," + lon);
@@ -54,35 +54,35 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
             // maybe show a "paused" cursor or some such
             return;
         }
-            
+
         lastPos = thisPos;
         lastPoint = new WayPoint(thisPos);
         lastPoint.attr.put("time", dateFormat.format(new Date()));
         // synchronize when adding data, as otherwise the autosave action
         // needs concurrent access and this results in an exception!
         synchronized (LiveGpsLock.class) {
-            trackSegment.add(lastPoint);            
+            trackSegment.add(lastPoint);
         }
         if (autocenter) {
             center();
         }
-        
+
         //Main.map.repaint();
     }
 
     public void center()
     {
-        if (lastPoint != null) 
+        if (lastPoint != null)
             Main.map.mapView.zoomTo(lastPoint.eastNorth, Main.map.mapView.getScale());
     }
-    
-//	void setStatus(String status)
-//	{
-//		this.status = status;
-//		Main.map.repaint();
+
+//  void setStatus(String status)
+//  {
+//      this.status = status;
+//      Main.map.repaint();
 //        System.out.println("LiveGps status: " + status);
-//	}
-    
+//  }
+
     void setSpeed(float metresPerSecond)
     {
         speed = metresPerSecond;
@@ -94,7 +94,7 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
         course = degrees;
         //Main.map.repaint();
     }
-    
+
     public void setAutoCenter(boolean ac)
     {
         autocenter = ac;
@@ -106,12 +106,12 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
         synchronized (LiveGpsLock.class) {
             //System.out.println("in synced paint");
             super.paint(g, mv);
-//	        int statusHeight = 50;
-//	        Rectangle mvs = mv.getBounds();
-//	        mvs.y = mvs.y + mvs.height - statusHeight;
-//	        mvs.height = statusHeight;
-//	        g.setColor(new Color(1.0f, 1.0f, 1.0f, 0.8f)); 
-//	        g.fillRect(mvs.x, mvs.y, mvs.width, mvs.height);
+//          int statusHeight = 50;
+//          Rectangle mvs = mv.getBounds();
+//          mvs.y = mvs.y + mvs.height - statusHeight;
+//          mvs.height = statusHeight;
+//          g.setColor(new Color(1.0f, 1.0f, 1.0f, 0.8f));
+//          g.fillRect(mvs.x, mvs.y, mvs.width, mvs.height);
 
             if (lastPoint != null)
             {
@@ -121,18 +121,18 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
                 g.drawOval(screen.x-9, screen.y-9,18,18);
             }
 
-//	        lbl.setText("gpsd: "+status+" Speed: " + speed + " Course: "+course);
-//	        lbl.setBounds(0, 0, mvs.width-10, mvs.height-10);
-//	        Graphics sub = g.create(mvs.x+5, mvs.y+5, mvs.width-10, mvs.height-10);
-//	        lbl.paint(sub);
+//          lbl.setText("gpsd: "+status+" Speed: " + speed + " Course: "+course);
+//          lbl.setBounds(0, 0, mvs.width-10, mvs.height-10);
+//          Graphics sub = g.create(mvs.x+5, mvs.y+5, mvs.width-10, mvs.height-10);
+//          lbl.paint(sub);
 
-//	        if(status != null) {
-//	        g.setColor(Color.WHITE);
-//	        g.drawString("gpsd: " + status, 5, mv.getBounds().height - 15); // lower left corner
-//	        }
+//          if(status != null) {
+//          g.setColor(Color.WHITE);
+//          g.drawString("gpsd: " + status, 5, mv.getBounds().height - 15); // lower left corner
+//          }
         }
     }
-    
+
     /* (non-Javadoc)
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -153,7 +153,7 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
                 Main.map.repaint();
             }
         }
-        
+
     }
 
 }

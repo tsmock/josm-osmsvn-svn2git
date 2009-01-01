@@ -35,7 +35,7 @@ public class MeasurementDialog extends ToggleDialog implements ActionListener
 {
     private static final long serialVersionUID = 4708541586297950021L;
 
-    /** 
+    /**
      * The reset button
      */
     private SideButton resetButton;
@@ -63,7 +63,7 @@ public class MeasurementDialog extends ToggleDialog implements ActionListener
     /**
      * Constructor
      */
-    public MeasurementDialog() 
+    public MeasurementDialog()
     {
         super(tr("Measured values"), "measure", tr("Open the measurement window."),
         Shortcut.registerShortcut("subwindow:measurement", tr("Toggle: {0}", tr("Measured values")),
@@ -77,34 +77,34 @@ public class MeasurementDialog extends ToggleDialog implements ActionListener
         add(buttonPanel, BorderLayout.SOUTH);
 
         JPanel valuePanel = new JPanel(new GridLayout(0,2));
-        
+
         valuePanel.add(new JLabel(tr("Path Length")));
-        
+
         pathLengthLabel = new JLabel("0 m");
         valuePanel.add(pathLengthLabel);
-        
+
         valuePanel.add(new JLabel(tr("Selection Length")));
-        
+
         selectLengthLabel = new JLabel("0 m");
         valuePanel.add(selectLengthLabel);
 
         valuePanel.add(new JLabel(tr("Selection Area")));
-        
+
         selectAreaLabel = new JLabel("0 m\u00b2");
         valuePanel.add(selectAreaLabel);
-        
+
         JLabel angle = new JLabel(tr("Angle"));
         angle.setToolTipText(tr("Angle between two selected Nodes"));
         valuePanel.add(angle);
-        
+
         segAngleLabel = new JLabel("- \u00b0");
         valuePanel.add(segAngleLabel);
-        
+
         add(valuePanel, BorderLayout.CENTER);
 
         this.setPreferredSize(new Dimension(0, 92));
         final MeasurementDialog dlg = this;
-       //TODO: is this enough? 
+       //TODO: is this enough?
 
         Main.ds.selListeners.add(new SelectionChangedListener(){
 
@@ -144,25 +144,25 @@ public class MeasurementDialog extends ToggleDialog implements ActionListener
                 }
                 dlg.selectLengthLabel.setText(new DecimalFormat("#0.00").format(length) + " m");
 
-                dlg.segAngleLabel.setText(new DecimalFormat("#0.0").format(segAngle) + " \u00b0");		
+                dlg.segAngleLabel.setText(new DecimalFormat("#0.0").format(segAngle) + " \u00b0");
                 dlg.selectAreaLabel.setText(new DecimalFormat("#0.00").format(area) + " m\u00b2");
             }
         });
     }
 
-    public void actionPerformed(ActionEvent e) 
+    public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
         if( actionCommand.equals("Reset")){
             resetValues();
         }
     }
-    
+
     /**
      * Cleans the active Meausurement Layer
      */
     public void resetValues(){
         MeasurementPlugin.getCurrentLayer().reset();
     }
-    
+
 }

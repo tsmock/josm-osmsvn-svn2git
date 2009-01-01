@@ -58,7 +58,7 @@ public class Browser extends HtmlPanel {
         err.printStackTrace();
     }
     }
-    
+
     @Override
     public void setSize(final Dimension newSize)
     {
@@ -79,7 +79,7 @@ public class Browser extends HtmlPanel {
         }
     });
     }
-    
+
     public Object executeScript(String script)
     {
     System.out.println("Executing script " + script);
@@ -94,11 +94,11 @@ public class Browser extends HtmlPanel {
     } catch (Throwable err) {
         logger.log(Level.WARNING, "Unable to evaluate Javascript code", err);
     }
-    
+
     return null;
     }
-    
-    
+
+
     /**
      * Overrided to hide hardcoded scrollbars and insets
      */

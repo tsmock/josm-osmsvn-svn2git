@@ -15,14 +15,14 @@ public class FileInfoRec
     private int timeZ = 0;
     private int date = 0;
     private int idx = 0;
-    
+
     public FileInfoRec(ByteBuffer buf)
     {
         timeZ =  buf.getInt();
         date =  buf.getInt();
         idx =  buf.getInt();
     }
-    
+
     public String toString()
     {
         return "[FileInfoRec: timeZ = " + timeZ + ", date = " + date + ", idx = " + idx + "]";

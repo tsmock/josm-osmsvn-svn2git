@@ -13,9 +13,9 @@ import javax.swing.Action;
  *
  */
 public final class ActionConstants {
- 
+
     /**
-     * 
+     *
      */
     private ActionConstants() { }
 
