@@ -1,18 +1,18 @@
 /* Copyright (c) 2008, Henrik Niehaus
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. Neither the name of the project nor the names of its 
- *    contributors may be used to endorse or promote products derived from this 
+ * 3. Neither the name of the project nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
  *    software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -87,18 +87,18 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
     private JButton addComment = new JButton(new AddCommentAction());
     private JButton closeIssue = new JButton(new CloseIssueAction());
     private JToggleButton newIssue = new JToggleButton();
-    
+
     public OsbDialog(final OsbPlugin plugin) {
         super(tr("Open OpenStreetBugs"), "icon_error22",
                 tr("Opens the OpenStreetBugs window and activates the automatic download"),
                 Shortcut.registerShortcut(
                         "view:openstreetbugs",
                         tr("Toggle: {0}", tr("Open OpenStreetBugs")),
-                        KeyEvent.VK_O, Shortcut.GROUP_MENU, Shortcut.SHIFT_DEFAULT), 
+                        KeyEvent.VK_O, Shortcut.GROUP_MENU, Shortcut.SHIFT_DEFAULT),
                 150);
-        
+
         osbPlugin = plugin;
-        
+
         model = new DefaultListModel();
         list = new JList(model);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -119,17 +119,17 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
             public void actionPerformed(ActionEvent e) {
                 // check zoom level
                 if(Main.map.mapView.zoom() > 15 || Main.map.mapView.zoom() < 9) {
-                    JOptionPane.showMessageDialog(Main.parent, 
+                    JOptionPane.showMessageDialog(Main.parent,
                             tr("The visible area is either too small or too big to download data from OpenStreetBugs"),
                             tr("Warning"),
                             JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
-                
+
                 plugin.updateData();
             }
         });
-        
+
         addComment.setEnabled(false);
         addComment.setToolTipText((String) addComment.getAction().getValue(Action.NAME));
         addComment.setIcon(OsbPlugin.loadIcon("add_comment22.png"));
@@ -148,7 +148,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
         buttonPanel.add(newIssue);
         buttonPanel.add(addComment);
         buttonPanel.add(closeIssue);
-        
+
         // add a selection listener to the data
         DataSet.selListeners.add(new SelectionChangedListener() {
             public void selectionChanged(Collection<? extends OsmPrimitive> newSelection) {
@@ -165,7 +165,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
                 fireSelectionChanged = true;
             }
         });
-        
+
         AddCommentAction.addActionObserver(this);
         CloseIssueAction.addActionObserver(this);
     }
@@ -175,7 +175,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
         model = new DefaultListModel();
         List<Node> sortedList = new ArrayList<Node>(dataset.nodes);
         Collections.sort(sortedList, new BugComparator());
-        
+
         for (Node node : sortedList) {
             if (!node.deleted) {
                 model.addElement(new OsbListItem(node));
@@ -192,7 +192,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
             OsbAction.setSelectedNode(null);
             return;
         }
-        
+
         List<OsmPrimitive> selected = new ArrayList<OsmPrimitive>();
         for (Object listItem : list.getSelectedValues()) {
             Node node = ((OsbListItem) listItem).getNode();
@@ -205,11 +205,11 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
                 addComment.setEnabled(true);
                 closeIssue.setEnabled(true);
             }
-            
+
             OsbAction.setSelectedNode(node);
 
             scrollToSelected(node);
-            
+
             if (fireSelectionChanged) {
                 Main.ds.setSelected(selected);
             }
@@ -245,7 +245,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
     public void dataChanged(OsmDataLayer l) {
         update(l.data);
     }
-    
+
     public void zoomToNode(Node node) {
         double scale = Main.map.mapView.getScale();
         Main.map.mapView.zoomTo(node.eastNorth, scale);
@@ -257,7 +257,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
             zoomToNode(item.getNode());
         }
     }
-    
+
     public void mousePressed(MouseEvent e) {
         mayTriggerPopup(e);
     }
@@ -265,7 +265,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
     public void mouseReleased(MouseEvent e) {
         mayTriggerPopup(e);
     }
-    
+
     private void mayTriggerPopup(MouseEvent e) {
         if(e.isPopupTrigger()) {
             int selectedRow = list.locationToIndex(e.getPoint());
@@ -275,7 +275,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
             PopupFactory.createPopup(n).show(e.getComponent(), e.getX(), e.getY());
         }
     }
-    
+
     public void mouseEntered(MouseEvent e) {}
 
     public void mouseExited(MouseEvent e) {}
@@ -285,7 +285,7 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
             update(osbPlugin.getDataSet());
         }
     }
-    
+
     private class BugComparator implements Comparator<Node> {
 
         public int compare(Node o1, Node o2) {
@@ -296,6 +296,6 @@ public class OsbDialog extends ToggleDialog implements OsbObserver, ListSelectio
             }
             return state1.compareTo(state2);
         }
-        
+
     }
 }

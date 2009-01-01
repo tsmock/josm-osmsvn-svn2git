@@ -13,9 +13,9 @@ import org.openstreetmap.josm.plugins.Plugin;
 
 /**
  * Main class for the OpenLayers plugin.
- * 
+ *
  * @author Francisco R. Santos <frsantos@gmail.com>
- * 
+ *
  */
 public class OpenLayersPlugin extends Plugin {
 
@@ -37,7 +37,7 @@ public class OpenLayersPlugin extends Plugin {
     StorageManager.initStorage( pluginDir );
     refreshMenu();
     }
-    
+
     public static void refreshMenu() {
     JMenuBar menuBar = Main.main.menu;
     if (menu == null) {
@@ -46,13 +46,13 @@ public class OpenLayersPlugin extends Plugin {
     } else {
         menu.removeAll();
     }
-    
+
     menu.add(new JMenuItem(new ShowOpenLayersAction("Yahoo")));
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.openstreetmap.josm.plugins.Plugin#getPreferenceSetting()
      */
     @Override

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.openstreetmap.josm.plugins.openLayers;
 
@@ -15,7 +15,7 @@ import org.lobobrowser.util.Urls;
  */
 public class HttpResponse implements Serializable {
     private static final long serialVersionUID = -8605486951415515445L;
-    
+
     /** The status of the response */
     protected int status;
     /** The status text of the response */
@@ -26,13 +26,13 @@ public class HttpResponse implements Serializable {
     protected String encoding;
     /** Whether this response has been already loaded */
     protected boolean loaded = false;
-    
+
     /** Response headers are set in this map after a response is received. */
     protected Map<String, List<String>> responseHeadersMap;
 
     /** Response headers are set in this string after a response is received. */
     protected String responseHeaders;
-    
+
     /**
      * Sets the information about this response: headers and encoding
      * @param c The connection
@@ -42,14 +42,14 @@ public class HttpResponse implements Serializable {
         encoding = Urls.getCharset(c);
         if (encoding == null)
             encoding = "ISO-8859-1";
-        
+
         responseHeaders = getAllResponseHeaders(c);
         responseHeadersMap = c.getHeaderFields();
     }
 
     /**
      * Sets the state of this response
-     * 
+     *
      * @param status The response status
      * @param statusMessage The status message
      * @param bytes The response bytes
@@ -59,7 +59,7 @@ public class HttpResponse implements Serializable {
         this.statusText = statusMessage;
         this.responseBytes = bytes;
     }
-        
+
     /**
      * Returns the headers of the connection as a String
      * @param c The connection
@@ -91,10 +91,10 @@ public class HttpResponse implements Serializable {
     loaded = true;
     StorageManager.getInstance().put(requestURL, this);
     }
-    
+
     /**
      * Looks up the requested URL in the cache
-     * @param requestURL The requested URL 
+     * @param requestURL The requested URL
      * @return The response, if available
      */
     public static HttpResponse lookup(URL requestURL) {

@@ -15,9 +15,9 @@ import org.openstreetmap.josm.gui.MapFrame;
 public class MeasurementMode extends MapMode {
 
     private static final long serialVersionUID = 3853830673475744263L;
-    
+
     public MeasurementMode(MapFrame mapFrame, String name, String desc) {
-        super(name, "measurement.png", desc, mapFrame, Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));		
+        super(name, "measurement.png", desc, mapFrame, Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     @Override public void enterMode() {

@@ -20,9 +20,9 @@ import org.openstreetmap.josm.tools.ImageProvider;
 
 /**
  * Class that displays a OpenLayers layer.
- * 
+ *
  * @author Francisco R. Santos <frsantos@gmail.com>
- * 
+ *
  */
 public class OpenLayersLayer extends Layer implements PreferenceChangedListener, PropertyChangeListener {
 
@@ -33,9 +33,9 @@ public class OpenLayersLayer extends Layer implements PreferenceChangedListener,
      */
     public OpenLayersLayer() {
     super("OpenLayers");
-    
+
     this.browser = new Browser(OpenLayersPlugin.pluginDir + "yahoo.html");
-        
+
     if( Main.map != null )
     {
         LatLon bottomLeft = Main.map.mapView.getLatLon(0,Main.map.mapView.getHeight());
@@ -59,7 +59,7 @@ public class OpenLayersLayer extends Layer implements PreferenceChangedListener,
     public void setSize(Dimension dim) {
     browser.setSize(dim);
     }
-    
+
     @Override
     public Icon getIcon() {
     return ImageProvider.get("OpenLayers.png");
@@ -106,7 +106,7 @@ public class OpenLayersLayer extends Layer implements PreferenceChangedListener,
 
     if( Main.map != null )
         Main.map.mapView.removePropertyChangeListener(this);
-    
+
     OpenLayersPlugin.layer = null;
     StorageManager.flush();
     }
@@ -117,13 +117,13 @@ public class OpenLayersLayer extends Layer implements PreferenceChangedListener,
     public void propertyChange(PropertyChangeEvent evt) {
     if( !visible )
         return;
-    
+
         String prop = evt.getPropertyName();
     if ("center".equals(prop) || "scale".equals(prop)) {
         zoomToMapView();
     }
     }
-    
+
     public void zoomToMapView()
     {
         LatLon bottomLeft = Main.map.mapView.getLatLon(0,Main.map.mapView.getHeight());
@@ -132,7 +132,7 @@ public class OpenLayersLayer extends Layer implements PreferenceChangedListener,
         if( value != null && false)
         {
             // TODO wrong calculations
-            
+
             // Get actual extent from browser
             NativeArray array = (NativeArray)value;
             double left   = ((Double)array.get(0, null)).doubleValue();
@@ -141,7 +141,7 @@ public class OpenLayersLayer extends Layer implements PreferenceChangedListener,
             double top    = ((Double)array.get(3, null)).doubleValue();
         bottomLeft = new LatLon( bottom, left );
         topRight   = new LatLon( top, right);
-        
+
         BoundingXYVisitor v = new BoundingXYVisitor();
         v.visit(Main.proj.latlon2eastNorth(bottomLeft));
         v.visit(Main.proj.latlon2eastNorth(topRight));

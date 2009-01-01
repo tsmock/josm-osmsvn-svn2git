@@ -169,11 +169,11 @@ public class GpsRec
      */
     public String toGpxTrkpt()
     {
-//		<trkpt lat="47.6972383333" lon="11.4178650000">
-//		<ele>662.0000000000</ele>
-//		<time>2007-04-21T13:56:05Z</time>
-//		<dg100Speed>1.0833333333</dg100Speed>
-//		</trkpt>
+//      <trkpt lat="47.6972383333" lon="11.4178650000">
+//      <ele>662.0000000000</ele>
+//      <time>2007-04-21T13:56:05Z</time>
+//      <dg100Speed>1.0833333333</dg100Speed>
+//      </trkpt>
         StringBuffer buf = new StringBuffer(500);
         buf.append("<trkpt");
         buf.append(" lat=\"").append(getLatitude()).append("\"");
@@ -198,10 +198,10 @@ public class GpsRec
      */
     public String toGpxWpt()
     {
-//		<wpt lat="47.6972383333" lon="11.4178650000">
-//		<ele>662.0000000000</ele>
-//		<time>2007-04-21T13:56:05Z</time>
-//		</wpt>
+//      <wpt lat="47.6972383333" lon="11.4178650000">
+//      <ele>662.0000000000</ele>
+//      <time>2007-04-21T13:56:05Z</time>
+//      </wpt>
         StringBuffer buf = new StringBuffer(500);
         buf.append("<wpt");
         buf.append(" lat=\"").append(getLatitude()).append("\"");
