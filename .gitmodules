@@ -46,10 +46,6 @@
   path = applications/editors/josm/plugins/measurement
   url = ../measurement
   branch = master
-[submodule "applications/editors/josm/plugins/namefinder"]
-  path = applications/editors/josm/plugins/namefinder
-  url = ../namefinder
-  branch = master
 [submodule "applications/editors/josm/plugins/navigator"]
   path = applications/editors/josm/plugins/navigator
   url = ../navigator
