@@ -106,6 +106,10 @@
   path = applications/editors/josm/plugins/tcxplugin
   url = ../tcxplugin
   branch = master
+[submodule "applications/editors/josm/plugins/terracer"]
+  path = applications/editors/josm/plugins/terracer
+  url = ../terracer
+  branch = master
 [submodule "applications/editors/josm/plugins/usertools"]
   path = applications/editors/josm/plugins/usertools
   url = ../usertools
