@@ -26,6 +26,10 @@
   path = applications/editors/josm/plugins/duplicateway
   url = ../duplicateway
   branch = master
+[submodule "applications/editors/josm/plugins/editgpx"]
+  path = applications/editors/josm/plugins/editgpx
+  url = ../editgpx
+  branch = master
 [submodule "applications/editors/josm/plugins/globalsat"]
   path = applications/editors/josm/plugins/globalsat
   url = ../globalsat
