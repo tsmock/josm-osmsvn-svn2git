@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 
 import javax.swing.AbstractAction;
@@ -42,19 +43,19 @@ public class EditGpxLayer extends Layer {
     private static Icon icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(EditGpxPlugin.class.getResource("/images/editgpx_layer.png")));
     private DataSet dataSet;
     private GPXLayerImportAction layerImport;
-    
+
     public EditGpxLayer(String str, DataSet ds) {
         super(str);
         dataSet = ds;
         layerImport = new GPXLayerImportAction(dataSet);
     }
-    
+
     /**
      * check if dataSet is empty
      * if so show import dialog to user
      */
     public void initializeImport() {
-        try { 
+        try {
             if(dataSet.nodes.isEmpty() ) {
                 layerImport.activateImport();
             }
@@ -63,19 +64,16 @@ public class EditGpxLayer extends Layer {
             e.printStackTrace();
         }
     }
-    
 
     @Override
     public Icon getIcon() {
         return icon;
     }
 
-
     @Override
     public Object getInfoComponent() {
         return getToolTipText();
     }
-
 
     @Override
     public Component[] getMenuEntries() {
@@ -90,25 +88,21 @@ public class EditGpxLayer extends Layer {
             new JMenuItem(new LayerListPopup.InfoAction(this))};
     }
 
-
     @Override
     public String getToolTipText() {
         return tr("Layer for editing GPX tracks");
     }
 
-
     @Override
     public boolean isMergable(Layer other) {
-        // TODO 
+        // TODO
         return false;
     }
 
-
     @Override
     public void mergeFrom(Layer from) {
-        // TODO 
+        // TODO
     }
-
 
     @Override
     public void paint(Graphics g, MapView mv) {
@@ -125,22 +119,22 @@ public class EditGpxLayer extends Layer {
             }
         }
     }
-    
+
 
     public void reset(){
         //TODO implement a reset
     }
-    
+
 
     @Override
     public void visitBoundingBox(BoundingXYVisitor v) {
         // TODO Auto-generated method stub
     }
-    
-    
+
+
     /**
      * convert a DataSet to GPX
-     * 
+     *
      * @param boolean anonTime If true set all time and date in GPX to 01/01/1970 00:00 ?
      * @return GPXData
      */
@@ -162,24 +156,24 @@ public class EditGpxLayer extends Layer {
                     trkseg = null;
                     continue;
                 }
+
+                Date tstamp = n.getTimestamp();
+
                 if (trkseg == null) {
                     trkseg = new ArrayList<WayPoint>();
                     trk.trackSegs.add(trkseg);
                 }
-                if (!n.isTagged()) {
-                    doneNodes.add(n);
-                }
+                doneNodes.add(n);
+
                 WayPoint wpt = new WayPoint(n.coor);
-                if (!n.isTimestampEmpty())
-                {
-                    if (anonTime) {
-                        wpt.attr.put("time", "1970-01-01T00:00:00");
-                    } else {
-                        wpt.attr.put("time", n.getTimestamp());
-                        System.out.println("timestamp: "+n.getTimestamp());
-                    }
-                    wpt.setTime();
+                if (anonTime) {
+                    wpt.attr.put("time", "1970-01-01T00:00:00");
+                } else {
+                    wpt.attr.put("time", tstamp);
+                    System.out.println("timestamp: "+tstamp);
                 }
+                wpt.setTime();
+
                 trkseg.add(wpt);
             }
         }
@@ -187,15 +181,17 @@ public class EditGpxLayer extends Layer {
         // add nodes as waypoints
         for (Node n : dataSet.nodes) {
             if (n.incomplete || n.deleted || doneNodes.contains(n)) continue;
+
+            Date tstamp = n.getTimestamp();
+
             WayPoint wpt = new WayPoint(n.coor);
-            if (!n.isTimestampEmpty()) {
-                if (anonTime) {
-                    wpt.attr.put("time", "1970-01-01T00:00:00");
-                } else {
-                    wpt.attr.put("time", n.getTimestamp());
-                }
-                wpt.setTime();
+            if (anonTime) {
+                wpt.attr.put("time", "1970-01-01T00:00:00");
+            } else {
+                wpt.attr.put("time", tstamp);
             }
+            wpt.setTime();
+
             if (n.keys != null && n.keys.containsKey("name")) {
                 wpt.attr.put("name", n.keys.get("name"));
             }
@@ -203,7 +199,7 @@ public class EditGpxLayer extends Layer {
         }
         return gpxData;
     }
-    
+
     //context item "Convert to GPX layer"
     public class ConvertToGpxLayerAction extends AbstractAction {
         public ConvertToGpxLayerAction() {

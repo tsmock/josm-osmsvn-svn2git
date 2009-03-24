@@ -2,7 +2,7 @@
  * License: GPL. Copyright 2008. Martin Garbe (leo at running-sheep dot com)
  *
  * other source from mesurement plugin written by Raphael Mack
- * 
+ *
  */
 package org.openstreetmap.josm.plugins.editgpx;
 
@@ -36,22 +36,22 @@ import org.openstreetmap.josm.tools.ImageProvider;
 
 /**
  * Import GPX data from available layers
- * 
+ *
  *
  */
 class GPXLayerImportAction extends AbstractAction {
-    
-    
+
+
     private static final long serialVersionUID = 5794897888911798168L;
     private DataSet dataSet;
     public Object importing = new Object(); //used for synchronization
-    
+
     public GPXLayerImportAction(DataSet ds) {
         //TODO what is icon at the end?
         super(tr("Import path from GPX layer"), ImageProvider.get("dialogs", "edit"));
         this.dataSet = ds;
     }
-    
+
     /**
      * shows a list of GPX layers. if user selects one the data from this layer is
      * imported.
@@ -130,20 +130,17 @@ class GPXLayerImportAction extends AbstractAction {
             }
             Main.map.mapView.repaint();
 
-        } else { 
+        } else {
             // no gps layer
             JOptionPane.showMessageDialog(Main.parent,tr("No GPX data layer found."));
         }
-    
     }
 
     /**
      * called when pressing "Import.." from context menu of EditGpx layer
-     * 
+     *
      */
     public void actionPerformed(ActionEvent arg0) {
         activateImport();
     }
-        
-
 }
