@@ -26,12 +26,12 @@ public class EditGpxMode extends MapMode {
     MapFrame mapFrame;
     Rectangle oldRect;
     MapFrame frame;
-    
+
     public EditGpxMode(MapFrame mapFrame, String name, String desc, DataSet ds) {
         super(name, "editgpx_mode.png", desc, mapFrame, Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         dataSet = ds;
     }
-    
+
     @Override public void enterMode() {
         super.enterMode();
         Main.map.mapView.addMouseListener(this);
@@ -43,27 +43,26 @@ public class EditGpxMode extends MapMode {
         Main.map.mapView.removeMouseListener(this);
         Main.map.mapView.removeMouseMotionListener(this);
     }
-    
-    
+
+
     @Override public void mousePressed(MouseEvent e) {
         pointPressed = new Point(e.getPoint());
     }
-    
-    
+
+
     @Override public void mouseDragged(MouseEvent e) {
         if ( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) ==  MouseEvent.BUTTON1_DOWN_MASK) {
             //if button1 is hold, draw the rectangle.
             paintRect(pointPressed, e.getPoint());
         }
     }
-    
-    
+
     @Override public void mouseReleased(MouseEvent e) {
         if (e.getButton() != MouseEvent.BUTTON1) {
             return;
         } else {
             Point pointReleased = e.getPoint();
-            
+
             //prepare vars
             EastNorth en;
             double scale = Main.map.mapView.getScale();
@@ -71,7 +70,7 @@ public class EditGpxMode extends MapMode {
             int width = Main.map.mapView.getWidth();
             int height = Main.map.mapView.getHeight();
             Rectangle r = createRect(pointReleased, pointPressed);
-            
+
             //go through nodes and mark the ones in the selection rect as deleted
             for (Node n: dataSet.nodes) {
                 en = n.eastNorth;
@@ -85,9 +84,7 @@ public class EditGpxMode extends MapMode {
             }
             oldRect = null;
             Main.map.mapView.repaint();
-            
         }
-        
     }
 
     /**
@@ -119,14 +116,13 @@ public class EditGpxMode extends MapMode {
         }
         return new Rectangle(x,y,w,h);
     }
-  
-    
+
     /**
      * Draw a selection rectangle on screen.
      */
     private void paintRect(Point p1, Point p2) {
         Graphics g = frame.getGraphics();//Main.map.mapView.getGraphics();
-        
+
         Rectangle r = oldRect;
         if (r != null) {
             //overwrite old rct
@@ -134,19 +130,16 @@ public class EditGpxMode extends MapMode {
             g.setColor(Color.WHITE);
             g.drawRect(r.x,r.y,r.width,r.height);
         }
-            
+
         g.setXORMode(Color.BLACK);
-        g.setColor(Color.WHITE);        
+        g.setColor(Color.WHITE);
         r = createRect(p1,p2);
         g.drawRect(r.x,r.y,r.width,r.height);
         oldRect = r;
-     
     }
-    
+
 
     public void setFrame(MapFrame mapFrame) {
         frame = mapFrame;
     }
-    
-
 }
