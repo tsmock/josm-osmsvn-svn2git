@@ -20,21 +20,18 @@ import org.openstreetmap.josm.plugins.Plugin;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 /**
- * Provides an editable GPX layer. Editable layer here means the deletion of points is supported. 
+ * Provides an editable GPX layer. Editable layer here means the deletion of points is supported.
  * This plugin can be used to prepare tracks for upload to OSM eg. delete uninteresting parts
- * of the track. 
- * Additionally while converting the track back to a normal GPX layer the time can be made 
- * anonymous. This feature sets all time stamps to 1970-01-01 00:00. 
- * 
+ * of the track.
+ * Additionally while converting the track back to a normal GPX layer the time can be made
+ * anonymous. This feature sets all time stamps to 1970-01-01 00:00.
+ *
  * TODO:
- * - TODO s durchschauen
- * - write docu
- * - upload beta of plugin
  * - BUG: when importing eGpxLayer is shown as RawGpxLayer??
  * - BUG: after deletion of layer not all data is deleted (eg dataset)
  * - implement reset if user made mistake while marking
- * 
- * 
+ *
+ *
  */
 public class EditGpxPlugin extends Plugin {
 
@@ -43,16 +40,15 @@ public class EditGpxPlugin extends Plugin {
     protected static EditGpxLayer eGpxLayer;
     protected static DataSet dataSet;
     public static boolean active = false;
-    
+
     public EditGpxPlugin() {
         dataSet = new DataSet();
         mode = new EditGpxMode(Main.map, "editgpx", tr("edit gpx tracks"), dataSet);
-        
+
         btn = new IconToggleButton(mode);
         btn.setVisible(true);
     }
-    
-    
+
     /**
      * initialize button. if button is pressed create new layer.
      */
@@ -60,12 +56,12 @@ public class EditGpxPlugin extends Plugin {
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
         if(oldFrame == null && newFrame != null) {
             mode.setFrame(newFrame);
-        
+
             if(Main.map != null)
                 Main.map.addMapMode(btn);
-            
+
             active = btn.isSelected();
-            
+
             btn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     active = btn.isSelected();
@@ -80,7 +76,7 @@ public class EditGpxPlugin extends Plugin {
             });
         }
     }
-    
+
     /**
      * create new layer, add listeners and try importing gpx data.
      */
@@ -89,33 +85,31 @@ public class EditGpxPlugin extends Plugin {
             eGpxLayer = new EditGpxLayer(tr("EditGpx"), dataSet);
             Main.main.addLayer(eGpxLayer);
             Layer.listeners.add(new LayerChangeListener(){
-                
+
                 public void activeLayerChange(final Layer oldLayer, final Layer newLayer) {
                     if(newLayer instanceof EditGpxLayer)
                         EditGpxPlugin.eGpxLayer = (EditGpxLayer)newLayer;
                 }
-                
+
                 public void layerAdded(final Layer newLayer) {
                 }
-                
+
                 public void layerRemoved(final Layer oldLayer) {
                     if(oldLayer == eGpxLayer) {
                         eGpxLayer = null;
                         //dataSet = new DataSet();
-                        
+
                     }
                 }
             });
-            
+
             eGpxLayer.initializeImport();
-        } 
+        }
         Main.map.mapView.repaint();
     }
-    
-    
+
     public static ImageIcon loadIcon(String name) {
         URL url = EditGpxPlugin.class.getResource("/images/editgpx.png");
         return new ImageIcon(url);
     }
-
 }
