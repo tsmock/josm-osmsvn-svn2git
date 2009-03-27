@@ -86,6 +86,10 @@
   path = applications/editors/josm/plugins/remotecontrol
   url = ../remotecontrol
   branch = master
+[submodule "applications/editors/josm/plugins/routing"]
+  path = applications/editors/josm/plugins/routing
+  url = ../routing
+  branch = master
 [submodule "applications/editors/josm/plugins/slippymap"]
   path = applications/editors/josm/plugins/slippymap
   url = ../slippymap
