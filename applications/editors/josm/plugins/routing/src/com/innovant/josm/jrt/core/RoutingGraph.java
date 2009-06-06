@@ -88,13 +88,13 @@ public class RoutingGraph {
      * <code>true</code> Graph in memory.
      * <code>false</code> Graph not created.
      */
-//	public boolean graphState;
+//  public boolean graphState;
 
     /**
      * OSM Graph.
      */
-//	private DirectedWeightedMultigraph<Node, OsmEdge> graph;
-//	private WeightedMultigraph<Node, OsmEdge> graph;
+//  private DirectedWeightedMultigraph<Node, OsmEdge> graph;
+//  private WeightedMultigraph<Node, OsmEdge> graph;
     private Graph<Node, OsmEdge> graph;
     private RoutingGraphDelegator rgDelegator=null;
 
@@ -107,9 +107,9 @@ public class RoutingGraph {
      * Default Constructor.
      */
     public RoutingGraph(DataSet data) {
-//		this.graphState = false;
+//      this.graphState = false;
         this.graph = null;
-//		this.data = data;
+        this.data = data;
         routeType=RouteType.SHORTEST;
         routingProfile=new RoutingProfile("default");
         routingProfile.setOnewayUse(true); // Don't ignore oneways by default
@@ -146,7 +146,7 @@ public class RoutingGraph {
                 }
             }
         }
-//		graph.vertexSet().size();
+//      graph.vertexSet().size();
         logger.debug("End Create Graph");
         logger.debug("Vertex: "+graph.vertexSet().size());
         logger.debug("Edges: "+graph.edgeSet().size());
@@ -160,7 +160,7 @@ public class RoutingGraph {
      */
     private void addEdge(Way way,Node from, Node to) {
         double length = from.coor.greatCircleDistance(to.coor);
-        
+
         OsmEdge edge = new OsmEdge(way, from, to);
         edge.setSpeed(12.1);
         graph.addEdge(from, to, edge);
@@ -184,11 +184,11 @@ public class RoutingGraph {
      * @return
      */
     private void setWeight(OsmEdge osmedge, double length) {
-        
+
         osmedge.setLength(length);
         if (this.waySpeeds.containsKey(osmedge.getWay().get("highway")))
             osmedge.setSpeed(this.waySpeeds.get(osmedge.getWay().get("highway")));
-                    
+
     }
 
     /**
@@ -222,7 +222,7 @@ public class RoutingGraph {
         // Return the time spent to traverse the way
         return length / speed;
     }
-    
+
     /**
      * Check is One Way.
      *
