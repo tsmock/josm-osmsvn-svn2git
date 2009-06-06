@@ -72,6 +72,7 @@ public class RoutingModel {
      */
     public RoutingModel(DataSet data) {
         nodes = new ArrayList<Node>();
+System.out.println("gr " + data);
         routingGraph = new RoutingGraph(data);
     }
 
@@ -97,7 +98,7 @@ public class RoutingModel {
      * @param index the index of the node to remove.
      */
     public void removeNode(int index) {
-        if (nodes.size()>index)	{
+        if (nodes.size()>index) {
             nodes.remove(index);
             this.changeNodes=true;
         }
