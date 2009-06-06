@@ -25,9 +25,9 @@
  *
  */
 
-
 package com.innovant.josm.plugin.routing;
 
+import static org.openstreetmap.josm.tools.I18n.marktr;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.util.ArrayList;
@@ -136,8 +136,7 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener {
         // Initialize layers list
         layers = new ArrayList<RoutingLayer>();
         // Add menu
-        menu = new RoutingMenu(tr("Routing"));
-        Main.main.menu.add(menu);
+        menu = new RoutingMenu(marktr("Routing"));
         // Register this class as LayerChangeListener
         Layer.listeners.add(this);
         logger.debug("Finished loading plugin");

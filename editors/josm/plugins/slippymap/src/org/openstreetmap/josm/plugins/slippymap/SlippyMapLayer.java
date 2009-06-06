@@ -35,14 +35,14 @@ import org.openstreetmap.josm.tools.ImageProvider;
 
 /**
  * Class that displays a slippy map layer.
- * 
+ *
  * @author Frederik Ramm <frederik@remote.org>
  * @author LuVar <lubomir.varga@freemap.sk>
  * @author Dave Hansen <dave@sr71.net>
- * 
+ *
  */
 public class SlippyMapLayer extends Layer implements ImageObserver,
-        PreferenceChangedListener {
+    PreferenceChangedListener {
     /**
      * Actual zoom lvl. Initial zoom lvl is set to
      * {@link SlippyMapPreferences#getMinZoomLvl()}.
@@ -444,7 +444,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
                         loadSingleTile(tile);
                 }
                 p = pixelpos[x - z12x0 + 1][y - z12y0 + 2];
-                
+
                 if(SlippyMapPreferences.getDrawDebug()) {
                     g.drawString("x=" + x + " y=" + y + " z=" + currentZoomLevel
                             + "", p.x + 2, texty);
@@ -503,7 +503,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
                 }
                 this.paint(oldg, mv);
             }
-        }	
+        }
         g.setColor(Color.black);
         g.drawString("currentZoomLevel=" + currentZoomLevel, 120, 120);
     }// end of paint metod
@@ -560,7 +560,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
                 new JMenuItem(new LayerListDialog.DeleteLayerAction(this)),
                 new JSeparator(),
                 // color,
-                new JMenuItem(new RenameLayerAction(associatedFile, this)),
+                new JMenuItem(new RenameLayerAction(getAssociatedFile(), this)),
                 new JSeparator(),
                 new JMenuItem(new LayerListPopup.InfoAction(this)) };
     }
@@ -617,7 +617,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         }
         if ((infoflags & SOMEBITS) != 0) {
                 //if (y%100 == 0)
-                //	System.out.println("imageUpdate("+img+") SOMEBITS ("+x+","+y+")");
+                //    System.out.println("imageUpdate("+img+") SOMEBITS ("+x+","+y+")");
         }
         // Repaint immediately if we are done, otherwise batch up
         // repaint requests every 100 milliseconds
@@ -628,7 +628,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.openstreetmap.josm.data.Preferences.PreferenceChangedListener#
      * preferenceChanged(java.lang.String, java.lang.String)
      */

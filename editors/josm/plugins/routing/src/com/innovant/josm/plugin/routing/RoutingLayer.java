@@ -187,7 +187,7 @@ public class RoutingLayer extends Layer {
 //        components.add(new JMenuItem(new LayerListDialog.ShowHideMarkerText(this)));
         components.add(new JMenuItem(new LayerListDialog.DeleteLayerAction(this)));
         components.add(new JSeparator());
-        components.add(new JMenuItem(new RenameLayerAction(associatedFile, this)));
+        components.add(new JMenuItem(new RenameLayerAction(getAssociatedFile(), this)));
         components.add(new JSeparator());
         components.add(new JMenuItem(new LayerListPopup.InfoAction(this)));
         return components.toArray(new Component[0]);
@@ -312,7 +312,7 @@ public class RoutingLayer extends Layer {
     @Override
     public void destroy() {
         routingModel.reset();
-//		layerAdded = false;
+//      layerAdded = false;
     }
 
     /**

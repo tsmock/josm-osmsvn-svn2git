@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -41,6 +42,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
 import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.gui.MainMenu;
 
 import com.innovant.josm.jrt.core.RoutingGraph.RouteType;
 import com.innovant.josm.plugin.routing.RoutingLayer;
@@ -63,15 +65,14 @@ public class RoutingMenu extends JMenu {
     private JMenuItem reverseMI;
     private JMenuItem clearMI;
     private JMenu criteriaM;
+    private JMenu menu;
 
     /**
      * @param s
      */
     public RoutingMenu(final String name) {
-        super(name);
-
-        JMenuItem mi;
-        JMenu m;
+        MainMenu mm = Main.main.menu;
+        menu = mm.addMenu(name, KeyEvent.VK_R, mm.defaultMenuPos);
 
         startMI = new JMenuItem(tr("Add routing layer"));
         startMI.addActionListener(new ActionListener() {
@@ -79,9 +80,9 @@ public class RoutingMenu extends JMenu {
                 RoutingPlugin.getInstance().addLayer();
             }
         });
-        this.add(startMI);
+        menu.add(startMI);
 
-        this.addSeparator();
+        menu.addSeparator();
         ButtonGroup group = new ButtonGroup();
 
         criteriaM = new JMenu(tr("Criteria"));
@@ -98,8 +99,8 @@ public class RoutingMenu extends JMenu {
                     } else {
                         routingModel.routingGraph.setTypeRoute(RouteType.FASTEST);
                     }
-                //	routingModel.routingGraph.resetGraph();
-                //	routingModel.routingGraph.createGraph();
+                //  routingModel.routingGraph.resetGraph();
+                //  routingModel.routingGraph.createGraph();
                     //TODO: Change this way
                     //FIXME: do not change node but recalculate routing.
                     routingModel.setNodesChanged();
@@ -132,9 +133,9 @@ public class RoutingMenu extends JMenu {
             }
         });
         criteriaM.add(cbmi);
-        this.add(criteriaM);
+        menu.add(criteriaM);
 
-        this.addSeparator();
+        menu.addSeparator();
         reverseMI = new JMenuItem(tr("Reverse route"));
         reverseMI.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -146,7 +147,7 @@ public class RoutingMenu extends JMenu {
                 }
             }
         });
-        this.add(reverseMI);
+        menu.add(reverseMI);
 
         clearMI = new JMenuItem(tr("Clear route"));
         clearMI.addActionListener(new ActionListener() {
@@ -161,7 +162,7 @@ public class RoutingMenu extends JMenu {
                 }
             }
         });
-        this.add(clearMI);
+        menu.add(clearMI);
 
         // Initially disabled
         disableAllItems();
