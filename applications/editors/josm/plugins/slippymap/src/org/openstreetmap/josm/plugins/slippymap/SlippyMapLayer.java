@@ -45,7 +45,7 @@ import org.openstreetmap.josm.tools.ImageProvider;
  * @author Frederik Ramm <frederik@remote.org>
  * @author LuVar <lubomir.varga@freemap.sk>
  * @author Dave Hansen <dave@sr71.net>
- * 
+ *
  */
 public class SlippyMapLayer extends Layer implements ImageObserver,
     PreferenceChangedListener {
@@ -130,7 +130,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
                         Main.map.repaint();
                     }
                 }));
-        
+
         tileOptionMenu.add(new JMenuItem(
                 new AbstractAction(tr("Flush Tile Cache")) {
                     public void actionPerformed(ActionEvent ae) {
@@ -175,8 +175,8 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
 
     /**
      * Zoom in, go closer to map.
-     * 
-     * @return	true, if zoom increasing was successfull, false othervise
+     *
+     * @return    true, if zoom increasing was successfull, false othervise
      */
     public boolean increaseZoomLevel() {
         if (currentZoomLevel < SlippyMapPreferences.getMaxZoomLvl()) {
@@ -193,8 +193,8 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
 
     /**
      * Zoom out from map.
-     * 
-     * @return	true, if zoom increasing was successfull, false othervise
+     *
+     * @return    true, if zoom increasing was successfull, false othervise
      */
     public boolean decreaseZoomLevel() {
         if (currentZoomLevel > SlippyMapPreferences.getMinZoomLvl()) {
@@ -294,14 +294,14 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         putTile(tile, x, y, zoom);
         return tile;
     }
-    
+
     void loadAllTiles() {
         MapView mv = Main.map.mapView;
         LatLon topLeft = mv.getLatLon(0, 0);
         LatLon botRight = mv.getLatLon(mv.getWidth(), mv.getHeight());
 
         TileSet ts = new TileSet(topLeft, botRight, currentZoomLevel);
-        
+
         // if there is more than 18 tiles on screen in any direction, do not
         // load all tiles!
         if (ts.tilesSpanned() > (18*18)) {
@@ -459,7 +459,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             }
         }// /end of if draw debug
     }
-    
+
     private class Tile {
         public int x;
         public int y;
@@ -473,7 +473,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             double lon = tileXToLon(this.x, zoom);
             LatLon tmpLL = new LatLon(tileYToLat(this.y, zoom), lon);
             MapView mv = Main.map.mapView;
-            return mv.getPoint(Main.proj.latlon2eastNorth(tmpLL));
+            return mv.getPoint(tmpLL);
         }
     }
 
@@ -537,7 +537,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             return false;
         }
     }
-    
+
     /**
      */
     @Override
@@ -576,7 +576,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             }
             return;
         }//end of if more than 18*18
-        
+
         if (ts.tilesSpanned() <= 0) {
             System.out.println("doesn't even cover one tile, increasing zoom from " + currentZoomLevel);
             if (increaseZoomLevel()) {
@@ -610,7 +610,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
          */
         Double imageScale = this.paintTileImages(g, ts, currentZoomLevel);
         g.setColor(Color.red);
-        
+
         for (Tile t : ts.allTiles()) {
             // This draws the vertical lines for the entire
             // column.  Only draw them for the top tile in
@@ -667,7 +667,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         LatLon botRight = mv.getLatLon(mv.getWidth(), mv.getHeight());
         TileSet ts = new TileSet(topLeft, botRight, currentZoomLevel);
         int z = currentZoomLevel;
-        
+
         Tile clickedTile = null;
         for (Tile t1 : ts.allTiles()) {
             Tile t2 = new Tile(t1.x+1, t1.y+1);
@@ -760,10 +760,10 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         }
         return null;
     }
-    
+
     private static int nr_loaded = 0;
     private static int at_zoom = -1;
-    
+
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
         boolean done = ((infoflags & (ERROR | FRAMEBITS | ALLBITS)) != 0);
         SlippyMapTile imageTile = imgToTile(img);
