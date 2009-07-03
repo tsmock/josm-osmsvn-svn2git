@@ -46,7 +46,7 @@ import org.openstreetmap.josm.gui.layer.Layer;
  * files, copy from clipboard, hack into a spy satellite and download them,
  * anything...)
  */
-public abstract class PicLayerAbstract extends Layer 
+public abstract class PicLayerAbstract extends Layer
 {
     // Counter - just for naming of layers
     private static int m_counter = 0;
@@ -66,7 +66,7 @@ public abstract class PicLayerAbstract extends Layer
     private Component m_popupmenu[] = null;
     // Layer icon
     private Icon m_layericon = null;
-    
+
     /**
      * Constructor
      */
@@ -75,7 +75,7 @@ public abstract class PicLayerAbstract extends Layer
 
         //Increase number
         m_counter++;
-        
+
         // Create popup menu
         // Reset submenu
         JMenu reset_submenu = new JMenu( "Reset" );
@@ -90,17 +90,17 @@ public abstract class PicLayerAbstract extends Layer
                 new JSeparator(),
                 new JMenuItem( new HelpAction() )
         };
-        
+
         // Load layer icon
         m_layericon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(PicLayerAbstract.class.getResource("/images/layericon.png")));
-    }		
-    
+    }
+
     /**
      * Initializes the image. Gets the image from a subclass and stores some
      * initial parameters. Throws exception if something fails.
      */
     public void Initialize() throws IOException {
-        
+
         // Create image
         Image image = createImage();
         if ( image == null ) {
@@ -110,31 +110,31 @@ public abstract class PicLayerAbstract extends Layer
         m_image = new BufferedImage( image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB );
         Graphics g = m_image.getGraphics();
         g.drawImage( image, 0, 0, null );
-        
+
         // If the map does not exist - we're screwed. We should not get into this situation in the first place!
         if ( Main.map != null && Main.map.mapView != null ) {
             // Geographical position of the image
             m_initial_position = m_position = Main.map.mapView.getCenter();
             // Initial scale at which the image was loaded
-            m_initial_scale = Main.map.mapView.getScale(); 
+            m_initial_scale = Main.map.mapView.getMapScale();
         } else {
             throw new IOException( "Could not find the map object." );
         }
     }
-    
+
     /**
      * To be overridden by subclasses. Provides an image from an external sources.
      * Throws exception if something does not work.
-     * 
+     *
      * TODO: Replace the IOException by our own exception.
      */
     protected abstract Image createImage() throws IOException;
-    
+
     /**
      * To be overridden by subclasses. Returns the user readable name of the layer.
      */
     protected abstract String getPicLayerName();
-    
+
     @Override
     public Icon getIcon() {
         return m_layericon;
@@ -170,18 +170,18 @@ public abstract class PicLayerAbstract extends Layer
 
     @Override
     public void paint(Graphics arg0, MapView arg1) {
-        
+
         if ( m_image != null && arg0 instanceof Graphics2D) {
-            
+
             // Position image at the right graphical place
             EastNorth center = Main.map.mapView.getCenter();
             EastNorth leftop = Main.map.mapView.getEastNorth( 0, 0 );
             double pixel_per_en = ( Main.map.mapView.getWidth() / 2.0 ) / ( center.east() - leftop.east() );
 
-            // 	This is now the offset in screen pixels
+            //     This is now the offset in screen pixels
             double pic_offset_x = (( m_position.east() - leftop.east() ) * pixel_per_en);
             double pic_offset_y = (( leftop.north() - m_position.north() ) * pixel_per_en);
-        
+
             // Let's use Graphics 2D
             Graphics2D g = (Graphics2D)arg0.create();
             // Move
@@ -189,12 +189,12 @@ public abstract class PicLayerAbstract extends Layer
             // Rotate
             g.rotate( m_angle * Math.PI / 180.0 );
             // Scale
-            double scale = m_scale * m_initial_scale / Main.map.mapView.getScale();
+            double scale = m_scale * m_initial_scale / Main.map.mapView.getMapScale();
             g.scale( scale, scale );
-            
+
             // Draw picture
             g.drawImage( m_image, -m_image.getWidth() / 2, -m_image.getHeight() / 2, null );
-            
+
             // Draw additional rectangle for the active pic layer
             if ( Main.map.mapView.getActiveLayer() == this ) {
                 g.setColor( new Color( 0xFF0000 ) );
@@ -210,7 +210,7 @@ public abstract class PicLayerAbstract extends Layer
             System.out.println( "PicLayerAbstract::paint - general drawing error (m_image is null or Graphics not 2D" );
         }
     }
-    
+
     /**
      * Moves the picture. Scaled in EastNorth...
      */
@@ -223,34 +223,34 @@ public abstract class PicLayerAbstract extends Layer
      */
     public void scalePictureBy( double scale ) {
         m_scale += scale;
-    }	
+    }
 
     /**
      * Rotates the picture. Scales in angles.
      */
     public void rotatePictureBy( double angle ) {
         m_angle += angle;
-    }	
-    
+    }
+
     /**
      * Sets the image position to the initial position
      */
     public void resetPosition() {
-        m_position = m_initial_position; 
+        m_position = m_initial_position;
     }
-    
+
     /**
      * Sets the image scale to 1.0
      */
     public void resetScale() {
-        m_scale = 1.0; 
+        m_scale = 1.0;
     }
 
     /**
      * Sets the image angle to 0.0
      */
     public void resetAngle() {
-        m_angle = 0.0; 
+        m_angle = 0.0;
     }
 
     @Override
