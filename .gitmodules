@@ -102,6 +102,10 @@
   path = applications/editors/josm/plugins/remotecontrol
   url = ../remotecontrol
   branch = master
+[submodule "applications/editors/josm/plugins/routes"]
+  path = applications/editors/josm/plugins/routes
+  url = ../routes
+  branch = master
 [submodule "applications/editors/josm/plugins/routing"]
   path = applications/editors/josm/plugins/routing
   url = ../routing
