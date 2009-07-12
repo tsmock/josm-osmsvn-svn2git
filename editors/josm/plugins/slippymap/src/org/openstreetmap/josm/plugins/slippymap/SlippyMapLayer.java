@@ -576,17 +576,15 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
 
         if (ts.tilesSpanned() > (18*18)) {
             System.out.println("too many tiles, decreasing zoom from " + currentZoomLevel);
-            if (decreaseZoomLevel()) {
+            if (decreaseZoomLevel())
                 this.paint(oldg, mv);
-            }
             return;
-        }//end of if more than 18*18
+        }
         
         if (ts.tilesSpanned() <= 0) {
             System.out.println("doesn't even cover one tile, increasing zoom from " + currentZoomLevel);
-            if (increaseZoomLevel()) {
-                this.paint(oldg, mv);
-            }
+            if (increaseZoomLevel())
+                 this.paint(oldg, mv);
             return;
         }
 
