@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.TreeSet;
 
 import javax.swing.AbstractAction;
@@ -45,7 +46,7 @@ import org.openstreetmap.josm.tools.ImageProvider;
  * @author Frederik Ramm <frederik@remote.org>
  * @author LuVar <lubomir.varga@freemap.sk>
  * @author Dave Hansen <dave@sr71.net>
- * 
+ *
  */
 public class SlippyMapLayer extends Layer implements ImageObserver,
     PreferenceChangedListener {
@@ -64,6 +65,10 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
     private boolean needRedraw;
     private JPopupMenu tileOptionMenu;
 
+    static void debug(String msg)
+    {
+
+    }
     @SuppressWarnings("serial")
     public SlippyMapLayer() {
         super(tr("Slippy Map"));
@@ -130,7 +135,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
                         Main.map.repaint();
                     }
                 }));
-        
+
         tileOptionMenu.add(new JMenuItem(
                 new AbstractAction(tr("Flush Tile Cache")) {
                     public void actionPerformed(ActionEvent ae) {
@@ -176,30 +181,34 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
 
     /**
      * Zoom in, go closer to map.
-     * 
-     * @return	true, if zoom increasing was successfull, false othervise
+     *
+     * @return    true, if zoom increasing was successfull, false othervise
      */
     public boolean zoomIncreaseAllowed()
     {
-        return currentZoomLevel < SlippyMapPreferences.getMaxZoomLvl();
+        boolean zia = currentZoomLevel < SlippyMapPreferences.getMaxZoomLvl();
+        this.debug("zoomIncreaseAllowed(): " + zia + " " + currentZoomLevel + " vs. " + SlippyMapPreferences.getMaxZoomLvl() );
+        return zia;
     }
-    public boolean increaseZoomLevel() {
+    public boolean increaseZoomLevel()
+    {
+        lastImageScale = null;
         if (zoomIncreaseAllowed()) {
             currentZoomLevel++;
-            Main.debug("increasing zoom level to: " + currentZoomLevel);
+            this.debug("increasing zoom level to: " + currentZoomLevel);
             needRedraw = true;
         } else {
             System.err.println("current zoom lvl ("+currentZoomLevel+") couldnt be increased. "+
                              "MaxZoomLvl ("+SlippyMapPreferences.getMaxZoomLvl()+") reached.");
             return false;
-            }
+        }
         return true;
     }
 
     /**
      * Zoom out from map.
-     * 
-     * @return	true, if zoom increasing was successfull, false othervise
+     *
+     * @return    true, if zoom increasing was successfull, false othervise
      */
     public boolean zoomDecreaseAllowed()
     {
@@ -207,8 +216,9 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
     }
     public boolean decreaseZoomLevel() {
         int minZoom = SlippyMapPreferences.getMinZoomLvl();
+        lastImageScale = null;
         if (zoomDecreaseAllowed()) {
-            Main.debug("decreasing zoom level to: " + currentZoomLevel);
+            this.debug("decreasing zoom level to: " + currentZoomLevel);
             currentZoomLevel--;
             needRedraw = true;
         } else {
@@ -221,7 +231,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
     public void clearTileStorage() {
         // when max zoom lvl is begin saved, this method is called and probably
         // the setting isnt saved yet.
-    int maxZoom = SlippyMapPreferences.getMaxZoomLvl();
+        int maxZoom = SlippyMapPreferences.getMaxZoomLvl();
         tileStorage = new Hashtable<SlippyMapKey, SlippyMapTile>();
         checkTileStorage();
     }
@@ -253,40 +263,79 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
     {
         TreeSet<SlippyMapTile> tiles = new TreeSet<SlippyMapTile>(new TileTimeComp());
         tiles.addAll(tileStorage.values());
-        if (tiles.size() < maxNrTiles) {
-            Main.debug("total of " + tiles.size() + " loaded tiles, size OK (< " + maxNrTiles + ")");
+        int nr_to_drop = tiles.size() - maxNrTiles;
+        if (nr_to_drop <= 0) {
+            this.debug("total of " + tiles.size() + " loaded tiles, size OK (< " + maxNrTiles + ")");
             return;
         }
-        int nr_to_drop = tiles.size() - maxNrTiles;;
-        Main.debug("total of " + tiles.size() + " tiles, need to flush " + nr_to_drop + " tiles");
+        this.debug("total of " + tiles.size() + " tiles, need to flush " + nr_to_drop + " tiles");
         for (SlippyMapTile t : tiles) {
             if (nr_to_drop <= 0)
-                    break;
+                break;
             t.dropImage();
             nr_to_drop--;
-            tileStorage.remove(t.getKey());
+            //tileStorage.remove(t.getKey());
         }
     }
     long lastCheck = 0;
     public void checkTileStorage() {
-        int maxZoom = 30; // SlippyMapPreferences.getMaxZoomLvl();
         long now = System.currentTimeMillis();
         if (now - lastCheck < 1000)
-                return;
+            return;
         lastCheck = now;
-    shrinkTileStorage(150);
+        shrinkTileStorage(200);
     }
 
-    void loadSingleTile(SlippyMapTile tile)
+    LinkedList<SlippyMapTile> downloadQueue = new LinkedList<SlippyMapTile>();
+    LinkedList<Image> downloadList = new LinkedList<Image>();
+    int simultaneousTileDownloads = 5;
+    int maxQueueSize = 50;
+    synchronized void markDone(Image i)
     {
-        tile.loadImage();
-        this.checkTileStorage();
+        boolean inList = downloadList.remove(i);
+        if (!inList) {
+            Main.debug("ERROR: downloaded image was not queued");
+            return;
+        }
+        //System.out.print("currently downloading: " + downloadList.size() +
+        //                   " queue size: " + downloadQueue.size() +"    \r");
+        if (downloadQueue.size() > 0)
+            loadSingleTile(downloadQueue.getLast());
+    }
+    synchronized void loadSingleTile(SlippyMapTile tile)
+    {
+        // this moves the tile to the front of the line
+        if (downloadQueue.contains(tile))
+            downloadQueue.remove(tile);
+        downloadQueue.addLast(tile);
+        // We assume that a queue larger than this is
+        // too big and the downloads at the end of it
+        // too old to be relevant.
+        while (downloadQueue.size() > maxQueueSize)
+            downloadQueue.removeFirst();
+        if (downloadList.size() > simultaneousTileDownloads)
+            return;
+        //System.out.print("currently downloading: " + downloadList.size() +
+        //                   " queue size: " + downloadQueue.size() + "    \r");
+        while (!downloadQueue.isEmpty()) {
+            // This is a FIFO queue.  The reasoning is
+            // that we want to draw the most recently
+            // requested images now.  We may have panned
+            // or zoomed away 
+            tile = downloadQueue.removeLast();
+            Image img = tile.loadImage();
+            if (imageLoaded(img))
+                continue;
+            Toolkit.getDefaultToolkit().prepareImage(img, -1, -1, this);
+            downloadList.add(img);
+            break;
+        }
     }
 
     synchronized SlippyMapTile getTile(int x, int y, int zoom) {
         SlippyMapKey key = new SlippyMapKey(x, y, zoom);
         if (!key.valid) {
-            key = null;
+            return null;
         }
         return tileStorage.get(key);
     }
@@ -294,7 +343,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
     synchronized SlippyMapTile putTile(SlippyMapTile tile, int x, int y, int zoom) {
         SlippyMapKey key = new SlippyMapKey(x, y, zoom);
         if (!key.valid) {
-            key = null;
+            return null;
         }
         return tileStorage.put(key, tile);
     }
@@ -308,14 +357,14 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         putTile(tile, x, y, zoom);
         return tile;
     }
-    
+
     void loadAllTiles() {
         MapView mv = Main.map.mapView;
         LatLon topLeft = mv.getLatLon(0, 0);
         LatLon botRight = mv.getLatLon(mv.getWidth(), mv.getHeight());
 
         TileSet ts = new TileSet(topLeft, botRight, currentZoomLevel);
-        
+
         // if there is more than 18 tiles on screen in any direction, do not
         // load all tiles!
         if (ts.tilesSpanned() > (18*18)) {
@@ -338,8 +387,12 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
     Image lastScaledImage = null;
 
     double getImageScaling(Image img, Point p0, Point p1) {
-        int realWidth = img.getWidth(this);
-        int realHeight = img.getHeight(this);
+        int realWidth = -1;
+        int realHeight = -1;
+           if (img != null) {
+            realWidth = img.getHeight(this);
+               realWidth = img.getWidth(this);
+        }
         if (realWidth == -1 || realHeight == -1) {
             /*
              * We need a good image against which to work. If
@@ -381,8 +434,10 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         return false;
     }
 
-    Double paintTileImages(Graphics g, TileSet ts, int zoom) {
-        Double imageScale = null;
+    Double lastImageScale = null;
+    int paintTileImages(Graphics g, TileSet ts, int zoom) {
+        int paintedTiles = 0;
+        boolean imageScaleRecorded = false;
         Image img = null;
         for (Tile t : ts.allTiles()) {
             SlippyMapTile tile = getTile(t.x, t.y, zoom);
@@ -407,12 +462,16 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
              */
             Tile t2 = new Tile(t.x + 1, t.y + 1);
             Point p2 = t2.pixelPos(zoom);
-
-            g.drawImage(img, p.x, p.y, p2.x - p.x, p2.y - p.y, this);
+            if (imageLoaded(img)) {
+                g.drawImage(img, p.x, p.y, p2.x - p.x, p2.y - p.y, this);
+                paintedTiles++;
+            }
             if (img == null)
                 continue;
-            if (imageScale == null && zoom == currentZoomLevel)
-                imageScale = new Double(getImageScaling(img, p, p2));
+            if (!imageScaleRecorded && zoom == currentZoomLevel) {
+                lastImageScale = new Double(getImageScaling(img, p, p2));
+                imageScaleRecorded = true;
+            }
             float fadeBackground = SlippyMapPreferences.getFadeBackground();
             if (fadeBackground != 0f) {
                 // dimm by painting opaque rect...
@@ -420,7 +479,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
                 g.fillRect(p.x, p.y, p2.x - p.x, p2.y - p.y);
             }
         }// end of for
-        return imageScale;
+        return paintedTiles;
     }
 
     void paintTileText(TileSet ts, Graphics g, MapView mv, int zoom, Tile t) {
@@ -451,16 +510,19 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             texty += 1 + fontHeight;
         }
 
+        String tileStatus = tile.getStatus();
         Image tileImage = tile.getImage();
-        if (tileImage == null) {
-            g.drawString(tr("image not loaded"), p.x + 2, texty);
+        if (!imageLoaded(tileImage)) {
+            g.drawString(tr("image " + tileStatus), p.x + 2, texty);
             texty += 1 + fontHeight;
         }
+        /*
+        We already do repaint when the images load
+        we don't need to poll like this
+        */
         if (!imageLoaded(tileImage)) {
-            g.drawString(tr("image loading..."), p.x + 2, texty);
             needRedraw = true;
             Main.map.repaint(100);
-            texty += 1 + fontHeight;
         }
 
         if (SlippyMapPreferences.getDrawDebug()) {
@@ -473,7 +535,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             }
         }// /end of if draw debug
     }
-    
+
     private class Tile {
         public int x;
         public int y;
@@ -487,14 +549,14 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             double lon = tileXToLon(this.x, zoom);
             LatLon tmpLL = new LatLon(tileYToLat(this.y, zoom), lon);
             MapView mv = Main.map.mapView;
-            return mv.getPoint(Main.proj.latlon2eastNorth(tmpLL));
+            return mv.getPoint(tmpLL);
         }
     }
-
     private class TileSet {
         int z12x0, z12x1, z12y0, z12y1;
         int zoom;
-        int tileMax;
+        int tileMax = -1;
+
         TileSet(LatLon topLeft, LatLon botRight, int zoom) {
             this.zoom = zoom;
             z12x0 = lonToTileX(topLeft.lon(), zoom) - 1;
@@ -517,7 +579,6 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             if (z12x1 > tileMax) z12x1 = tileMax;
             if (z12y1 > tileMax) z12y1 = tileMax;
         }
-
         double tilesSpanned() {
             int x_span = z12x1 - z12x0;
             int y_span = z12y1 - z12y0;
@@ -563,6 +624,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         Graphics oldg = g;
 
         if (botRight.lon() == 0.0 || botRight.lat() == 0) {
+            Main.debug("still initializing??");
             // probably still initializing
             return;
         }
@@ -571,6 +633,7 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
                 && mv.getWidth() == bufferImage.getWidth(null) && mv.getHeight() == bufferImage.getHeight(null)
                 && !needRedraw) {
 
+            this.debug("drawing buffered image");
             g.drawImage(bufferImage, 0, 0, null);
             return;
         }
@@ -598,30 +661,39 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             return;
         }
 
+        if (ts.tilesSpanned() <= 0) {
+            System.out.println("doesn't even cover one tile, increasing zoom from " + currentZoomLevel);
+            if (increaseZoomLevel()) {
+                this.paint(oldg, mv);
+            }
+            return;
+        }
+
         int fontHeight = g.getFontMetrics().getHeight();
 
         g.setColor(Color.DARK_GRAY);
 
-        float fadeBackground = SlippyMapPreferences.getFadeBackground();
-
         /*
-          * Go looking for tiles in zoom levels *other* than the current
-          * one.  Even if they might look bad, they look better than a
-          *  blank tile.
-          */
-        int otherZooms[] = {2, -2, 1, -1};
+         * Go looking for tiles in zoom levels *other* than the current
+         * one.  Even if they might look bad, they look better than a
+         * blank tile.
+         */
+        int otherZooms[] = {-5, -4, -3, 2, -2, 1, -1};
         for (int zoomOff : otherZooms) {
             int zoom2 = currentZoomLevel + zoomOff;
-            if ((zoom <= 0) || (zoom > SlippyMapPreferences.getMaxZoomLvl())) {
+            if ((zoom2 < SlippyMapPreferences.getMinZoomLvl()) ||
+                (zoom2 > SlippyMapPreferences.getMaxZoomLvl())) {
                 continue;
             }
             TileSet ts2 = new TileSet(topLeft, botRight, zoom2);
-            this.paintTileImages(g, ts2, zoom2);
-            }
+            int painted = this.paintTileImages(g, ts2, zoom2);
+            //if (painted > 0)
+            //    System.out.println("painted " + painted + " tiles from zoom: " + zoom2);
+        }
         /*
          * Save this for last since it will get painted over all the others
          */
-        Double imageScale = this.paintTileImages(g, ts, currentZoomLevel);
+        this.paintTileImages(g, ts, currentZoomLevel);
         g.setColor(Color.red);
         
         for (Tile t : ts.allTiles()) {
@@ -641,25 +713,23 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             }
             this.paintTileText(ts, g, mv, currentZoomLevel, t);
         }
-
+        float fadeBackground = SlippyMapPreferences.getFadeBackground();
         oldg.drawImage(bufferImage, 0, 0, null);
 
-        if (imageScale != null) {
+        if (lastImageScale != null) {
             // If each source image pixel is being stretched into > 3
             // drawn pixels, zoom in... getting too pixelated
-            if (imageScale > 3 && zoomIncreaseAllowed()) {
+            if (lastImageScale > 3 && zoomIncreaseAllowed()) {
                 if (SlippyMapPreferences.getAutozoom()) {
-                    Main.debug("autozoom increase: scale: " + imageScale);
+                    this.debug("autozoom increase: scale: " + lastImageScale);
                     increaseZoomLevel();
                 }
                 this.paint(oldg, mv);
-            }
-
             // If each source image pixel is being squished into > 0.32
             // of a drawn pixels, zoom out.
-            if ((imageScale < 0.32) && (imageScale > 0) && zoomDecreaseAllowed()) {
+            } else if ((lastImageScale < 0.45) && (lastImageScale > 0) && zoomDecreaseAllowed()) {
                 if (SlippyMapPreferences.getAutozoom()) {
-                    Main.debug("autozoom decrease: scale: " + imageScale);
+                    this.debug("autozoom decrease: scale: " + lastImageScale);
                     decreaseZoomLevel();
                 }
                 this.paint(oldg, mv);
@@ -680,12 +750,13 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         LatLon botRight = mv.getLatLon(mv.getWidth(), mv.getHeight());
         TileSet ts = new TileSet(topLeft, botRight, currentZoomLevel);
         int z = currentZoomLevel;
-        
+
         Tile clickedTile = null;
+        Point p1 = null, p2 = null;
         for (Tile t1 : ts.allTiles()) {
             Tile t2 = new Tile(t1.x+1, t1.y+1);
-            Point p1 = t1.pixelPos(z);
-            Point p2 = t2.pixelPos(z);
+            p1 = t1.pixelPos(z);
+            p2 = t2.pixelPos(z);
             Rectangle r = new Rectangle(p1,new Dimension(p2.x, p2.y));
             if (!r.contains(clicked))
                 continue;
@@ -694,7 +765,8 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         }
         if (clickedTile == null)
              return null;
-        System.out.println("clicked on tile: " + clickedTile.x + " " + clickedTile.y);
+        System.out.println("clicked on tile: " + clickedTile.x + " " + clickedTile.y +
+                           " scale: " + lastImageScale + " currentZoomLevel: " + currentZoomLevel);
         SlippyMapTile tile = getOrCreateTile(clickedTile.x, clickedTile.y, currentZoomLevel);
         checkTileStorage();
         return tile;
@@ -773,14 +845,21 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
         }
         return null;
     }
-    
+
     private static int nr_loaded = 0;
     private static int at_zoom = -1;
-    
+
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+        boolean error = (infoflags & ERROR) != 0;
         boolean done = ((infoflags & (ERROR | FRAMEBITS | ALLBITS)) != 0);
+        boolean success = ((infoflags & (ALLBITS)) != 0);
         SlippyMapTile imageTile = imgToTile(img);
+        if (success || error) {
+            this.debug("tile done loading: " + imageTile);
+            markDone(img);
+        }
         if (imageTile == null) {
+            System.err.println("no tile for image");
             return false;
         }
 
@@ -794,11 +873,11 @@ public class SlippyMapLayer extends Layer implements ImageObserver,
             if (z == at_zoom) {
                 nr_loaded++;
             } else {
-                System.out.println("downloaded " + nr_loaded + " at: " + at_zoom + " now going to " + z);
+                //System.out.println("downloaded " + nr_loaded + " at: " + at_zoom + " now going to " + z +
+                //                " class: " + img.getClass());
                 nr_loaded = 0;
                 at_zoom = z;
             }
-            imageTile.markAsDownloaded();
         }
         if ((infoflags & SOMEBITS) != 0) {
             // if (y%100 == 0)
