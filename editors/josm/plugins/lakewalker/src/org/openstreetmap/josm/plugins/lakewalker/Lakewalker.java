@@ -2,17 +2,14 @@ package org.openstreetmap.josm.plugins.lakewalker;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
-import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.command.AddCommand;
 import org.openstreetmap.josm.command.Command;
-import org.openstreetmap.josm.command.SequenceCommand;
-import org.openstreetmap.josm.data.coor.LatLon;
-import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.Way;
+import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 
 public class Lakewalker {
     protected Collection<Command> commands = new LinkedList<Command>();
@@ -93,125 +90,132 @@ public class Lakewalker {
      * @param tl_lat
      * @param br_lat
      */
-    public ArrayList<double[]> trace(double lat, double lon, double tl_lon, double br_lon, double tl_lat, double br_lat) throws LakewalkerException {
+    public ArrayList<double[]> trace(double lat, double lon, double tl_lon, double br_lon, double tl_lat, double br_lat, ProgressMonitor progressMonitor) throws LakewalkerException {
 
-        LakewalkerWMS wms = new LakewalkerWMS(this.resolution, this.tilesize, this.wmslayer, this.workingdir);
-        LakewalkerBBox bbox = new LakewalkerBBox(tl_lat,tl_lon,br_lat,br_lon);
+        progressMonitor.beginTask(null);
 
-        Boolean detect_loop = false;
+        try {
 
-        ArrayList<double[]> nodelist = new ArrayList<double[]>();
+            LakewalkerWMS wms = new LakewalkerWMS(this.resolution, this.tilesize, this.wmslayer, this.workingdir);
+            LakewalkerBBox bbox = new LakewalkerBBox(tl_lat,tl_lon,br_lat,br_lon);
 
-        int[] xy = geo_to_xy(lat,lon,this.resolution);
+            Boolean detect_loop = false;
 
-        if(!bbox.contains(lat, lon)){
-            throw new LakewalkerException(tr("The starting location was not within the bbox"));
-        }
+            ArrayList<double[]> nodelist = new ArrayList<double[]>();
 
-        int v;
+            int[] xy = geo_to_xy(lat,lon,this.resolution);
 
-        setStatus(tr("Looking for shoreline..."));
-
-        while(true){
-            double[] geo = xy_to_geo(xy[0],xy[1],this.resolution);
-            if(bbox.contains(geo[0],geo[1])==false){
-                break;
+            if(!bbox.contains(lat, lon)){
+                throw new LakewalkerException(tr("The starting location was not within the bbox"));
             }
 
-            v = wms.getPixel(xy[0], xy[1]);
-            if(v > this.threshold){
-                break;
-            }
+            int v;
 
-            int delta_lat = this.dirslat[getDirectionIndex(this.startdir)];
-            int delta_lon = this.dirslon[getDirectionIndex(this.startdir)];
+            progressMonitor.indeterminateSubTask(tr("Looking for shoreline..."));
 
-            xy[0] = xy[0]+delta_lon;
-            xy[1] = xy[1]+delta_lat;
-
-        }
-
-        int[] startxy = new int[] {xy[0], xy[1]};
-        double[] startgeo = xy_to_geo(xy[0],xy[1],this.resolution);
-
-        //System.out.printf("Found shore at lat %.4f lon %.4f\n",lat,lon);
-
-        int last_dir = this.getDirectionIndex(this.startdir);
-
-        for(int i = 0; i < this.maxnode; i++){
-
-            // Print a counter
-            if(i % 250 == 0){
-                setStatus(tr("{0} nodes so far...",i));
-                //System.out.println(i+" nodes so far...");
-            }
-
-            // Some variables we need
-            int d;
-            int test_x=0;
-            int test_y=0;
-            int new_dir = 0;
-
-            // Loop through all the directions we can go
-            for(d = 1; d <= this.dirslat.length; d++){
-
-                // Decide which direction we want to look at from this pixel
-                new_dir = (last_dir + d + 4) % 8;
-
-                test_x = xy[0] + this.dirslon[new_dir];
-                test_y = xy[1] + this.dirslat[new_dir];
-
-                double[] geo = xy_to_geo(test_x,test_y,this.resolution);
-
-                if(!bbox.contains(geo[0], geo[1])){
-                    System.out.println("Outside bbox");
+            while(true){
+                double[] geo = xy_to_geo(xy[0],xy[1],this.resolution);
+                if(bbox.contains(geo[0],geo[1])==false){
                     break;
                 }
 
-                v = wms.getPixel(test_x, test_y);
+                v = wms.getPixel(xy[0], xy[1], progressMonitor.createSubTaskMonitor(0, false));
                 if(v > this.threshold){
                     break;
                 }
 
-                if(d == this.dirslat.length-1){
-                    System.out.println("Got stuck");
+                int delta_lat = this.dirslat[getDirectionIndex(this.startdir)];
+                int delta_lon = this.dirslon[getDirectionIndex(this.startdir)];
+
+                xy[0] = xy[0]+delta_lon;
+                xy[1] = xy[1]+delta_lat;
+
+            }
+
+            int[] startxy = new int[] {xy[0], xy[1]};
+            double[] startgeo = xy_to_geo(xy[0],xy[1],this.resolution);
+
+            //System.out.printf("Found shore at lat %.4f lon %.4f\n",lat,lon);
+
+            int last_dir = this.getDirectionIndex(this.startdir);
+
+            for(int i = 0; i < this.maxnode; i++){
+
+                // Print a counter
+                if(i % 250 == 0){
+                    progressMonitor.indeterminateSubTask(tr("{0} nodes so far...",i));
+                    //System.out.println(i+" nodes so far...");
+                }
+
+                // Some variables we need
+                int d;
+                int test_x=0;
+                int test_y=0;
+                int new_dir = 0;
+
+                // Loop through all the directions we can go
+                for(d = 1; d <= this.dirslat.length; d++){
+
+                    // Decide which direction we want to look at from this pixel
+                    new_dir = (last_dir + d + 4) % 8;
+
+                    test_x = xy[0] + this.dirslon[new_dir];
+                    test_y = xy[1] + this.dirslat[new_dir];
+
+                    double[] geo = xy_to_geo(test_x,test_y,this.resolution);
+
+                    if(!bbox.contains(geo[0], geo[1])){
+                        System.out.println("Outside bbox");
+                        break;
+                    }
+
+                    v = wms.getPixel(test_x, test_y, progressMonitor.createSubTaskMonitor(0, false));
+                    if(v > this.threshold){
+                        break;
+                    }
+
+                    if(d == this.dirslat.length-1){
+                        System.out.println("Got stuck");
+                        break;
+                    }
+                }
+
+                // Remember this direction
+                last_dir = new_dir;
+
+                // Set the pixel we found as current
+                xy[0] = test_x;
+                xy[1] = test_y;
+
+                // Break the loop if we managed to get back to our starting point
+                if(xy[0] == startxy[0] && xy[1] == startxy[1]){
                     break;
                 }
-            }
 
-            // Remember this direction
-            last_dir = new_dir;
+                // Store this node
+                double[] geo = xy_to_geo(xy[0],xy[1],this.resolution);
+                nodelist.add(geo);
+                //System.out.println("Adding node at "+xy[0]+","+xy[1]+" ("+geo[1]+","+geo[0]+")");
 
-            // Set the pixel we found as current
-            xy[0] = test_x;
-            xy[1] = test_y;
+                // Check if we got stuck in a loop
+                double start_proximity = Math.pow((geo[0] - startgeo[0]),2) + Math.pow((geo[1] - startgeo[1]),2);
 
-            // Break the loop if we managed to get back to our starting point
-            if(xy[0] == startxy[0] && xy[1] == startxy[1]){
-                break;
-            }
-
-            // Store this node
-            double[] geo = xy_to_geo(xy[0],xy[1],this.resolution);
-            nodelist.add(geo);
-            //System.out.println("Adding node at "+xy[0]+","+xy[1]+" ("+geo[1]+","+geo[0]+")");
-
-            // Check if we got stuck in a loop
-            double start_proximity = Math.pow((geo[0] - startgeo[0]),2) + Math.pow((geo[1] - startgeo[1]),2);
-
-            if(detect_loop){
-                if(start_proximity < Math.pow(start_radius_small,2)){
-                    System.out.println("Detected loop");
-                    break;
-                }
-            }else{
-                if(start_proximity > Math.pow(start_radius_big,2)){
-                    detect_loop = true;
+                if(detect_loop){
+                    if(start_proximity < Math.pow(start_radius_small,2)){
+                        System.out.println("Detected loop");
+                        break;
+                    }
+                }else{
+                    if(start_proximity > Math.pow(start_radius_big,2)){
+                        detect_loop = true;
+                    }
                 }
             }
+
+            return nodelist;
+        } finally {
+            progressMonitor.finishTask();
         }
-
-        return nodelist;
     }
 
     /**
@@ -430,11 +434,6 @@ public class Lakewalker {
       cancel = true;
     }
 
-    protected void setStatus(String s) {
-      Main.pleaseWaitDlg.currentAction.setText(s);
-      Main.pleaseWaitDlg.repaint();
-    }
-
     /**
      * Class to do checking of whether the point is within our bbox
      *
@@ -465,11 +464,6 @@ public class Lakewalker {
             return true;
           }
           return (lon - this.left) % 360 <= (this.right - this.left) % 360;
-        }
-    }
-    private void printarr(int[] a){
-        for(int i = 0; i<a.length; i++){
-            System.out.println(i+": "+a[i]);
         }
     }
 }
