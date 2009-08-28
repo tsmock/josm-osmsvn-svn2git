@@ -17,39 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 package org.openstreetmap.josm.plugins.piclayer;
-import java.awt.event.ActionEvent;
 
-import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.actions.JosmAction;
+import java.io.File;
+
+import javax.swing.filechooser.FileFilter;
 
 /**
- * Action for resetting properties of an image.
- * 
- * TODO Four almost identical classes. Refactoring needed.
+ * Filter for the file dialog. Allows only calibration files.
  */
-public class ResetPictureAngleAction extends JosmAction {
+public class CalibrationFileFilter extends FileFilter {
+    
+    // Extension used by calibration files
+    public static final String EXTENSION = ".cal";
 
-    // Owner layer of the action
-    PicLayerAbstract m_owner = null;
-    
-    /**
-     * Constructor
-     */
-    public ResetPictureAngleAction( PicLayerAbstract owner ) {
-        super("Angle", null, "Resets picture rotation", null, false);
-        // Remember the owner...
-        m_owner = owner;
+    @Override
+    public boolean accept(File f) {
+        String ext3 = ( f.getName().length() > 4 ) ?  f.getName().substring( f.getName().length() - 4 ).toLowerCase() : "";
+
+        // TODO: check what is supported by Java :)
+        return ( f.isDirectory() 
+            ||	ext3.equals( EXTENSION )
+            );
     }
-    
-    /**
-     * Action handler
-     */
-    public void actionPerformed(ActionEvent arg0) {
-        // Reset
-        m_owner.resetAngle();
-        // Redraw
-        Main.map.mapView.repaint();
+
+    @Override
+    public String getDescription() {
+        return "Calibration Files (*" + EXTENSION + ")";
     }
+
 }

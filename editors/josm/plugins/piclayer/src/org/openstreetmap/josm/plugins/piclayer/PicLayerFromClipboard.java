@@ -60,7 +60,7 @@ public class PicLayerFromClipboard extends PicLayerAbstract {
 
     @Override
     protected String getPicLayerName() {
-        return super.name + " <Clipboard>";
+        return "Clipboard";
     }
 
 }

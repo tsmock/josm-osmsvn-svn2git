@@ -38,7 +38,7 @@ public class ResetPictureAllAction extends JosmAction {
      * Constructor
      */
     public ResetPictureAllAction( PicLayerAbstract owner ) {
-        super("All", null, null, null, false);
+        super("All", null, "Resets picture calibration", null, false);
         // Remember the owner...
         m_owner = owner;
     }
