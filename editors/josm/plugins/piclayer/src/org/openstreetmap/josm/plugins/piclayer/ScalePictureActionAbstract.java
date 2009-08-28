@@ -34,7 +34,7 @@ import org.openstreetmap.josm.tools.ImageProvider;
 /**
  * This class handles the input during scaling the picture.
  */
-public class ScalePictureAction extends MapMode implements MouseListener, MouseMotionListener 
+public abstract class ScalePictureActionAbstract extends MapMode implements MouseListener, MouseMotionListener 
 {
     // Scaling ongoing?
     private boolean mb_dragging = false;
@@ -43,13 +43,13 @@ public class ScalePictureAction extends MapMode implements MouseListener, MouseM
     private int m_prevY;
     
     // Layer we're working on
-    private PicLayerAbstract m_currentLayer = null;
+    protected PicLayerAbstract m_currentLayer = null;
     
     /**
      * Constructor
      */
-    public ScalePictureAction(MapFrame frame) {
-        super("PicLayer", "scale", "Drag to scale the picture", frame, ImageProvider.getCursor("crosshair", null));
+    public ScalePictureActionAbstract (String name, String icon, String tooltip, MapFrame frame) {
+        super(name, icon, tooltip, frame, ImageProvider.getCursor("crosshair", null));
         // TODO Auto-generated constructor stub
     }
 
@@ -84,16 +84,21 @@ public class ScalePictureAction extends MapMode implements MouseListener, MouseM
     public void mouseDragged(MouseEvent e) {
         // Scale the picture
         if(mb_dragging) {
-            m_currentLayer.scalePictureBy( ( e.getY() - m_prevY ) / 500.0 );
+            doTheScale( ( e.getY() - m_prevY ) / 500.0 );
             m_prevY = e.getY();
             Main.map.mapView.repaint();
         }
-    }    
+    }
     
     @Override 
     public void mouseReleased(MouseEvent e) {
         // Stop scaling
         mb_dragging = false;
-    }    
+    }
+    
+    /**
+    * Does the actual scaling in the inherited class.
+    */
+    protected abstract void doTheScale( double scale );
 
 }
