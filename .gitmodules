@@ -22,6 +22,10 @@
   path = applications/editors/josm/plugins/DirectUpload
   url = ../DirectUpload
   branch = master
+[submodule "applications/editors/josm/plugins/addrinterpolation"]
+  path = applications/editors/josm/plugins/addrinterpolation
+  url = ../addrinterpolation
+  branch = master
 [submodule "applications/editors/josm/plugins/agpifoj"]
   path = applications/editors/josm/plugins/agpifoj
   url = ../agpifoj
