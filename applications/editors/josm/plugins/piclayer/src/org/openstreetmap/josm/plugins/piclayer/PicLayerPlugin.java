@@ -20,6 +20,9 @@
 
 package org.openstreetmap.josm.plugins.piclayer;
 
+import static org.openstreetmap.josm.gui.help.HelpUtil.ht;
+import static org.openstreetmap.josm.tools.I18n.tr;
+
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 
@@ -34,31 +37,31 @@ import org.openstreetmap.josm.gui.MapFrame;
  * Main Plugin class.
  */
 public class PicLayerPlugin extends Plugin implements LayerChangeListener {
-    
+
     // Plugin menu
     private JMenu m_menu = null;
-    
+
     // Toolbar buttons
     private IconToggleButton m_movePictureButton = null;
     private IconToggleButton m_rotatePictureButton = null;
     private IconToggleButton m_scalexPictureButton = null;
     private IconToggleButton m_scaleyPictureButton = null;
     private IconToggleButton m_scalexyPictureButton = null;
-    
+
     // Menu actions
-    private NewLayerFromFileAction 		m_newFromFileAction = null;  
+    private NewLayerFromFileAction      m_newFromFileAction = null;
     private NewLayerFromClipboardAction m_newFromClipAction = null;
 
     /**
      * Constructor...
      */
     public PicLayerPlugin() {
-        
+
         // Create menu entry
         if ( Main.main.menu != null ) {
-            m_menu = Main.main.menu.addMenu( "PicLayer" , KeyEvent.VK_I, Main.main.menu.defaultMenuPos );
+            m_menu = Main.main.menu.addMenu(tr("PicLayer") , KeyEvent.VK_I, Main.main.menu.defaultMenuPos, ht("/Plugin/PicLayer"));
         }
-        
+
         // Add menu items
         if ( m_menu != null ) {
             m_menu.add( m_newFromFileAction = new NewLayerFromFileAction() );
@@ -68,12 +71,12 @@ public class PicLayerPlugin extends Plugin implements LayerChangeListener {
             m_newFromFileAction.setEnabled( false );
             m_newFromClipAction.setEnabled( false );
         }
-        
+
         // Listen to layers
         Layer.listeners.add( this );
-        
+
     }
-    
+
     /**
      * Called when the map is created. Creates the toolbar buttons.
      */
@@ -131,6 +134,5 @@ public class PicLayerPlugin extends Plugin implements LayerChangeListener {
         boolean enable = Main.map.mapView.getAllLayers().size() != 0;
         m_newFromFileAction.setEnabled( enable );
         m_newFromClipAction.setEnabled( enable );
-    }	
-    
+    }
 };
