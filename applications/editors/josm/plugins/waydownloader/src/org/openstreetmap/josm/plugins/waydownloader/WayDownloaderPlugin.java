@@ -55,40 +55,40 @@ public class WayDownloaderPlugin extends Plugin {
             super( tr("Way Download") ,
                     "way-download",
                     tr("Download map data on the end of selected way"),
-                    Shortcut.registerShortcut("waydownloader:waydownload", "Way Download", KeyEvent.VK_W, Shortcut.GROUP_MENU, Shortcut.SHIFT_DEFAULT),
+                    Shortcut.registerShortcut("waydownloader:waydownload", tr("Way Download"), KeyEvent.VK_W, Shortcut.GROUP_MENU, Shortcut.SHIFT_DEFAULT),
                     true);
         }
 
         protected void showWarningMessage(String msg) {
              if(msg == null) return;
              JOptionPane.showMessageDialog(
-                    Main.parent, 
+                    Main.parent,
                     msg,
                     tr("Warning"),
-                    JOptionPane.WARNING_MESSAGE                		
+                    JOptionPane.WARNING_MESSAGE
              );
         }
-        
+
         protected void showErrorMessage(String msg) {
          if(msg == null) return;
             JOptionPane.showMessageDialog(
-                    Main.parent, 
+                    Main.parent,
                     msg,
                     tr("Error"),
-                    JOptionPane.ERROR_MESSAGE                		
+                    JOptionPane.ERROR_MESSAGE
             );
        }
-        
+
         protected void showInfoMessage(String msg) {
              if(msg == null) return;
                JOptionPane.showMessageDialog(
-                    Main.parent, 
+                    Main.parent,
                     msg,
                     tr("Information"),
-                    JOptionPane.INFORMATION_MESSAGE                		
+                    JOptionPane.INFORMATION_MESSAGE
                );
           }
-        
+
         /** Called when the WayDownloadAction action is triggered (e.g. user clicked the menu option) */
         public void actionPerformed(ActionEvent e) {
             selectedNode = null;
@@ -105,8 +105,8 @@ public class WayDownloaderPlugin extends Plugin {
             if ( selection.size()==0 || selection.size()>1 || ! (selection.iterator().next() instanceof Node)) {
                 showWarningMessage(tr("<html>Could not find a unique node to start downloading from.</html>"));
                 return;
-            } 
-        
+            }
+
             selectedNode = (Node) selection.iterator().next();
             Main.map.mapView.zoomTo(selectedNode.getEastNorth());
 
@@ -119,7 +119,7 @@ public class WayDownloaderPlugin extends Plugin {
                         selectedNode.getDisplayName(DefaultNameFormatter.getInstance()))
                 );
                 return;
-            } 
+            }
             priorConnectedWay =connectedWays.get(0);
 
             //Download a little rectangle around the selected node
@@ -170,13 +170,13 @@ public class WayDownloaderPlugin extends Plugin {
                         );
                 System.err.println(msg);
                 showErrorMessage(msg);
-                return;                
-            } 
-            
+                return;
+            }
+
             if (connectedWays.size()==1) {
                 //Just one way connecting still to the node . Presumably the one which was there before
                 //Check if it's just a duplicate node
-                
+
                 Node dupeNode = findDuplicateNode(selectedNode);
                 if (dupeNode!=null) {
                     String msg = tr("<html>There aren''t further connected ways to download.<br>"
@@ -188,7 +188,7 @@ public class WayDownloaderPlugin extends Plugin {
                             selectedNode.getDisplayName(DefaultNameFormatter.getInstance()),
                             dupeNode.getDisplayName(DefaultNameFormatter.getInstance())
                     );
-                            
+
                     int ret = JOptionPane.showConfirmDialog(
                             Main.parent,
                             msg,
@@ -200,7 +200,7 @@ public class WayDownloaderPlugin extends Plugin {
                         return;
                     Command cmd = MergeNodesAction.mergeNodes(
                             Main.main.getEditLayer(),
-                            Collections.singletonList(dupeNode), 
+                            Collections.singletonList(dupeNode),
                             selectedNode
                     );
                     if (cmd != null) {
@@ -211,10 +211,10 @@ public class WayDownloaderPlugin extends Plugin {
                 } else {
                     showInfoMessage(tr("<html>No more connected ways to download.</html>"));
                     return;
-                }                
+                }
                 return;
-            } 
-            
+            }
+
             if (connectedWays.size()>2) {
                 //Three or more ways meeting at this node. Means we have a junction.
                 String msg = tr(
@@ -223,8 +223,8 @@ public class WayDownloaderPlugin extends Plugin {
                 );
                 showWarningMessage(msg);
                 return;
-            } 
-            
+            }
+
             if (connectedWays.size()==2) {
                 //Two connected ways (The "normal" way downloading case)
                 //Figure out which of the two is new.
@@ -242,7 +242,7 @@ public class WayDownloaderPlugin extends Plugin {
         }
 
         @Override
-        protected void updateEnabledState() { 
+        protected void updateEnabledState() {
             setEnabled(getEditLayer() != null);
         }
 
@@ -253,10 +253,10 @@ public class WayDownloaderPlugin extends Plugin {
         }
     }
 
-    /** 
+    /**
      * Check whether there is a potentially duplicate node for <code>referenceNode</code>.
-     * 
-     * @param referenceNode the reference node 
+     *
+     * @param referenceNode the reference node
      * @return the potential duplicate node. null, if no duplicate found.
      */
     private Node findDuplicateNode(Node referenceNode) {
@@ -266,7 +266,7 @@ public class WayDownloaderPlugin extends Plugin {
             if (!candidate.equals(referenceNode)
                     && !candidate.incomplete
                     && candidate.getCoor().equals(referenceNode.getCoor()))
-                return candidate;            
+                return candidate;
         }
         return null;
     }
@@ -278,11 +278,11 @@ public class WayDownloaderPlugin extends Plugin {
         return otherEnd;
     }
 
-    /** 
-     * Replies the list of ways <code>referenceNode</code> is either the first or the 
+    /**
+     * Replies the list of ways <code>referenceNode</code> is either the first or the
      * last node in.
-     * 
-     * @param referenceNode the reference node 
+     *
+     * @param referenceNode the reference node
      * @return the list of ways. May be empty, but null.
      */
     private List<Way> findConnectedWays(Node referenceNode) {
