@@ -51,7 +51,8 @@ public class LiveGpsSuppressor implements Runnable {
             try {
                 Thread.sleep(getSleepTime());
             } catch (InterruptedException e) {
-                // TODO I never knew, how to handle this??? Probably just carry on
+                // TODO I never knew, how to handle this??? Probably just carry
+                // on
             }
         }
 
@@ -63,10 +64,14 @@ public class LiveGpsSuppressor implements Runnable {
      */
     private void initSleepTime() {
         // fetch it from the user setting, or use the default value.
-        sleepTime = Main.pref.getInteger("livegps.refreshinterval",
+        int sleepSeconds = 0;
+        sleepSeconds = Main.pref.getInteger("livegps.refreshinterval",
                 DEFAULT_SLEEP_TIME);
         // creates the setting, if none present.
-        Main.pref.putInteger("livegps.refreshinterval", sleepTime);
+        Main.pref.putInteger("livegps.refreshinterval", sleepSeconds);
+
+        // convert seconds into milliseconds internally.
+        this.sleepTime = sleepSeconds * 1000;
     }
 
     /**
