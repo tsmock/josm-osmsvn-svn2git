@@ -23,7 +23,7 @@ import org.openstreetmap.josm.gui.layer.GpxLayer;
 
 public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
     public static final String LAYER_NAME = tr("LiveGPS layer");
-    public static final String KEY_LIVEGPS_COLOR ="color.livegps.position";
+    public static final String KEY_LIVEGPS_COLOR = "color.livegps.position";
     LatLon lastPos;
     WayPoint lastPoint;
     GpxTrack trackBeingWritten;
@@ -31,13 +31,18 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
     float speed;
     float course;
     String status;
-    //JLabel lbl;
+    // JLabel lbl;
     boolean autocenter;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSS");
 
-    public LiveGpsLayer(GpxData data)
-    {
-        super (data, LAYER_NAME);
+    /**
+     * The suppressor is queried, if the GUI shall be re-drawn.
+     */
+    private ILiveGpsSuppressor suppressor;
+
+    public LiveGpsLayer(GpxData data) {
+        super(data, LAYER_NAME);
         trackBeingWritten = new GpxTrack();
         trackBeingWritten.attr.put("desc", "josm live gps");
         trackSegment = new ArrayList<WayPoint>();
@@ -45,9 +50,8 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
         data.tracks.add(trackBeingWritten);
     }
 
-    void setCurrentPosition(double lat, double lon)
-    {
-        //System.out.println("adding pos " + lat + "," + lon);
+    void setCurrentPosition(double lat, double lon) {
+        // System.out.println("adding pos " + lat + "," + lon);
         LatLon thisPos = new LatLon(lat, lon);
         if ((lastPos != null) && (thisPos.equalsEpsilon(lastPos))) {
             // no change in position
@@ -63,73 +67,71 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
         synchronized (LiveGpsLock.class) {
             trackSegment.add(lastPoint);
         }
-        if (autocenter) {
+        if (autocenter && allowRedraw()) {
             center();
         }
 
-        //Main.map.repaint();
+        // Main.map.repaint();
     }
 
-    public void center()
-    {
+    public void center() {
         if (lastPoint != null)
             Main.map.mapView.zoomTo(lastPoint.getCoor());
     }
 
-//  void setStatus(String status)
-//  {
-//      this.status = status;
-//      Main.map.repaint();
-//        System.out.println("LiveGps status: " + status);
-//  }
+    // void setStatus(String status)
+    // {
+    // this.status = status;
+    // Main.map.repaint();
+    // System.out.println("LiveGps status: " + status);
+    // }
 
-    void setSpeed(float metresPerSecond)
-    {
+    void setSpeed(float metresPerSecond) {
         speed = metresPerSecond;
-        //Main.map.repaint();
+        // Main.map.repaint();
     }
 
-    void setCourse(float degrees)
-    {
+    void setCourse(float degrees) {
         course = degrees;
-        //Main.map.repaint();
+        // Main.map.repaint();
     }
 
-    public void setAutoCenter(boolean ac)
-    {
+    public void setAutoCenter(boolean ac) {
         autocenter = ac;
     }
 
-    @Override public void paint(Graphics2D g, MapView mv, Bounds bounds)
-    {
-        //System.out.println("in paint");
+    @Override
+    public void paint(Graphics2D g, MapView mv, Bounds bounds) {
+        // System.out.println("in paint");
         synchronized (LiveGpsLock.class) {
-            //System.out.println("in synced paint");
+            // System.out.println("in synced paint");
             super.paint(g, mv, bounds);
-//          int statusHeight = 50;
-//          Rectangle mvs = mv.getBounds();
-//          mvs.y = mvs.y + mvs.height - statusHeight;
-//          mvs.height = statusHeight;
-//          g.setColor(new Color(1.0f, 1.0f, 1.0f, 0.8f));
-//          g.fillRect(mvs.x, mvs.y, mvs.width, mvs.height);
+            // int statusHeight = 50;
+            // Rectangle mvs = mv.getBounds();
+            // mvs.y = mvs.y + mvs.height - statusHeight;
+            // mvs.height = statusHeight;
+            // g.setColor(new Color(1.0f, 1.0f, 1.0f, 0.8f));
+            // g.fillRect(mvs.x, mvs.y, mvs.width, mvs.height);
 
-            if (lastPoint != null)
-            {
+            if (lastPoint != null) {
                 Point screen = mv.getPoint(lastPoint.getCoor());
                 g.setColor(Main.pref.getColor(KEY_LIVEGPS_COLOR, Color.RED));
-                g.drawOval(screen.x-10, screen.y-10,20,20);
-                g.drawOval(screen.x-9, screen.y-9,18,18);
+                g.drawOval(screen.x - 10, screen.y - 10, 20, 20);
+                g.drawOval(screen.x - 9, screen.y - 9, 18, 18);
             }
 
-//          lbl.setText("gpsd: "+status+" Speed: " + speed + " Course: "+course);
-//          lbl.setBounds(0, 0, mvs.width-10, mvs.height-10);
-//          Graphics sub = g.create(mvs.x+5, mvs.y+5, mvs.width-10, mvs.height-10);
-//          lbl.paint(sub);
+            // lbl.setText("gpsd: "+status+" Speed: " + speed +
+            // " Course: "+course);
+            // lbl.setBounds(0, 0, mvs.width-10, mvs.height-10);
+            // Graphics sub = g.create(mvs.x+5, mvs.y+5, mvs.width-10,
+            // mvs.height-10);
+            // lbl.paint(sub);
 
-//          if(status != null) {
-//          g.setColor(Color.WHITE);
-//          g.drawString("gpsd: " + status, 5, mv.getBounds().height - 15); // lower left corner
-//          }
+            // if(status != null) {
+            // g.setColor(Color.WHITE);
+            // g.drawString("gpsd: " + status, 5, mv.getBounds().height - 15);
+            // // lower left corner
+            // }
         }
     }
 
@@ -137,21 +139,51 @@ public class LiveGpsLayer extends GpxLayer implements PropertyChangeListener {
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        if(!isVisible()) {
+        if (!isVisible()) {
             return;
         }
-        if("gpsdata".equals(evt.getPropertyName())) {
+        if ("gpsdata".equals(evt.getPropertyName())) {
             LiveGpsData data = (LiveGpsData) evt.getNewValue();
-            if(data.isFix()) {
+            if (data.isFix()) {
                 setCurrentPosition(data.getLatitude(), data.getLongitude());
-                if(!Float.isNaN(data.getSpeed())) {
+                if (!Float.isNaN(data.getSpeed())) {
                     setSpeed(data.getSpeed());
                 }
-                if(!Float.isNaN(data.getCourse())) {
+                if (!Float.isNaN(data.getCourse())) {
                     setCourse(data.getCourse());
                 }
-                Main.map.repaint();
+                if (!autocenter && allowRedraw()) {
+                    Main.map.repaint();
+                }
             }
+        }
+    }
+
+    /**
+     * @param suppressor the suppressor to set
+     */
+    public void setSuppressor(ILiveGpsSuppressor suppressor) {
+        this.suppressor = suppressor;
+    }
+
+    /**
+     * @return the suppressor
+     */
+    public ILiveGpsSuppressor getSuppressor() {
+        return suppressor;
+    }
+
+    /**
+     * Check, if a redraw is currently allowed.
+     * 
+     * @return true, if a redraw is permitted, false, if a re-draw 
+     * should be suppressed.
+     */
+    private boolean allowRedraw() {
+        if (this.suppressor != null) {
+            return this.suppressor.isAllowUpdate();
+        } else {
+            return true;
         }
     }
 }

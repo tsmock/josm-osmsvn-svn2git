@@ -27,16 +27,6 @@ public class LiveGpsAcquirer implements Runnable {
     private PropertyChangeEvent lastDataEvent;
 
     /**
-     * The LiveGpsSuppressor is queried, if an event shall be suppressed.
-     */
-    private LiveGpsSuppressor suppressor = null;
-
-    /**
-     * separate thread, where the LiveGpsSuppressor executes.
-     */
-    private Thread suppressorThread = null;
-
-    /**
      * Adds a property change listener to the acquirer.
      * @param listener the new listener
      */
@@ -86,7 +76,7 @@ public class LiveGpsAcquirer implements Runnable {
         PropertyChangeEvent event = new PropertyChangeEvent(this, "gpsdata",
                 oldData, newData);
 
-        if (!event.equals(lastDataEvent) && checkSuppress()) {
+        if (!event.equals(lastDataEvent)) {
             firePropertyChangeEvent(event);
             lastDataEvent = event;
         }
@@ -105,8 +95,6 @@ public class LiveGpsAcquirer implements Runnable {
     public void run() {
         LiveGpsData oldGpsData = null;
         LiveGpsData gpsData = null;
-
-        initSuppressor();
 
         shutdownFlag = false;
         while (!shutdownFlag) {
@@ -129,8 +117,8 @@ public class LiveGpsAcquirer implements Runnable {
                             break;
                         } catch (Exception e) {
                             System.out
-                            .println("LiveGps: Could not open connection to gpsd: "
-                                    + e);
+                                    .println("LiveGps: Could not open connection to gpsd: "
+                                            + e);
                             gpsdSocket = null;
                         }
                     }
@@ -256,40 +244,13 @@ public class LiveGpsAcquirer implements Runnable {
                 System.out.println("LiveGps: Disconnected from gpsd");
             } catch (Exception e) {
                 System.out
-                .println("LiveGps: Unable to close socket; reconnection may not be possible");
+                        .println("LiveGps: Unable to close socket; reconnection may not be possible");
             }
         }
-    }
-
-    /**
-     * Initialize the suppressor and start its thread.
-     */
-    private void initSuppressor() {
-        suppressor = new LiveGpsSuppressor();
-        suppressorThread = new Thread(suppressor);
-        suppressorThread.start();
     }
 
     public void shutdown() {
-        // shut down the suppressor thread, too.
-        suppressor.shutdown();
-        this.suppressor = null;
         shutdownFlag = true;
     }
 
-    /**
-     * Check, if an event may be sent now.
-     * @return true, if an event may be sent.
-     */
-    private boolean checkSuppress() {
-        if (suppressor != null) {
-            if (suppressor.isAllowUpdate()) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
 }
