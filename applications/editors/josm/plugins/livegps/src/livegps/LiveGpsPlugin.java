@@ -24,8 +24,7 @@ import org.openstreetmap.josm.gui.layer.Layer.LayerChangeListener;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.tools.Shortcut;
 
-public class LiveGpsPlugin extends Plugin implements LayerChangeListener
-{
+public class LiveGpsPlugin extends Plugin implements LayerChangeListener {
     private LiveGpsAcquirer acquirer = null;
     private Thread acquirerThread = null;
     private JMenu lgpsmenu;
@@ -33,16 +32,30 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
     private JMenuItem lgpscenter;
     private JCheckBoxMenuItem lgpsautocenter;
     private LiveGpsDialog lgpsdialog;
-    List<PropertyChangeListener>listenerQueue;
+    List<PropertyChangeListener> listenerQueue;
 
     private GpxData data = new GpxData();
     private LiveGpsLayer lgpslayer = null;
 
+    /**
+     * The LiveGpsSuppressor is queried, if an event shall be suppressed.
+     */
+    private LiveGpsSuppressor suppressor;
+
+    /**
+     * separate thread, where the LiveGpsSuppressor executes.
+     */
+    private Thread suppressorThread;
+
     public class CaptureAction extends JosmAction {
         public CaptureAction() {
-            super(tr("Capture GPS Track"), "capturemenu", tr("Connect to gpsd server and show current position in LiveGPS layer."),
-                Shortcut.registerShortcut("menu:livegps:capture", tr("Menu: {0}", tr("Capture GPS Track")),
-                KeyEvent.VK_R, Shortcut.GROUP_MENU), true);
+            super(
+                    tr("Capture GPS Track"),
+                    "capturemenu",
+                    tr("Connect to gpsd server and show current position in LiveGPS layer."),
+                    Shortcut.registerShortcut("menu:livegps:capture", tr(
+                            "Menu: {0}", tr("Capture GPS Track")),
+                            KeyEvent.VK_R, Shortcut.GROUP_MENU), true);
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -52,13 +65,15 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
 
     public class CenterAction extends JosmAction {
         public CenterAction() {
-            super(tr("Center Once"), "centermenu", tr("Center the LiveGPS layer to current position."),
-            Shortcut.registerShortcut("edit:centergps", tr("Edit: {0}", tr("Center Once")),
-            KeyEvent.VK_HOME, Shortcut.GROUP_EDIT), true);
+            super(tr("Center Once"), "centermenu",
+                    tr("Center the LiveGPS layer to current position."),
+                    Shortcut.registerShortcut("edit:centergps", tr("Edit: {0}",
+                            tr("Center Once")), KeyEvent.VK_HOME,
+                            Shortcut.GROUP_EDIT), true);
         }
 
         public void actionPerformed(ActionEvent e) {
-            if(lgpslayer != null) {
+            if (lgpslayer != null) {
                 lgpslayer.center();
             }
         }
@@ -66,13 +81,17 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
 
     public class AutoCenterAction extends JosmAction {
         public AutoCenterAction() {
-            super(tr("Auto-Center"), "autocentermenu", tr("Continuously center the LiveGPS layer to current position."),
-            Shortcut.registerShortcut("menu:livegps:autocenter", tr("Menu: {0}", tr("Capture GPS Track")),
-            KeyEvent.VK_HOME, Shortcut.GROUP_MENU), true);
+            super(
+                    tr("Auto-Center"),
+                    "autocentermenu",
+                    tr("Continuously center the LiveGPS layer to current position."),
+                    Shortcut.registerShortcut("menu:livegps:autocenter", tr(
+                            "Menu: {0}", tr("Capture GPS Track")),
+                            KeyEvent.VK_HOME, Shortcut.GROUP_MENU), true);
         }
 
         public void actionPerformed(ActionEvent e) {
-            if(lgpslayer != null) {
+            if (lgpslayer != null) {
                 setAutoCenter(lgpsautocenter.isSelected());
             }
         }
@@ -85,8 +104,7 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
     }
 
     public void layerRemoved(Layer oldLayer) {
-        if(oldLayer == lgpslayer)
-        {
+        if (oldLayer == lgpslayer) {
             enableTracking(false);
             lgpscapture.setSelected(false);
             removePropertyChangeListener(lgpslayer);
@@ -95,10 +113,10 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
         }
     }
 
-    public LiveGpsPlugin()
-    {
+    public LiveGpsPlugin() {
         MainMenu menu = Main.main.menu;
-        lgpsmenu = menu.addMenu(marktr("LiveGPS"), KeyEvent.VK_G, menu.defaultMenuPos, ht("/Plugin/LiveGPS"));
+        lgpsmenu = menu.addMenu(marktr("LiveGPS"), KeyEvent.VK_G,
+                menu.defaultMenuPos, ht("/Plugin/LiveGPS"));
 
         JosmAction captureAction = new CaptureAction();
         lgpscapture = new JCheckBoxMenuItem(captureAction);
@@ -113,7 +131,8 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
         JosmAction autoCenterAction = new AutoCenterAction();
         lgpsautocenter = new JCheckBoxMenuItem(autoCenterAction);
         lgpsmenu.add(lgpsautocenter);
-        lgpsautocenter.setAccelerator(autoCenterAction.getShortcut().getKeyStroke());
+        lgpsautocenter.setAccelerator(autoCenterAction.getShortcut()
+                .getKeyStroke());
     }
 
     /**
@@ -121,10 +140,12 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
      * @param autoCenter if <code>true</code> the map is always centered.
      */
     public void setAutoCenter(boolean autoCenter) {
-        lgpsautocenter.setSelected(autoCenter); // just in case this method was not called from the menu
-        if(lgpslayer != null) {
+        lgpsautocenter.setSelected(autoCenter); // just in case this method was
+        // not called from the menu
+        if (lgpslayer != null) {
             lgpslayer.setAutoCenter(autoCenter);
-            if (autoCenter) lgpslayer.center();
+            if (autoCenter)
+                lgpslayer.center();
         }
     }
 
@@ -141,13 +162,28 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
      * @param enable if <code>true</code> tracking is started.
      */
     public void enableTracking(boolean enable) {
-        if ((acquirer != null) && (!enable))
-        {
+        if ((acquirer != null) && (!enable)) {
             acquirer.shutdown();
             acquirerThread = null;
-        }
-        else if(enable)
-        {
+
+            // also stop the suppressor
+            if (suppressor != null) {
+                suppressor.shutdown();
+                suppressorThread = null;
+                if (lgpslayer != null) {
+                    lgpslayer.setSuppressor(null);
+                }
+            }
+        } else if (enable) {
+            // also start the suppressor
+            if (suppressor == null) {
+                suppressor = new LiveGpsSuppressor();
+            }
+            if (suppressorThread == null) {
+                suppressorThread = new Thread(suppressor);
+                suppressorThread.start();
+            }
+
             if (acquirer == null) {
                 acquirer = new LiveGpsAcquirer();
                 if (lgpslayer == null) {
@@ -158,18 +194,23 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
                 }
                 // connect layer with acquirer:
                 addPropertyChangeListener(lgpslayer);
-                // add all listeners that were added before the acquirer existed:
-                if(listenerQueue != null) {
-                    for(PropertyChangeListener listener : listenerQueue) {
+
+                // connect layer with suppressor:
+                lgpslayer.setSuppressor(suppressor);
+                // add all listeners that were added before the acquirer
+                // existed:
+                if (listenerQueue != null) {
+                    for (PropertyChangeListener listener : listenerQueue) {
                         addPropertyChangeListener(listener);
                     }
                     listenerQueue.clear();
                 }
             }
-            if(acquirerThread == null) {
+            if (acquirerThread == null) {
                 acquirerThread = new Thread(acquirer);
                 acquirerThread.start();
             }
+
         }
     }
 
@@ -178,10 +219,10 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
      * @param listener the listener.
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        if(acquirer != null) {
+        if (acquirer != null) {
             acquirer.addPropertyChangeListener(listener);
         } else {
-            if(listenerQueue == null) {
+            if (listenerQueue == null) {
                 listenerQueue = new ArrayList<PropertyChangeListener>();
             }
             listenerQueue.add(listener);
@@ -193,9 +234,9 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
      * @param listener the listener.
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-        if(acquirer != null)
+        if (acquirer != null)
             acquirer.removePropertyChangeListener(listener);
-        else if(listenerQueue != null && listenerQueue.contains(listener))
+        else if (listenerQueue != null && listenerQueue.contains(listener))
             listenerQueue.remove(listener);
     }
 
@@ -204,7 +245,7 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
      */
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
-        if(newFrame != null) {
+        if (newFrame != null) {
             // add dialog
             newFrame.addToggleDialog(lgpsdialog = new LiveGpsDialog(newFrame));
             // connect listeners with acquirer:
@@ -218,4 +259,5 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener
     public JMenu getLgpsMenu() {
         return this.lgpsmenu;
     }
+
 }
