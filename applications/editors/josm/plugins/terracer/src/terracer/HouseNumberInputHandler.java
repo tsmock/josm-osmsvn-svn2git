@@ -21,38 +21,46 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
- 
+
+import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.osm.Way;
+import org.openstreetmap.josm.data.osm.Relation;
 
 /**
  * The Class HouseNumberInputHandler contains all the logic
  * behind the house number input dialog.
- * 
+ *
  * From a refactoring viewpoint, this class is indeed more interested in the fields
- * of the HouseNumberInputDialog. This is desired design, as the HouseNumberInputDialog 
+ * of the HouseNumberInputDialog. This is desired design, as the HouseNumberInputDialog
  * is already cluttered with auto-generated layout code.
- * 
+ *
  * @author casualwalker
  */
 public class HouseNumberInputHandler implements ChangeListener, ItemListener,
         ActionListener, FocusListener {
 
     private TerracerAction terracerAction;
-    private Way way;
+    private Way outline, street;
+    private Relation associatedStreet;
     private HouseNumberInputDialog dialog;
 
     /**
      * Instantiates a new house number input handler.
-     * 
+     *
      * @param terracerAction the terracer action
-     * @param way the way
+     * @param outline the closed, quadrilateral way to terrace.
+     * @param street the street, the buildings belong to (may be null)
+     * @param associatedStreet a relation where we can add the houses (may be null)
      * @param title the title
      */
     public HouseNumberInputHandler(final TerracerAction terracerAction,
-            final Way way, final String title) {
+            final Way outline, final Way street, final Relation associatedStreet,
+            final String title) {
         this.terracerAction = terracerAction;
-        this.way = way;
-        dialog = new HouseNumberInputDialog(null);
+        this.outline = outline;
+        this.street = street;
+        this.associatedStreet = associatedStreet;
+        dialog = new HouseNumberInputDialog(street, associatedStreet != null);
         dialog.addHandler(this);
 
         dialog.setVisible(true);
@@ -62,9 +70,9 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
 
     /**
      * Validate the current input fields.
-     * When the validation fails, a red message is 
+     * When the validation fails, a red message is
      * displayed and the OK button is disabled.
-     * 
+     *
      * Should be triggered each time the input changes.
      */
     private void validateInput() {
@@ -98,12 +106,12 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
     }
 
     /**
-     * Checks, if the lowest house number is indeed lower than the 
+     * Checks, if the lowest house number is indeed lower than the
      * highest house number.
-     * This check applies only, if the house number fields are used at all. 
-     * 
+     * This check applies only, if the house number fields are used at all.
+     *
      * @param message the message
-     * 
+     *
      * @return true, if successful
      */
     private boolean checkNumberOrder(final StringBuffer message) {
@@ -119,14 +127,14 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
     }
 
     /**
-     * Obtain the number segments from the house number fields and check, 
+     * Obtain the number segments from the house number fields and check,
      * if they are valid.
-     * 
+     *
      * Also disables the segments field, if the house numbers contain
      * valid information.
-     * 
+     *
      * @param message the message
-     * 
+     *
      * @return true, if successful
      */
     private boolean checkSegmentsFromHousenumber(final StringBuffer message) {
@@ -155,10 +163,10 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
 
     /**
      * Check the number of segments.
-     * It must be a number and greater than 1. 
-     * 
+     * It must be a number and greater than 1.
+     *
      * @param message the message
-     * 
+     *
      * @return true, if successful
      */
     private boolean checkSegments(final StringBuffer message) {
@@ -172,12 +180,12 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
     }
 
     /**
-     * Check, if a string field contains a positive integer. 
-     * 
+     * Check, if a string field contains a positive integer.
+     *
      * @param field the field
      * @param label the label
      * @param message the message
-     * 
+     *
      * @return true, if successful
      */
     private boolean checkNumberStringField(final JTextField field,
@@ -203,7 +211,7 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
 
     /**
      * Append a new line to the message, if the message is not empty.
-     * 
+     *
      * @param message the message
      */
     private void appendMessageNewLine(final StringBuffer message) {
@@ -236,8 +244,18 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
         if (e.getSource() instanceof JButton) {
             JButton button = (JButton) e.getSource();
             if ("OK".equals(button.getName())) {
-                terracerAction.terraceBuilding(way, segments(), numberFrom(),
-                        numberTo(), stepSize(), streetName());
+                saveValues();
+                terracerAction.terraceBuilding(
+                    outline,
+                    street,
+                    associatedStreet,
+                    segments(),
+                    numberFrom(),
+                    numberTo(),
+                    stepSize(),
+                    streetName(),
+                    doHandleRelation(),
+                    doDeleteOutline());
 
                 this.dialog.dispose();
             } else if ("CANCEL".equals(button.getName())) {
@@ -253,7 +271,7 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
     /**
      * Calculate the step size between two house numbers,
      * based on the interpolation setting.
-     * 
+     *
      * @return the stepSize (1 for all, 2 for odd /even)
      */
     public int stepSize() {
@@ -263,7 +281,7 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
 
     /**
      * Gets the number of segments, if set.
-     * 
+     *
      * @return the number of segments or null, if not set / invalid.
      */
     public Integer segments() {
@@ -276,7 +294,7 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
 
     /**
      * Gets the lowest house number.
-     * 
+     *
      * @return the number of lowest house number or null, if not set / invalid.
      */
     public Integer numberFrom() {
@@ -289,7 +307,7 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
 
     /**
      * Gets the highest house number.
-     * 
+     *
      * @return the number of highest house number or null, if not set / invalid.
      */
     public Integer numberTo() {
@@ -302,12 +320,13 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
 
     /**
      * Gets the street name.
-     * 
+     *
      * @return the  street name or null, if not set / invalid.
      */
     public String streetName() {
-        // Object selected = street.getSelectedItem();
-        Object selected = dialog.street.getSelectedItem();
+        if (street != null)
+            return null;
+        Object selected = dialog.streetComboBox.getSelectedItem();
         if (selected == null) {
             return null;
         } else {
@@ -318,6 +337,21 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
                 return name;
             }
         }
+    }
+
+    /**
+     * Whether the user likes to create a relation or add to
+     * an existing one.
+     */
+    public boolean doHandleRelation() {
+        return dialog.handleRelationCheckBox.isSelected();
+    }
+
+    /**
+     * Whether the user likes to delete the outline way.
+     */
+    public boolean doDeleteOutline() {
+        return dialog.deleteOutlineCheckBox.isSelected();
     }
 
     /* (non-Javadoc)
@@ -334,4 +368,11 @@ public class HouseNumberInputHandler implements ChangeListener, ItemListener,
         validateInput();
     }
 
+    /**
+     * Saves settings.
+     */
+    public void saveValues() {
+        Main.pref.put(HouseNumberInputDialog.HANDLE_RELATION, doHandleRelation());
+        Main.pref.put(HouseNumberInputDialog.DELETE_OUTLINE, doDeleteOutline());
+    }
 }
