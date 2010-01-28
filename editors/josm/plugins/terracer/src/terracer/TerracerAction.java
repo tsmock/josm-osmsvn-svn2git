@@ -15,14 +15,18 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.command.AddCommand;
+import org.openstreetmap.josm.command.ChangeCommand;
 import org.openstreetmap.josm.command.Command;
+import org.openstreetmap.josm.command.DeleteCommand;
 import org.openstreetmap.josm.command.SequenceCommand;
 import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.data.osm.Node;
@@ -35,7 +39,10 @@ import org.openstreetmap.josm.tools.Shortcut;
 
 /**
  * Terraces a quadrilateral, closed way into a series of quadrilateral,
- * closed ways.
+ * closed ways. If two ways are selected and one of them can be identified as
+ * a street (highway=*, name=*) then the given street will be added
+ * to the 'associatedStreet' relation.
+ *
  *
  * At present it only works on quadrilaterals, but there is no reason
  * why it couldn't be extended to work with other shapes too. The
@@ -64,37 +71,80 @@ public final class TerracerAction extends JosmAction {
     public void actionPerformed(ActionEvent e) {
         Collection<OsmPrimitive> sel = Main.main.getCurrentDataSet()
                 .getSelected();
-        boolean badSelect = false;
+        Way outline = null;
+        Way street = null;
 
-        if (sel.size() == 1) {
-            OsmPrimitive prim = sel.iterator().next();
-
-            if (prim instanceof Way) {
-                Way way = (Way) prim;
-
-                if ((way.getNodesCount() >= 5) && way.isClosed()) {
-                    String title = trn("Change {0} object",
-                            "Change {0} objects", sel.size(), sel.size());
-                    if (sel.size() == 0)
-                        title = tr("Nothing selected!");
-
-                    // show input dialog.
-                    new HouseNumberInputHandler(this, way, title);
-
-                } else {
-                    badSelect = true;
-                }
-            } else {
-                badSelect = true;
+        class InvalidUserInputException extends Exception {
+            InvalidUserInputException(String message) {
+                super(message);
             }
-        } else {
-            badSelect = true;
+            InvalidUserInputException() {
+                super();
+            }
         }
 
-        if (badSelect) {
+        try {
+            if (sel.size() == 2) {
+                Iterator<OsmPrimitive> it = sel.iterator();
+                OsmPrimitive prim1 = it.next();
+                OsmPrimitive prim2 = it.next();
+                if (!(prim1 instanceof Way && prim2 instanceof Way))
+                    throw new InvalidUserInputException();
+                Way way1 = (Way) prim1;
+                Way way2 = (Way) prim2;
+                if (way2.get("highway") != null) {
+                    street = way2;
+                    outline = way1;
+                } else if (way1.get("highway") != null) {
+                    street = way1;
+                    outline = way2;
+                } else
+                    throw new InvalidUserInputException();
+                if (street.get("name") == null)
+                    throw new InvalidUserInputException();
+
+            } else if (sel.size() == 1) {
+                OsmPrimitive prim = sel.iterator().next();
+
+                if (!(prim instanceof Way))
+                    throw new InvalidUserInputException();
+
+                outline = (Way)prim;
+            } else
+                throw new InvalidUserInputException();
+
+            if (outline.getNodesCount() < 5)
+                throw new InvalidUserInputException();
+
+            if (!outline.isClosed())
+                throw new InvalidUserInputException();
+        } catch (InvalidUserInputException ex) {
             JOptionPane.showMessageDialog(Main.parent,
                     tr("Select a single, closed way of at least four nodes."));
+            return;
         }
+
+        // If we have a street, try to find a associatedStreet relation that could be reused.
+        Relation associatedStreet = null;
+        if (street != null) {
+            outer:for (OsmPrimitive osm : Main.main.getCurrentDataSet().allNonDeletedPrimitives()) {
+                if (!(osm instanceof Relation)) continue;
+                Relation rel = (Relation) osm;
+                if ("associatedStreet".equals(rel.get("type")) && street.get("name").equals(rel.get("name"))) {
+                    List<RelationMember> members = rel.getMembers();
+                    for (RelationMember m : members) {
+                        if ("street".equals(m.getRole()) && m.isWay() && m.getMember().equals(street)) {
+                            associatedStreet = rel;
+                            break outer;
+                        }
+                    }
+                }
+            }
+        }
+
+        String title = trn("Change {0} object", "Change {0} objects", sel.size(), sel.size());
+        // show input dialog.
+        new HouseNumberInputHandler(this, outline, street, associatedStreet, title);
     }
 
     /**
@@ -105,10 +155,13 @@ public final class TerracerAction extends JosmAction {
      * linearly to produce new nodes. Those nodes are then assembled into
      * closed, quadrilateral ways and left in the selection.
      *
-     * @param w The closed, quadrilateral way to terrace.
+     * @param outline The closed, quadrilateral way to terrace.
+     * @param street The street, the buildings belong to (may be null)
+     * @param handleRelations If the user likes to add a relation or extend an existing relation
+     * @param deleteOutline If the outline way should be deleted, when done
      */
-    public void terraceBuilding(Way w, Integer segments, Integer from,
-            Integer to, int step, String streetName) {
+    public void terraceBuilding(Way outline, Way street, Relation associatedStreet, Integer segments, Integer from,
+            Integer to, int step, String streetName, boolean handleRelations, boolean deleteOutline) {
         final int nb;
         if (to != null && from != null) {
             nb = 1 + (to.intValue() - from.intValue()) / step;
@@ -123,7 +176,7 @@ public final class TerracerAction extends JosmAction {
         }
 
         // now find which is the longest side connecting the first node
-        Pair<Way, Way> interp = findFrontAndBack(w);
+        Pair<Way, Way> interp = findFrontAndBack(outline);
 
         final double frontLength = wayLength(interp.a);
         final double backLength = wayLength(interp.b);
@@ -144,17 +197,6 @@ public final class TerracerAction extends JosmAction {
             commands.add(new AddCommand(new_nodes[1][i]));
         }
 
-        // create a new relation for addressing
-        Relation relatedStreet = new Relation();
-        relatedStreet.put("type", "relatedStreet");
-        if (streetName != null) {
-            relatedStreet.put("name", streetName);
-        }
-        // note that we don't actually add the street member to the relation, as
-        // the name isn't unambiguous and it could cause confusion if the editor
-        // were
-        // to automatically select one which wasn't the one the user intended.
-
         // assemble new quadrilateral, closed ways
         for (int i = 0; i < nb; ++i) {
             Way terr = new Way();
@@ -166,21 +208,47 @@ public final class TerracerAction extends JosmAction {
             terr.addNode(new_nodes[1][i + 1]);
             terr.addNode(new_nodes[1][i]);
             terr.addNode(new_nodes[0][i]);
-
             if (from != null) {
                 // only, if the user has specified house numbers
                 terr.put("addr:housenumber", "" + (from + i * step));
             }
             terr.put("building", "yes");
-            if (streetName != null) {
+            if (street != null) {
+                terr.put("addr:street", street.get("name"));
+            } else if (streetName != null) {
                 terr.put("addr:street", streetName);
             }
-            relatedStreet.addMember(new RelationMember("house", terr));
             ways.add(terr);
             commands.add(new AddCommand(terr));
         }
 
-        commands.add(new AddCommand(relatedStreet));
+        if (handleRelations) { // create a new relation or merge with existing
+            if (associatedStreet == null) {  // create a new relation
+                associatedStreet = new Relation();
+                associatedStreet.put("type", "associatedStreet");
+                if (street != null) { // a street was part of the selection
+                    associatedStreet.put("name", street.get("name"));
+                    associatedStreet.addMember(new RelationMember("street", street));
+                } else {
+                    associatedStreet.put("name", streetName);
+                }
+                for (Way w : ways) {
+                    associatedStreet.addMember(new RelationMember("house", w));
+                }
+                commands.add(new AddCommand(associatedStreet));
+            }
+            else { // relation exists already - add new members
+                Relation newAssociatedStreet = new Relation(associatedStreet);
+                for (Way w : ways) {
+                    newAssociatedStreet.addMember(new RelationMember("house", w));
+                }
+                commands.add(new ChangeCommand(associatedStreet, newAssociatedStreet));
+            }
+        }
+
+        if (deleteOutline) {
+            commands.add(DeleteCommand.delete(Main.main.getEditLayer(), Collections.singleton(outline), true, true));
+        }
 
         Main.main.undoRedo.add(new SequenceCommand(tr("Terrace"), commands));
         Main.main.getCurrentDataSet().setSelected(ways);
@@ -199,25 +267,19 @@ public final class TerracerAction extends JosmAction {
      * @return A node at a distance l along w from the first point.
      */
     private Node interpolateAlong(Way w, double l) {
-        Node n = null;
-        for (Pair<Node, Node> p : w.getNodePairs(false)) {
-            final double seg_length = p.a.getCoor().greatCircleDistance(
-                    p.b.getCoor());
-            if (l <= seg_length) {
-                n = interpolateNode(p.a, p.b, l / seg_length);
-                break;
+        List<Pair<Node,Node>> pairs = w.getNodePairs(false);
+        for (int i = 0; i < pairs.size(); ++i) {
+            Pair<Node,Node> p = pairs.get(i);
+            final double seg_length = p.a.getCoor().greatCircleDistance(p.b.getCoor());
+            if (l <= seg_length ||
+                    i == pairs.size() - 1) {    // be generous on the last segment (numerical roudoff can lead to a small overshoot)
+                return interpolateNode(p.a, p.b, l / seg_length);
             } else {
                 l -= seg_length;
             }
         }
-        if (n == null) {
-            // sometimes there is a small overshoot due to numerical roundoff,
-            // so we just
-            // set these cases to be equal to the last node. its not pretty, but
-            // it works ;-)
-            n = w.getNode(w.getNodesCount() - 1);
-        }
-        return n;
+        // we shouldn't get here
+        throw new IllegalStateException();
     }
 
     /**
@@ -275,9 +337,6 @@ public final class TerracerAction extends JosmAction {
 
         // swap side1 and side2 into sorted order.
         if (side1 > side2) {
-            // i can't believe i have to write swap() myself - surely java
-            // standard
-            // library has this somewhere??!!?ONE!
             int tmp = side2;
             side2 = side1;
             side1 = tmp;
@@ -388,7 +447,7 @@ public final class TerracerAction extends JosmAction {
 
     /**
      * Creates a new node at the interpolated position between the argument
-     * nodes. Interpolates linearly in Lat/Lon coordinates.
+     * nodes. Interpolates linearly in projected coordinates.
      *
      * @param a First node, at which f=0.
      * @param b Last node, at which f=1.
@@ -396,26 +455,7 @@ public final class TerracerAction extends JosmAction {
      * @return A new node at the interpolated position.
      */
     private Node interpolateNode(Node a, Node b, double f) {
-        Node n = new Node(interpolateLatLon(a, b, f));
+        Node n = new Node(a.getEastNorth().interpolate(b.getEastNorth(), f));
         return n;
-    }
-
-    /**
-     * Calculates the interpolated position between the argument nodes. Interpolates
-     * linearly in Lat/Lon coordinates.
-     *
-     * @param a First node, at which f=0.
-     * @param b Last node, at which f=1.
-     * @param f Fractional position between first and last nodes.
-     * @return The interpolated position.
-     */
-    private LatLon interpolateLatLon(Node a, Node b, double f) {
-        // this isn't quite right - we should probably be interpolating
-        // screen coordinates rather than lat/lon, but it doesn't seem to
-        // make a great deal of difference at the scale of most terraces.
-        return new LatLon(
-                a.getCoor().lat() * (1.0 - f) + b.getCoor().lat() * f, a
-                        .getCoor().lon()
-                        * (1.0 - f) + b.getCoor().lon() * f);
     }
 }
