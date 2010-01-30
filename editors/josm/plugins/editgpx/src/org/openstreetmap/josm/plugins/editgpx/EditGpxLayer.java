@@ -12,8 +12,13 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -24,7 +29,7 @@ import javax.swing.JSeparator;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.gpx.GpxData;
-import org.openstreetmap.josm.data.gpx.GpxTrack;
+import org.openstreetmap.josm.data.gpx.ImmutableGpxTrack;
 import org.openstreetmap.josm.data.gpx.WayPoint;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.Node;
@@ -79,14 +84,14 @@ public class EditGpxLayer extends Layer {
     @Override
     public Component[] getMenuEntries() {
         return new Component[] {
-            new JMenuItem(LayerListDialog.getInstance().createShowHideLayerAction(this)),
-            new JMenuItem(LayerListDialog.getInstance().createDeleteLayerAction(this)),
-            new JSeparator(),
-            new JMenuItem(layerImport),
-            new JMenuItem(new ConvertToGpxLayerAction()),
-            new JMenuItem(new ConvertToAnonTimeGpxLayerAction()),
-            new JSeparator(),
-            new JMenuItem(new LayerListPopup.InfoAction(this))};
+                new JMenuItem(LayerListDialog.getInstance().createShowHideLayerAction(this)),
+                new JMenuItem(LayerListDialog.getInstance().createDeleteLayerAction(this)),
+                new JSeparator(),
+                new JMenuItem(layerImport),
+                new JMenuItem(new ConvertToGpxLayerAction()),
+                new JMenuItem(new ConvertToAnonTimeGpxLayerAction()),
+                new JSeparator(),
+                new JMenuItem(new LayerListPopup.InfoAction(this))};
     }
 
     @Override
@@ -144,13 +149,9 @@ public class EditGpxLayer extends Layer {
         //add all ways
         for (Way w : dataSet.getWays()) {
             if (w.isIncomplete() || w.isDeleted()) continue;
-            GpxTrack trk = new GpxTrack();
-            gpxData.tracks.add(trk);
+            List<Collection<WayPoint>> segments = new ArrayList<Collection<WayPoint>>();
 
-            if (w.get("name") != null)
-                trk.attr.put("name", w.get("name"));
-
-            ArrayList<WayPoint> trkseg = null;
+            List<WayPoint> trkseg = null;
             for (Node n : w.getNodes()) {
                 if (n.isIncomplete() || n.isDeleted()) {
                     trkseg = null;
@@ -161,7 +162,7 @@ public class EditGpxLayer extends Layer {
 
                 if (trkseg == null) {
                     trkseg = new ArrayList<WayPoint>();
-                    trk.trackSegs.add(trkseg);
+                    segments.add(trkseg);
                 }
                 doneNodes.add(n);
 
@@ -175,6 +176,22 @@ public class EditGpxLayer extends Layer {
 
                 trkseg.add(wpt);
             }
+
+            // Do not create empty segments
+            for (Iterator<Collection<WayPoint>>  segIt = segments.iterator(); segIt.hasNext(); ) {
+                if (segIt.next().isEmpty()) {
+                    segIt.remove();
+                }
+            }
+
+            Map<String, Object> trkAttributes = new HashMap<String, Object>();
+            if (w.get("name") != null) {
+                trkAttributes.put("name", w.get("name"));
+            }
+            if (!segments.isEmpty()) {
+                gpxData.tracks.add(new ImmutableGpxTrack(segments, trkAttributes));
+            }
+
         }
 
         // add nodes as waypoints
