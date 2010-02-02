@@ -150,6 +150,10 @@
   path = applications/editors/josm/plugins/terracer
   url = ../terracer
   branch = master
+[submodule "applications/editors/josm/plugins/tracer"]
+  path = applications/editors/josm/plugins/tracer
+  url = ../tracer
+  branch = master
 [submodule "applications/editors/josm/plugins/validator"]
   path = applications/editors/josm/plugins/validator
   url = ../validator
