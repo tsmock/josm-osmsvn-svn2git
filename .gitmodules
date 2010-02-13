@@ -170,6 +170,10 @@
   path = applications/editors/josm/plugins/waydownloader
   url = ../waydownloader
   branch = master
+[submodule "applications/editors/josm/plugins/wms-turbo-challenge2"]
+  path = applications/editors/josm/plugins/wms-turbo-challenge2
+  url = ../wms-turbo-challenge2
+  branch = master
 [submodule "applications/editors/josm/plugins/wmsplugin"]
   path = applications/editors/josm/plugins/wmsplugin
   url = ../wmsplugin
