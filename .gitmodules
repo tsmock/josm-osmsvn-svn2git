@@ -162,6 +162,10 @@
   path = applications/editors/josm/plugins/tracer
   url = ../tracer
   branch = master
+[submodule "applications/editors/josm/plugins/turnrestrictions"]
+  path = applications/editors/josm/plugins/turnrestrictions
+  url = ../turnrestrictions
+  branch = master
 [submodule "applications/editors/josm/plugins/validator"]
   path = applications/editors/josm/plugins/validator
   url = ../validator
