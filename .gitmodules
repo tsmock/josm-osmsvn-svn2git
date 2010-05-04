@@ -170,6 +170,10 @@
   path = applications/editors/josm/plugins/turnrestrictions
   url = ../turnrestrictions
   branch = master
+[submodule "applications/editors/josm/plugins/undelete"]
+  path = applications/editors/josm/plugins/undelete
+  url = ../undelete
+  branch = master
 [submodule "applications/editors/josm/plugins/validator"]
   path = applications/editors/josm/plugins/validator
   url = ../validator
