@@ -182,6 +182,10 @@
   path = applications/editors/josm/plugins/validator
   url = ../validator
   branch = master
+[submodule "applications/editors/josm/plugins/videomapping"]
+  path = applications/editors/josm/plugins/videomapping
+  url = ../videomapping
+  branch = master
 [submodule "applications/editors/josm/plugins/walkingpapers"]
   path = applications/editors/josm/plugins/walkingpapers
   url = ../walkingpapers
