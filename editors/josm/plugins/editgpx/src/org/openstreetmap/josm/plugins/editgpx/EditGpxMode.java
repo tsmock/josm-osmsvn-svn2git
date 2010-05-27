@@ -13,23 +13,25 @@ import java.awt.event.MouseEvent;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.mapmode.MapMode;
-import org.openstreetmap.josm.data.osm.DataSet;
-import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.gui.MapFrame;
+import org.openstreetmap.josm.plugins.editgpx.data.EditGpxData;
+import org.openstreetmap.josm.plugins.editgpx.data.EditGpxTrack;
+import org.openstreetmap.josm.plugins.editgpx.data.EditGpxTrackSegment;
+import org.openstreetmap.josm.plugins.editgpx.data.EditGpxWayPoint;
 
 
 public class EditGpxMode extends MapMode {
 
     private static final long serialVersionUID = 7940589057093872411L;
     Point pointPressed;
-    DataSet dataSet;
+    EditGpxData data;
     MapFrame mapFrame;
     Rectangle oldRect;
     MapFrame frame;
 
-    public EditGpxMode(MapFrame mapFrame, String name, String desc, DataSet ds) {
+    public EditGpxMode(MapFrame mapFrame, String name, String desc, EditGpxData gpxData) {
         super(name, "editgpx_mode.png", desc, mapFrame, Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-        dataSet = ds;
+        this.data = gpxData;
     }
 
     @Override public void enterMode() {
@@ -66,10 +68,14 @@ public class EditGpxMode extends MapMode {
             Rectangle r = createRect(pointReleased, pointPressed);
 
             //go through nodes and mark the ones in the selection rect as deleted
-            for (Node n: dataSet.getNodes()) {
-                Point p = Main.map.mapView.getPoint(n);
-                if (r.contains(p)) {
-                    n.setDeleted(true);
+            for (EditGpxTrack track: data.getTracks()) {
+                for (EditGpxTrackSegment segment: track.getSegments()) {
+                    for (EditGpxWayPoint wayPoint: segment.getWayPoints()) {
+                        Point p = Main.map.mapView.getPoint(wayPoint.getCoor().getEastNorth());
+                        if (r.contains(p)) {
+                            wayPoint.setDeleted(true);
+                        }
+                    }
                 }
             }
             oldRect = null;
