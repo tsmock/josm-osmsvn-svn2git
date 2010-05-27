@@ -3,6 +3,8 @@
  */
 package org.openstreetmap.josm.plugins.editgpx;
 
+import static org.openstreetmap.josm.tools.I18n.tr;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -10,7 +12,6 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.gui.IconToggleButton;
 import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.gui.MapView;
@@ -18,8 +19,7 @@ import org.openstreetmap.josm.gui.MapView.LayerChangeListener;
 import org.openstreetmap.josm.gui.layer.Layer;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
-
-import static org.openstreetmap.josm.tools.I18n.tr;
+import org.openstreetmap.josm.plugins.editgpx.data.EditGpxData;
 
 /**
  * Provides an editable GPX layer. Editable layer here means the deletion of points is supported.
@@ -40,13 +40,13 @@ public class EditGpxPlugin extends Plugin {
     private IconToggleButton btn;
     private EditGpxMode mode;
     protected static EditGpxLayer eGpxLayer;
-    protected static DataSet dataSet;
+    protected static EditGpxData gpxData;
     public static boolean active = false;
 
     public EditGpxPlugin(PluginInformation info) {
         super(info);
-        dataSet = new DataSet();
-        mode = new EditGpxMode(Main.map, "editgpx", tr("edit gpx tracks"), dataSet);
+        gpxData = new EditGpxData();
+        mode = new EditGpxMode(Main.map, "editgpx", tr("edit gpx tracks"), gpxData);
 
         btn = new IconToggleButton(mode);
         btn.setVisible(true);
@@ -85,7 +85,7 @@ public class EditGpxPlugin extends Plugin {
      */
     private void updateLayer() {
         if(eGpxLayer == null) {
-            eGpxLayer = new EditGpxLayer(tr("EditGpx"), dataSet);
+            eGpxLayer = new EditGpxLayer(tr("EditGpx"), gpxData);
             Main.main.addLayer(eGpxLayer);
             MapView.addLayerChangeListener(new LayerChangeListener(){
 
