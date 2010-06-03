@@ -166,6 +166,10 @@
   path = applications/editors/josm/plugins/terracer
   url = ../terracer
   branch = master
+[submodule "applications/editors/josm/plugins/touchscreenhelper"]
+  path = applications/editors/josm/plugins/touchscreenhelper
+  url = ../touchscreenhelper
+  branch = master
 [submodule "applications/editors/josm/plugins/tracer"]
   path = applications/editors/josm/plugins/tracer
   url = ../tracer
