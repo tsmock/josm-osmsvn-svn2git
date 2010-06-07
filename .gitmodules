@@ -26,6 +26,10 @@
   path = applications/editors/josm/plugins/addrinterpolation
   url = ../addrinterpolation
   branch = master
+[submodule "applications/editors/josm/plugins/alignways"]
+  path = applications/editors/josm/plugins/alignways
+  url = ../alignways
+  branch = master
 [submodule "applications/editors/josm/plugins/buildings_tools"]
   path = applications/editors/josm/plugins/buildings_tools
   url = ../buildings_tools
