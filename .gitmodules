@@ -150,6 +150,10 @@
   path = applications/editors/josm/plugins/routing
   url = ../routing
   branch = master
+[submodule "applications/editors/josm/plugins/simplifyarea"]
+  path = applications/editors/josm/plugins/simplifyarea
+  url = ../simplifyarea
+  branch = master
 [submodule "applications/editors/josm/plugins/slippymap"]
   path = applications/editors/josm/plugins/slippymap
   url = ../slippymap
