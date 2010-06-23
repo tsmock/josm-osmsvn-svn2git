@@ -146,6 +146,10 @@
   path = applications/editors/josm/plugins/reverter
   url = ../reverter
   branch = master
+[submodule "applications/editors/josm/plugins/roadsigns"]
+  path = applications/editors/josm/plugins/roadsigns
+  url = ../roadsigns
+  branch = master
 [submodule "applications/editors/josm/plugins/routes"]
   path = applications/editors/josm/plugins/routes
   url = ../routes
