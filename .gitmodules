@@ -50,6 +50,10 @@
   path = applications/editors/josm/plugins/dataimport
   url = ../dataimport
   branch = master
+[submodule "applications/editors/josm/plugins/download_along"]
+  path = applications/editors/josm/plugins/download_along
+  url = ../download_along
+  branch = master
 [submodule "applications/editors/josm/plugins/duplicateway"]
   path = applications/editors/josm/plugins/duplicateway
   url = ../duplicateway
