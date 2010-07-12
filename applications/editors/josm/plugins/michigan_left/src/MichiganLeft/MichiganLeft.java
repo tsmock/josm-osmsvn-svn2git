@@ -40,6 +40,10 @@ public class MichiganLeft extends Plugin {
     
     
     private class MichiganLeftAction extends JosmAction {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
         private LinkedList<Command> cmds = new LinkedList<Command>();
 
         public MichiganLeftAction() {
@@ -138,9 +142,9 @@ public class MichiganLeft extends Plugin {
 
           ArrayList<Node> viaNodes=new ArrayList<Node>();
           // find via nodes (they have 3 occurences in the list)
-          for (Enumeration enumKey = ExtremNodes.keys() ; enumKey.hasMoreElements(); )
+          for (Enumeration<Node> enumKey = ExtremNodes.keys() ; enumKey.hasMoreElements(); )
           {
-            Node extrem=(Node)enumKey.nextElement();
+            Node extrem=enumKey.nextElement();
             Integer nb=(Integer) ExtremNodes.get(extrem);
             //System.out.println(tr("Via node {0}, {1}", extrem.getId(), nb.intValue()));
             if (nb.intValue() == 3)
