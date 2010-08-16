@@ -222,6 +222,10 @@
   path = applications/editors/josm/plugins/waydownloader
   url = ../waydownloader
   branch = master
+[submodule "applications/editors/josm/plugins/waypoint_search"]
+  path = applications/editors/josm/plugins/waypoint_search
+  url = ../waypoint_search
+  branch = master
 [submodule "applications/editors/josm/plugins/wayselector"]
   path = applications/editors/josm/plugins/wayselector
   url = ../wayselector
