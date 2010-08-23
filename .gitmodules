@@ -22,6 +22,10 @@
   path = applications/editors/josm/plugins/DirectUpload
   url = ../DirectUpload
   branch = master
+[submodule "applications/editors/josm/plugins/OpeningHoursEditor"]
+  path = applications/editors/josm/plugins/OpeningHoursEditor
+  url = ../OpeningHoursEditor
+  branch = master
 [submodule "applications/editors/josm/plugins/addrinterpolation"]
   path = applications/editors/josm/plugins/addrinterpolation
   url = ../addrinterpolation
