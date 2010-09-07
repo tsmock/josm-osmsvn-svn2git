@@ -86,6 +86,10 @@
   path = applications/editors/josm/plugins/imagewaypoint
   url = ../imagewaypoint
   branch = master
+[submodule "applications/editors/josm/plugins/irsrectify"]
+  path = applications/editors/josm/plugins/irsrectify
+  url = ../irsrectify
+  branch = master
 [submodule "applications/editors/josm/plugins/lakewalker"]
   path = applications/editors/josm/plugins/lakewalker
   url = ../lakewalker
