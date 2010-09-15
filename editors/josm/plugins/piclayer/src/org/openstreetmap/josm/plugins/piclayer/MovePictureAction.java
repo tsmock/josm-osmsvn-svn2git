@@ -37,17 +37,17 @@ import org.openstreetmap.josm.data.coor.EastNorth;
 /**
  * This class handles the input during moving the picture.
  */
-public class MovePictureAction extends MapMode implements MouseListener, MouseMotionListener 
+public class MovePictureAction extends MapMode implements MouseListener, MouseMotionListener
 {
     // Action ongoing?
     private boolean mb_dragging = false;
-    
+
     // Last mouse position
     private EastNorth m_prevEastNorth;
-    
+
     // The layer we're working on
     private PicLayerAbstract m_currentLayer = null;
-    
+
     /**
      * Constructor
      */
@@ -55,52 +55,52 @@ public class MovePictureAction extends MapMode implements MouseListener, MouseMo
         super(tr("PicLayer move"), "move", tr("Drag to move the picture"), frame, ImageProvider.getCursor("crosshair", null));
     }
 
-    @Override 
+    @Override
     public void enterMode() {
         super.enterMode();
         Main.map.mapView.addMouseListener(this);
         Main.map.mapView.addMouseMotionListener(this);
     }
 
-    @Override 
+    @Override
     public void exitMode() {
         super.exitMode();
         Main.map.mapView.removeMouseListener(this);
         Main.map.mapView.removeMouseMotionListener(this);
-    }	
-    
-    @Override 
+    }
+
+    @Override
     public void mousePressed(MouseEvent e) {
-       
+
         // If everything is OK, we start dragging/moving the picture
         if ( Main.map.mapView.getActiveLayer() instanceof PicLayerAbstract ) {
             m_currentLayer = (PicLayerAbstract)Main.map.mapView.getActiveLayer();
-            
+
             if ( m_currentLayer != null && e.getButton() == MouseEvent.BUTTON1 ) {
                 mb_dragging = true;
                 m_prevEastNorth=Main.map.mapView.getEastNorth(e.getX(),e.getY());
             }
         }
-    }   
-    
-    @Override 
+    }
+
+    @Override
     public void mouseDragged(MouseEvent e) {
         // Picture moving is ongoing
         if(mb_dragging) {
             EastNorth eastNorth = Main.map.mapView.getEastNorth(e.getX(),e.getY());
             m_currentLayer.movePictureBy(
-                eastNorth.east()-m_prevEastNorth.east(), 
+                eastNorth.east()-m_prevEastNorth.east(),
                 eastNorth.north()-m_prevEastNorth.north()
             );
             m_prevEastNorth = eastNorth;
             Main.map.mapView.repaint();
         }
-    }    
-    
-    @Override 
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
         // Stop moving
         mb_dragging = false;
-    }    
+    }
 
 }

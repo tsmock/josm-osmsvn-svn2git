@@ -34,17 +34,17 @@ import org.openstreetmap.josm.tools.ImageProvider;
 /**
  * This class handles the input during scaling the picture.
  */
-public abstract class ScalePictureActionAbstract extends MapMode implements MouseListener, MouseMotionListener 
+public abstract class ScalePictureActionAbstract extends MapMode implements MouseListener, MouseMotionListener
 {
     // Scaling ongoing?
     private boolean mb_dragging = false;
-    
+
     // Last mouse position
     private int m_prevY;
-    
+
     // Layer we're working on
     protected PicLayerAbstract m_currentLayer = null;
-    
+
     /**
      * Constructor
      */
@@ -53,34 +53,34 @@ public abstract class ScalePictureActionAbstract extends MapMode implements Mous
         // TODO Auto-generated constructor stub
     }
 
-    @Override 
+    @Override
     public void enterMode() {
         super.enterMode();
         Main.map.mapView.addMouseListener(this);
         Main.map.mapView.addMouseMotionListener(this);
     }
 
-    @Override 
+    @Override
     public void exitMode() {
         super.exitMode();
         Main.map.mapView.removeMouseListener(this);
         Main.map.mapView.removeMouseMotionListener(this);
-    }	
-    
-    @Override 
+    }
+
+    @Override
     public void mousePressed(MouseEvent e) {
         // Start scaling
         if ( Main.map.mapView.getActiveLayer() instanceof PicLayerAbstract ) {
             m_currentLayer = (PicLayerAbstract)Main.map.mapView.getActiveLayer();
-            
+
             if ( m_currentLayer != null && e.getButton() == MouseEvent.BUTTON1 ) {
                 mb_dragging = true;
                 m_prevY = e.getY();
             }
         }
-    }   
-    
-    @Override 
+    }
+
+    @Override
     public void mouseDragged(MouseEvent e) {
         // Scale the picture
         if(mb_dragging) {
@@ -89,13 +89,13 @@ public abstract class ScalePictureActionAbstract extends MapMode implements Mous
             Main.map.mapView.repaint();
         }
     }
-    
-    @Override 
+
+    @Override
     public void mouseReleased(MouseEvent e) {
         // Stop scaling
         mb_dragging = false;
     }
-    
+
     /**
     * Does the actual scaling in the inherited class.
     */

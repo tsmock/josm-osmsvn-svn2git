@@ -85,7 +85,7 @@ public class DrawBuildingAction extends MapMode implements MapViewPaintable, AWT
 
     /**
      * Displays the given cursor instead of the normal one
-     * 
+     *
      * @param Cursors
      *            One of the available cursors
      */

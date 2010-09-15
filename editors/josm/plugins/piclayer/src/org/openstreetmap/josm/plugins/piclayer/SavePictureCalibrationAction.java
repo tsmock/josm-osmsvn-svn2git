@@ -84,6 +84,6 @@ public class SavePictureCalibrationAction extends JosmAction {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(Main.parent , tr("Saving file failed: {0}", e.getMessage()));
             }
-        }	
+        }   
     }
 }

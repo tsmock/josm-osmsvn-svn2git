@@ -29,7 +29,7 @@ import javax.swing.filechooser.FileFilter;
  * Filter for the file dialog. Allows only calibration files.
  */
 public class CalibrationFileFilter extends FileFilter {
-    
+
     // Extension used by calibration files
     public static final String EXTENSION = ".cal";
 
@@ -38,8 +38,8 @@ public class CalibrationFileFilter extends FileFilter {
         String ext3 = ( f.getName().length() > 4 ) ?  f.getName().substring( f.getName().length() - 4 ).toLowerCase() : "";
 
         // TODO: check what is supported by Java :)
-        return ( f.isDirectory() 
-            ||	ext3.equals( EXTENSION )
+        return ( f.isDirectory()
+            ||  ext3.equals( EXTENSION )
             );
     }
 

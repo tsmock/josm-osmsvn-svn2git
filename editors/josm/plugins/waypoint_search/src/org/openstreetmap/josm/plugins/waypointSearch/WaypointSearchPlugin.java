@@ -47,7 +47,7 @@ public class WaypointSearchPlugin extends Plugin implements LayerChangeListener 
     public void layerRemoved(Layer oldLayer) {
         if (!engine.gpxLayersExist()) {
             waypointDialog.updateSearchResults();
-        }	
+        }   
     }
  
 }

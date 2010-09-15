@@ -48,7 +48,7 @@ public class UploadDataGuiPlugin extends Plugin{
             if(Main.map == null
                     || Main.map.mapView == null
                     || Main.map.mapView.getActiveLayer() == null
-                    || !(Main.map.mapView.getActiveLayer() instanceof GpxLayer)) {                
+                    || !(Main.map.mapView.getActiveLayer() instanceof GpxLayer)) {
                 setEnabled(false);
             } else {
                 setEnabled(true);
@@ -60,6 +60,6 @@ public class UploadDataGuiPlugin extends Plugin{
                     setEnabled(true);
             }
 
-        }		
+        }
     }
 }

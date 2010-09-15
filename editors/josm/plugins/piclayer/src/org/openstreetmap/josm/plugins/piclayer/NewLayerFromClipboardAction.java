@@ -34,7 +34,7 @@ import org.openstreetmap.josm.actions.JosmAction;
  * the content of the clipboard.
  */
 public class NewLayerFromClipboardAction extends JosmAction {
-    
+
     /**
      * Constructor...
      */
@@ -55,7 +55,7 @@ public class NewLayerFromClipboardAction extends JosmAction {
         catch (IOException e) {
             // Failed
             System.out.println( "NewLayerFromClipboardAction::actionPerformed - " + e.getMessage() );
-            JOptionPane.showMessageDialog(null, e.getMessage() );  
+            JOptionPane.showMessageDialog(null, e.getMessage() );
             return;
         }
         // Add layer

@@ -20,11 +20,11 @@ public class Engine {
                     if (Pattern.matches(".*\\Q"+waypointSearchPattern.toLowerCase()+"\\E.*", marker.getText().toLowerCase())) {
                         returnList.add(marker);
                     }
-                }				
+                }               
             }
         } 
         return returnList;
-    }	
+    }   
         
         
         

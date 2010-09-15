@@ -29,7 +29,7 @@ import javax.imageio.ImageIO;
  * Layer displaying a picture loaded from a file.
  */
 public class PicLayerFromFile extends PicLayerAbstract {
-    
+
     // File to load from.
     private File m_file;
     // Tooltip text
@@ -40,8 +40,8 @@ public class PicLayerFromFile extends PicLayerAbstract {
         m_file = file;
         // Generate tooltip text
         m_tooltiptext = m_file.getAbsolutePath();
-    }	
-    
+    }
+
     @Override
     protected Image createImage() throws IOException {
         // Try to load file
@@ -53,5 +53,5 @@ public class PicLayerFromFile extends PicLayerAbstract {
     @Override
     protected String getPicLayerName() {
         return m_tooltiptext;
-    }	
+    }
 }

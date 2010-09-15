@@ -38,7 +38,7 @@ import org.openstreetmap.josm.actions.JosmAction;
  * an image file.
  */
 public class NewLayerFromFileAction extends JosmAction {
-    
+
     /**
      * Provides filtering of only image files.
      */
@@ -46,15 +46,15 @@ public class NewLayerFromFileAction extends JosmAction {
 
         @Override
         public boolean accept(File f) {
-            
+
             String ext3 = ( f.getName().length() > 4 ) ?  f.getName().substring( f.getName().length() - 4 ).toLowerCase() : "";
             String ext4 = ( f.getName().length() > 5 ) ?  f.getName().substring( f.getName().length() - 5 ).toLowerCase() : "";
 
             // TODO: check what is supported by Java :)
-            return ( f.isDirectory() 
-                ||	ext3.equals( ".jpg" )
-                ||	ext4.equals( ".jpeg" )
-                ||	ext3.equals( ".png" )
+            return ( f.isDirectory()
+                ||  ext3.equals( ".jpg" )
+                ||  ext4.equals( ".jpeg" )
+                ||  ext3.equals( ".png" )
                 );
         }
 
@@ -63,9 +63,9 @@ public class NewLayerFromFileAction extends JosmAction {
         public String getDescription() {
             return tr("Image files");
         }
-        
+
     }
-    
+
     /**
      * Constructor...
      */
@@ -77,13 +77,13 @@ public class NewLayerFromFileAction extends JosmAction {
      * Action handler
      */
     public void actionPerformed(ActionEvent arg0) {
-        
+
         // Choose a file
         JFileChooser fc = new JFileChooser();
         fc.setAcceptAllFileFilterUsed( false );
         fc.setFileFilter( new ImageFileFilter() );
         int result = fc.showOpenDialog( Main.parent );
-        
+
         // Create a layer?
         if ( result == JFileChooser.APPROVE_OPTION ) {
             // Create layer from file
@@ -95,12 +95,12 @@ public class NewLayerFromFileAction extends JosmAction {
             catch (IOException e) {
                 // Failed
                 System.out.println( "NewLayerFromFileAction::actionPerformed - " + e.getMessage() );
-                JOptionPane.showMessageDialog(null, e.getMessage() );  
+                JOptionPane.showMessageDialog(null, e.getMessage() );
                 return;
             }
             // Add layer
             Main.main.addLayer( layer );
         }
-        
+
     }
 }

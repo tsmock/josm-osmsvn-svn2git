@@ -135,7 +135,7 @@ public class SlippyMapPreferences
 
     /**
      *
-     * @return	number between 0 and 1, inclusive
+     * @return  number between 0 and 1, inclusive
      */
     public static float getFadeBackground() {
         String fadeBackground = Main.pref.get(PREFERENCE_FADE_BACKGROUND);

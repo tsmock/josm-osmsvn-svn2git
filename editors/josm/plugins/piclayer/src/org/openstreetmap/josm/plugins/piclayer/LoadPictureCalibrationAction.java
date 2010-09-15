@@ -68,7 +68,7 @@ public class LoadPictureCalibrationAction extends JosmAction {
 
         if ( result == JFileChooser.APPROVE_OPTION ) {
                     
-            // Load	
+            // Load 
             try {
                 Properties props = new Properties();
                 props.load(new FileInputStream(fc.getSelectedFile()));
