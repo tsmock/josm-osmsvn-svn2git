@@ -233,7 +233,7 @@ public class AddrInterpolationDialog extends JDialog implements ActionListener  
 
         JLabel[] textLabels = {startLabel, endLabel, numberingLabel, incrementLabel, inclusionLabel};
         Component[] editFields = {startTextField, endTextField, addrInterpolationList, incrementTextField, addrInclusionList};
-        AddEditControlRows(textLabels, editFields,	editControlsPane);
+        AddEditControlRows(textLabels, editFields,  editControlsPane);
 
         cbConvertToHouseNumbers = new Checkbox(tr("Convert way to individual house numbers."), null, lastConvertToHousenumber);
         // cbConvertToHouseNumbers.setSelected(lastConvertToHousenumber);
@@ -490,7 +490,7 @@ public class AddrInterpolationDialog extends JDialog implements ActionListener  
         });
 
         Component[] optionalEditFields = {cityTextField, stateTextField, postCodeTextField, countryTextField, fullTextField};
-        AddEditControlRows(optionalTextLabels, optionalEditFields,	editControlsPane);
+        AddEditControlRows(optionalTextLabels, optionalEditFields,  editControlsPane);
 
 
 
@@ -1101,7 +1101,7 @@ public class AddrInterpolationDialog extends JDialog implements ActionListener  
 
             }
             if (!errorMessage.equals("")) {
-                JOptionPane.showMessageDialog(Main.parent, errorMessage, tr("Error"), 	JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(Main.parent, errorMessage, tr("Error"),   JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }
@@ -1109,7 +1109,7 @@ public class AddrInterpolationDialog extends JDialog implements ActionListener  
         if (country != null) {
             if (country.length() != 2) {
                 JOptionPane.showMessageDialog(Main.parent,
-                        tr("Country code must be 2 letters"), tr("Error"), 	JOptionPane.ERROR_MESSAGE);
+                        tr("Country code must be 2 letters"), tr("Error"),  JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }
@@ -1252,7 +1252,7 @@ public class AddrInterpolationDialog extends JDialog implements ActionListener  
 
     // Test if relation contains specified member
     //   If not already present, it is added
-    private void AddToRelation(Relation relation, 	OsmPrimitive testMember, String role) {
+    private void AddToRelation(Relation relation,   OsmPrimitive testMember, String role) {
         boolean isFound = false;
         for (RelationMember relationMember : relation.getMembers()) {
 
@@ -1354,7 +1354,7 @@ public class AddrInterpolationDialog extends JDialog implements ActionListener  
             return true;
 
         } else {
-            JOptionPane.showMessageDialog(Main.parent, errorMessage, tr("Error"), 	JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(Main.parent, errorMessage, tr("Error"),   JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }

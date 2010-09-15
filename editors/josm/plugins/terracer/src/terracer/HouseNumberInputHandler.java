@@ -60,10 +60,10 @@ import org.openstreetmap.josm.actions.JosmAction;
         this.outline = outline;
         this.street = street;
         this.associatedStreet = associatedStreet;
-        
+
         // This dialog is started modal
         this.dialog = new HouseNumberInputDialog(this, street, associatedStreet != null);
-        
+
         // We're done
     }
 
@@ -91,7 +91,7 @@ import org.openstreetmap.josm.actions.JosmAction;
          }
         return null;
     }
-    
+
     /**
      * Validate the current input fields.
      * When the validation fails, a red message is
@@ -124,7 +124,7 @@ import org.openstreetmap.josm.actions.JosmAction;
             JButton okButton = getButton(dialog, "OK");
             if (okButton != null)
                 okButton.setEnabled(true);
-            
+
             // For some reason the messageLabel doesn't want to show up
             dialog.messageLabel.setForeground(Color.black);
             dialog.messageLabel.setText(tr(HouseNumberInputDialog.DEFAULT_MESSAGE));
@@ -133,7 +133,7 @@ import org.openstreetmap.josm.actions.JosmAction;
             JButton okButton = getButton(dialog, "OK");
             if (okButton != null)
                 okButton.setEnabled(false);
-                    
+
             // For some reason the messageLabel doesn't want to show up, so a MessageDialog is shown instead. Someone more knowledgeable might fix this.
             dialog.messageLabel.setForeground(Color.red);
             dialog.messageLabel.setText(message.toString());
@@ -274,7 +274,7 @@ import org.openstreetmap.josm.actions.JosmAction;
             if ("OK".equals(button.getActionCommand()) & button.isEnabled()) {
                 if (validateInput()) {
                     saveValues();
-                    
+
                     terracerAction.terraceBuilding(
                         outline,
                         street,
@@ -286,7 +286,7 @@ import org.openstreetmap.josm.actions.JosmAction;
                         streetName(),
                         doHandleRelation(),
                         doDeleteOutline());
-                
+
                     this.dialog.dispose();
                 }
             } else if ("Cancel".equals(button.getActionCommand())) {
@@ -356,7 +356,7 @@ import org.openstreetmap.josm.actions.JosmAction;
     public String streetName() {
         if (street != null)
             return null;
-            
+
         Object selected = dialog.streetComboBox.getSelectedItem();
         if (selected == null) {
             return null;
@@ -376,24 +376,24 @@ import org.openstreetmap.josm.actions.JosmAction;
      */
     public boolean doHandleRelation() {
         if (this.dialog == null) {
-            JOptionPane.showMessageDialog(null, "dialog", "alert", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(null, "dialog", "alert", JOptionPane.ERROR_MESSAGE);
         }
         if (this.dialog.handleRelationCheckBox == null) {
-            JOptionPane.showMessageDialog(null, "checkbox", "alert", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(null, "checkbox", "alert", JOptionPane.ERROR_MESSAGE);
             return true;
         }  else {
             return this.dialog.handleRelationCheckBox.isSelected();
         }
     }
 
-   
+
     /**
      * Whether the user likes to delete the outline way.
      */
     public boolean doDeleteOutline() {
         return dialog.deleteOutlineCheckBox.isSelected();
     }
-    
+
     /* (non-Javadoc)
      * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
      */

@@ -57,9 +57,9 @@ public final class TerracerAction extends JosmAction {
     // smsms1 asked for the last value to be remembered to make it easier to do
     // repeated terraces. this is the easiest, but not necessarily nicest, way.
     // private static String lastSelectedValue = "";
-    
+
     Collection<Command> commands;
-    
+
     public TerracerAction() {
         super(tr("Terrace a building"), "terrace",
                 tr("Creates individual buildings from a long building."),
@@ -158,7 +158,7 @@ public final class TerracerAction extends JosmAction {
             return null;
         }
     }
-    
+
     /**
      * Terraces a single, closed, quadrilateral way.
      *
@@ -187,7 +187,7 @@ public final class TerracerAction extends JosmAction {
                 boolean handleRelations,
                 boolean deleteOutline) {
         final int nb;
-        
+
         Integer to, from;
         to = getNumber(To);
         from = getNumber(From);
@@ -212,13 +212,13 @@ public final class TerracerAction extends JosmAction {
         // Should this building be terraced (i.e. is there more then one section?)
         if (nb > 1) {
             // create intermediate nodes by interpolating.
-            
+
             // now find which is the longest side connecting the first node
             Pair<Way, Way> interp = findFrontAndBack(outline);
 
             final double frontLength = wayLength(interp.a);
             final double backLength = wayLength(interp.b);
-            
+
             for (int i = 0; i <= nb; ++i) {
                 new_nodes[0][i] = interpolateAlong(interp.a, frontLength * i / nb);
                 new_nodes[1][i] = interpolateAlong(interp.b, backLength * i / nb);
@@ -237,7 +237,7 @@ public final class TerracerAction extends JosmAction {
                 terr.addNode(new_nodes[1][i + 1]);
                 terr.addNode(new_nodes[1][i]);
                 terr.addNode(new_nodes[0][i]);
-                
+
                 // add the tags of the outline to each building (e.g. source=*)
                 TagCollection.from(outline).applyTo(terr);
 
@@ -261,7 +261,7 @@ public final class TerracerAction extends JosmAction {
             ways.add(newOutline);
             this.commands.add(new ChangeCommand(outline, newOutline));
         }
-        
+
         if (handleRelations) { // create a new relation or merge with existing
             if (associatedStreet == null) {  // create a new relation
                 associatedStreet = new Relation();
@@ -430,12 +430,12 @@ public final class TerracerAction extends JosmAction {
     private int indexDistance(int i1, int i2, int n) {
         return Math.min(positiveModulus(i1 - i2, n), positiveModulus(i2 - i1, n));
     }
-    
+
     /**
      * return the modulus in the range [0, n)
      */
     private int positiveModulus(int a, int n) {
-        if (n <=0) 
+        if (n <=0)
             throw new IllegalArgumentException();
         int res = a % n;
         if (res < 0) {
@@ -443,7 +443,7 @@ public final class TerracerAction extends JosmAction {
         }
         return res;
     }
-    
+
     /**
      * Calculate the length of a side (from node i to i+1) in a way. This assumes that
      * the way is closed, but I only ever call it for buildings.
@@ -547,5 +547,5 @@ public final class TerracerAction extends JosmAction {
     @Override
     protected void updateEnabledState() {
         setEnabled(getCurrentDataSet() != null);
-    }    
+    }
 }

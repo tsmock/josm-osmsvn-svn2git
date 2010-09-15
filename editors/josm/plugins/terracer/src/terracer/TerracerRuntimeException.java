@@ -9,7 +9,7 @@ package terracer;
 
 /**
  * The Class TerracerRuntimeException indicates errors from the Terracer Plugin.
- * 
+ *
  * @author casualwalker
  */
 public class TerracerRuntimeException extends RuntimeException {

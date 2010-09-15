@@ -236,7 +236,7 @@ public class LiveGpsAcquirer implements Runnable {
 
         if (JSONProtocol == true) {
             JSONObject Watch = new JSONObject();
-            try { 
+            try {
                 Watch.put("enable", true);
                 Watch.put("json", true);
             } catch (JSONException je) {};
