@@ -112,7 +112,7 @@ public class LiveGpsSuppressor implements Runnable, ILiveGpsSuppressor {
      * A value below 1 disables this feature.
      * This ensures that a small value does not run this thread
      * in a tight loop.
-     * 
+     *
      * @return true, if suppressing is enabled
      */
     private boolean isEnabled() {

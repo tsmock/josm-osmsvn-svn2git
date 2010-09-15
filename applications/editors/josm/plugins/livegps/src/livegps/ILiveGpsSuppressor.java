@@ -2,8 +2,8 @@ package livegps;
 
 /**
  * Interface for class LiveGpsSuppressor, only has a query if currently an update is allowed.
- * 
- * @author casualwalker 
+ *
+ * @author casualwalker
  *
  */
 public interface ILiveGpsSuppressor {
