@@ -66,8 +66,8 @@ public class FloatPropertyColorScheme implements ColorScheme {
 
         List<Color> segmentColors = new ArrayList<Color>();
 
-        
-        
+
+
         for (GraphEdge edge : node.getInboundEdges()) {
             List<Segment> edgeSegments = edge.getPropertyValue(GraphEdgeSegments.PROPERTY);
             if (edgeSegments.size() > 0) {

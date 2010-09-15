@@ -19,8 +19,8 @@ public interface GraphEdge {
 
     /** returns all property types for which property values are available */
     Collection<GraphEdgePropertyType<?>> getAvailableProperties();
-    
+
     /** TODO */
     <V> V getPropertyValue(GraphEdgePropertyType<V> property);
-    
+
 }

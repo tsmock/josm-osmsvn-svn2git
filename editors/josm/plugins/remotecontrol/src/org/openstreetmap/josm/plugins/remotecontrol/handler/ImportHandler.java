@@ -36,7 +36,7 @@ public class ImportHandler extends RequestHandler {
     {
         return new String[] { "url" };
     }
-    
+
     @Override
     public String getPermissionMessage() {
         return tr("Remote Control has been asked to import data from the following URL:") +

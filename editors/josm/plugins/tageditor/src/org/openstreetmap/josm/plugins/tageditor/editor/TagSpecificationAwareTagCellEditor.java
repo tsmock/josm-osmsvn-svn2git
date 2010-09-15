@@ -23,7 +23,7 @@ public class TagSpecificationAwareTagCellEditor extends TagCellEditor {
      * @param model  the tag editor model
      * @param currentTag  the current tag
      */
-    protected void initAutoCompletionListForKeys(TagEditorModel model, TagModel currentTag) {		
+    protected void initAutoCompletionListForKeys(TagEditorModel model, TagModel currentTag) {       
         if (getAutoCompletionList() == null) {
             logger.warning("autoCompletionList is null. Make sure an instance of AutoCompletionList is injected into TableCellEditor.");
             return;

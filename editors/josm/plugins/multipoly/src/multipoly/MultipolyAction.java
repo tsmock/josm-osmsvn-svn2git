@@ -29,12 +29,12 @@ import org.openstreetmap.josm.tools.Shortcut;
 
 /**
  * Create multipolygon from selected ways automatically.
- * 
+ *
  * New relation with type=multipolygon is created
- * 
+ *
  * If one or more of ways is already in relation with type=multipolygon or the
  * way is not closed, then error is reported and no relation is created
- * 
+ *
  * The "inner" and "outer" roles are guessed automatically. First, bbox is
  * calculated for each way. then the largest area is assumed to be outside and
  * the rest inside In cases with one "outside" area and several cut-ins, the
@@ -54,7 +54,7 @@ public class MultipolyAction extends JosmAction {
 
     /**
      * The action button has been clicked
-     * 
+     *
      * @param e
      *            Action Event
      */

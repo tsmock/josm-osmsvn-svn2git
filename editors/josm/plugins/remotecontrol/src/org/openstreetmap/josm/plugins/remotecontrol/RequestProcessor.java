@@ -28,7 +28,7 @@ public class RequestProcessor extends Thread {
      * changes.
      */
     public static final String PROTOCOLVERSION = "{\"protocolversion\": {\"major\": " +
-        RemoteControlPlugin.protocolMajorVersion + ", \"minor\": " + 
+        RemoteControlPlugin.protocolMajorVersion + ", \"minor\": " +
         RemoteControlPlugin.protocolMinorVersion +
         "}, \"application\": \"JOSM RemoteControl\"}";
 
@@ -38,13 +38,13 @@ public class RequestProcessor extends Thread {
     /**
      * Collection of request handlers.
      * Will be initialized with default handlers here. Other plug-ins
-     * can extend this list by using @see addRequestHandler 
+     * can extend this list by using @see addRequestHandler
      */
     private static HashMap<String, Class<? extends RequestHandler>> handlers = new HashMap<String, Class<? extends RequestHandler>>();
 
     /**
      * Constructor
-     * 
+     *
      * @param request A socket to read the request.
      */
     public RequestProcessor(Socket request) {
@@ -55,7 +55,7 @@ public class RequestProcessor extends Thread {
 
     /**
      * Spawns a new thread for the request
-     * 
+     *
      * @param request
      *            The WMS request
      */
@@ -93,7 +93,7 @@ public class RequestProcessor extends Thread {
             System.out.println("RemoteControl: ignoring duplicate command " + command
                     + " with handler " + handler.getName());
         } else {
-            if(!silent) System.out.println("RemoteControl: adding command \"" + 
+            if(!silent) System.out.println("RemoteControl: adding command \"" +
                     command + "\" (handled by " + handler.getSimpleName() + ")");
             handlers.put(commandWithSlash, handler);
         }
@@ -206,7 +206,7 @@ public class RequestProcessor extends Thread {
 
     /**
      * Sends a 500 error: server error
-     * 
+     *
      * @param out
      *            The writer where the error is written
      * @throws IOException
@@ -225,7 +225,7 @@ public class RequestProcessor extends Thread {
 
     /**
      * Sends a 501 error: not implemented
-     * 
+     *
      * @param out
      *            The writer where the error is written
      * @throws IOException
@@ -244,7 +244,7 @@ public class RequestProcessor extends Thread {
 
     /**
      * Sends a 403 error: forbidden
-     * 
+     *
      * @param out
      *            The writer where the error is written
      * @throws IOException
@@ -263,7 +263,7 @@ public class RequestProcessor extends Thread {
 
     /**
      * Sends a 403 error: forbidden
-     * 
+     *
      * @param out
      *            The writer where the error is written
      * @throws IOException
@@ -282,7 +282,7 @@ public class RequestProcessor extends Thread {
 
     /**
      * Send common HTTP headers to the client.
-     * 
+     *
      * @param out
      *            The Writer
      * @param status

@@ -37,7 +37,7 @@ public class Parser {
         currentItem = null;
     }
     
-    public Parser(Reader reader) {		
+    public Parser(Reader reader) {      
         this();
         if (reader == null) {
             throw new IllegalArgumentException("reader must not be null");
@@ -76,7 +76,7 @@ public class Parser {
             parser.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
         } catch(SAXException e) {
             logger.log(Level.SEVERE, "exception while creating SAX parser", e);
-            throw new PresetIOException("exception while creating SAX parser",e);			
+            throw new PresetIOException("exception while creating SAX parser",e);           
         }
     }
 
@@ -125,7 +125,7 @@ public class Parser {
             throw new PresetIOException(e);
         }
         // "release" XML parser 
-        parser = null;		
+        parser = null;      
     }
     
     protected String translatedAttributeValue(String attrValue) {
@@ -180,15 +180,15 @@ public class Parser {
         
         if (currentItem == null) {
             logger.log(Level.SEVERE, "illegal state. no current item defined");
-            throw new IllegalStateException("illegal state. no current item defined");			
+            throw new IllegalStateException("illegal state. no current item defined");          
         }
-        currentItem.addTag(tag);	
+        currentItem.addTag(tag);    
     }
     
     protected void onLabel(String label) {
         if (currentItem == null) {
             logger.log(Level.SEVERE, "illegal state. no current item defined");
-            throw new IllegalStateException("illegal state. no current item defined");						
+            throw new IllegalStateException("illegal state. no current item defined");                      
         }
         currentItem.setLabel(label);
     }
@@ -243,7 +243,7 @@ public class Parser {
             } else if ("key".equals(qName) || "text".equals(qName) || "combo".equals(qName) 
                        || "check".equals(qName)) {
                 onTag(getAttribute(atts, "key"), getAttribute(atts, "value"), getAttribute(atts, "text"));
-            }			
+            }           
         }
         
         @Override
@@ -257,7 +257,7 @@ public class Parser {
                 // do nothing
             } else if ("optional".equals(qName)) {
                 onEndOptionalKeys();
-            }			
+            }           
         }
 
         /* (non-Javadoc)

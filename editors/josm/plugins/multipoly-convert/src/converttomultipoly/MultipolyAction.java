@@ -26,9 +26,9 @@ import org.openstreetmap.josm.tools.Shortcut;
 
 /**
  * Convert an area into an advance multipolygon.
- * 
+ *
  * New relation with type=multipolygon is created for each ways.
- * 
+ *
  * All the tags (except the source tag) will be moved into the relation.
  */
 @SuppressWarnings("serial")
@@ -44,7 +44,7 @@ public class MultipolyAction extends JosmAction {
 
     /**
      * The action button has been clicked
-     * 
+     *
      * @param e
      *            Action Event
      */
@@ -67,7 +67,7 @@ public class MultipolyAction extends JosmAction {
 
         // List of selected ways
         ArrayList<Way> selectedWays = new ArrayList<Way>();
-        
+
 
         // For every selected way
         for (OsmPrimitive osm : Main.main.getCurrentDataSet().getSelected()) {
@@ -102,7 +102,7 @@ public class MultipolyAction extends JosmAction {
 
             RelationMember rm = new RelationMember("outer", way);
             rel.addMember(rm);
-            
+
             for (Iterator<String> keyi = way.getKeys().keySet().iterator() ; keyi.hasNext() ; ) {
                     String key = keyi.next();
                     rel.put(key, way.get(key));

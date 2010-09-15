@@ -9,8 +9,8 @@ public class TagsTable extends JTable {
     /**
      * initialize the table 
      */
-    protected void init() {				
-        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);		
+    protected void init() {             
+        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);      
         setRowSelectionAllowed(true);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
@@ -36,7 +36,7 @@ public class TagsTable extends JTable {
             tcm.getColumn(0).setMinWidth(width);
             tcm.getColumn(0).setMaxWidth(width);
             tcm.getColumn(1).setMinWidth(width);
-            tcm.getColumn(1).setMaxWidth(width);			
+            tcm.getColumn(1).setMaxWidth(width);            
         }
     }
 }
