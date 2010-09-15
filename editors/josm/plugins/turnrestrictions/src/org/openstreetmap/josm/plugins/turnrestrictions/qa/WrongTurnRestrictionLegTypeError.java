@@ -37,7 +37,7 @@ public class WrongTurnRestrictionLegTypeError extends Issue {
     }
 
     @Override
-    public String getText() {		
+    public String getText() {       
         String msg = null;
         switch(leg.getType()){
         case NODE:
@@ -51,8 +51,8 @@ public class WrongTurnRestrictionLegTypeError extends Issue {
             msg = tr("This turn restriction uses the OSM relation <span class=\"object-name\">{0}</span> as member with role <tt>{1}</tt>.",
                     leg.getDisplayName(DefaultNameFormatter.getInstance()),
                     role.toString()
-                );				
-            break;			
+                );              
+            break;          
         }
         return msg + " " + tr("An OSM way is required instead.");
     }
@@ -72,7 +72,7 @@ public class WrongTurnRestrictionLegTypeError extends Issue {
                 model.setToPrimitive(null);
                 break;
             }
-        }		
+        }       
     }
     
     class FixInEditorAction extends AbstractAction {
@@ -90,6 +90,6 @@ public class WrongTurnRestrictionLegTypeError extends Issue {
                 controler.gotoBasicEditor(BasicEditorFokusTargets.TO);
                 break;
             }
-        }		
+        }       
     }
 }

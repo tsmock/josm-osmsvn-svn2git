@@ -120,7 +120,7 @@ public class ExceptValueModel {
      */
     public boolean isStandard() {
         return isStandard;
-    }	
+    }   
     
     /**
      * Tells this model to use standard values only.
@@ -209,5 +209,5 @@ public class ExceptValueModel {
             return false;
         ExceptValueModel other = (ExceptValueModel) obj;
         return getValue().equals(other.getValue());
-    }		
+    }       
 }

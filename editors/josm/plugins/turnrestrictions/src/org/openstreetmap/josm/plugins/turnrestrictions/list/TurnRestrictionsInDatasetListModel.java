@@ -75,8 +75,8 @@ public class TurnRestrictionsInDatasetListModel extends TurnRestrictionsListMode
     
     /* --------------------------------------------------------------------------- */
     /* interface DataSetListener                                                   */
-    /* --------------------------------------------------------------------------- */	
-    public void dataChanged(DataChangedEvent event) {		
+    /* --------------------------------------------------------------------------- */   
+    public void dataChanged(DataChangedEvent event) {       
         OsmDataLayer layer = Main.map.mapView.getEditLayer();
         if (layer == null) {
             setTurnRestrictions(null);
@@ -104,7 +104,7 @@ public class TurnRestrictionsInDatasetListModel extends TurnRestrictionsListMode
         List<Relation> turnRestrictions = filterTurnRestrictions(event.getPrimitives());
         if (!turnRestrictions.isEmpty()) {
             List<Relation> sel = getSelectedTurnRestrictions();
-            for(Relation tr: turnRestrictions) {	
+            for(Relation tr: turnRestrictions) {    
                 // enforce a repaint of the respective turn restriction
                 int idx = getTurnRestrictionIndex(tr);
                 fireContentsChanged(this, idx,idx);
@@ -117,13 +117,13 @@ public class TurnRestrictionsInDatasetListModel extends TurnRestrictionsListMode
         List<Relation> turnRestrictions = filterTurnRestrictions(event.getPrimitives());
         if (!turnRestrictions.isEmpty()) {
             List<Relation> sel = getSelectedTurnRestrictions();
-            for(Relation tr: turnRestrictions) {	
+            for(Relation tr: turnRestrictions) {    
                 // enforce a repaint of the respective turn restriction
                 int idx = getTurnRestrictionIndex(tr);
                 fireContentsChanged(this, idx,idx);
             }
             setSelectedTurnRestrictions(sel);
-        }		
+        }       
     }
 
     public void wayNodesChanged(WayNodesChangedEvent event) {/* ignore */}

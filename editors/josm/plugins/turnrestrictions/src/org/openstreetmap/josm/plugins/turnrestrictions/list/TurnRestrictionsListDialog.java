@@ -63,7 +63,7 @@ public class TurnRestrictionsListDialog extends ToggleDialog{
     /** three actions */
     private NewAction actNew;
     private EditAction actEdit;
-    private DeleteAction actDelete;	 
+    private DeleteAction actDelete;  
     private SelectSelectedTurnRestrictions actSelectSelectedTurnRestrictions;
     private ZoomToAction actZoomTo;
     private SwitchListViewHandler switchListViewHandler;
@@ -76,7 +76,7 @@ public class TurnRestrictionsListDialog extends ToggleDialog{
     
     @Override
     public void showNotify() {
-        pnlTurnRestrictionsInDataSet.registerAsListener();		
+        pnlTurnRestrictionsInDataSet.registerAsListener();      
         pnlTurnRestrictionsInSelection.registerAsListener();
         MapView.addEditLayerChangeListener(actNew);
         actNew.updateEnabledState();
@@ -167,7 +167,7 @@ public class TurnRestrictionsListDialog extends ToggleDialog{
         );
         build();
         HelpUtil.setHelpContext(this, HelpUtil.ht("/Plugins/turnrestrictions#TurnRestrictionToggleDialog"));
-    }	
+    }   
     
     /**
      * Switches between the two list view.
@@ -182,7 +182,7 @@ public class TurnRestrictionsListDialog extends ToggleDialog{
                 pnlContent.remove(currentListView);
             }
             pnlContent.add(view,BorderLayout.CENTER);
-            currentListView = view;						
+            currentListView = view;                     
             view.addListSelectionListener(actEdit);
             view.addListSelectionListener(actDelete);
             view.addListSelectionListener(actSelectSelectedTurnRestrictions);
@@ -192,7 +192,7 @@ public class TurnRestrictionsListDialog extends ToggleDialog{
             actSelectSelectedTurnRestrictions.updateEnabledState();
             actZoomTo.updateEnabledState();
             currentListView.revalidate();
-            currentListView.repaint();			
+            currentListView.repaint();          
         }
 
         public void itemStateChanged(ItemEvent e) {
@@ -201,7 +201,7 @@ public class TurnRestrictionsListDialog extends ToggleDialog{
                 activateListView(pnlTurnRestrictionsInSelection);
                 break;
                 
-            case ItemEvent.DESELECTED:		
+            case ItemEvent.DESELECTED:      
                 activateListView(pnlTurnRestrictionsInDataSet);
                 break;
             }
@@ -447,14 +447,14 @@ public class TurnRestrictionsListDialog extends ToggleDialog{
      * and refreshes the set of road icons 
      *
      */
-    class PreferenceChangeHandler implements PreferenceChangedListener {    	
+    class PreferenceChangeHandler implements PreferenceChangedListener {        
         public void refreshIconSet() {
             pnlTurnRestrictionsInDataSet.initIconSetFromPreferences(Main.pref);
             pnlTurnRestrictionsInSelection.initIconSetFromPreferences(Main.pref);
             repaint();
         }
         
-        public void preferenceChanged(PreferenceChangeEvent evt) {			
+        public void preferenceChanged(PreferenceChangeEvent evt) {          
             if (!evt.getKey().equals(PreferenceKeys.ROAD_SIGNS)) return;
             refreshIconSet();
         }

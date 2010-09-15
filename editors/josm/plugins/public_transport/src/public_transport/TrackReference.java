@@ -31,7 +31,7 @@ public class TrackReference
   public double threshold;
   private StopImporterAction controller = null;
   public boolean inEvent = false;
-    
+
   public TrackReference(GpxTrack track, StopImporterAction controller)
   {
     this.track = track;
@@ -59,7 +59,7 @@ public class TrackReference
         (null, "The GPX file doesn't contain valid trackpoints. "
         + "Please use a GPX file that has trackpoints.", "GPX File Trouble",
      JOptionPane.ERROR_MESSAGE);
-      
+
     this.gpsStartTime = "1970-01-01T00:00:00Z";
     this.gpsSyncTime = this.stopwatchStart;
       }
@@ -69,12 +69,12 @@ public class TrackReference
     this.timeWindow = 20;
     this.threshold = 20;
   }
-  
+
   public GpxTrack getGpxTrack()
   {
     return track;
   }
-    
+
   public int compareTo(TrackReference tr)
   {
     String name = (String)track.getAttributes().get("name");
@@ -87,7 +87,7 @@ public class TrackReference
     }
     return 1;
   }
-    
+
   public String toString()
   {
     String buf = (String)track.getAttributes().get("name");
@@ -95,14 +95,14 @@ public class TrackReference
       return "unnamed";
     return buf;
   }
-    
+
   public void tableChanged(TableModelEvent e)
   {
     if ((e.getType() == TableModelEvent.UPDATE) && (e.getFirstRow() >= 0))
     {
       if (inEvent)
     return;
-      
+
       double time = StopImporterDialog.parseTime
         ((String)stoplistTM.getValueAt(e.getFirstRow(), 0));
       if (time < 0)
@@ -121,7 +121,7 @@ public class TrackReference
       (e.getFirstRow(), (String)stoplistTM.getValueAt(e.getFirstRow(), 0));
     }
   }
-    
+
   public LatLon computeCoor(double time)
   {
     double gpsSyncTime = StopImporterDialog.parseTime(this.gpsSyncTime);
@@ -130,7 +130,7 @@ public class TrackReference
       gpsSyncTime += 24*60*60;
     double timeDelta = gpsSyncTime - StopImporterDialog.parseTime(stopwatchStart);
     time += timeDelta;
-    
+
     WayPoint wayPoint = null;
     WayPoint lastWayPoint = null;
     double wayPointTime = 0;
@@ -154,7 +154,7 @@ public class TrackReference
       if (wayPointTime >= time)
     break;
     }
-    
+
     double lat = 0;
     if ((wayPointTime == lastWayPointTime) || (lastWayPoint == null))
       lat = wayPoint.getCoor().lat();
@@ -171,10 +171,10 @@ public class TrackReference
       *(time - lastWayPointTime)/(wayPointTime - lastWayPointTime)
       + lastWayPoint.getCoor().lon()
       *(wayPointTime - time)/(wayPointTime - lastWayPointTime);
-      
+
     return new LatLon(lat, lon);
   }
-    
+
   public void relocateNodes()
   {
     for (int i = 0; i < stoplistTM.getNodes().size(); ++i)
@@ -182,7 +182,7 @@ public class TrackReference
       Node node = stoplistTM.nodeAt(i);
       if (node == null)
     continue;
-    
+
       double time = StopImporterDialog.parseTime
         ((String)stoplistTM.getValueAt(i, 0));
       LatLon latLon = computeCoor(time);

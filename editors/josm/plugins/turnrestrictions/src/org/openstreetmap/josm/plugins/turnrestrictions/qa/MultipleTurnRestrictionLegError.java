@@ -58,6 +58,6 @@ public class MultipleTurnRestrictionLegError extends Issue {
         }
         public void actionPerformed(ActionEvent e) {
             getIssuesModel().getNavigationControler().gotoAdvancedEditor();
-        }		
+        }       
     }
 }

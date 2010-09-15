@@ -196,16 +196,16 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
     /**
      * builds the UI
      */
-    protected void build() {    	
+    protected void build() {        
         editorModel = new TurnRestrictionEditorModel(getLayer(), this);
         Container c = getContentPane();
         c.setLayout(new BorderLayout());
         c.add(buildToolBar(), BorderLayout.NORTH);
-        c.add(buildContentPanel(), BorderLayout.CENTER);    	
+        c.add(buildContentPanel(), BorderLayout.CENTER);        
         c.add(buildOkCancelButtonPanel(), BorderLayout.SOUTH);
         
         editorModel.getIssuesModel().addObserver(new IssuesModelObserver());
-        setSize(600,600);    	
+        setSize(600,600);       
     }    
     
     /**
@@ -386,7 +386,7 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
      * The abstract base action for applying the updates of a turn restriction
      * to the dataset.
      */
-    abstract class SavingAction extends AbstractAction {    	
+    abstract class SavingAction extends AbstractAction {        
         protected boolean confirmSaveDespiteOfErrorsAndWarnings(){
             int numErrors = editorModel.getIssuesModel().getNumErrors();
             int numWarnings = editorModel.getIssuesModel().getNumWarnings();
@@ -429,7 +429,7 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
                     options[1], // cancel is default operation
                     HelpUtil.ht("/Plugins/turnrestrictions#PendingErrorsAndWarnings")
             );
-            return ret == 0 /* OK */;    		
+            return ret == 0 /* OK */;           
         }
         
         /**
@@ -478,7 +478,7 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
          * @param deletedMembers the list of members referring to deleted or invisible primitives  
          * @return the confirmation 
          */
-        protected boolean confirmSaveTurnRestrictionWithDeletePrimitives(List<RelationMember> deletedMembers) {    		    		
+        protected boolean confirmSaveTurnRestrictionWithDeletePrimitives(List<RelationMember> deletedMembers) {                     
             StringBuffer sb = new StringBuffer();
             sb.append("<html>");
             sb.append(trn("This turn restriction refers to an object which was deleted outside "
@@ -521,14 +521,14 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
                     options,
                     options[1], // cancel is default
                     null // FIXME: provide help topic
-            );    		
+            );          
             return ret == 0 /* OK button */; 
         }
         
         /**
          * apply updates to a new turn restriction
          */
-        protected boolean applyNewTurnRestriction() {        	
+        protected boolean applyNewTurnRestriction() {           
             Relation newTurnRestriction = new Relation();
             editorModel.apply(newTurnRestriction);
 
@@ -575,7 +575,7 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
          * Apply the updates for an existing turn restriction which has not been changed
          * outside of the turn restriction editor.
          */
-        protected void applyExistingNonConflictingTurnRestriction() {        	
+        protected void applyExistingNonConflictingTurnRestriction() {           
             if (getTurnRestriction().getDataSet() == null) {
                 editorModel.apply(getTurnRestriction());
                 Main.main.undoRedo.add(new AddCommand(getTurnRestriction()));
@@ -756,7 +756,7 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
             updateEnabledState();
         }
         
-        protected void updateEnabledState() {    		
+        protected void updateEnabledState() {           
             Relation tr = getTurnRestriction();
             setEnabled(tr != null && tr.getDataSet() != null);
         }
@@ -823,7 +823,7 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
             }
             Relation tr = getTurnRestriction();
             if (tr == null || tr.getDataSet() == null) return;
-            getLayer().data.setSelected(tr);    		
+            getLayer().data.setSelected(tr);            
             AutoScaleAction.zoomToSelection();
         }
 
@@ -861,7 +861,7 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
             }
             tpEditors.setTitleAt(2, title);
             tpEditors.setEnabledAt(2, numWarnings + numErrors > 0);
-        }    	
+        }       
     }
     
     /**
@@ -873,17 +873,17 @@ public class TurnRestrictionEditor extends JDialog implements NavigationControle
      * Editor. 
      *
      */
-    class PreferenceChangeHandler implements PreferenceChangedListener {    	
+    class PreferenceChangeHandler implements PreferenceChangedListener {        
         public void refreshIconSet() {
             pnlBasicEditor.initIconSetFromPreferences(Main.pref);
         }
         
-        public void preferenceChanged(PreferenceChangeEvent evt) {			
+        public void preferenceChanged(PreferenceChangeEvent evt) {          
             if (evt.getKey().equals(PreferenceKeys.ROAD_SIGNS)){
                 refreshIconSet();
             } else if (evt.getKey().equals(PreferenceKeys.SHOW_VIAS_IN_BASIC_EDITOR)) {
                 pnlBasicEditor.initViasVisibilityFromPreferences(Main.pref);
-            }			
+            }           
         }
     }
 }

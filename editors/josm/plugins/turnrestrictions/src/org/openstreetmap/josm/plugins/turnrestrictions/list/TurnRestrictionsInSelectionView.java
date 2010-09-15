@@ -48,7 +48,7 @@ public class TurnRestrictionsInSelectionView extends AbstractTurnRestrictionsLis
 
     protected void unregisterAsListener() {
         MapView.removeEditLayerChangeListener((EditLayerChangeListener)model);
-        SelectionEventManager.getInstance().removeSelectionListener((SelectionChangedListener)model);		
+        SelectionEventManager.getInstance().removeSelectionListener((SelectionChangedListener)model);       
     }
 
     public TurnRestrictionsInSelectionView() {

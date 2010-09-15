@@ -23,11 +23,11 @@ public class IllegalRestrictionTypeError extends Issue{
     }
 
     @Override
-    public String getText() {		
+    public String getText() {       
         return tr("This turn restriction uses a non-standard restriction type <tt>{0}</tt> for the tag key <tt>restriction</tt>. "
                 + "It is recommended to use standard values only. Please select one in the Basic editor.",
                 value
-                );				
+                );              
     }
     
     class FixInEditorAction extends AbstractAction {
@@ -36,7 +36,7 @@ public class IllegalRestrictionTypeError extends Issue{
             putValue(SHORT_DESCRIPTION, tr("Go to Basic Editor and manually choose a turn restriction type"));
         }
         public void actionPerformed(ActionEvent e) {
-            getIssuesModel().getNavigationControler().gotoBasicEditor(NavigationControler.BasicEditorFokusTargets.RESTRICION_TYPE);			
-        }		
+            getIssuesModel().getNavigationControler().gotoBasicEditor(NavigationControler.BasicEditorFokusTargets.RESTRICION_TYPE);         
+        }       
     }
 }

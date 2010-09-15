@@ -25,11 +25,11 @@ public class IdenticalTurnRestrictionLegsError extends Issue{
     }
 
     @Override
-    public String getText() {		
+    public String getText() {       
         return tr("This turn restriction uses the OSM way <span class=\"object-name\">{0}</span> with role <tt>from</tt> <strong>and</strong> with role <tt>to</tt>. "
                 + "In a turn restriction, the way with role <tt>from</tt> should be different from the way with role <tt>to</tt>, though.",
                 leg.getDisplayName(DefaultNameFormatter.getInstance())
-                );				
+                );              
     }
     
     class DeleteFromAction extends AbstractAction {
@@ -38,8 +38,8 @@ public class IdenticalTurnRestrictionLegsError extends Issue{
             putValue(SHORT_DESCRIPTION, tr("Removes the member with role ''from''"));
         }
         public void actionPerformed(ActionEvent e) {
-            getIssuesModel().getEditorModel().getRelationMemberEditorModel().setFromPrimitive(null);			
-        }		
+            getIssuesModel().getEditorModel().getRelationMemberEditorModel().setFromPrimitive(null);            
+        }       
     }
     
     class DeleteToAction extends AbstractAction {
@@ -48,8 +48,8 @@ public class IdenticalTurnRestrictionLegsError extends Issue{
             putValue(SHORT_DESCRIPTION, tr("Removes the member with role ''to''"));
         }
         public void actionPerformed(ActionEvent e) {
-            getIssuesModel().getEditorModel().getRelationMemberEditorModel().setToPrimitive(null);			
-        }		
+            getIssuesModel().getEditorModel().getRelationMemberEditorModel().setToPrimitive(null);          
+        }       
     }
     
     class FixInEditorAction extends AbstractAction {
@@ -58,7 +58,7 @@ public class IdenticalTurnRestrictionLegsError extends Issue{
             putValue(SHORT_DESCRIPTION, tr("Go to Basic Editor and manually choose members with roles ''from'' and ''to''"));
         }
         public void actionPerformed(ActionEvent e) {
-            getIssuesModel().getNavigationControler().gotoBasicEditor();		
-        }		
+            getIssuesModel().getNavigationControler().gotoBasicEditor();        
+        }       
     }
 }

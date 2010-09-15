@@ -44,7 +44,7 @@ public class AdvancedEditorPanel extends JPanel {
               + "</body></html>"
         );
         pnl.add(msg, BorderLayout.NORTH);
-        pnlTagEditor = new TagEditorPanel(model.getTagEditorModel());	
+        pnlTagEditor = new TagEditorPanel(model.getTagEditorModel());   
         pnlTagEditor.initAutoCompletion(model.getLayer());
         pnl.add(pnlTagEditor, BorderLayout.CENTER);
         return pnl;
@@ -116,7 +116,7 @@ public class AdvancedEditorPanel extends JPanel {
             if (isShowing()) {
                 spEditors.setDividerLocation(0.5);
                 spEditors.removeHierarchyListener(this);
-            }			
-        }		
+            }           
+        }       
     }
 }

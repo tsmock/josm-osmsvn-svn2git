@@ -2,7 +2,7 @@ package public_transport;
 
 // import static org.openstreetmap.josm.tools.I18n.marktr;
 // import static org.openstreetmap.josm.tools.I18n.tr;
-// 
+//
 // import java.awt.BorderLayout;
 // import java.awt.Container;
 // import java.awt.Dimension;
@@ -20,7 +20,7 @@ package public_transport;
 // import java.util.TreeMap;
 // import java.util.TreeSet;
 import java.util.Vector;
-// 
+//
 // import javax.swing.DefaultCellEditor;
 // import javax.swing.DefaultListModel;
 // import javax.swing.JButton;
@@ -42,7 +42,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 // import javax.swing.table.TableCellEditor;
-// 
+//
 // import org.openstreetmap.josm.Main;
 // import org.openstreetmap.josm.actions.JosmAction;
 // import org.openstreetmap.josm.actions.mapmode.DeleteAction;
@@ -63,7 +63,7 @@ public class ItineraryTableModel extends DefaultTableModel
 {
   public Vector<Way> ways = new Vector<Way>();
   public boolean inEvent = false;
-  
+
   public boolean isCellEditable(int row, int column)
   {
     if (column != 1)
@@ -72,13 +72,13 @@ public class ItineraryTableModel extends DefaultTableModel
       return false;
     return true;
   }
-  
+
   public void addRow(Object[] obj)
   {
     ways.addElement(null);
     super.addRow(obj);
   }
-  
+
   public void insertRow(int insPos, Object[] obj)
   {
     if (insPos == -1)
@@ -92,12 +92,12 @@ public class ItineraryTableModel extends DefaultTableModel
       super.insertRow(insPos, obj);
     }
   }
-  
+
   public void addRow(Way way, String role)
   {
     insertRow(-1, way, role);
   }
-  
+
   public void insertRow(int insPos, Way way, String role)
   {
     String[] buf = { "", "" };
@@ -122,18 +122,18 @@ public class ItineraryTableModel extends DefaultTableModel
       super.insertRow(insPos, buf);
     }
   }
-  
+
   public void clear()
   {
     ways.clear();
     super.setRowCount(0);
   }
-  
+
   public void cleanupGaps()
   {
     inEvent = true;
     Node lastNode = null;
-    
+
     for (int i = 0; i < getRowCount(); ++i)
     {
       if (ways.elementAt(i) == null)
@@ -152,7 +152,7 @@ public class ItineraryTableModel extends DefaultTableModel
       }
       if (i >= getRowCount())
     break;
-      
+
       boolean gapRequired = gapNecessary
       (ways.elementAt(i), (String)(getValueAt(i, 1)), lastNode);
       if ((i > 0) && (!gapRequired) && (ways.elementAt(i-1) == null))
@@ -178,7 +178,7 @@ public class ItineraryTableModel extends DefaultTableModel
     }
     inEvent = false;
   }
-  
+
   public void tableChanged(TableModelEvent e)
   {
     if (e.getType() == TableModelEvent.UPDATE)
@@ -189,7 +189,7 @@ public class ItineraryTableModel extends DefaultTableModel
       RoutePatternAction.rebuildWays();
     }
   }
-  
+
   private Node getLastNode(Way way, String role)
   {
     if ((way == null) || (way.isIncomplete()) || (way.getNodesCount() < 1))
@@ -202,7 +202,7 @@ public class ItineraryTableModel extends DefaultTableModel
     return way.getNode(way.getNodesCount() - 1);
     }
   }
-  
+
   private boolean gapNecessary(Way way, String role, Node lastNode)
   {
     if ((way != null) && (!(way.isIncomplete())) && (way.getNodesCount() >= 1))

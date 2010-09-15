@@ -36,7 +36,7 @@ public class RelationMemberTargetCellRenderer extends OsmPrimitivRenderer{
         } else {
             mockCell.setBackground(UIManager.getColor("Panel.background"));
             mockCell.setForeground(UIManager.getColor("Panel.foreground"));
-        }		
-        return mockCell;		
+        }       
+        return mockCell;        
     }
 }

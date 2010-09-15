@@ -84,15 +84,15 @@ public class IssueView extends JPanel{
             pnlActions.setBackground(Color.WHITE);
             for (Action action: issue.getActions()){
                 JButton btn = new JButton(action);
-                pnlActions.add(btn);				
+                pnlActions.add(btn);                
             }
             
-            gc.gridx = 1;			
-            gc.gridy = 1;			
+            gc.gridx = 1;           
+            gc.gridy = 1;           
             gc.fill = GridBagConstraints.HORIZONTAL;
             gc.weighty = 0.0;
             add(pnlActions,gc);
-        }	
+        }   
         
         // set the severity icon 
         switch(issue.getSeverity()){
@@ -102,7 +102,7 @@ public class IssueView extends JPanel{
         case ERROR:
             lblIcon.setIcon(ImageProvider.get("error"));
             break;
-        }		
+        }       
     }
     
     /**
@@ -114,7 +114,7 @@ public class IssueView extends JPanel{
     public IssueView(Issue issue) throws IllegalArgumentException{
         CheckParameterUtil.ensureParameterNotNull(issue, "issue");
         this.issue = issue;
-        build();		
+        build();        
     }
 
     @Override

@@ -20,23 +20,23 @@ public class TrackStoplistDeleteCommand extends Command
       this.name = name;
       this.shelter = shelter;
     }
-    
+
     public Node node;
     public String time;
     public String name;
     public String shelter;
   };
-  
+
   private Vector< Integer > workingLines = null;
   private Vector< NodeTimeName > nodesForUndo = null;
   private TrackStoplistTableModel stoplistTM = null;
-  
+
   public TrackStoplistDeleteCommand(StopImporterAction controller)
   {
     stoplistTM = controller.getCurrentTrack().stoplistTM;
     workingLines = new Vector< Integer >();
     nodesForUndo = new Vector< NodeTimeName >();
-    
+
     // use selected lines or all lines if no line is selected
     int[] selectedLines = controller.getDialog().getStoplistTable().getSelectedRows();
     if (selectedLines.length > 0)
@@ -52,7 +52,7 @@ public class TrackStoplistDeleteCommand extends Command
     workingLines.add(new Integer(i));
     }
   }
-  
+
   public boolean executeCommand()
   {
     nodesForUndo.clear();
@@ -72,7 +72,7 @@ public class TrackStoplistDeleteCommand extends Command
     }
     return true;
   }
-  
+
   public void undoCommand()
   {
     for (int i = 0; i < workingLines.size(); ++i)
@@ -86,13 +86,13 @@ public class TrackStoplistDeleteCommand extends Command
       Main.main.getCurrentDataSet().addPrimitive(ntn.node);
     }
   }
-  
+
   public void fillModifiedData
     (Collection< OsmPrimitive > modified, Collection< OsmPrimitive > deleted,
      Collection< OsmPrimitive > added)
   {
   }
-  
+
   @Override public JLabel getDescription()
   {
     return new JLabel("public_transport.TrackStoplist.Delete");

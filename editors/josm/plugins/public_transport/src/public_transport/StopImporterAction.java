@@ -61,14 +61,14 @@ import org.openstreetmap.josm.io.GpxReader;
 import org.xml.sax.SAXException;
 
 public class StopImporterAction extends JosmAction
-{ 
+{
   private static StopImporterDialog dialog = null;
   private static DefaultListModel tracksListModel = null;
   private static GpxData data = null;
   private static TrackReference currentTrack = null;
   private static WaypointTableModel waypointTM = null;
   public boolean inEvent = false;
-  
+
   public StopImporterAction()
   {
     super(tr("Create Stops from GPX ..."), null,
@@ -79,7 +79,7 @@ public class StopImporterAction extends JosmAction
   {
     return waypointTM;
   }
-  
+
   public StopImporterDialog getDialog()
   {
     return dialog;
@@ -91,7 +91,7 @@ public class StopImporterAction extends JosmAction
       tracksListModel = new DefaultListModel();
     return tracksListModel;
   }
-  
+
   public TrackReference getCurrentTrack()
   {
     return currentTrack;
@@ -100,10 +100,10 @@ public class StopImporterAction extends JosmAction
   public void actionPerformed(ActionEvent event)
   {
     DataSet mainDataSet = Main.main.getCurrentDataSet();
-    
+
     if (dialog == null)
       dialog = new StopImporterDialog(this);
-    
+
     dialog.setVisible(true);
 
     if (tr("Create Stops from GPX ...").equals(event.getActionCommand()))
@@ -114,18 +114,18 @@ public class StopImporterAction extends JosmAction
     curDir = ".";
       }
       JFileChooser fc = new JFileChooser(new File(curDir));
-      fc.setDialogTitle("Select GPX file");  
+      fc.setDialogTitle("Select GPX file");
       fc.setMultiSelectionEnabled(false);
-      
+
       int answer = fc.showOpenDialog(Main.parent);
       if (answer != JFileChooser.APPROVE_OPTION)
     return;
-      
+
       if (!fc.getCurrentDirectory().getAbsolutePath().equals(curDir))
     Main.pref.put("lastDirectory", fc.getCurrentDirectory().getAbsolutePath());
-      
+
       importData(fc.getSelectedFile());
-      
+
       refreshData();
     }
     else if ("stopImporter.settingsGPSTimeStart".equals(event.getActionCommand()))
@@ -188,7 +188,7 @@ public class StopImporterAction extends JosmAction
 
   private void importData(final File file)
   {
-    try 
+    try
     {
       InputStream is;
       if (file.getName().endsWith(".gpx.gz"))
@@ -208,13 +208,13 @@ public class StopImporterAction extends JosmAction
       final GpxReader r = new GpxReader(is);
       final boolean parsedProperly = r.parse(true);
       data = r.data;
-      
+
       if (!parsedProperly)
       {
     JOptionPane.showMessageDialog(null, tr("Error occured while parsing gpx file {0}. Only part of the file will be available", file.getName()));
       }
     }
-    catch (FileNotFoundException e) 
+    catch (FileNotFoundException e)
     {
       e.printStackTrace();
       JOptionPane.showMessageDialog(null, tr("File \"{0}\" does not exist", file.getName()));
@@ -243,13 +243,13 @@ public class StopImporterAction extends JosmAction
     GpxTrack track = trackIter.next();
     trackRefs.add(new TrackReference(track, this));
       }
-      
+
       Collections.sort(trackRefs);
 
       Iterator< TrackReference > iter = trackRefs.iterator();
       while (iter.hasNext())
     tracksListModel.addElement(iter.next());
-      
+
       waypointTM = new WaypointTableModel(this);
       Iterator< WayPoint > waypointIter = data.waypoints.iterator();
       while (waypointIter.hasNext())
@@ -264,23 +264,23 @@ public class StopImporterAction extends JosmAction
       JOptionPane.showMessageDialog
       (null, "The GPX file contained no tracks or waypoints.", "No data found",
        JOptionPane.ERROR_MESSAGE);
-      
+
       System.out.println("Public Transport: StopImporter: No data found");
     }
   }
-  
+
   public void tracksSelectionChanged(int selectedPos)
   {
     if (selectedPos >= 0)
     {
       currentTrack = ((TrackReference)tracksListModel.elementAt(selectedPos));
       dialog.setTrackValid(true);
-      
+
       //Prepare Settings
       dialog.setSettings
       (currentTrack.gpsSyncTime, currentTrack.stopwatchStart,
        currentTrack.timeWindow, currentTrack.threshold);
-      
+
       //Prepare Stoplist
       dialog.setStoplistTableModel
           (((TrackReference)tracksListModel.elementAt(selectedPos)).stoplistTM);
@@ -296,7 +296,7 @@ public class StopImporterAction extends JosmAction
   {
     return createNode(latLon, dialog.getStoptype(), name);
   }
-    
+
   public static Node createNode(LatLon latLon, String type, String name)
   {
     Node node = new Node(latLon);
@@ -307,9 +307,9 @@ public class StopImporterAction extends JosmAction
       JOptionPane.showMessageDialog(null, "There exists no dataset."
       + " Try to download data from the server or open an OSM file.",
    "No data found", JOptionPane.ERROR_MESSAGE);
-      
+
       System.out.println("Public Transport: StopInserter: No data found");
-        
+
       return null;
     }
     Main.main.getCurrentDataSet().addPrimitive(node);
@@ -332,7 +332,7 @@ public class StopImporterAction extends JosmAction
     else if ("rail".equals(type))
       node.put("railway", "station");
   }
-  
+
   /* returns a collection of all selected lines or
      a collection of all lines otherwise */
   public static Vector< Integer > getConsideredLines(JTable table)
@@ -357,9 +357,9 @@ public class StopImporterAction extends JosmAction
   {
     if (Main.main.getCurrentDataSet() == null)
       return;
-      
+
     table.clearSelection();
-      
+
     for (int i = 0; i < table.getRowCount(); ++i)
     {
       if ((nodes.elementAt(i) != null) &&
@@ -367,7 +367,7 @@ public class StopImporterAction extends JosmAction
     table.addRowSelectionInterval(i, i);
     }
   }
-  
+
   /* shows the nodes that correspond to the marked lines in the table.
      If no lines are marked in the table, show all nodes from the vector */
   public static void showNodesFromTable(JTable table, Vector< Node > nodes)
@@ -385,7 +385,7 @@ public class StopImporterAction extends JosmAction
     box.enlargeBoundingBox();
     Main.map.mapView.recalculateCenterScale(box);
   }
-  
+
   /* marks the nodes that correspond to the marked lines in the table.
   If no lines are marked in the table, mark all nodes from the vector */
   public static void markNodesFromTable(JTable table, Vector< Node > nodes)
@@ -400,28 +400,28 @@ public class StopImporterAction extends JosmAction
     Main.main.getCurrentDataSet().addSelected(nodes.elementAt(j));
     }
   }
-  
+
   public static String timeOf(double t)
   {
     t -= Math.floor(t/24/60/60)*24*60*60;
-    
+
     int hour = (int)Math.floor(t/60/60);
     t -=  Math.floor(t/60/60)*60*60;
     int minute = (int)Math.floor(t/60);
     t -=  Math.floor(t/60)*60;
     double second = t;
-    
+
     Format format = new DecimalFormat("00");
     Format formatS = new DecimalFormat("00.###");
     return (format.format(hour) + ":" + format.format(minute) + ":"
     + formatS.format(second));
   }
-  
+
   public Action getFocusWaypointNameAction()
   {
     return new FocusWaypointNameAction();
   }
-  
+
   public Action getFocusWaypointShelterAction(String shelter)
   {
     return new FocusWaypointShelterAction(shelter);
@@ -449,7 +449,7 @@ public class StopImporterAction extends JosmAction
   {
     return new FocusTrackStoplistNameAction();
   }
-  
+
   public Action getFocusTrackStoplistShelterAction(String shelter)
   {
     return new FocusTrackStoplistShelterAction(shelter);
@@ -495,16 +495,16 @@ public class StopImporterAction extends JosmAction
       waypointTM.inEvent = false;
     }
   };
-  
+
   private class FocusWaypointShelterAction extends AbstractAction
   {
     private String defaultShelter = null;
-    
+
     public FocusWaypointShelterAction(String defaultShelter)
     {
       this.defaultShelter = defaultShelter;
     }
-    
+
     public void actionPerformed(ActionEvent e)
     {
       JTable table = dialog.getWaypointsTable();
@@ -525,7 +525,7 @@ public class StopImporterAction extends JosmAction
           (table, defaultShelter, true, row, 2);
     }
   };
-  
+
   private class FocusTrackStoplistNameAction extends AbstractAction
   {
     public void actionPerformed(ActionEvent e)
@@ -548,16 +548,16 @@ public class StopImporterAction extends JosmAction
       currentTrack.inEvent = false;
     }
   };
-  
+
   private class FocusTrackStoplistShelterAction extends AbstractAction
   {
     private String defaultShelter = null;
-    
+
     public FocusTrackStoplistShelterAction(String defaultShelter)
     {
       this.defaultShelter = defaultShelter;
     }
-    
+
     public void actionPerformed(ActionEvent e)
     {
       JTable table = dialog.getStoplistTable();

@@ -32,7 +32,7 @@ public class TurnRestrictionTypeRenderer extends JLabel implements ListCellRende
                 icons.put(type,icon);
             } catch(Exception e){
                 System.out.println(tr("Warning: failed to load icon for turn restriction type ''{0}''", type.getTagValue()));
-                e.printStackTrace();				
+                e.printStackTrace();                
             }
         }
     }
@@ -48,7 +48,7 @@ public class TurnRestrictionTypeRenderer extends JLabel implements ListCellRende
             setForeground(UIManager.getColor("List.selectionForeground"));
         } else {
             setBackground(UIManager.getColor("List.background"));
-            setForeground(UIManager.getColor("List.foreground"));			
+            setForeground(UIManager.getColor("List.foreground"));           
         }
     }
     
@@ -58,7 +58,7 @@ public class TurnRestrictionTypeRenderer extends JLabel implements ListCellRende
      * 
      * @param prefs the JOSM preferences 
      */
-    public void initIconSetFromPreferences(Preferences prefs){		
+    public void initIconSetFromPreferences(Preferences prefs){      
         iconSet = prefs.get(PreferenceKeys.ROAD_SIGNS, "set-a");
         iconSet = iconSet.trim().toLowerCase();
         if (!iconSet.equals("set-a") && !iconSet.equals("set-b")) {
@@ -83,5 +83,5 @@ public class TurnRestrictionTypeRenderer extends JLabel implements ListCellRende
             setIcon(icons.get(type));
         }
         return this;
-    }	
+    }   
 }

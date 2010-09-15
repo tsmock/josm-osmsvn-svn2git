@@ -141,7 +141,7 @@ public class ViaListModel extends AbstractListModel implements PrimitiveIdListPr
         selectionModel.clearSelection();
         for(int row: selectedRows) {
             selectionModel.addSelectionInterval(row, row);
-        }		
+        }       
     }
     
     /**
@@ -187,7 +187,7 @@ public class ViaListModel extends AbstractListModel implements PrimitiveIdListPr
         selectionModel.clearSelection();
         for(int i=targetRow; i< targetRow + primitives.size();i++) {
             selectionModel.addSelectionInterval(i, i);
-        }			
+        }           
     }
 
     /**
@@ -212,7 +212,7 @@ public class ViaListModel extends AbstractListModel implements PrimitiveIdListPr
     protected void refresh() {
         List<OsmPrimitive> sel = getSelectedVias();
         vias.clear();
-        vias.addAll(model.getVias());		
+        vias.addAll(model.getVias());       
         fireContentsChanged(this, 0, getSize());
         setSelectedVias(sel);
     }
@@ -241,5 +241,5 @@ public class ViaListModel extends AbstractListModel implements PrimitiveIdListPr
     /* ----------------------------------------------------------------------- */
     public void update(Observable o, Object arg) {
         refresh();
-    }	
+    }   
 }

@@ -66,7 +66,7 @@ public class JosmSelectionPanel extends JPanel {
         add(new JScrollPane(lstSelection), BorderLayout.CENTER);
         add(new JLabel(tr("Selection")), BorderLayout.NORTH);
         
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));		
+        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));        
         actCopy = new CopyAction();
         lstSelection.addMouseListener(new PopupLauncher());
     }
@@ -97,14 +97,14 @@ public class JosmSelectionPanel extends JPanel {
     public void unwireListeners() {
         MapView.removeEditLayerChangeListener(model);
         DatasetEventManager.getInstance().removeDatasetListener(model);
-        SelectionEventManager.getInstance().removeSelectionListener(model);		
+        SelectionEventManager.getInstance().removeSelectionListener(model);     
     }
     
     class PopupLauncher extends PopupMenuLauncher {
         @Override
         public void launch(MouseEvent evt) {
             new PopupMenu().show(lstSelection, evt.getX(), evt.getY());
-        }		
+        }       
     }
     
     class PopupMenu extends JPopupMenu {

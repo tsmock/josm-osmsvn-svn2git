@@ -52,8 +52,8 @@ public class MissingTurnRestrictionLegError extends Issue {
                 break;
             case TO:
                 putValue(SHORT_DESCRIPTION, tr("Add an OSM way with role ''to''"));
-                break;				
-            }			
+                break;              
+            }           
         }
         public void actionPerformed(ActionEvent e) {
             switch(role){
@@ -62,8 +62,8 @@ public class MissingTurnRestrictionLegError extends Issue {
                 break;
             case TO:
                 getIssuesModel().getNavigationControler().gotoBasicEditor(TO);
-                break;				
-            }			
-        }		
+                break;              
+            }           
+        }       
     }
 }

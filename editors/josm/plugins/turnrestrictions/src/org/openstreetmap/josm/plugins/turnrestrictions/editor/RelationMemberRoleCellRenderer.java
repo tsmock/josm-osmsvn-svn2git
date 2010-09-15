@@ -32,7 +32,7 @@ private JLabel mockCell;
         } else {
             mockCell.setBackground(UIManager.getColor("Panel.background"));
             mockCell.setForeground(UIManager.getColor("Panel.foreground"));
-        }		
+        }       
         return mockCell;
     }
 }

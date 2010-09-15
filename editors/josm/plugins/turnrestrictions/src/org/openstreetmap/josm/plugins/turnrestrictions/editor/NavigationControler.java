@@ -6,8 +6,8 @@ public interface NavigationControler {
         FROM,
         TO,
         VIA
-    }	
-    void gotoBasicEditor();	
+    }   
+    void gotoBasicEditor(); 
     void gotoAdvancedEditor();
-    void gotoBasicEditor(BasicEditorFokusTargets focusTarget);	
+    void gotoBasicEditor(BasicEditorFokusTargets focusTarget);  
 }

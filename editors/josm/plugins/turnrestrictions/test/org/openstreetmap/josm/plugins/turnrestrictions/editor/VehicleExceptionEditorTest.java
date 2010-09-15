@@ -23,7 +23,7 @@ public class VehicleExceptionEditorTest extends JFrame {
         c.setLayout(new BorderLayout());
         layer = new OsmDataLayer(new DataSet(), "test", null);
 
-        model = new TurnRestrictionEditorModel(layer, new MockNavigationControler());		
+        model = new TurnRestrictionEditorModel(layer, new MockNavigationControler());       
         editor = new VehicleExceptionEditor(model);
         c.add(editor, BorderLayout.CENTER);
         
@@ -33,7 +33,7 @@ public class VehicleExceptionEditorTest extends JFrame {
     public VehicleExceptionEditorTest(){
         build();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(500,500);		
+        setSize(500,500);       
     }
     
     public static void main(String args[]){

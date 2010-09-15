@@ -171,7 +171,7 @@ public class VehicleExceptionEditor extends JPanel implements Observer{
         add(buildMessagePanel(), gc);
         
         gc.gridy=1;
-        add(buildStandardInputPanel(), gc);		
+        add(buildStandardInputPanel(), gc);     
     }
     
     /**
@@ -321,7 +321,7 @@ public class VehicleExceptionEditor extends JPanel implements Observer{
         }
 
         public void actionPerformed(ActionEvent e) {
-            persist();			
+            persist();          
         }
     }
 }

@@ -50,7 +50,7 @@ public class BasicEditorPanel extends VerticallyScrollablePanel {
         gc.weightx = 0.0;
         
         // the editor for selecting the 'from' leg
-        gc.insets = new Insets(0,0,5,5);	
+        gc.insets = new Insets(0,0,5,5);    
         add(new JLabel(tr("Type:")), gc);
         
         gc.gridx = 1;
@@ -59,7 +59,7 @@ public class BasicEditorPanel extends VerticallyScrollablePanel {
 
         // the editor for selecting the 'from' leg
         gc.gridx = 0;
-        gc.gridy = 1;	
+        gc.gridy = 1;   
         gc.weightx = 0.0;
         add(new JLabel(tr("From:")), gc);
         
@@ -71,7 +71,7 @@ public class BasicEditorPanel extends VerticallyScrollablePanel {
         gc.gridx = 0;
         gc.gridy = 2;
         gc.weightx = 0.0;
-        gc.insets = new Insets(0,0,5,5);	
+        gc.insets = new Insets(0,0,5,5);    
         add(new JLabel(tr("To:")), gc);
         
         gc.gridx = 1;
@@ -82,7 +82,7 @@ public class BasicEditorPanel extends VerticallyScrollablePanel {
         gc.gridx = 0;
         gc.gridy = 3;
         gc.weightx = 0.0;
-        gc.insets = new Insets(0,0,5,5);	
+        gc.insets = new Insets(0,0,5,5);    
         add(lblVias = new JLabel(tr("Vias:")), gc);
         
         gc.gridx = 1;
@@ -100,7 +100,7 @@ public class BasicEditorPanel extends VerticallyScrollablePanel {
         gc.gridy = 4;
         gc.weightx = 1.0;
         gc.gridwidth = 2;
-        gc.insets = new Insets(0,0,5,5);	
+        gc.insets = new Insets(0,0,5,5);    
         add(vehicleExceptionsEditor, gc);
         
         // just a filler - grabs remaining space 
@@ -151,7 +151,7 @@ public class BasicEditorPanel extends VerticallyScrollablePanel {
             lstVias.requestFocusInWindow();
             break;
         }
-    }	
+    }   
     
     /**
      * Initializes the set of icons used from the preference key
@@ -159,7 +159,7 @@ public class BasicEditorPanel extends VerticallyScrollablePanel {
      * 
      * @param prefs the JOSM preferences 
      */
-    public void initIconSetFromPreferences(Preferences prefs){		
+    public void initIconSetFromPreferences(Preferences prefs){      
         cbTurnRestrictions.initIconSetFromPreferences(prefs);
     }
     

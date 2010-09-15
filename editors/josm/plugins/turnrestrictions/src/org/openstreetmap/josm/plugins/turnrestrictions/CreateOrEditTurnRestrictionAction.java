@@ -40,7 +40,7 @@ public class CreateOrEditTurnRestrictionAction extends JosmAction {
         InputMap im = Main.contentPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         Object actionMapKey = im.get(keyStroke);
         if (actionMapKey != null && !actionMapKey.toString().equals("turnrestrictions:create-or-edit")) {
-            System.out.println(tr("Warning: turnrestrictions plugin replaces already existing action ''{0}'' behind shortcut ''{1}'' by action ''{2}''", actionMapKey.toString(), keyStroke.toString(), "turnrestrictions:create-or-edit"));			
+            System.out.println(tr("Warning: turnrestrictions plugin replaces already existing action ''{0}'' behind shortcut ''{1}'' by action ''{2}''", actionMapKey.toString(), keyStroke.toString(), "turnrestrictions:create-or-edit"));            
         }
         KeyStroke[] keys = im.keys();
         if (keys != null){
@@ -93,7 +93,7 @@ public class CreateOrEditTurnRestrictionAction extends JosmAction {
             null, // shortcut is going to be registered later 
             false 
         );
-    }	
+    }   
     
     public void actionPerformed(ActionEvent e) {
         OsmDataLayer layer = Main.main.getEditLayer();

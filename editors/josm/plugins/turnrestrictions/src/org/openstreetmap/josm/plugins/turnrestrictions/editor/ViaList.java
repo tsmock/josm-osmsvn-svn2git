@@ -69,7 +69,7 @@ public class ViaList extends JList{
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setSelectionModel(selectionModel);
         setCellRenderer(new OsmPrimitivRenderer());
-        setDragEnabled(true);		
+        setDragEnabled(true);       
         setTransferHandler(transferHandler =new ViaListTransferHandler(model));
         setVisibleRowCount(4);
         
@@ -89,7 +89,7 @@ public class ViaList extends JList{
         actPaste = new PasteAction();
         getSelectionModel().addListSelectionListener(actCopy);
         
-        addMouseListener(new ViaListPopupMenuLaucher());			
+        addMouseListener(new ViaListPopupMenuLaucher());            
     }
     
     /**
@@ -109,18 +109,18 @@ public class ViaList extends JList{
         public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
             // a drag operation on itself is always allowed
             if (isViaListInDragOperation) return true;
-            return isSupportedFlavor(transferFlavors);			
+            return isSupportedFlavor(transferFlavors);          
         }
 
         @SuppressWarnings("unchecked")
         @Override
-        public boolean importData(JComponent comp, Transferable t) {	
+        public boolean importData(JComponent comp, Transferable t) {    
             if (!isSupportedFlavor(t.getTransferDataFlavors())) return false;
             if (isViaListInDragOperation) {
                 // this is a drag operation on itself
                 int targetRow = getSelectedIndex();
                 if (targetRow <0) return true;
-                model.moveVias(selectedRowsMemento, targetRow);				
+                model.moveVias(selectedRowsMemento, targetRow);             
             } else {
                 // this is a drag operation from another component
                 try {
@@ -146,20 +146,20 @@ public class ViaList extends JList{
             isViaListInDragOperation = true;
             selectedRowsMemento = model.getSelectedRows();
             super.exportAsDrag(comp, e, action);
-        }		
-    }	
+        }       
+    }   
     
     class DeleteAction extends AbstractAction implements ListSelectionListener {
         public DeleteAction() {
             putValue(NAME, tr("Remove"));
             putValue(SMALL_ICON, ImageProvider.get("dialogs", "delete"));
-            putValue(SHORT_DESCRIPTION,tr("Remove the currently selected vias"));		
-            putValue(ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0));			
+            putValue(SHORT_DESCRIPTION,tr("Remove the currently selected vias"));       
+            putValue(ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0));         
             updateEnabledState();
         }
         
         public void valueChanged(ListSelectionEvent e) {
-            updateEnabledState();			
+            updateEnabledState();           
         }
         
         public void updateEnabledState() {
@@ -167,11 +167,11 @@ public class ViaList extends JList{
         }
 
         public void actionPerformed(ActionEvent e) {
-            model.removeSelectedVias();			
+            model.removeSelectedVias();         
         }
     }
     
-    class MoveDownAction extends AbstractAction implements ListSelectionListener{		
+    class MoveDownAction extends AbstractAction implements ListSelectionListener{       
         public MoveDownAction(){
             putValue(NAME, tr("Move down"));
             putValue(SHORT_DESCRIPTION, tr("Move the selected vias down by one position"));
@@ -193,11 +193,11 @@ public class ViaList extends JList{
         }
         
         public void valueChanged(ListSelectionEvent e) {
-            updateEnabledState();			
+            updateEnabledState();           
         }
     }
     
-    class MoveUpAction extends AbstractAction implements ListSelectionListener{		
+    class MoveUpAction extends AbstractAction implements ListSelectionListener{     
         public MoveUpAction() {
             putValue(NAME, tr("Move up"));
             putValue(SHORT_DESCRIPTION, tr("Move the selected vias up by one position"));
@@ -219,7 +219,7 @@ public class ViaList extends JList{
         }
         
         public void valueChanged(ListSelectionEvent e) {
-            updateEnabledState();			
+            updateEnabledState();           
         }
     }
 
@@ -234,7 +234,7 @@ public class ViaList extends JList{
             delegate = ViaList.this.getActionMap().get("copy");
         }
 
-        public void actionPerformed(ActionEvent e) {			
+        public void actionPerformed(ActionEvent e) {            
             delegate.actionPerformed(e);
         }
 
@@ -254,7 +254,7 @@ public class ViaList extends JList{
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             for (DataFlavor df: clipboard.getAvailableDataFlavors()) {
                 if (df.equals(PrimitiveIdTransferable.PRIMITIVE_ID_LIST_FLAVOR)) return true;
-            }			
+            }           
             // FIXME: check whether there are selected objects in the JOSM copy/paste buffer  
             return false;
         }
@@ -273,14 +273,14 @@ public class ViaList extends JList{
         }
         
         public void actionPerformed(ActionEvent e) {
-            delegate.actionPerformed(e);			
+            delegate.actionPerformed(e);            
         }
     }
     
     class ViaListPopupMenu extends JPopupMenu {
         public ViaListPopupMenu() {
             JMenuItem item = add(actCopy);
-            item.setTransferHandler(transferHandler);			
+            item.setTransferHandler(transferHandler);           
             item = add(actPaste);
             actPaste.updateEnabledState();
             item.setTransferHandler(transferHandler);
@@ -302,6 +302,6 @@ public class ViaList extends JList{
                 }
             }
             new ViaListPopupMenu().show(ViaList.this, evt.getX(), evt.getY());
-        }		
-    }	
+        }       
+    }   
 }

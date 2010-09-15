@@ -116,13 +116,13 @@ public class RelationMemberTable extends JTable {
         public void valueChanged(ListSelectionEvent e) {
             updateEnabledState();
         }
-    }	
+    }   
     
     /**
      * The action for pasting into the relation member table
      * 
      */
-    class PasteAction extends AbstractAction{		
+    class PasteAction extends AbstractAction{       
         public PasteAction() {
             putValue(NAME, tr("Paste"));
             putValue(SHORT_DESCRIPTION, tr("Insert new relation members from object in the clipboard"));
@@ -158,9 +158,9 @@ public class RelationMemberTable extends JTable {
                 e.printStackTrace();
             } 
         }
-    }	
+    }   
 
-    class MoveDownAction extends AbstractAction implements ListSelectionListener{	
+    class MoveDownAction extends AbstractAction implements ListSelectionListener{   
         private KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.ALT_DOWN_MASK);
         public MoveDownAction(){
             putValue(NAME, tr("Move down"));
@@ -179,7 +179,7 @@ public class RelationMemberTable extends JTable {
         }
         
         public void valueChanged(ListSelectionEvent e) {
-            updateEnabledState();			
+            updateEnabledState();           
         }
         public KeyStroke getKeyStroke() {
             return keyStroke;
@@ -206,7 +206,7 @@ public class RelationMemberTable extends JTable {
         }
         
         public void valueChanged(ListSelectionEvent e) {
-            updateEnabledState();			
+            updateEnabledState();           
         }
         public KeyStroke getKeyStroke() {
             return keyStroke;
@@ -222,7 +222,7 @@ public class RelationMemberTable extends JTable {
                 getColumnModel().getSelectionModel().setSelectionInterval(0, 1);
             }
             new PopupMenu().show(RelationMemberTable.this, evt.getX(), evt.getY());
-        }		
+        }       
     }
     
     class PopupMenu extends JPopupMenu {
@@ -281,8 +281,8 @@ public class RelationMemberTable extends JTable {
      * disable colum selection model.  
      *
      */
-    class RelationMemberTableDropTarget extends DropTarget{		
-        private boolean dropAccepted = false;	
+    class RelationMemberTableDropTarget extends DropTarget{     
+        private boolean dropAccepted = false;   
         
         /**
          * Replies true if {@code transferFlavors} includes the data flavor {@see PrimitiveIdTransferable#PRIMITIVE_ID_LIST_FLAVOR}.
@@ -295,12 +295,12 @@ public class RelationMemberTable extends JTable {
                 if (df.equals(PrimitiveIdTransferable.PRIMITIVE_ID_LIST_FLAVOR)) return true;
             }
             return false;
-        }		
+        }       
         
         public synchronized void dragEnter(DropTargetDragEvent dtde) {
             if (isSupportedFlavor(dtde.getCurrentDataFlavors())) {
                 if ((dtde.getSourceActions() & DnDConstants.ACTION_COPY_OR_MOVE) != 0){
-                    dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);		
+                    dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);      
                     setColumnSelectionAllowed(false);
                     dropAccepted  = true;
                 } else {
@@ -322,7 +322,7 @@ public class RelationMemberTable extends JTable {
             int selectedRow = getSelectionModel().getMinSelectionIndex();
             if (row >= 0 && row != selectedRow){
                 getSelectionModel().setSelectionInterval(row, row);
-            }			
+            }           
         }
 
         public synchronized void drop(DropTargetDropEvent dtde) {

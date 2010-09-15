@@ -29,7 +29,7 @@ public class BasicEditorPanelTest extends JFrame {
             }
 
             public void gotoBasicEditor(BasicEditorFokusTargets focusTarget) {
-            }			
+            }           
         };
         model = new TurnRestrictionEditorModel(layer, controler);
         
@@ -37,7 +37,7 @@ public class BasicEditorPanelTest extends JFrame {
         
         Container c = getContentPane();
         c.setLayout(new BorderLayout());
-        c.add(panel, BorderLayout.CENTER);		
+        c.add(panel, BorderLayout.CENTER);      
         setSize(600,600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
