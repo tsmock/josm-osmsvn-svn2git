@@ -46,10 +46,6 @@
   path = applications/editors/josm/plugins/cadastre-fr
   url = ../cadastre-fr
   branch = master
-[submodule "applications/editors/josm/plugins/calculator"]
-  path = applications/editors/josm/plugins/calculator
-  url = ../calculator
-  branch = master
 [submodule "applications/editors/josm/plugins/colorscheme"]
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
