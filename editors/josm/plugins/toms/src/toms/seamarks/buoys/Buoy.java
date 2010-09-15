@@ -191,8 +191,6 @@ abstract public class Buoy extends SeaMark {
     }
 
     public void setLightColour(String lightColour) {
-        if (SectorIndex == 0)
-            LightColour = new String[10];
         LightColour[SectorIndex] = lightColour;
     }
 
