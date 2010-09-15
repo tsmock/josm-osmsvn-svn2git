@@ -83,8 +83,8 @@ public class Toms extends Plugin {
         int len;
 
         try {
-            JarFile file = new JarFile(pluginDirName  + "/toms.jar");			
-            FileOutputStream fos = new FileOutputStream(pluginDirName + "/tplug/ifc.jar");			
+            JarFile file = new JarFile(pluginDirName  + "/toms.jar");           
+            FileOutputStream fos = new FileOutputStream(pluginDirName + "/tplug/ifc.jar");          
             JarOutputStream jos = new JarOutputStream(fos);
             BufferedOutputStream oos = new BufferedOutputStream( jos);
 

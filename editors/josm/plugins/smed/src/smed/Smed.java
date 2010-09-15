@@ -25,21 +25,21 @@ import smed.plug.util.SmedPluginLoader;
 import smed.tabs.SmedTabAction;
 
 public class Smed extends Plugin{
-    
+
     private JMenuItem item;
     private SmedTabAction SmedTab;
-    
+
     public Smed(PluginInformation info) {
         super(info);
-        
+
         String os = "";
         String userHome = "";
-                
+
         File pluginDir = Main.pref.getPluginsDirectory();
         String pluginDirName = pluginDir.getAbsolutePath();
         File splug = new File(pluginDirName + "/splug");
         if(!splug.exists()) splug.mkdir();
-        
+
         // build smed_ifc.jar from smed.jar
         JarEntry ent = null;
         BufferedInputStream inp = null;
@@ -48,8 +48,8 @@ public class Smed extends Plugin{
         int len;
 
         try {
-            JarFile file = new JarFile(pluginDirName  + "/smed.jar");			
-            FileOutputStream fos = new FileOutputStream(pluginDirName + "/splug/smed_ifc.jar");			
+            JarFile file = new JarFile(pluginDirName  + "/smed.jar");
+            FileOutputStream fos = new FileOutputStream(pluginDirName + "/splug/smed_ifc.jar");
             JarOutputStream jos = new JarOutputStream(fos);
             BufferedOutputStream oos = new BufferedOutputStream( jos);
 
@@ -58,19 +58,19 @@ public class Smed extends Plugin{
             entName = ent.getName();
 
             jos.putNextEntry(new JarEntry(entName));
-            
+
             while ((len = inp.read(buffer)) > 0) {
                 oos.write(buffer, 0, len);
             }
 
             oos.flush();
             inp.close();
-        
+
             ent = file.getJarEntry("smed/plug/ifc/SmedPluginManager.class");
             inp = new BufferedInputStream(file.getInputStream( ent ));
             entName = ent.getName();
             jos.putNextEntry(new JarEntry(entName));
-            
+
             while ((len = inp.read(buffer)) > 0) {
                 oos.write(buffer, 0, len);
             }
@@ -80,12 +80,12 @@ public class Smed extends Plugin{
             fos.flush();
             fos.close();
             inp.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
 
-        
+
         // add smed_ifc.jar to classpath (josm need this archive, or perhaps only the interface)
         File f = new java.io.File(pluginDirName + "/splug/smed_ifc.jar");
         ClassLoader myClassLoader = Thread.currentThread().getContextClassLoader();
@@ -97,14 +97,14 @@ public class Smed extends Plugin{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         SmedTab = new SmedTabAction();
         item = Main.main.menu.toolsMenu.add(SmedTab);
-        
+
         item.setEnabled(false);
 
     }
-    
+
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
         if (oldFrame == null && newFrame != null) {
