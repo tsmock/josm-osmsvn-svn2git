@@ -5,7 +5,9 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.preferences.PreferenceSetting;
