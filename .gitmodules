@@ -190,6 +190,10 @@
   path = applications/editors/josm/plugins/slippymap
   url = ../slippymap
   branch = master
+[submodule "applications/editors/josm/plugins/smed"]
+  path = applications/editors/josm/plugins/smed
+  url = ../smed
+  branch = master
 [submodule "applications/editors/josm/plugins/surveyor"]
   path = applications/editors/josm/plugins/surveyor
   url = ../surveyor
