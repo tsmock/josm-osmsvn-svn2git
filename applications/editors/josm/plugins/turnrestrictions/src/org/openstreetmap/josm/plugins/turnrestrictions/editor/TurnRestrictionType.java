@@ -11,7 +11,7 @@ public enum TurnRestrictionType {
     NO_RIGHT_TURN("no_right_turn", tr("No Right Turn")),
     NO_LEFT_TURN("no_left_turn", tr("No Left Turn")),
     NO_U_TURN("no_u_turn", tr("No U-Turn")),
-    NO_STRAIGHT_ON("no_straight_on", tr("No Straight On")),	
+    NO_STRAIGHT_ON("no_straight_on", tr("No Straight On")), 
     ONLY_RIGHT_TURN("only_right_turn", tr("Only Right Turn")),
     ONLY_LEFT_TURN("only_left_turn", tr("Only Left Turn")),
     ONLY_STRAIGHT_ON("only_straight_on", tr("Only Straight On"));
@@ -38,7 +38,7 @@ public enum TurnRestrictionType {
      */
     public String getDisplayName() {
         return displayName;
-    }	
+    }   
     
     /**
      * Replies the enumeration value for a given tag value. null,

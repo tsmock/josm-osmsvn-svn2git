@@ -52,7 +52,7 @@ public class OhePlugin extends Plugin {
 
     /**
      * Will be invoked by JOSM to bootstrap the plugin
-     * 
+     *
      * @param info
      *            information about the plugin and its local installation
      */

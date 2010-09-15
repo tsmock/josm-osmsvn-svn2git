@@ -62,14 +62,14 @@ import org.openstreetmap.josm.io.GpxReader;
 import org.xml.sax.SAXException;
 
 public class GTFSImporterAction extends JosmAction
-{ 
+{
   private static GTFSImporterDialog dialog = null;
   private static DefaultListModel tracksListModel = null;
   private static Vector< String > data = null;
   private static TrackReference currentTrack = null;
   private static GTFSStopTableModel gtfsStopTM = null;
   public boolean inEvent = false;
-  
+
   public GTFSImporterAction()
   {
     super(tr("Create Stops from GTFS ..."), null,
@@ -80,7 +80,7 @@ public class GTFSImporterAction extends JosmAction
   {
     return gtfsStopTM;
   }
-  
+
   public GTFSImporterDialog getDialog()
   {
     return dialog;
@@ -92,7 +92,7 @@ public class GTFSImporterAction extends JosmAction
       tracksListModel = new DefaultListModel();
     return tracksListModel;
   }
-  
+
   public TrackReference getCurrentTrack()
   {
     return currentTrack;
@@ -101,10 +101,10 @@ public class GTFSImporterAction extends JosmAction
   public void actionPerformed(ActionEvent event)
   {
     DataSet mainDataSet = Main.main.getCurrentDataSet();
-    
+
     if (dialog == null)
       dialog = new GTFSImporterDialog(this);
-    
+
     dialog.setVisible(true);
 
     if (tr("Create Stops from GTFS ...").equals(event.getActionCommand()))
@@ -115,18 +115,18 @@ public class GTFSImporterAction extends JosmAction
     curDir = ".";
       }
       JFileChooser fc = new JFileChooser(new File(curDir));
-      fc.setDialogTitle("Select GTFS file (stops.txt)");  
+      fc.setDialogTitle("Select GTFS file (stops.txt)");
       fc.setMultiSelectionEnabled(false);
-      
+
       int answer = fc.showOpenDialog(Main.parent);
       if (answer != JFileChooser.APPROVE_OPTION)
     return;
-      
+
       if (!fc.getCurrentDirectory().getAbsolutePath().equals(curDir))
     Main.pref.put("lastDirectory", fc.getCurrentDirectory().getAbsolutePath());
-      
+
       importData(fc.getSelectedFile());
-      
+
       refreshData();
     }
 /*    else if ("stopImporter.settingsGPSTimeStart".equals(event.getActionCommand()))
@@ -180,20 +180,20 @@ public class GTFSImporterAction extends JosmAction
 
   private void importData(final File file)
   {
-    try 
+    try
     {
       FileReader is = new FileReader(file);
       final BufferedReader r = new BufferedReader(is);
-      
+
       if (data == null)
     data = new Vector< String >();
       else
     data.clear();
-      
+
       while (r.ready())
     data.add(r.readLine());
     }
-    catch (FileNotFoundException e) 
+    catch (FileNotFoundException e)
     {
       e.printStackTrace();
       JOptionPane.showMessageDialog(null, tr("File \"{0}\" does not exist", file.getName()));
@@ -210,13 +210,13 @@ public class GTFSImporterAction extends JosmAction
     if (data != null)
     {
       Vector< Node > existingStops = new Vector< Node >();
-      
+
       if (Main.main.getCurrentDataSet() == null)
       {
         JOptionPane.showMessageDialog(null, "There exists no dataset."
         + " Try to download data from the server or open an OSM file.",
      "No data found", JOptionPane.ERROR_MESSAGE);
-      
+
         System.out.println("Public Transport: StopInserter: No data found");
 
         return;
@@ -232,7 +232,7 @@ public class GTFSImporterAction extends JosmAction
         existingStops.add(node);
     }
       }
-      
+
       Iterator< String > iter = data.iterator();
       if (iter.hasNext())
     gtfsStopTM = new GTFSStopTableModel(this, iter.next());
@@ -241,12 +241,12 @@ public class GTFSImporterAction extends JosmAction
     JOptionPane.showMessageDialog
     (null, "The GTFS file was empty.", "No data found",
      JOptionPane.ERROR_MESSAGE);
-     
+
         System.out.println("Public Transport: GTFSImporter: No data found");
 
         return;
       }
-      
+
       while (iter.hasNext())
       {
     String s = iter.next();
@@ -259,23 +259,23 @@ public class GTFSImporterAction extends JosmAction
       JOptionPane.showMessageDialog
       (null, "The GTFS file was empty.", "No data found",
        JOptionPane.ERROR_MESSAGE);
-      
+
       System.out.println("Public Transport: GTFSImporter: No data found");
     }
   }
-  
+
 //   public void tracksSelectionChanged(int selectedPos)
 //   {
 //     if (selectedPos >= 0)
 //     {
 //       currentTrack = ((TrackReference)tracksListModel.elementAt(selectedPos));
 //       dialog.setTrackValid(true);
-//       
+//
 //       //Prepare Settings
 //       dialog.setSettings
-// 	  (currentTrack.gpsSyncTime, currentTrack.stopwatchStart,
-// 	   currentTrack.timeWindow, currentTrack.threshold);
-//       
+//    (currentTrack.gpsSyncTime, currentTrack.stopwatchStart,
+//     currentTrack.timeWindow, currentTrack.threshold);
+//
 //       //Prepare Stoplist
 //       dialog.setStoplistTableModel
 //           (((TrackReference)tracksListModel.elementAt(selectedPos)).stoplistTM);
@@ -298,9 +298,9 @@ public class GTFSImporterAction extends JosmAction
       JOptionPane.showMessageDialog(null, "There exists no dataset."
       + " Try to download data from the server or open an OSM file.",
    "No data found", JOptionPane.ERROR_MESSAGE);
-      
+
       System.out.println("Public Transport: StopInserter: No data found");
-        
+
       return null;
     }
     Main.main.getCurrentDataSet().addPrimitive(node);
@@ -331,9 +331,9 @@ public class GTFSImporterAction extends JosmAction
   {
     if (Main.main.getCurrentDataSet() == null)
       return;
-      
+
     table.clearSelection();
-      
+
     for (int i = 0; i < table.getRowCount(); ++i)
     {
       if ((nodes.elementAt(i) != null) &&
@@ -341,7 +341,7 @@ public class GTFSImporterAction extends JosmAction
     table.addRowSelectionInterval(i, i);
     }
   }
-  
+
   /* shows the nodes that correspond to the marked lines in the table.
      If no lines are marked in the table, show all nodes from the vector */
   public static void showNodesFromTable(JTable table, Vector< Node > nodes)
@@ -359,7 +359,7 @@ public class GTFSImporterAction extends JosmAction
     box.enlargeBoundingBox();
     Main.map.mapView.recalculateCenterScale(box);
   }
-  
+
   /* marks the nodes that correspond to the marked lines in the table.
   If no lines are marked in the table, mark all nodes from the vector */
   public static void markNodesFromTable(JTable table, Vector< Node > nodes)
@@ -374,28 +374,28 @@ public class GTFSImporterAction extends JosmAction
     Main.main.getCurrentDataSet().addSelected(nodes.elementAt(j));
     }
   }
-  
+
   public static String timeOf(double t)
   {
     t -= Math.floor(t/24/60/60)*24*60*60;
-    
+
     int hour = (int)Math.floor(t/60/60);
     t -=  Math.floor(t/60/60)*60*60;
     int minute = (int)Math.floor(t/60);
     t -=  Math.floor(t/60)*60;
     double second = t;
-    
+
     Format format = new DecimalFormat("00");
     Format formatS = new DecimalFormat("00.###");
     return (format.format(hour) + ":" + format.format(minute) + ":"
     + formatS.format(second));
   }
-  
+
   public Action getFocusAddAction()
   {
     return new FocusAddAction();
   }
-  
+
   private class FocusAddAction extends AbstractAction
   {
     public void actionPerformed(ActionEvent e)
@@ -404,7 +404,7 @@ public class GTFSImporterAction extends JosmAction
       showNodesFromTable(dialog.getGTFSStopTable(), gtfsStopTM.nodes);
     }
   };
-  
+
 /*  public Action getFocusWaypointShelterAction(String shelter)
   {
     return new FocusWaypointShelterAction(shelter);
@@ -422,7 +422,7 @@ public class GTFSImporterAction extends JosmAction
       return;
     table.clearSelection();
     table.addRowSelectionInterval(row, row);
-/*	Main.main.undoRedo.add
+/*  Main.main.undoRedo.add
         (new WaypointsDisableCommand(GTFSImporterAction.this));*
       }
     };
@@ -432,7 +432,7 @@ public class GTFSImporterAction extends JosmAction
   {
     return new FocusTrackStoplistNameAction();
   }
-  
+
   public Action getFocusTrackStoplistShelterAction(String shelter)
   {
     return new FocusTrackStoplistShelterAction(shelter);
@@ -450,7 +450,7 @@ public class GTFSImporterAction extends JosmAction
       return;
     table.clearSelection();
     table.addRowSelectionInterval(row, row);
-/*	Main.main.undoRedo.add
+/*  Main.main.undoRedo.add
         (new TrackStoplistDeleteCommand(GTFSImporterAction.this));*
       }
     };
@@ -478,16 +478,16 @@ public class GTFSImporterAction extends JosmAction
       waypointTM.inEvent = false;
     }
   };
-  
+
   private class FocusWaypointShelterAction extends AbstractAction
   {
     private String defaultShelter = null;
-    
+
     public FocusWaypointShelterAction(String defaultShelter)
     {
       this.defaultShelter = defaultShelter;
     }
-    
+
     public void actionPerformed(ActionEvent e)
     {
       JTable table = dialog.getWaypointsTable();
@@ -508,7 +508,7 @@ public class GTFSImporterAction extends JosmAction
           (table, defaultShelter, true, row, 2);
     }
   };
-  
+
   private class FocusTrackStoplistNameAction extends AbstractAction
   {
     public void actionPerformed(ActionEvent e)
@@ -531,16 +531,16 @@ public class GTFSImporterAction extends JosmAction
       currentTrack.inEvent = false;
     }
   };
-  
+
   private class FocusTrackStoplistShelterAction extends AbstractAction
   {
     private String defaultShelter = null;
-    
+
     public FocusTrackStoplistShelterAction(String defaultShelter)
     {
       this.defaultShelter = defaultShelter;
     }
-    
+
     public void actionPerformed(ActionEvent e)
     {
       JTable table = dialog.getStoplistTable();

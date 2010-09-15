@@ -36,7 +36,7 @@ public class TurnRestrictionComboBoxModel implements ComboBoxModel, Observer{
         values.clear();
         for (TurnRestrictionType type: TurnRestrictionType.values()) {
             values.add(type);
-        }		
+        }       
         
         String tagValue = model.getRestrictionTagValue();
         if (tagValue.trim().equals("")) {
@@ -90,11 +90,11 @@ public class TurnRestrictionComboBoxModel implements ComboBoxModel, Observer{
     }
     
     public void addListDataListener(ListDataListener l) {
-        listeners.add(ListDataListener.class, l);		
+        listeners.add(ListDataListener.class, l);       
     }
     
     public void removeListDataListener(ListDataListener l) {
-        listeners.remove(ListDataListener.class, l);		
+        listeners.remove(ListDataListener.class, l);        
     }
     
     protected void fireContentsChanged() {
@@ -106,7 +106,7 @@ public class TurnRestrictionComboBoxModel implements ComboBoxModel, Observer{
     /* ------------------------------------------------------------------------------------ */
     /* interface Observer                                                                   */
     /* ------------------------------------------------------------------------------------ */
-    public void update(Observable o, Object arg) {		
+    public void update(Observable o, Object arg) {      
         String tagValue = model.getRestrictionTagValue();
         if (tagValue == null && selectedTagValue != null) {
             populate();

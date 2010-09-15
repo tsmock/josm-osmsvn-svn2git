@@ -22,7 +22,7 @@ public class MissingRestrictionTypeError extends Issue{
 
     @Override
     public String getText() {
-        return tr("A turn restriction must declare the type of restriction. Please select a type in the Basic Editor.");				
+        return tr("A turn restriction must declare the type of restriction. Please select a type in the Basic Editor.");                
     }
     
     class FixInEditorAction extends AbstractAction {
@@ -31,7 +31,7 @@ public class MissingRestrictionTypeError extends Issue{
             putValue(SHORT_DESCRIPTION, tr("Go to Basic Editor and manually choose a turn restriction type"));
         }
         public void actionPerformed(ActionEvent e) {
-            getIssuesModel().getNavigationControler().gotoBasicEditor(NavigationControler.BasicEditorFokusTargets.RESTRICION_TYPE);			
-        }		
+            getIssuesModel().getNavigationControler().gotoBasicEditor(NavigationControler.BasicEditorFokusTargets.RESTRICION_TYPE);         
+        }       
     }
 }

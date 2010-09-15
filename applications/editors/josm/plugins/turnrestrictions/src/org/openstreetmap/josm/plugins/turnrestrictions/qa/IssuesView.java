@@ -57,7 +57,7 @@ public class IssuesView extends VerticallyScrollablePanel implements Observer{
                 gc.gridy++;
             }
             // filler - grabs remaining space
-            gc.weighty = 1.0;			
+            gc.weighty = 1.0;           
             add(new JPanel(), gc);
         }
         invalidate();
@@ -67,6 +67,6 @@ public class IssuesView extends VerticallyScrollablePanel implements Observer{
     /* interface Observer                                                              */
     /* ------------------------------------------------------------------------------- */
     public void update(Observable o, Object arg) {
-        refresh();		
+        refresh();      
     }
 }

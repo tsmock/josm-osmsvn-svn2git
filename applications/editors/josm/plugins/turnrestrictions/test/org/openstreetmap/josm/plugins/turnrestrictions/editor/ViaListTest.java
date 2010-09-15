@@ -39,7 +39,7 @@ public class ViaListTest  extends JFrame{
             }
 
             public void gotoBasicEditor(BasicEditorFokusTargets focusTarget) {
-            }			
+            }           
         };
         model = new TurnRestrictionEditorModel(layer, controler);
         Container c = getContentPane();
@@ -58,7 +58,7 @@ public class ViaListTest  extends JFrame{
         gc.gridx = 1;
         c.add(lstJOSMSelection = new JList(), gc);
         
-        setSize(600,600);		
+        setSize(600,600);       
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
@@ -67,16 +67,16 @@ public class ViaListTest  extends JFrame{
         Relation r = new Relation();
         Node n;
         for (int i = 1; i<10; i++){
-            n = new Node(new LatLon(i,i));	
+            n = new Node(new LatLon(i,i));  
             n.put("name", "node." + i);
             ds.addPrimitive(n);
             r.addMember(new RelationMember("via",n));
-        }		
+        }       
         model.populate(r);
     }
     
     public ViaListTest() {
-        build();		
+        build();        
         initTest1();
     }
     

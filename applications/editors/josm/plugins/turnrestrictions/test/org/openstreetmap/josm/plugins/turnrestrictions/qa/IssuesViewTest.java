@@ -32,7 +32,7 @@ public class IssuesViewTest extends JFrame {
             }
 
             public void gotoBasicEditor(BasicEditorFokusTargets focusTarget) {
-            }			
+            }           
         };
         OsmDataLayer layer = new OsmDataLayer(new DataSet(), "test", null);
         TurnRestrictionEditorModel editorModel = new TurnRestrictionEditorModel(layer, controler);

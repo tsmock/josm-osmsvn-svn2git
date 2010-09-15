@@ -21,11 +21,11 @@ public class NonStandardExceptWarning extends Issue{
     }
 
     @Override
-    public String getText() {		
+    public String getText() {       
         return tr("The tag <tt>except</tt> has the non-standard value <tt>{0}</tt>. "
                 + "It is recommended to use standard values for <tt>except</tt> only.",
                 value.getValue()
-                );				
+                );              
     }
     
     class FixInEditorAction extends AbstractAction {
@@ -34,7 +34,7 @@ public class NonStandardExceptWarning extends Issue{
             putValue(SHORT_DESCRIPTION, tr("Go to Basic Editor and select standard vehicle type based exceptions"));
         }
         public void actionPerformed(ActionEvent e) {
-            getIssuesModel().getNavigationControler().gotoBasicEditor();		
-        }		
+            getIssuesModel().getNavigationControler().gotoBasicEditor();        
+        }       
     }
 }

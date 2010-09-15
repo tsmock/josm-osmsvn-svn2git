@@ -190,7 +190,7 @@ public class IssuesModel extends Observable implements Observer{
             // identical from and to allowed for "no_u_turn" only
             //
             issues.add(new IdenticalTurnRestrictionLegsError(this, from));
-        }		
+        }       
     }
     
     protected Node getNodeAtIntersection(Way from, Way to){
@@ -232,7 +232,7 @@ public class IssuesModel extends Observable implements Observer{
         // 'to' intersects with 'from' - should be split
         if (intersect != null && to.getNode(0) != intersect && to.getNode(to.getNodesCount()-1) != intersect){
             issues.add(new TurnRestrictionLegSplitRequiredError(this, TurnRestrictionLegRole.TO, from, to, intersect));
-        }		
+        }       
     }
     
     public NavigationControler getNavigationControler() {
@@ -259,6 +259,6 @@ public class IssuesModel extends Observable implements Observer{
     /* interface Observer                                                                    */
     /* ------------------------------------------------------------------------------------- */
     public void update(Observable o, Object arg) {
-        populate();		
+        populate();     
     }
 }

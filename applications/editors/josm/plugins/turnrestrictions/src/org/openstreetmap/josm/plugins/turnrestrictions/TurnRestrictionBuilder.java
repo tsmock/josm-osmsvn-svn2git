@@ -67,7 +67,7 @@ public class TurnRestrictionBuilder {
      * legs intersect at exactly one node. 
      */
     protected void initViaFromLegs(){
-        if (from == null || to == null) return;		
+        if (from == null || to == null) return;     
         // check whether 'from' and 'to' have exactly one intersecting 
         // node. This node is proposed as via node. The turn restriction
         // node will also provide functionality to split either or both
@@ -79,7 +79,7 @@ public class TurnRestrictionBuilder {
         nodes.retainAll(to.getNodes());
         if (nodes.size() == 1){
             vias.add(nodes.iterator().next());
-        }		
+        }       
     }
     
     /**
@@ -158,5 +158,5 @@ public class TurnRestrictionBuilder {
             tr.addMember(new RelationMember("via", via));
         }
         return tr;
-    }		
+    }       
 }

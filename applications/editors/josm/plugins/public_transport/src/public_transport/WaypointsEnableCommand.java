@@ -14,13 +14,13 @@ public class WaypointsEnableCommand extends Command
   private Vector< Integer > workingLines = null;
   private WaypointTableModel waypointTM = null;
   private String type = null;
-  
+
   public WaypointsEnableCommand(StopImporterAction controller)
   {
     waypointTM = controller.getWaypointTableModel();
     type = controller.getDialog().getStoptype();
     workingLines = new Vector< Integer >();
-    
+
     // use either selected lines or all lines if no line is selected
     int[] selectedLines = controller.getDialog().getWaypointsTable().getSelectedRows();
     Vector< Integer > consideredLines = new Vector< Integer >();
@@ -34,7 +34,7 @@ public class WaypointsEnableCommand extends Command
       for (int i = 0; i < waypointTM.getRowCount(); ++i)
     consideredLines.add(new Integer(i));
     }
-    
+
     // keep only lines where a node can be added
     for (int i = 0; i < consideredLines.size(); ++i)
     {
@@ -42,7 +42,7 @@ public class WaypointsEnableCommand extends Command
     workingLines.add(consideredLines.elementAt(i));
     }
   }
-  
+
   public boolean executeCommand()
   {
     for (int i = 0; i < workingLines.size(); ++i)
@@ -58,7 +58,7 @@ public class WaypointsEnableCommand extends Command
     }
     return true;
   }
-  
+
   public void undoCommand()
   {
     for (int i = 0; i < workingLines.size(); ++i)
@@ -72,13 +72,13 @@ public class WaypointsEnableCommand extends Command
       node.setDeleted(true);
     }
   }
-  
+
   public void fillModifiedData
     (Collection< OsmPrimitive > modified, Collection< OsmPrimitive > deleted,
      Collection< OsmPrimitive > added)
   {
   }
-  
+
   @Override public JLabel getDescription()
   {
     return new JLabel("public_transport.Waypoints.Enable");

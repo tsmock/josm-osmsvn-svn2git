@@ -31,7 +31,7 @@ public class TurnRestrictionComboBoxTest extends JFrame {
             }
 
             public void gotoBasicEditor(BasicEditorFokusTargets focusTarget) {
-            }			
+            }           
         };
         model = new TurnRestrictionEditorModel(layer, controler);
         
@@ -45,7 +45,7 @@ public class TurnRestrictionComboBoxTest extends JFrame {
         TurnRestrictionComboBox cb = new TurnRestrictionComboBox(
                 new TurnRestrictionComboBoxModel(model)
         );
-        add(cb, gc);		
+        add(cb, gc);        
     }
     
     public TurnRestrictionComboBoxTest() {

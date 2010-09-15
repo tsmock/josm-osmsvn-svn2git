@@ -70,7 +70,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
      */
     protected void build() {
         setLayout(new BorderLayout());
-        add(lblOsmObject = new JLabel(), BorderLayout.CENTER);		
+        add(lblOsmObject = new JLabel(), BorderLayout.CENTER);      
         lblOsmObject.setOpaque(true);
         lblOsmObject.setBorder(null);
         setBorder(
@@ -89,8 +89,8 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
                 
         // focus handling
         FocusHandler fh  = new FocusHandler();
-        lblOsmObject.setFocusable(true);	
-        lblOsmObject.addFocusListener(fh);		
+        lblOsmObject.setFocusable(true);    
+        lblOsmObject.addFocusListener(fh);      
         this.addFocusListener(fh);
 
         // mouse event handling
@@ -112,8 +112,8 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
             public void mouseDragged(MouseEvent e) {
                 JComponent c = (JComponent)e.getSource();
                 TransferHandler th = c.getTransferHandler();
-                th.exportAsDrag(c, e, TransferHandler.COPY);				
-            }					
+                th.exportAsDrag(c, e, TransferHandler.COPY);                
+            }                   
         });
         actCopy = new CopyAction();
         actPaste = new PasteAction();
@@ -135,7 +135,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
         this.role = role;
         build();
         model.addObserver(this);
-        refresh();	
+        refresh();  
     }
 
     protected void refresh(){
@@ -156,7 +156,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
             lblOsmObject.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
             lblOsmObject.setIcon(null);
             lblOsmObject.setText(tr("multiple objects with role ''{0}''",this.role.getOsmRole()));
-            lblOsmObject.setToolTipText(null);			
+            lblOsmObject.setToolTipText(null);          
         }
         renderColors();
         actDelete.updateEnabledState();
@@ -193,13 +193,13 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
      */
     public TurnRestrictionLegRole getRole() {
         return role;
-    }		
+    }       
     
     /* ----------------------------------------------------------------------------- */
     /* interface Observer                                                            */
     /* ----------------------------------------------------------------------------- */
     public void update(Observable o, Object arg) {
-        refresh();		
+        refresh();      
     }
     
     /* ----------------------------------------------------------------------------- */
@@ -214,7 +214,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
     
     /* ----------------------------------------------------------------------------- */
     /* inner classes                                                                 */
-    /* ----------------------------------------------------------------------------- */	
+    /* ----------------------------------------------------------------------------- */ 
     /**
      * Responds to focus change events  
      */
@@ -227,14 +227,14 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
         @Override
         public void focusLost(FocusEvent e) {
             renderColors();
-        }		
+        }       
     }
     
     class MouseEventHandler extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
             lblOsmObject.requestFocusInWindow();
-        }		
+        }       
     }
     
     /**
@@ -250,8 +250,8 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
         }
         
         public void actionPerformed(ActionEvent e) {
-            model.setTurnRestrictionLeg(role, null);			
-        }		
+            model.setTurnRestrictionLeg(role, null);            
+        }       
         
         public void updateEnabledState() {
             setEnabled(legs.size()>0);
@@ -300,7 +300,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
         @Override
         public void launch(MouseEvent evt) {
             new PopupMenu().show(lblOsmObject, evt.getX(), evt.getY());
-        }		
+        }       
     }
     
     class PopupMenu extends JPopupMenu {
@@ -309,7 +309,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
             JMenuItem item = add(actCopy);
             item.setTransferHandler(transferHandler);
             actPaste.updateEnabledState();
-            item = add(actPaste);			
+            item = add(actPaste);           
             item.setTransferHandler(transferHandler);
             addSeparator();
             add(actDelete);
@@ -344,7 +344,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             for (DataFlavor df: clipboard.getAvailableDataFlavors()) {
                 if (df.equals(PrimitiveIdTransferable.PRIMITIVE_ID_LIST_FLAVOR)) return true;
-            }			
+            }           
             // FIXME: check whether there are selected objects in the JOSM copy/paste buffer  
             return false;
         }
@@ -362,7 +362,7 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
         }
 
         public void actionPerformed(ActionEvent e) {
-            delegate.actionPerformed(e);			
+            delegate.actionPerformed(e);            
         }
     }
 }

@@ -91,7 +91,7 @@ public class PreferenceEditor extends JPanel implements PreferenceSetting{
         setLayout(new BorderLayout());
         JTabbedPane tp = new JTabbedPane();
         tp.add(buildIconPreferencePanel());
-        tp.add(buildCreditPanel());		
+        tp.add(buildCreditPanel());     
         tp.setTitleAt(0, tr("Preferences"));
         tp.setToolTipTextAt(0,tr("Configure the preferences for the turnrestrictions plugin"));
         tp.setTitleAt(1, tr("Sponsor"));

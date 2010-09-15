@@ -15,14 +15,14 @@ public class GTFSAddCommand extends Command
   private Vector< String > typesForUndo = null;
   private GTFSStopTableModel gtfsStopTM = null;
   private String type = null;
-  
+
   public GTFSAddCommand(GTFSImporterAction controller)
   {
     gtfsStopTM = controller.getGTFSStopTableModel();
     type = controller.getDialog().getStoptype();
     workingLines = new Vector< Integer >();
     typesForUndo = new Vector< String >();
-    
+
     // use either selected lines or all lines if no line is selected
     int[] selectedLines = controller.getDialog().getGTFSStopTable().getSelectedRows();
     Vector< Integer > consideredLines = new Vector< Integer >();
@@ -36,7 +36,7 @@ public class GTFSAddCommand extends Command
       for (int i = 0; i < gtfsStopTM.getRowCount(); ++i)
     consideredLines.add(new Integer(i));
     }
-    
+
     // keep only lines where a node can be added
     for (int i = 0; i < consideredLines.size(); ++i)
     {
@@ -44,7 +44,7 @@ public class GTFSAddCommand extends Command
     workingLines.add(consideredLines.elementAt(i));
     }
   }
-  
+
   public boolean executeCommand()
   {
     typesForUndo.clear();
@@ -60,7 +60,7 @@ public class GTFSAddCommand extends Command
     }
     return true;
   }
-  
+
   public void undoCommand()
   {
     for (int i = 0; i < workingLines.size(); ++i)
@@ -75,13 +75,13 @@ public class GTFSAddCommand extends Command
       node.setDeleted(true);
     }
   }
-  
+
   public void fillModifiedData
     (Collection< OsmPrimitive > modified, Collection< OsmPrimitive > deleted,
      Collection< OsmPrimitive > added)
   {
   }
-  
+
   @Override public JLabel getDescription()
   {
     return new JLabel("public_transport.GTFSStops.Enable");

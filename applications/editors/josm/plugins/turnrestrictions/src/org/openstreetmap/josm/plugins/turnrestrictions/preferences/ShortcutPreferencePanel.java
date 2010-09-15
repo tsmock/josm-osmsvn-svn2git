@@ -127,10 +127,10 @@ public class ShortcutPreferencePanel extends JPanel {
         if (cbAlt.isSelected()) modifiers |= KeyEvent.ALT_DOWN_MASK;
         if (cbCtrl.isSelected()) modifiers |= KeyEvent.CTRL_DOWN_MASK;
         if (cbShift.isSelected()) modifiers |= KeyEvent.SHIFT_DOWN_MASK;
-        if (cbMeta.isSelected()) modifiers |= KeyEvent.META_DOWN_MASK;		
+        if (cbMeta.isSelected()) modifiers |= KeyEvent.META_DOWN_MASK;      
         KeyStroke ks = KeyStroke.getKeyStroke(code, modifiers);
         
-        pref.put(PreferenceKeys.EDIT_SHORTCUT, ks.toString());		
+        pref.put(PreferenceKeys.EDIT_SHORTCUT, ks.toString());      
         CreateOrEditTurnRestrictionAction.install(ks);
     }
     
@@ -161,7 +161,7 @@ public class ShortcutPreferencePanel extends JPanel {
         }
 
         public void setSelectedItem(Object anItem) {
-            this.selected = (Integer)anItem;			
+            this.selected = (Integer)anItem;            
         }
 
         public Object getElementAt(int index) {
@@ -170,7 +170,7 @@ public class ShortcutPreferencePanel extends JPanel {
 
         public int getSize() {
             return keys.size();
-        }		
+        }       
     }
     
     static private class VKeyCellRenderer extends JLabel implements ListCellRenderer {
@@ -185,7 +185,7 @@ public class ShortcutPreferencePanel extends JPanel {
             }
             setText(KeyEvent.getKeyText((Integer)value));
             return this;
-        }		
+        }       
     }
     
     static private class KeyCodeComparator implements Comparator<Integer> {
@@ -216,10 +216,10 @@ public class ShortcutPreferencePanel extends JPanel {
             } else if (n1.matches("F\\d+") && n2.matches("F\\d+")){
                 int f1 = Integer.parseInt(n1.substring(1));
                 int f2 = Integer.parseInt(n2.substring(1));
-                return new Integer(f1).compareTo(f2);				
+                return new Integer(f1).compareTo(f2);               
             } else {
                 return n1.compareTo(n2);
-            }				
-        }		
+            }               
+        }       
     }
 }

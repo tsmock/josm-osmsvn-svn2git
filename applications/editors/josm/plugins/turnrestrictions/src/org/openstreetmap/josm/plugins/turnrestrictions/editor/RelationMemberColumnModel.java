@@ -19,7 +19,7 @@ public class RelationMemberColumnModel extends DefaultTableColumnModel{
          // the role column
          col.setHeaderValue(tr("Role"));
          col.setResizable(true);
-         col.setPreferredWidth(100);	
+         col.setPreferredWidth(100);    
          col.setCellEditor(new MemberRoleCellEditor());
          col.setCellRenderer(new RelationMemberRoleCellRenderer());
          addColumn(col);
@@ -30,7 +30,7 @@ public class RelationMemberColumnModel extends DefaultTableColumnModel{
           col.setResizable(true);
           col.setPreferredWidth(300);
           col.setCellRenderer(new RelationMemberTargetCellRenderer());
-          addColumn(col);	      
+          addColumn(col);         
     }
     
     /**
