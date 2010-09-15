@@ -34,13 +34,13 @@ public class AddressDialog extends ExtendedDialog {
     }
 
     public AddressDialog() {
-        super(Main.parent, tr("Building address"), 
+        super(Main.parent, tr("Building address"),
                 new String[] { tr("OK"), tr("Cancel") },
                 true);
-        
+
         contentInsets = new Insets(15,15,5,15);
         setButtonIcons(new String[] {"ok.png", "cancel.png" });
-        
+
         addLabelled(tr("House number:"),housenum);
         addLabelled(tr("Street Name:"),streetname);
         housenum.setText(nextHouseNum());
@@ -55,21 +55,21 @@ public class AddressDialog extends ExtendedDialog {
         setupDialog();
         setVisible(true);
     }
-    
+
     private static String nextHouseNum() {
         if (lhousenum==null) return "";
         try {
             Integer num = NumberFormat.getInstance().parse(lhousenum).intValue();
             if (inc) num=num+2; else num = num-2;
             return num.toString();
-        } catch (ParseException e) {			
+        } catch (ParseException e) {
             return lhousenum;
         }
     }
     public void saveValues() {
         lhousenum = housenum.getText();
         lstreetname = streetname.getText();
-        inc = cincdec.getSelectedIndex() == 0;		
+        inc = cincdec.getSelectedIndex() == 0;
     }
     public String getHouseNum() {
         return housenum.getText();

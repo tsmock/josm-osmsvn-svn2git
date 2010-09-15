@@ -131,7 +131,7 @@ public class TagEditorDialog extends JDialog {
                 aclViewer
         );
         splitPane.setOneTouchExpandable(false);
-        splitPane.setDividerLocation(600);		
+        splitPane.setDividerLocation(600);      
         pnlTagGrid.add(splitPane, BorderLayout.CENTER);
         return pnlTagGrid;
     }
@@ -166,7 +166,7 @@ public class TagEditorDialog extends JDialog {
         JPanel pnlPresetSelector = new JPanel();
         pnlPresetSelector.setLayout(new BorderLayout());
         pnlPresetSelector.add(presetSelector,BorderLayout.CENTER);
-        pnlPresetSelector.setBorder(BorderFactory.createEmptyBorder(0,0,5,0	));
+        pnlPresetSelector.setBorder(BorderFactory.createEmptyBorder(0,0,5,0 ));
 
         // create the tag selector
         //
@@ -183,7 +183,7 @@ public class TagEditorDialog extends JDialog {
         JPanel pnlTagSelector = new JPanel();
         pnlTagSelector.setLayout(new BorderLayout());
         pnlTagSelector.add(tagSelector,BorderLayout.CENTER);
-        pnlTagSelector.setBorder(BorderFactory.createEmptyBorder(0,0,5,0	));
+        pnlTagSelector.setBorder(BorderFactory.createEmptyBorder(0,0,5,0    ));
 
         // create the tabbed pane
         //

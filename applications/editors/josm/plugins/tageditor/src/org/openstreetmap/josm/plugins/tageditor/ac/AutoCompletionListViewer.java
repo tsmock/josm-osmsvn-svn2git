@@ -79,7 +79,7 @@ public class AutoCompletionListViewer extends JPanel {
                             String item = autoCompletionList.getFilteredItem(row).getValue();
                             fireAutoCompletionListItemSelected(item);
                         }
-                    }					
+                    }                   
                 }
         );
     }
@@ -90,7 +90,7 @@ public class AutoCompletionListViewer extends JPanel {
      * @param list the auto completion list to be rendered. If null, the list is empty.
      *  
      */
-    public AutoCompletionListViewer(AutoCompletionList list) {		
+    public AutoCompletionListViewer(AutoCompletionList list) {      
         this.autoCompletionList = list;
         createGUI();
         listener = new ArrayList<IAutoCompletionListListener>();
@@ -108,7 +108,7 @@ public class AutoCompletionListViewer extends JPanel {
     /**
      * 
      */
-    @Override public Dimension getMaximumSize() {	    
+    @Override public Dimension getMaximumSize() {       
         Dimension d = super.getMaximumSize();
         d.width = 100;
         return d;
@@ -117,7 +117,7 @@ public class AutoCompletionListViewer extends JPanel {
     /**
      * 
      */
-    @Override public Dimension getPreferredSize() {	    
+    @Override public Dimension getPreferredSize() {     
         Dimension d = super.getMaximumSize();
         d.width = 150;
         return d;
@@ -181,9 +181,9 @@ public class AutoCompletionListViewer extends JPanel {
         synchronized(this.listener) {
             for (IAutoCompletionListListener target: listener) {
                 target.autoCompletionItemSelected(item);
-            }			
+            }           
         }
-    }	
+    }   
     
     public void installKeyAction(Action a) {
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)a.getValue(AbstractAction.ACCELERATOR_KEY), a.getValue(AbstractAction.NAME));

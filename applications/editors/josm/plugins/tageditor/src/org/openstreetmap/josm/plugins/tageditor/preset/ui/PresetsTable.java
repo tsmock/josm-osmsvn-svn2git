@@ -11,8 +11,8 @@ public class PresetsTable extends JTable {
     /**
      * initialize the table 
      */
-    protected void init() {				
-        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);		
+    protected void init() {             
+        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);      
         setRowSelectionAllowed(true);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setRowHeight(18); // icon height (=16) + minimal border
@@ -40,7 +40,7 @@ public class PresetsTable extends JTable {
             tcm.getColumn(0).setMinWidth(width);
             tcm.getColumn(0).setMaxWidth(width);
             tcm.getColumn(1).setMinWidth(width);
-            tcm.getColumn(1).setMaxWidth(width);			
+            tcm.getColumn(1).setMaxWidth(width);            
         }
     }
 

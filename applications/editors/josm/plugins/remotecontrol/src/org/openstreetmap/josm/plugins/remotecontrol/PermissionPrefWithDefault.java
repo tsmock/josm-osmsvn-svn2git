@@ -1,9 +1,9 @@
 package org.openstreetmap.josm.plugins.remotecontrol;
 
 /**
- * This class should replace PermissionPref because it allows explicit 
+ * This class should replace PermissionPref because it allows explicit
  * specification of the permission's default value.
- * 
+ *
  * @author Bodo Meissner
  */
 @SuppressWarnings("deprecation")

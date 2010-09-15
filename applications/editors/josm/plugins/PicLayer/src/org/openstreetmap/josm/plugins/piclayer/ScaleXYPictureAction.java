@@ -32,7 +32,7 @@ import org.openstreetmap.josm.tools.ImageProvider;
 /**
  * This class handles the input during scaling the picture.
  */
-public class ScaleXYPictureAction extends ScalePictureActionAbstract 
+public class ScaleXYPictureAction extends ScalePictureActionAbstract
 {
     /*
      * Constructor
