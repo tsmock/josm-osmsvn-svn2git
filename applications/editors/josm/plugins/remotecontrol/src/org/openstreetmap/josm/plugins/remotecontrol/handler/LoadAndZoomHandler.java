@@ -30,14 +30,14 @@ public class LoadAndZoomHandler extends RequestHandler
 {
     public static final String command = "load_and_zoom";
     public static final String command2 = "zoom";
-    
+
     public static final String loadDataPermissionKey = "remotecontrol.permission.load-data";
     public static final boolean loadDataPermissionDefault = true;
     public static final String changeSelectionPermissionKey = "remotecontrol.permission.change-selection";
     public static final boolean changeSelectionPermissionDefault = true;
     public static final String changeViewportPermissionKey = "remotecontrol.permission.change-viewport";
     public static final boolean changeViewportPermissionDefault = true;
-    
+
     @Override
     public String getPermissionMessage()
     {
@@ -50,7 +50,7 @@ public class LoadAndZoomHandler extends RequestHandler
     {
         return new String[] { "bottom", "top", "left", "right" };
     }
-    
+
     @Override
     protected void handleRequest() throws RequestHandlerErrorException
     {
@@ -73,7 +73,7 @@ public class LoadAndZoomHandler extends RequestHandler
                 }
                 else
                 {
-    
+
                     // find out whether some data has already been downloaded
                     Area present = null;
                     Area toDownload = null;

@@ -106,7 +106,7 @@ public class TableCellRenderer extends JLabel implements javax.swing.table.Table
                     return true; 
                 }
             }
-        }		
+        }       
         return false;
     }
     
@@ -126,7 +126,7 @@ public class TableCellRenderer extends JLabel implements javax.swing.table.Table
         } else {
             setBackground(UIManager.getColor("Table.background"));
             setForeground(UIManager.getColor("Table.foreground"));
-        }		
+        }       
         if (belongsToSelectedPreset(tagModel, model)) {
             setBackground(BG_COLOR_HIGHLIGHTED);
         }

@@ -9,7 +9,7 @@ import org.openstreetmap.josm.plugins.tageditor.ac.AutoCompletionContext;
  * A TagSpecifications specifies a tag. The specifications consists of the following
  * elements:
  * <ul>
- * 	 <li>the <strong>key</strong> the of the tag</li>
+ *   <li>the <strong>key</strong> the of the tag</li>
  *   <li>the <strong>type</strong> of the tag</li>
  *   <li>whether the tag is applicable to a node, a way or a relation</li>
  * </ul>

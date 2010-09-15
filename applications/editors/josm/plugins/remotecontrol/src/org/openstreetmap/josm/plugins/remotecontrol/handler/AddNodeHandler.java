@@ -30,7 +30,7 @@ public class AddNodeHandler extends RequestHandler {
     {
         return new String[] { "lat", "lon" };
     }
-    
+
     @Override
     public String getPermissionMessage() {
         return tr("Remote Control has been asked to create a new node.");
@@ -42,7 +42,7 @@ public class AddNodeHandler extends RequestHandler {
         return new PermissionPrefWithDefault(permissionKey, permissionDefault,
                 "RemoteControl: creating objects forbidden by preferences");
     }
-    
+
     /**
      * Adds a node, implements the GET /add_node?lon=...&amp;lat=... request.
      * @param args

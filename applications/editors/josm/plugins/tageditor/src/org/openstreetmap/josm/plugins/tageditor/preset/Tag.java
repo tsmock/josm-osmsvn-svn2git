@@ -6,7 +6,7 @@ public class Tag {
     private String displayName;
     private boolean optional = false;
     
-    public Tag() {		
+    public Tag() {      
     }
 
     public String getKey() {

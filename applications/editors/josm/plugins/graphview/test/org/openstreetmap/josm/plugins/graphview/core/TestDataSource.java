@@ -112,23 +112,23 @@ public class TestDataSource implements DataSource<TestDataSource.TestNode, TestD
     public TagGroup getTagsR(TestRelation relation) {
         return new MapBasedTagGroup(relation.tags);
     }
-    
+
     public Object getMember(TestRelationMember member) {
         return member.getMember();
     }
-    
+
     public String getRole(TestRelationMember member) {
         return member.getRole();
     }
-    
+
     public boolean isNMember(TestRelationMember member) {
         return member.getMember() instanceof TestNode;
     }
-    
+
     public boolean isWMember(TestRelationMember member) {
         return member.getMember() instanceof TestWay;
     }
-    
+
     public boolean isRMember(TestRelationMember member) {
         return member.getMember() instanceof TestRelation;
     }
