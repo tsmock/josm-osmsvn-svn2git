@@ -186,6 +186,10 @@
   path = applications/editors/josm/plugins/smed
   url = ../smed
   branch = master
+[submodule "applications/editors/josm/plugins/smed_about"]
+  path = applications/editors/josm/plugins/smed_about
+  url = ../smed_about
+  branch = master
 [submodule "applications/editors/josm/plugins/surveyor"]
   path = applications/editors/josm/plugins/surveyor
   url = ../surveyor
