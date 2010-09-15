@@ -23,7 +23,7 @@ import org.openstreetmap.josm.gui.DefaultNameFormatter;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.tools.CheckParameterUtil;
 
-public class RelationMemberEditorModel extends AbstractTableModel{	
+public class RelationMemberEditorModel extends AbstractTableModel{  
     static private final Logger logger = Logger.getLogger(RelationMemberEditorModel.class.getName());
     private final ArrayList<RelationMemberModel> members = new ArrayList<RelationMemberModel>();
     private OsmDataLayer layer;
@@ -143,7 +143,7 @@ public class RelationMemberEditorModel extends AbstractTableModel{
      * @return the set of {@see OsmPrimitive}s with the role 'from'
      */
     public Set<OsmPrimitive> getFromPrimitives() {
-        return getPrimitivesWithRole("from");		
+        return getPrimitivesWithRole("from");       
     }
     
     /**
@@ -319,7 +319,7 @@ public class RelationMemberEditorModel extends AbstractTableModel{
             if (rowSelectionModel.isSelectedIndex(i)) {
                 members.get(i).setRole("");
             }
-        }		
+        }       
     }
     
     /**
@@ -415,7 +415,7 @@ public class RelationMemberEditorModel extends AbstractTableModel{
      * @throws IllegalArgumentException thrown if one of the ids can't be inserted
      */
     public void insertMembers(Collection<PrimitiveId> ids) throws IllegalArgumentException {
-        if (ids == null) return;	
+        if (ids == null) return;    
         ArrayList<RelationMemberModel> newMembers = new ArrayList<RelationMemberModel>();
         for (PrimitiveId id: ids){
             OsmPrimitive p = layer.data.getPrimitiveById(id);
@@ -423,7 +423,7 @@ public class RelationMemberEditorModel extends AbstractTableModel{
                 throw new IllegalArgumentException(tr("Cannot find object with id ''{0}'' in layer ''{1}''", id.toString(), layer.getName()));
             }
             if (p.isDeleted() || ! p.isVisible()) {
-                throw new IllegalArgumentException(tr("Cannot add object ''{0}'' as relation member because it is deleted or invisible in layer ''{1}''", p.getDisplayName(DefaultNameFormatter.getInstance()), layer.getName()));				
+                throw new IllegalArgumentException(tr("Cannot add object ''{0}'' as relation member because it is deleted or invisible in layer ''{1}''", p.getDisplayName(DefaultNameFormatter.getInstance()), layer.getName()));              
             }
             newMembers.add(new RelationMemberModel("",id));
         }
@@ -435,7 +435,7 @@ public class RelationMemberEditorModel extends AbstractTableModel{
             members.addAll(newMembers);
         }
         fireTableDataChanged();
-        if (insertPos < 0) insertPos = 0;		
+        if (insertPos < 0) insertPos = 0;       
         colSelectionModel.setSelectionInterval(0, 1); // select both columns
         rowSelectionModel.setSelectionInterval(insertPos, insertPos + newMembers.size()-1);
     }

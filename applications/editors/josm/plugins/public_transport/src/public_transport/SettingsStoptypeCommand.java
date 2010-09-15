@@ -20,17 +20,17 @@ public class SettingsStoptypeCommand extends Command
       highway = node.get("highway");
       railway = node.get("railway");
     }
-    
+
     public Node node;
     public String highway;
     public String railway;
   };
-  
+
   private Vector< HighwayRailway > oldStrings = null;
   private WaypointTableModel waypointTM = null;
   private DefaultListModel tracksListModel = null;
   private String type = null;
-  
+
   public SettingsStoptypeCommand(StopImporterAction controller)
   {
     waypointTM = controller.getWaypointTableModel();
@@ -38,7 +38,7 @@ public class SettingsStoptypeCommand extends Command
     type = controller.getDialog().getStoptype();
     oldStrings = new Vector< HighwayRailway >();
   }
-  
+
   public boolean executeCommand()
   {
     oldStrings.clear();
@@ -66,7 +66,7 @@ public class SettingsStoptypeCommand extends Command
     }
     return true;
   }
-  
+
   public void undoCommand()
   {
     for (int i = 0; i < oldStrings.size(); ++i)
@@ -76,16 +76,16 @@ public class SettingsStoptypeCommand extends Command
       hr.node.put("railway", hr.railway);
     }
   }
-  
+
   public void fillModifiedData
     (Collection< OsmPrimitive > modified, Collection< OsmPrimitive > deleted,
      Collection< OsmPrimitive > added)
   {
   }
-  
+
   @Override public JLabel getDescription()
   {
     return new JLabel("public_transport.Settings.ChangeStoptype");
   }
-  
+
 };

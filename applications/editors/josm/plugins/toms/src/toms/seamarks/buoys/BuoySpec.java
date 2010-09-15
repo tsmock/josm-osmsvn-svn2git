@@ -233,8 +233,8 @@ public class BuoySpec extends Buoy {
             }
 
             if (!image.equals("/images/Special_Purpose")) { //$NON-NLS-1$
-//				if (hasTopMark())
-//					image += "_CrossY"; //$NON-NLS-1$
+//              if (hasTopMark())
+//                  image += "_CrossY"; //$NON-NLS-1$
                 image += ".png"; //$NON-NLS-1$
                 dlg.lM01Icon.setIcon(new ImageIcon(getClass().getResource(image)));
             } else

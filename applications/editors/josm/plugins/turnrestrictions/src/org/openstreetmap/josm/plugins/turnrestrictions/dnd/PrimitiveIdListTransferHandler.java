@@ -49,7 +49,7 @@ public class PrimitiveIdListTransferHandler extends TransferHandler {
     
     
     protected Transferable createTransferable(JComponent c) {
-        return new PrimitiveIdTransferable(provider.getSelectedPrimitiveIds());			
+        return new PrimitiveIdTransferable(provider.getSelectedPrimitiveIds());         
     }
 
     public int getSourceActions(JComponent c) {
@@ -58,6 +58,6 @@ public class PrimitiveIdListTransferHandler extends TransferHandler {
 
     @Override
     public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
-        return isSupportedFlavor(transferFlavors);	
-    }	
+        return isSupportedFlavor(transferFlavors);  
+    }   
 }

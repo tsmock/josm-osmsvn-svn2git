@@ -108,7 +108,7 @@ public class TurnRestrictionCellRenderer extends JPanel implements ListCellRende
         setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
         
-        // the turn restriction icon 		
+        // the turn restriction icon        
         gc.fill = GridBagConstraints.HORIZONTAL;
         gc.weightx = 0.0;
         gc.gridheight = 2;
@@ -239,7 +239,7 @@ public class TurnRestrictionCellRenderer extends JPanel implements ListCellRende
         Relation tr = (Relation)value;
         renderIcon(tr);
         renderFrom(tr);
-        renderTo(tr);		
+        renderTo(tr);       
         return this;
     }
 
@@ -248,11 +248,11 @@ public class TurnRestrictionCellRenderer extends JPanel implements ListCellRende
     /* ---------------------------------------------------------------------------------- */
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
-        renderColor(isSelected);		
+        renderColor(isSelected);        
         Relation tr = (Relation)value;
         renderIcon(tr);
         renderFrom(tr);
-        renderTo(tr);		
+        renderTo(tr);       
         return this;
-    }	
+    }   
 }

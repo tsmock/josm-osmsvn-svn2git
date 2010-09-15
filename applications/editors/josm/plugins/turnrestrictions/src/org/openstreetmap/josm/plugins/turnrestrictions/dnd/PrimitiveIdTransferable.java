@@ -97,5 +97,5 @@ public class PrimitiveIdTransferable implements Transferable{
             if (df.equals(flavor)) return true;
         }
         return false;
-    }			
+    }           
 }

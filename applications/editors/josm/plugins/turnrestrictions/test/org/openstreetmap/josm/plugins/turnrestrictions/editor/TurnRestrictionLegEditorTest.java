@@ -54,13 +54,13 @@ public class TurnRestrictionLegEditorTest extends JFrame {
             }
 
             public void gotoBasicEditor(BasicEditorFokusTargets focusTarget) {
-            }			
+            }           
         };
         JPanel pnl = new JPanel(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.NORTHWEST;
         gc.fill = GridBagConstraints.HORIZONTAL;
-        gc.weightx = 0.0;		
+        gc.weightx = 0.0;       
         pnl.add(new JLabel("From"), gc);
         
         gc.weightx = 1.0;
@@ -77,9 +77,9 @@ public class TurnRestrictionLegEditorTest extends JFrame {
         JPanel pnl = new JPanel(new BorderLayout());
         listModel = new DefaultListModel();
         pnl.add(new JScrollPane(lstObjects = new JList(listModel)), BorderLayout.CENTER);
-        lstObjects.setCellRenderer(new OsmPrimitivRenderer());		
+        lstObjects.setCellRenderer(new OsmPrimitivRenderer());      
         
-        PrimitiveIdListProvider provider = new PrimitiveIdListProvider() {			
+        PrimitiveIdListProvider provider = new PrimitiveIdListProvider() {          
             public List<PrimitiveId> getSelectedPrimitiveIds() {
                 List<PrimitiveId> ret = new ArrayList<PrimitiveId>();
                 int [] sel = lstObjects.getSelectedIndices();
@@ -101,9 +101,9 @@ public class TurnRestrictionLegEditorTest extends JFrame {
         
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.NORTHWEST;
-        gc.fill = GridBagConstraints.HORIZONTAL;	
+        gc.fill = GridBagConstraints.HORIZONTAL;    
         gc.insets = new Insets(20, 0, 20, 0);
-        gc.weightx = 1.0;		
+        gc.weightx = 1.0;       
         gc.weighty = 0.0;
         add(buildLegEditorPanel(), gc);
         
@@ -112,7 +112,7 @@ public class TurnRestrictionLegEditorTest extends JFrame {
         gc.weighty = 1.0;
         gc.fill = GridBagConstraints.BOTH;
         add(buildObjectListPanel(), gc);
-        setSize(600,600);	
+        setSize(600,600);   
     }
     
     protected void initForTest1() {
@@ -124,7 +124,7 @@ public class TurnRestrictionLegEditorTest extends JFrame {
     
     protected void initForTest2() {
         Way w = new Way(1);
-        w.put("name", "way-1");		
+        w.put("name", "way-1");     
         dataSet.addPrimitive(w);
         editor.getModel().setTurnRestrictionLeg(TurnRestrictionLegRole.FROM, w);
         

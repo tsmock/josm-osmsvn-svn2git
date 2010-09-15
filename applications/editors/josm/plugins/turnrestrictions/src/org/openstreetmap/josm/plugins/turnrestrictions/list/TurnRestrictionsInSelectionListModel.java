@@ -56,7 +56,7 @@ public class TurnRestrictionsInSelectionListModel extends TurnRestrictionsListMo
     
     /* --------------------------------------------------------------------------- */
     /* interface SelectionChangedListener                                          */
-    /* --------------------------------------------------------------------------- */	
+    /* --------------------------------------------------------------------------- */   
     public void selectionChanged(Collection<? extends OsmPrimitive> newSelection) {
         initFromSelection(newSelection);
     }

@@ -18,16 +18,16 @@ import toms.plug.ifc.Pluggable;
 
 public class PluginLoader {
 
-//!!	public static List<Pluggable> loadPlugins(File plugDir) throws IOException {
-//!!		File[] plugJars = plugDir.listFiles(new JARFileFilter());
-//!!		ClassLoader cl = new URLClassLoader(PluginLoader.fileArrayToURLArray(plugJars));
-        
-//!!		if(cl == null) return null;
-        
-//!!		List<Class<Pluggable>> plugClasses = PluginLoader.extractClassesFromJARs(plugJars, cl);
-        
-//!!		return PluginLoader.createPluggableObjects(plugClasses);
-//!!	}
+//!!    public static List<Pluggable> loadPlugins(File plugDir) throws IOException {
+//!!        File[] plugJars = plugDir.listFiles(new JARFileFilter());
+//!!        ClassLoader cl = new URLClassLoader(PluginLoader.fileArrayToURLArray(plugJars));
+
+//!!        if(cl == null) return null;
+
+//!!        List<Class<Pluggable>> plugClasses = PluginLoader.extractClassesFromJARs(plugJars, cl);
+
+//!!        return PluginLoader.createPluggableObjects(plugClasses);
+//!!    }
 
     private static List<Pluggable> createPluggableObjects(List<Class<Pluggable>> pluggables) {
         List<Pluggable> plugs = new ArrayList<Pluggable>(pluggables.size());
@@ -42,14 +42,14 @@ public class PluginLoader {
                 e.printStackTrace();
             }
         }
-        
+
         return plugs;
 
     }
 
-    private static List<Class<Pluggable>> extractClassesFromJARs(	File[] jars, ClassLoader cl) throws FileNotFoundException, IOException {
+    private static List<Class<Pluggable>> extractClassesFromJARs(   File[] jars, ClassLoader cl) throws FileNotFoundException, IOException {
         List<Class<Pluggable>> classes = new ArrayList<Class<Pluggable>>();
-        
+
         for(File jar : jars) {
             classes.addAll(PluginLoader.extractClassesFromJAR(jar, cl));
         }
@@ -62,10 +62,10 @@ public class PluginLoader {
         List<Class<Pluggable>> classes = new ArrayList<Class<Pluggable>>();
         JarInputStream jaris = new JarInputStream(new FileInputStream(jar));
         JarEntry ent = null;
-        
+
         while ((ent = jaris.getNextJarEntry()) != null) {
             String entName = ent.getName(); //.toLowerCase();
-            
+
             if (entName.endsWith(".class")) {
                 try {
                     Class<?> cls = cl.loadClass(entName.substring(0, entName.length()- 6).replace('/', '.'));
@@ -76,9 +76,9 @@ public class PluginLoader {
                 }
             }
         }
-        
+
         jaris.close();
-        
+
         return classes;
     }
 
@@ -86,20 +86,20 @@ public class PluginLoader {
         for (Class<?> i: cls.getInterfaces()) {
             if (i.equals(Pluggable.class)) return true;
         }
-        
+
         return false;
 
     }
 
     private static URL[] fileArrayToURLArray(File[] files) throws MalformedURLException {
         URL[] urls = new URL[files.length];
-        
+
         if(urls == null) return null;
-        
+
         for(int i = 0; i < files.length; i++) {
             urls[i] = files[i].toURI().toURL();
         }
-        
+
         return urls;
     }
 

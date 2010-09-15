@@ -106,7 +106,7 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
             memberModel.setToPrimitive(way);
             break;
         }
-    }	
+    }   
         
     /**
      * Sets the way participating in the turn restriction in a given role.
@@ -129,10 +129,10 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
 
         OsmPrimitive p = layer.data.getPrimitiveById(wayId);
         if (p == null) {
-            throw new IllegalStateException(MessageFormat.format("didn''t find way with id {0} in layer ''{1}''", wayId, layer.getName()));			
+            throw new IllegalStateException(MessageFormat.format("didn''t find way with id {0} in layer ''{1}''", wayId, layer.getName()));         
         }
         setTurnRestrictionLeg(role, (Way)p);
-    }	
+    }   
     
     /**
      * "Officially" a turn restriction should have exactly one member with 
@@ -192,7 +192,7 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
      */
     public void populate(Relation turnRestriction) {
         CheckParameterUtil.ensureParameterNotNull(turnRestriction, "turnRestriction");
-        if (turnRestriction.getDataSet() != null && turnRestriction.getDataSet() != layer.data) {			
+        if (turnRestriction.getDataSet() != null && turnRestriction.getDataSet() != layer.data) {           
             throw new IllegalArgumentException(
                 // don't translate - it's a technical message
                 MessageFormat.format("turnRestriction {0} must not belong to a different dataset than the dataset of layer ''{1}''", turnRestriction.getId(), layer.getName())
@@ -208,11 +208,11 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
      * @param turnRestriction the turn restriction. Must not be null.
      */
     public void apply(Relation turnRestriction) {
-        CheckParameterUtil.ensureParameterNotNull(turnRestriction, "turnRestriction");		
+        CheckParameterUtil.ensureParameterNotNull(turnRestriction, "turnRestriction");      
         TagCollection tags = tagEditorModel.getTagCollection();
         turnRestriction.removeAll();
         tags.applyTo(turnRestriction);
-        memberModel.applyTo(turnRestriction);		
+        memberModel.applyTo(turnRestriction);       
     }
     
     /**
@@ -235,7 +235,7 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
      */
     public void setRestrictionTagValue(String value){
         if (value == null || value.trim().equals("")) {
-            tagEditorModel.delete("restriction");			
+            tagEditorModel.delete("restriction");           
         } else {
             TagModel  tm = tagEditorModel.get("restriction");
             if (tm != null){
@@ -354,9 +354,9 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
             if (tagEditorModel.get("except") != null){
                 tagEditorModel.delete("except");
                 setChanged();
-                notifyObservers();				
+                notifyObservers();              
             }
-            return;			
+            return;         
         }
         TagModel tag = tagEditorModel.get("except");
         if (tag == null) {
@@ -369,12 +369,12 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
                 setChanged();
                 notifyObservers();
             }
-        }		
+        }       
     }
 
     /* ----------------------------------------------------------------------------------------- */
     /* interface DataSetListener                                                                 */
-    /* ----------------------------------------------------------------------------------------- */	
+    /* ----------------------------------------------------------------------------------------- */ 
     protected boolean isAffectedByDataSetUpdate(DataSet ds, List<? extends OsmPrimitive> updatedPrimitives) {
         if (ds != layer.data) return false;
         if (updatedPrimitives == null || updatedPrimitives.isEmpty()) return false;
@@ -387,7 +387,7 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
     public void dataChanged(DataChangedEvent event) {
         // refresh the views
         setChanged();
-        notifyObservers();		
+        notifyObservers();      
     }
 
     public void nodeMoved(NodeMovedEvent event) {
@@ -421,23 +421,23 @@ public class TurnRestrictionEditorModel extends Observable implements DataSetLis
         if (isAffectedByDataSetUpdate(event.getDataset(), event.getPrimitives())) {
             setChanged();
             notifyObservers();
-        }		
-    }	
+        }       
+    }   
     
     class RelationMemberModelListener implements TableModelListener {
         public void tableChanged(TableModelEvent e) {
             setChanged();
             notifyObservers();
-        }		
+        }       
     }
 
     /* ----------------------------------------------------------------------------------------- */
     /* inner classes                                                                             */
-    /* ----------------------------------------------------------------------------------------- */	
+    /* ----------------------------------------------------------------------------------------- */ 
     class TagEditorModelObserver implements TableModelListener {
         public void tableChanged(TableModelEvent e) {
             setChanged();
             notifyObservers();
-        }		
+        }       
     }
 }

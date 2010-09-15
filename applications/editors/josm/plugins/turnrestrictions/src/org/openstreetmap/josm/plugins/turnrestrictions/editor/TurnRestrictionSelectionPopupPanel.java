@@ -56,7 +56,7 @@ public class TurnRestrictionSelectionPopupPanel extends JPanel{
     /** the button for creating a new turn restriction */
     private JButton btnNew;
     /** the table with the turn restrictions which can be edited */
-    private JTable tblTurnRestrictions;	
+    private JTable tblTurnRestrictions; 
     private OsmDataLayer layer;
     
     
@@ -140,7 +140,7 @@ public class TurnRestrictionSelectionPopupPanel extends JPanel{
         
         pnl.setBackground(UIManager.getColor("Table.background"));
         pane.setBackground(UIManager.getColor("Table.background"));
-        return pnl;		
+        return pnl;     
     }
     
     /**
@@ -159,11 +159,11 @@ public class TurnRestrictionSelectionPopupPanel extends JPanel{
         btnNew.addFocusListener(new FocusHandler());
         
         if (editCandiates != null && ! editCandiates.isEmpty()) {
-            add(buildTurnRestrictionTablePanel(editCandiates), BorderLayout.CENTER);	
+            add(buildTurnRestrictionTablePanel(editCandiates), BorderLayout.CENTER);    
             registerEditShortcuts(editCandiates);
         }
         
-        setBackground(UIManager.getColor("Table.background"));		
+        setBackground(UIManager.getColor("Table.background"));      
     }
 
     
@@ -264,7 +264,7 @@ public class TurnRestrictionSelectionPopupPanel extends JPanel{
         public void actionPerformed(ActionEvent e) {
             Relation tr = (Relation)tblTurnRestrictions.getModel().getValueAt(idx, 1);
             launchEditor(tr);
-        }		
+        }       
     }
     
     private class EditSelectedTurnRestrictionAction extends AbstractEditTurnRestrictionAction implements MouseListener{
@@ -281,7 +281,7 @@ public class TurnRestrictionSelectionPopupPanel extends JPanel{
             if (!(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2)) return;
             int row = tblTurnRestrictions.rowAtPoint(e.getPoint());
             if (row < 0) return;
-            editTurnRestrictionAtRow(row);			
+            editTurnRestrictionAtRow(row);          
         }
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
@@ -294,7 +294,7 @@ public class TurnRestrictionSelectionPopupPanel extends JPanel{
             if (parentPopup != null){
                 parentPopup.hide();
             }
-        }		
+        }       
     }
     
     private static class TurnRestrictionTableModel extends AbstractTableModel {
@@ -332,28 +332,28 @@ public class TurnRestrictionSelectionPopupPanel extends JPanel{
         }
     }
     
-    private static class TurnRestrictionTableColumnModel extends DefaultTableColumnModel {		
-        public TurnRestrictionTableColumnModel() {			
+    private static class TurnRestrictionTableColumnModel extends DefaultTableColumnModel {      
+        public TurnRestrictionTableColumnModel() {          
             // the idx column
-            TableColumn col = new TableColumn(0);			
+            TableColumn col = new TableColumn(0);           
             col.setResizable(false);
             col.setWidth(50);
             addColumn(col);
             
             // the column displaying turn restrictions 
-            col = new TableColumn(1);			
+            col = new TableColumn(1);           
             col.setResizable(false);
             col.setPreferredWidth(400);
             col.setCellRenderer(new TurnRestrictionCellRenderer());
-            addColumn(col);			
+            addColumn(col);         
         }
     }
     
-    private class FocusHandler extends FocusAdapter {		
+    private class FocusHandler extends FocusAdapter {       
         @Override
         public void focusLost(FocusEvent e) {
             // if we loose the focus to a component outside of the popup panel
-            // we hide the popup			
+            // we hide the popup            
             if (e.getOppositeComponent() == null ||!SwingUtilities.isDescendingFrom(e.getOppositeComponent(), TurnRestrictionSelectionPopupPanel.this)) {
                 if (parentPopup != null){
                     parentPopup.hide();

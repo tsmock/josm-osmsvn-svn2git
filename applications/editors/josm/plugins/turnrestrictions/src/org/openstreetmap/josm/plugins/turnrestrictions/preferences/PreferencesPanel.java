@@ -87,7 +87,7 @@ public class PreferencesPanel extends VerticallyScrollablePanel {
         gc.gridy = 1;
         gc.insets = new Insets(0,20,0,0);
         pnl.add(icons, gc);
-        return pnl;		
+        return pnl;     
     }
     
     /**
@@ -116,7 +116,7 @@ public class PreferencesPanel extends VerticallyScrollablePanel {
         gc.gridy = 1;
         gc.insets = new Insets(0,20,0,0);
         pnl.add(icons, gc);
-        return pnl;		
+        return pnl;     
     }
     
     /**
@@ -139,7 +139,7 @@ public class PreferencesPanel extends VerticallyScrollablePanel {
      * 
      * @return
      */
-    protected void build() {			
+    protected void build() {            
         setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.NORTHWEST;
@@ -154,7 +154,7 @@ public class PreferencesPanel extends VerticallyScrollablePanel {
         gc.gridy++;
         add(buildSetBPanel(), gc);
         gc.gridy++;
-        add(new JSeparator(), gc);		
+        add(new JSeparator(), gc);      
         gc.gridy++;
         add(buildShowViaListInBasicEditorPanel(), gc);
         gc.gridy++;
@@ -166,7 +166,7 @@ public class PreferencesPanel extends VerticallyScrollablePanel {
         gc.gridy++;
         gc.fill = GridBagConstraints.BOTH;
         gc.weighty = 1.0;
-        add(new JPanel(), gc);		 
+        add(new JPanel(), gc);       
         
         bgIconSet = new ButtonGroup();
         bgIconSet.add(rbSetA);
@@ -212,7 +212,7 @@ public class PreferencesPanel extends VerticallyScrollablePanel {
         } else {
             set = "set-b";
         }
-        String oldSet = prefs.get(PreferenceKeys.ROAD_SIGNS, "set-a");		
+        String oldSet = prefs.get(PreferenceKeys.ROAD_SIGNS, "set-a");      
         if (!set.equals(oldSet)){
             prefs.put(PreferenceKeys.ROAD_SIGNS, set);
         }
@@ -221,12 +221,12 @@ public class PreferencesPanel extends VerticallyScrollablePanel {
         boolean oldValue = prefs.getBoolean(PreferenceKeys.SHOW_VIAS_IN_BASIC_EDITOR, false);
         if (newValue != oldValue){
             prefs.put(PreferenceKeys.SHOW_VIAS_IN_BASIC_EDITOR, newValue);
-        }		
+        }       
         
         pnlShortcutPreference.saveToPreferences(prefs);
     }
     
     public PreferencesPanel() {
         build();
-    }	
+    }   
 }

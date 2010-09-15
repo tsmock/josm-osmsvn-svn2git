@@ -33,8 +33,8 @@ public class RequiredTagMissingError extends Issue {
     }
 
     @Override
-    public String getText() {	
-        return tr("The required tag <tt>{0}={1}</tt> is missing.",				
+    public String getText() {   
+        return tr("The required tag <tt>{0}={1}</tt> is missing.",              
                 this.tagKey,
                 this.tagValue
         );
@@ -43,7 +43,7 @@ public class RequiredTagMissingError extends Issue {
     private class AddTagAction extends AbstractAction {
         public AddTagAction(){
             putValue(NAME,tr("Add missing tag"));
-            putValue(SHORT_DESCRIPTION, tr("Add the missing tag {0}={1}", tagKey, tagValue));		
+            putValue(SHORT_DESCRIPTION, tr("Add the missing tag {0}={1}", tagKey, tagValue));       
         }
         
         public void actionPerformed(ActionEvent e) {
@@ -52,7 +52,7 @@ public class RequiredTagMissingError extends Issue {
             if (t == null){
                 t = new TagModel(tagKey, tagValue);
                 model.prepend(t);
-            }			
-        }		 
+            }           
+        }        
     }
 }
