@@ -56,7 +56,7 @@ public class MvcrParser extends XMLParser {
             topElem.addHouse(new House(cp, co));
             return;
         }
-        
+
         // ========== PARSING STREET ========== //
         if (name.equals("ulice")) {
             String nazev = tryTrim(attributes.getValue("nazev"));

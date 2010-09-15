@@ -20,12 +20,12 @@ import org.openstreetmap.josm.data.coor.LatLon;
 public class WalkingPapersAddLayerAction extends JosmAction {
 
     public WalkingPapersAddLayerAction() {
-        super(tr("Scanned Map..."), "walkingpapers", 
+        super(tr("Scanned Map..."), "walkingpapers",
             tr("Display a map that was previously scanned and uploaded to walking-papers.org"), null, false);
     }
 
     public void actionPerformed(ActionEvent e) {
-        String wpid = JOptionPane.showInputDialog(Main.parent, 
+        String wpid = JOptionPane.showInputDialog(Main.parent,
             tr("Enter a walking-papers.org URL or ID (the bit after the ?id= in the URL)"),
                 Main.pref.get("walkingpapers.last-used-id"));
 
@@ -41,7 +41,7 @@ public class WalkingPapersAddLayerAction extends JosmAction {
 
         Pattern spanPattern = Pattern.compile("<span class=\"(\\S+)\">(\\S+)</span>");
         Matcher m;
-        
+
         double north = 0;
         double south = 0;
         double east = 0;
@@ -81,7 +81,7 @@ public class WalkingPapersAddLayerAction extends JosmAction {
         Main.pref.put("walkingpapers.last-used-id", mungedWpId);
 
         Bounds b = new Bounds(new LatLon(south, west), new LatLon(north, east));
-        
+
         WalkingPapersLayer wpl = new WalkingPapersLayer(mungedWpId, tile, b, minz, maxz);
         Main.main.addLayer(wpl);
 

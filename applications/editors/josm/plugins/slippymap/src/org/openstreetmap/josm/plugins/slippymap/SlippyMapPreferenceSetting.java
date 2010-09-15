@@ -113,10 +113,10 @@ public class SlippyMapPreferenceSetting implements PreferenceSetting {
      * Load settings from {@link SlippyMapPreferences} class. Loaded preferences are stored to local GUI components.
      * Actualy this method loads and sets this params:<br>
      * <ul>
-     * 	<li>autozoom - {@link #autozoomActive} - {@link SlippyMapPreferences#getAutozoom()}</li>
-     * 	<li>autoload - {@link #autoloadTiles} - {@link SlippyMapPreferences#getAutoloadTiles()}</li>
-     * 	<li>maxZoomLvl - {@link #maxZoomLvl} - {@link SlippyMapPreferences#getMaxZoomLvl()}</li>
-     * 	<li>minZoomLvl - {@link #minZoomLvl} - {@link SlippyMapPreferences#getMaxZoomLvl()}</li>
+     *  <li>autozoom - {@link #autozoomActive} - {@link SlippyMapPreferences#getAutozoom()}</li>
+     *  <li>autoload - {@link #autoloadTiles} - {@link SlippyMapPreferences#getAutoloadTiles()}</li>
+     *  <li>maxZoomLvl - {@link #maxZoomLvl} - {@link SlippyMapPreferences#getMaxZoomLvl()}</li>
+     *  <li>minZoomLvl - {@link #minZoomLvl} - {@link SlippyMapPreferences#getMaxZoomLvl()}</li>
      * </ul>
      * </p>
      */

@@ -6,11 +6,11 @@ import java.net.URL;
 
 /**
  * Class that contains information about one single slippy map tile.
- * 
+ *
  * @author Frederik Ramm <frederik@remote.org>
  * @author LuVar <lubomir.varga@freemap.sk>
  * @author Dave Hansen <dave@sr71.net>
- * 
+ *
  */
 public class WalkingPapersTile {
     private Image tileImage;
@@ -19,7 +19,7 @@ public class WalkingPapersTile {
     int x;
     int y;
     int z;
-    
+
     WalkingPapersLayer parentLayer;
 
 

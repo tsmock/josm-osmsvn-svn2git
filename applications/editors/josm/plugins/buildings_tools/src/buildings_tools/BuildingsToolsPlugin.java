@@ -14,10 +14,10 @@ public class BuildingsToolsPlugin extends Plugin {
     public static Mercator proj = new Mercator();
 
     public static EastNorth latlon2eastNorth(LatLon p) {
-        return proj.latlon2eastNorth(p); 
+        return proj.latlon2eastNorth(p);
     }
     public static LatLon eastNorth2latlon(EastNorth p) {
-        return proj.eastNorth2latlon(p); 
+        return proj.eastNorth2latlon(p);
     }
 
     public BuildingsToolsPlugin(PluginInformation info) {

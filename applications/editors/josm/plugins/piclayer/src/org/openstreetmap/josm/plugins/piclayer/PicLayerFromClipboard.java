@@ -44,7 +44,7 @@ public class PicLayerFromClipboard extends PicLayerAbstract {
         if ( t == null ) {
             throw new IOException(tr("Nothing in clipboard"));
         }
-        
+
         // TODO: Why is it so slow?
         // Try to make it an image data
         try {
@@ -55,8 +55,8 @@ public class PicLayerFromClipboard extends PicLayerAbstract {
             }
         } catch (UnsupportedFlavorException e) {
             throw new IOException( e.getMessage() );
-        } 
-        
+        }
+
         return image;
     }
 
