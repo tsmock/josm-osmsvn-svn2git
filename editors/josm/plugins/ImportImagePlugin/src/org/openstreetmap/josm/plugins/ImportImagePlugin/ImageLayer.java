@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.media.jai.PlanarImage;
+import javax.swing.Action;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -39,7 +40,7 @@ import org.openstreetmap.josm.gui.dialogs.LayerListPopup;
 import org.openstreetmap.josm.gui.layer.Layer;
 
 /**
- * 	Layer which contains spatial referenced image data.
+ *  Layer which contains spatial referenced image data.
  * 
  * @author Christoph Beekmans, Fabian Kowitz, Anna Robaszkiewicz, Oliver Kuhn, Martin Ulitzny
  *
@@ -146,8 +147,8 @@ public class ImageLayer extends Layer {
 
         // Refresh
         // Main.map.mapView.repaint();
-//		PlanarImage image = (PlanarImage) coverage.getRenderedImage();
-//		logger.info("Color Model: " + coverage.getRenderedImage().getColorModel());
+//      PlanarImage image = (PlanarImage) coverage.getRenderedImage();
+//      logger.info("Color Model: " + coverage.getRenderedImage().getColorModel());
         ImageWorker worker = new ImageWorker(coverage.getRenderedImage());
 
         return worker.getBufferedImage();
@@ -224,16 +225,16 @@ public class ImageLayer extends Layer {
     }
 
     @Override
-    public Component[] getMenuEntries() {
-        return new Component[]{
-                new JMenuItem(LayerListDialog.getInstance().createActivateLayerAction(this)),
-                new JMenuItem(LayerListDialog.getInstance().createShowHideLayerAction(this)),
-                new JMenuItem(LayerListDialog.getInstance().createDeleteLayerAction(this)),
-                new JSeparator(),
-                new JMenuItem(new RenameLayerAction(getAssociatedFile(), this)),
-                new JMenuItem(new LayerPropertiesAction(this)),
-                new JSeparator(),
-                new JMenuItem(new LayerListPopup.InfoAction(this))};
+    public Action[] getMenuEntries() {
+        return new Action[]{
+                LayerListDialog.getInstance().createActivateLayerAction(this),
+                LayerListDialog.getInstance().createShowHideLayerAction(),
+                LayerListDialog.getInstance().createDeleteLayerAction(),
+                SeparatorLayerAction.INSTANCE,
+                new RenameLayerAction(getAssociatedFile(), this),
+                new LayerPropertiesAction(this),
+                SeparatorLayerAction.INSTANCE,
+                new LayerListPopup.InfoAction(this)};
     }
 
     @Override
