@@ -17,10 +17,10 @@ import org.openstreetmap.josm.tools.Shortcut;
 public class SmedTabAction extends JosmAction {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-    
+
     public SmedTabAction() {
         super( "Seekarten Editor", "Smed","Seekarten Editor", Shortcut.registerShortcut(
                                 "tools:Semmaps",
@@ -31,10 +31,10 @@ public class SmedTabAction extends JosmAction {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
     }
 
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -51,7 +51,7 @@ public class SmedTabAction extends JosmAction {
         // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         //Add content to the window.
         frame.add(new SmedTabbedPane(), BorderLayout.CENTER);
 
