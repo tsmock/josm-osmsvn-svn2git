@@ -134,7 +134,7 @@ public class BuoyCard extends Buoy {
         refreshLights();
         parseLights(keys);
         parseFogRadar(keys);
-        
+
         dlg.cbM01CatOfMark.setSelectedIndex(getBuoyIndex());
         dlg.cbM01StyleOfMark.setSelectedIndex(getStyleIndex());
         dlg.tfM01Name.setText(getName());
