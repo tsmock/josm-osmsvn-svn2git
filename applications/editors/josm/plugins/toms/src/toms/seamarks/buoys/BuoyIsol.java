@@ -96,14 +96,14 @@ public class BuoyIsol extends Buoy {
         dlg.tfM01Name.setText(getName());
         dlg.cM01TopMark.setSelected(hasTopMark());
     }
-    
+
     public void refreshLights() {
         dlg.cbM01Kennung.removeAllItems();
         dlg.cbM01Kennung.addItem(Messages.getString("SmpDialogAction.212")); //$NON-NLS-1$
         dlg.cbM01Kennung.addItem("Fl(2)"); //$NON-NLS-1$
         dlg.cbM01Kennung.setSelectedIndex(0);
     }
-    
+
     public boolean isValid() {
         return (getBuoyIndex() > 0) && (getStyleIndex() > 0);
     }
@@ -111,7 +111,7 @@ public class BuoyIsol extends Buoy {
     public void paintSign() {
         if (dlg.paintlock)
             return;
-        
+
         super.paintSign();
 
         dlg.sM01StatusBar.setText(getErrMsg());
@@ -132,7 +132,7 @@ public class BuoyIsol extends Buoy {
             dlg.tfM01Height.setVisible(false);
             dlg.lM01Range.setVisible(false);
             dlg.tfM01Range.setVisible(false);
-            
+
             if (isFired()) {
                 switch (getStyleIndex()) {
                 case SPEC_FLOAT:
@@ -233,10 +233,9 @@ public class BuoyIsol extends Buoy {
             break;
         case ISOL_BEACON:
         case ISOL_TOWER:
-            Main.main.undoRedo
-                    .add(new ChangePropertyCommand(node,
-                            "seamark:beacon_isolated_danger:colour_pattern", //$NON-NLS-1$
-                            "horizontal stripes")); //$NON-NLS-1$
+            Main.main.undoRedo.add(new ChangePropertyCommand(node,
+                    "seamark:beacon_isolated_danger:colour_pattern", //$NON-NLS-1$
+                    "horizontal stripes")); //$NON-NLS-1$
             Main.main.undoRedo.add(new ChangePropertyCommand(node,
                     "seamark:beacon_isolated_danger:colour", "black;red;black")); //$NON-NLS-1$ //$NON-NLS-2$
             break;

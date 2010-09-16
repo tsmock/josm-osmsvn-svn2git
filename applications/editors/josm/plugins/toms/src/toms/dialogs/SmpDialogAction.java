@@ -247,7 +247,7 @@ public class SmpDialogAction extends JosmAction {
          * + "Are you really sure to continue?"),
          * tr("Please abort if you are not sure"), JOptionPane.YES_NO_OPTION,
          * JOptionPane.WARNING_MESSAGE);
-         *
+         * 
          * if (option != JOptionPane.YES_OPTION) { return; }
          */
 
@@ -1143,11 +1143,12 @@ public class SmpDialogAction extends JosmAction {
                     if (it.contains("(")) {
                         i1 = it.indexOf("(");
                         i2 = it.indexOf(")");
-                        c = it.substring(i1+1, i2);
-                        it = it.substring(0, i1) + it.substring(i2+1);
+                        c = it.substring(i1 + 1, i2);
+                        it = it.substring(0, i1) + it.substring(i2 + 1);
                     }
                     if (!c.isEmpty())
-                        buoy.setLightGroup(c);;
+                        buoy.setLightGroup(c);
+                    ;
                     buoy.setLightChar(it);
                     buoy.paintSign();
                 }
@@ -1228,7 +1229,7 @@ public class SmpDialogAction extends JosmAction {
             cbM01Colour.addItem(Messages.getString("SmpDialogAction.192")); //$NON-NLS-1$
             cbM01Colour.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    buoy.setLightColour((String)cbM01Colour.getSelectedItem());
+                    buoy.setLightColour((String) cbM01Colour.getSelectedItem());
                     buoy.paintSign();
                 }
             });
