@@ -35,7 +35,7 @@ public class SmedAbout implements SmedPluggable{
     @Override
     public void setPluginManager(SmedPluginManager manager) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -50,11 +50,11 @@ public class SmedAbout implements SmedPluggable{
         return getJPanel();
     }
 
-    
+
     /**
-     * This method initializes jPanel	
-     * 	
-     * @return javax.swing.JPanel	
+     * This method initializes jPanel
+     *
+     * @return javax.swing.JPanel
      */
     private JPanel getJPanel() {
         if (jPanel == null) {
