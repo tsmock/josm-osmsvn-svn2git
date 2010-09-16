@@ -75,7 +75,7 @@ public class BuoySaw extends Buoy {
 
         if (getStyleIndex() >= dlg.cbM01StyleOfMark.getItemCount())
             setStyleIndex(0);
-        
+
         if (keys.containsKey("seamark:topmark:shape") //$NON-NLS-1$
                 || keys.containsKey("seamark:topmark:colour")) { //$NON-NLS-1$
             setTopMark(true);
@@ -99,7 +99,7 @@ public class BuoySaw extends Buoy {
         dlg.cbM01Kennung.addItem("Mo"); //$NON-NLS-1$
         dlg.cbM01Kennung.setSelectedIndex(0);
     }
-    
+
     public boolean isValid() {
         return (getBuoyIndex() > 0) && (getStyleIndex() > 0);
     }
@@ -173,10 +173,28 @@ public class BuoySaw extends Buoy {
             }
 
             if (!image.equals("/images/Safe_Water")) { //$NON-NLS-1$
-//                if (hasTopMark())
-//                    image += "_Sphere"; //$NON-NLS-1$
                 image += ".png"; //$NON-NLS-1$
                 dlg.lM01Icon.setIcon(new ImageIcon(getClass().getResource(image)));
+                if (hasTopMark()) {
+                    image = "";
+                    switch (getStyleIndex()) {
+                    case SAFE_PILLAR:
+                    case SAFE_SPAR:
+                        image = "/images/Top_Sphere_Red_Buoy.png"; //$NON-NLS-1$
+                        break;
+                    case SAFE_SPHERE:
+                        image = "/images/Top_Sphere_Red_Buoy_Small.png"; //$NON-NLS-1$
+                        break;
+                    case SAFE_BEACON:
+                        image = "/images/Top_Sphere_Red_Beacon.png"; //$NON-NLS-1$
+                        break;
+                    case SAFE_FLOAT:
+                        image = "/images/Top_Sphere_Red_Float.png"; //$NON-NLS-1$
+                        break;
+                    }
+                    if (!image.isEmpty())
+                        dlg.lM06Icon.setIcon(new ImageIcon(getClass().getResource(image)));
+                }
             } else
                 dlg.lM01Icon.setIcon(null);
         }

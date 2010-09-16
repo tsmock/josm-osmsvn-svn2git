@@ -21,7 +21,8 @@ public class BuoyUkn extends Buoy {
     }
 
     public void paintSign() {
-        if (dlg.paintlock) return;
+        if (dlg.paintlock)
+            return;
         super.paintSign();
 
         if (getErrMsg() != null)

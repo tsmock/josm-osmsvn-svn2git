@@ -274,7 +274,7 @@ public class BuoyLat extends Buoy {
         setLightColour();
         parseLights(keys);
         parseFogRadar(keys);
-        
+
         dlg.cbM01CatOfMark.setSelectedIndex(getBuoyIndex());
         dlg.cbM01StyleOfMark.setSelectedIndex(getStyleIndex());
         dlg.tfM01Name.setText(getName());
@@ -404,6 +404,7 @@ public class BuoyLat extends Buoy {
                 default:
                 }
             }
+
             String image = "/images/Lateral"; //$NON-NLS-1$
 
             switch (getBuoyIndex()) {
@@ -612,15 +613,91 @@ public class BuoyLat extends Buoy {
 
             if (!image.equals("/images/Lateral")) { //$NON-NLS-1$
 
-/*                if (hasTopMark()) {
-                    if (cat == PORT_HAND || cat == PREF_PORT_HAND)
-                        image += "_Can"; //$NON-NLS-1$
-                    else
-                        image += "_Cone"; //$NON-NLS-1$
-                }
-*/                image += ".png"; //$NON-NLS-1$
+                image += ".png"; //$NON-NLS-1$
                 dlg.lM01Icon.setIcon(new ImageIcon(getClass().getResource(image)));
 
+                if (hasTopMark()) {
+                    image = "";
+                    switch (getBuoyIndex()) {
+                    case PORT_HAND:
+                    case PREF_PORT_HAND:
+                        if (region == IALA_A)
+                            switch (style) {
+                            case LAT_CAN:
+                                image = "/images/Top_Can_Red_Buoy_Small.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_PILLAR:
+                            case LAT_SPAR:
+                                image = "/images/Top_Can_Red_Buoy.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_BEACON:
+                            case LAT_TOWER:
+                                image = "/images/Top_Can_Red_Beacon.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_FLOAT:
+                                image = "/images/Top_Can_Red_Float.png"; //$NON-NLS-1$
+                                break;
+                            }
+                        else
+                            switch (style) {
+                            case LAT_CAN:
+                                image = "/images/Top_Can_Green_Buoy_Small.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_PILLAR:
+                            case LAT_SPAR:
+                                image = "/images/Top_Can_Green_Buoy.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_BEACON:
+                            case LAT_TOWER:
+                                image = "/images/Top_Can_Green_Beacon.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_FLOAT:
+                                image = "/images/Top_Can_Green_Float.png"; //$NON-NLS-1$
+                                break;
+                            }
+                        break;
+
+                    case STARBOARD_HAND:
+                    case PREF_STARBOARD_HAND:
+                        if (region == IALA_A)
+                            switch (style) {
+                            case LAT_CONE:
+                                image = "/images/Top_Cone_Green_Buoy_Small.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_PILLAR:
+                            case LAT_SPAR:
+                                image = "/images/Top_Cone_Green_Buoy.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_BEACON:
+                            case LAT_TOWER:
+                                image = "/images/Top_Cone_Green_Beacon.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_FLOAT:
+                                image = "/images/Top_Cone_Green_Float.png"; //$NON-NLS-1$
+                                break;
+                            }
+                        else
+                            switch (style) {
+                            case LAT_CONE:
+                                image = "/images/Top_Cone_Red_Buoy_Small.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_PILLAR:
+                            case LAT_SPAR:
+                                image = "/images/Top_Cone_Red_Buoy.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_BEACON:
+                            case LAT_TOWER:
+                                image = "/images/Top_Cone_Red_Beacon.png"; //$NON-NLS-1$
+                                break;
+                            case LAT_FLOAT:
+                                image = "/images/Top_Cone_Red_Float.png"; //$NON-NLS-1$
+                                break;
+                            }
+                        break;
+                    }
+                    if (!image.isEmpty())
+                        dlg.lM06Icon.setIcon(new ImageIcon(getClass().getResource(image)));
+                }
                 if (hasRadar()) {
                     dlg.lM03Icon.setIcon(new ImageIcon(getClass().getResource(
                             "/images/Radar_Reflector.png"))); //$NON-NLS-1$

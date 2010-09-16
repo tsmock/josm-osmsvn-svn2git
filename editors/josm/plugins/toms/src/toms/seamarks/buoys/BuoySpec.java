@@ -86,16 +86,16 @@ public class BuoySpec extends Buoy {
 
         if (keys.containsKey("seamark:beacon_special_purpose:shape")) { //$NON-NLS-1$
             str = keys.get("seamark:beacon_special_purpose:shape"); //$NON-NLS-1$
-        if (str.equals("tower")) //$NON-NLS-1$
-            setStyleIndex(SPEC_TOWER);
-        else 
-            setStyleIndex(SPEC_BEACON);
+            if (str.equals("tower")) //$NON-NLS-1$
+                setStyleIndex(SPEC_TOWER);
+            else
+                setStyleIndex(SPEC_BEACON);
         }
 
         if (keys.containsKey("seamark:light_float:colour")) {
             setStyleIndex(SPEC_FLOAT);
         }
-        
+
         if ((keys.containsKey("seamark:type") && keys.get("seamark:type").equals( //$NON-NLS-1$ //$NON-NLS-2$
                 "beacon_special_purpose")) //$NON-NLS-1$
                 || keys.containsKey("seamark:beacon_special_purpose:colour") //$NON-NLS-1$
@@ -177,7 +177,7 @@ public class BuoySpec extends Buoy {
             dlg.tfM01Height.setVisible(false);
             dlg.lM01Range.setVisible(false);
             dlg.tfM01Range.setVisible(false);
-            
+
             if (isFired()) {
                 switch (getStyleIndex()) {
                 case SPEC_FLOAT:
@@ -233,10 +233,32 @@ public class BuoySpec extends Buoy {
             }
 
             if (!image.equals("/images/Special_Purpose")) { //$NON-NLS-1$
-//              if (hasTopMark())
-//                  image += "_CrossY"; //$NON-NLS-1$
                 image += ".png"; //$NON-NLS-1$
                 dlg.lM01Icon.setIcon(new ImageIcon(getClass().getResource(image)));
+                if (hasTopMark()) {
+                    image = "";
+                    switch (getStyleIndex()) {
+                    case SPEC_PILLAR:
+                    case SPEC_SPAR:
+                        image = "/images/Top_X_Yellow_Buoy.png"; //$NON-NLS-1$
+                        break;
+                    case SPEC_CAN:
+                    case SPEC_CONE:
+                    case SPEC_SPHERE:
+                    case SPEC_BARREL:
+                        image = "/images/Top_X_Yellow_Buoy_Small.png"; //$NON-NLS-1$
+                        break;
+                    case SPEC_BEACON:
+                    case SPEC_TOWER:
+                        image = "/images/Top_X_Yellow_Beacon.png"; //$NON-NLS-1$
+                        break;
+                    case SPEC_FLOAT:
+                        image = "/images/Top_X_Yellow_Float.png"; //$NON-NLS-1$
+                        break;
+                    }
+                    if (!image.isEmpty())
+                        dlg.lM06Icon.setIcon(new ImageIcon(getClass().getResource(image)));
+                }
             } else
                 dlg.lM01Icon.setIcon(null);
         }
