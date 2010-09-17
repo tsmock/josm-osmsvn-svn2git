@@ -381,9 +381,12 @@ abstract public class Buoy extends SeaMark {
                         LightColour[index] = "G";
                     else if (values[0].equals("white"))
                         LightColour[index] = "W";
-                    Bearing1[index] = values[1];
-                    Bearing2[index] = values[2];
-                    Radius[index] = values[3];
+                    if (values.length > 1)
+                        Bearing1[index] = values[1];
+                    if (values.length > 2)
+                        Bearing2[index] = values[2];
+                    if (values.length > 3)
+                        Radius[index] = values[3];
                 } else {
                     index = 0;
                 }
@@ -499,11 +502,17 @@ abstract public class Buoy extends SeaMark {
         dlg.lM04Icon.setIcon(null);
         dlg.lM05Icon.setIcon(null);
         dlg.lM06Icon.setIcon(null);
+        dlg.lM01NameMark.setText("");
+        dlg.lM01FireMark.setText("");
+        dlg.lM01FogMark.setText("");
+        dlg.lM01RadarMark.setText("");
 
         dlg.rbM01RegionA.setSelected(!getRegion());
         dlg.rbM01RegionB.setSelected(getRegion());
 
         if (isValid()) {
+            dlg.lM01NameMark.setText(getName());
+
             dlg.bM01Save.setEnabled(true);
 
             dlg.cM01TopMark.setSelected(hasTopMark());
@@ -519,9 +528,15 @@ abstract public class Buoy extends SeaMark {
                         "/images/Radar_Reflector.png")));
             }
 
-            if (hasRacon()) {
+            else if (hasRacon()) {
                 dlg.lM04Icon.setIcon(new ImageIcon(getClass().getResource(
                         "/images/Radar_Station.png")));
+                if (getRaType() != 0) {
+                    String c = (String) dlg.cbM01Racon.getSelectedItem();
+                    if ((getRaType() == RATYPE_RACON) && !getRaconGroup().isEmpty())
+                        c += ("(" + getRaconGroup() + ")");
+                    dlg.lM01RadarMark.setText(c);
+                }
                 dlg.cbM01Racon.setVisible(true);
                 if (getRaType() == RATYPE_RACON) {
                     dlg.lM01Racon.setVisible(true);
@@ -540,6 +555,14 @@ abstract public class Buoy extends SeaMark {
             if (hasFog()) {
                 dlg.lM05Icon.setIcon(new ImageIcon(getClass().getResource(
                         "/images/Fog_Signal.png")));
+                if (getFogSound() != 0) {
+                    String c = (String) dlg.cbM01Fog.getSelectedItem();
+                    if (!getFogGroup().isEmpty())
+                        c += ("(" + getFogGroup() + ")");
+                    if (!getFogPeriod().isEmpty())
+                        c += (" " + getFogPeriod() + "s");
+                    dlg.lM01FogMark.setText(c);
+                }
                 dlg.cbM01Fog.setVisible(true);
                 if (getFogSound() == 0) {
                     dlg.lM01FogGroup.setVisible(false);
@@ -596,8 +619,8 @@ abstract public class Buoy extends SeaMark {
                         c = c + tmp;
                 }
                 dlg.cbM01Kennung.setSelectedItem(c);
-                if (((dlg.cbM01Kennung.getSelectedIndex() == 0) && !getLightGroup()
-                        .isEmpty())
+                if ((dlg.cbM01Kennung.getSelectedIndex() != 0)
+                        && (!getLightGroup().isEmpty())
                         || (((String) dlg.cbM01Kennung.getSelectedItem()).contains("("))
                         && !(((String) dlg.cbM01Kennung.getSelectedItem()).contains("+"))) {
                     c = c + "(" + getLightGroup() + ")";
@@ -971,11 +994,9 @@ abstract public class Buoy extends SeaMark {
         dlg.rbM01RegionA.setEnabled(false);
         dlg.rbM01RegionB.setEnabled(false);
         dlg.lM01FireMark.setText("");
-        dlg.cbM01CatOfMark.removeAllItems();
         dlg.cbM01CatOfMark.setVisible(false);
         dlg.lM01CatOfMark.setVisible(false);
         setBuoyIndex(0);
-        dlg.cbM01StyleOfMark.removeAllItems();
         dlg.cbM01StyleOfMark.setVisible(false);
         dlg.lM01StyleOfMark.setVisible(false);
         setStyleIndex(0);
@@ -984,7 +1005,6 @@ abstract public class Buoy extends SeaMark {
         setName("");
         dlg.cM01TopMark.setSelected(false);
         dlg.cM01TopMark.setVisible(false);
-        dlg.cbM01TopMark.removeAllItems();
         dlg.cbM01TopMark.setVisible(false);
         setTopMark(false);
         dlg.cM01Radar.setSelected(false);
