@@ -108,6 +108,10 @@ public class BuoyIsol extends Buoy {
         return (getBuoyIndex() > 0) && (getStyleIndex() > 0);
     }
 
+    public void setLightColour() {
+        super.setLightColour("W"); //$NON-NLS-1$
+    }
+
     public void paintSign() {
         if (dlg.paintlock)
             return;
@@ -124,8 +128,10 @@ public class BuoyIsol extends Buoy {
             dlg.cM01Racon.setVisible(true);
             dlg.cM01Fog.setVisible(true);
             dlg.cM01Fired.setVisible(true);
-            dlg.cbM01Colour.setVisible(false);
-            dlg.lM01Colour.setVisible(false);
+            if (!isSectored()) {
+                dlg.cbM01Colour.setVisible(false);
+                dlg.lM01Colour.setVisible(false);
+            }
             dlg.rbM01Fired1.setVisible(false);
             dlg.rbM01FiredN.setVisible(false);
             dlg.lM01Height.setVisible(false);
@@ -135,16 +141,8 @@ public class BuoyIsol extends Buoy {
 
             if (isFired()) {
                 switch (getStyleIndex()) {
-                case SPEC_FLOAT:
-                    dlg.lM01Height.setVisible(true);
-                    dlg.tfM01Height.setVisible(true);
-                    dlg.lM01Range.setVisible(true);
-                    dlg.tfM01Range.setVisible(true);
-                    break;
-                case SPEC_BEACON:
-                case SPEC_TOWER:
-                    dlg.rbM01Fired1.setVisible(true);
-                    dlg.rbM01FiredN.setVisible(true);
+                case ISOL_BEACON:
+                case ISOL_TOWER:
                     dlg.lM01Height.setVisible(true);
                     dlg.tfM01Height.setVisible(true);
                     dlg.lM01Range.setVisible(true);
@@ -250,11 +248,5 @@ public class BuoyIsol extends Buoy {
         saveTopMarkData("2 spheres", "black"); //$NON-NLS-1$ //$NON-NLS-2$
         saveLightData(); //$NON-NLS-1$
         saveRadarFogData();
-
     }
-
-    public void setLightColour() {
-        super.setLightColour("W"); //$NON-NLS-1$
-    }
-
 }

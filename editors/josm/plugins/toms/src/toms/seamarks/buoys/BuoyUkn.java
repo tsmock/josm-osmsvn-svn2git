@@ -14,9 +14,6 @@ public class BuoyUkn extends Buoy {
         super(dia);
         resetMask();
         dlg.cbM01TypeOfMark.setSelectedIndex(0);
-        dlg.cbM01CatOfMark.removeAllItems();
-        dlg.cbM01CatOfMark.setEnabled(false);
-        dlg.tfM01Name.setText(getName());
         setErrMsg(Msg);
     }
 

@@ -473,6 +473,7 @@ public class SmpDialogAction extends JosmAction {
 
         buoy = new BuoyUkn(this, Messages.getString("SmpDialogAction.91")); //$NON-NLS-1$
         buoy.setNode(node);
+        buoy.paintSign();
         return;
     }
 
@@ -795,6 +796,7 @@ public class SmpDialogAction extends JosmAction {
 
                     if (buoy == null) {
                         buoy = new BuoyUkn(dia, Messages.getString("SmpDialogAction.150")); //$NON-NLS-1$
+                        buoy.paintSign();
                         return;
                     }
 
@@ -808,7 +810,7 @@ public class SmpDialogAction extends JosmAction {
                     case SeaMark.UNKNOWN_TYPE:
                         if (!(buoy instanceof BuoyUkn))
                             buoy = new BuoyUkn(dia, Messages.getString("SmpDialogAction.150")); //$NON-NLS-1$
-                        buoy.setBuoyIndex(type);
+                        buoy.setBuoyIndex(0);
                         break;
 
                     case SeaMark.LATERAL:
@@ -878,6 +880,7 @@ public class SmpDialogAction extends JosmAction {
 
                     if (buoy == null) {
                         buoy = new BuoyUkn(dia, Messages.getString("SmpDialogAction.150")); //$NON-NLS-1$
+                        buoy.paintSign();
                         return;
                     }
 
@@ -885,22 +888,7 @@ public class SmpDialogAction extends JosmAction {
                     if (n == null)
                         return;
 
-                    if (cbM01TypeOfMark.getSelectedIndex() == SeaMark.LATERAL) {
-                        if (!(buoy instanceof BuoyLat))
-                            buoy = new BuoyLat(dia, n);
-                        buoy.setBuoyIndex(cat);
-                    }
-                    if (cbM01TypeOfMark.getSelectedIndex() == SeaMark.CARDINAL) {
-                        if (!(buoy instanceof BuoyCard))
-                            buoy = new BuoyCard(dia, n);
-                        buoy.setBuoyIndex(cat);
-                    }
-                    if (cbM01TypeOfMark.getSelectedIndex() == SeaMark.LIGHT) {
-                        if (!(buoy instanceof BuoyNota))
-                            buoy = new BuoyNota(dia, n);
-                        buoy.setBuoyIndex(cat);
-                    }
-
+                    buoy.setBuoyIndex(cat);
                     buoy.refreshStyles();
                     buoy.refreshLights();
                     buoy.setLightColour();
@@ -921,6 +909,8 @@ public class SmpDialogAction extends JosmAction {
                     int style = cbM01StyleOfMark.getSelectedIndex();
                     if (buoy != null && style != buoy.getStyleIndex()) {
                         buoy.setStyleIndex(style);
+                        buoy.refreshLights();
+                        buoy.setLightColour();
                         buoy.paintSign();
                     }
                 }

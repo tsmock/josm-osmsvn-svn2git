@@ -298,7 +298,6 @@ public class BuoyLat extends Buoy {
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.07")); //$NON-NLS-1$
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.10")); //$NON-NLS-1$
             break;
-
         case STARBOARD_HAND:
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.03")); //$NON-NLS-1$
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.01")); //$NON-NLS-1$
@@ -308,7 +307,6 @@ public class BuoyLat extends Buoy {
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.07")); //$NON-NLS-1$
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.10")); //$NON-NLS-1$
             break;
-
         case PREF_PORT_HAND:
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.02")); //$NON-NLS-1$
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.01")); //$NON-NLS-1$
@@ -317,7 +315,6 @@ public class BuoyLat extends Buoy {
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.06")); //$NON-NLS-1$
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.07")); //$NON-NLS-1$
             break;
-
         case PREF_STARBOARD_HAND:
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.03")); //$NON-NLS-1$
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.01")); //$NON-NLS-1$
@@ -326,8 +323,6 @@ public class BuoyLat extends Buoy {
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.06")); //$NON-NLS-1$
             dlg.cbM01StyleOfMark.addItem(Messages.getString("Buoy.07")); //$NON-NLS-1$
             break;
-
-        default:
         }
 
         if (style >= dlg.cbM01StyleOfMark.getItemCount())
@@ -338,8 +333,26 @@ public class BuoyLat extends Buoy {
         dlg.lM01StyleOfMark.setVisible(true);
     }
 
+    public void refreshLights() {
+        super.refreshLights();
+    }
+
     public boolean isValid() {
         return (getBuoyIndex() > 0) && (getStyleIndex() > 0);
+    }
+
+    public void setLightColour() {
+        if (getRegion() == IALA_A) {
+            if (getBuoyIndex() == PORT_HAND || getBuoyIndex() == PREF_PORT_HAND)
+                super.setLightColour("R"); //$NON-NLS-1$
+            else
+                super.setLightColour("G"); //$NON-NLS-1$
+        } else {
+            if (getBuoyIndex() == PORT_HAND || getBuoyIndex() == PREF_PORT_HAND)
+                super.setLightColour("G"); //$NON-NLS-1$
+            else
+                super.setLightColour("R"); //$NON-NLS-1$
+        }
     }
 
     public void paintSign() {
@@ -353,7 +366,6 @@ public class BuoyLat extends Buoy {
             dlg.tfM01Name.setEnabled(true);
             dlg.tfM01Name.setText(getName());
 
-            int cat = getBuoyIndex();
             boolean region = getRegion();
             int style = getStyleIndex();
 
@@ -375,8 +387,10 @@ public class BuoyLat extends Buoy {
                 dlg.cM01Fired.setEnabled(true);
                 dlg.cM01TopMark.setEnabled(true);
             }
-            dlg.cbM01Colour.setVisible(false);
-            dlg.lM01Colour.setVisible(false);
+            if (!isSectored()) {
+                dlg.cbM01Colour.setVisible(false);
+                dlg.lM01Colour.setVisible(false);
+            }
             dlg.rbM01Fired1.setVisible(false);
             dlg.rbM01FiredN.setVisible(false);
             dlg.lM01Height.setVisible(false);
@@ -388,13 +402,6 @@ public class BuoyLat extends Buoy {
                 switch (style) {
                 case LAT_BEACON:
                 case LAT_TOWER:
-                    dlg.rbM01Fired1.setVisible(true);
-                    dlg.rbM01FiredN.setVisible(true);
-                    dlg.lM01Height.setVisible(true);
-                    dlg.tfM01Height.setVisible(true);
-                    dlg.lM01Range.setVisible(true);
-                    dlg.tfM01Range.setVisible(true);
-                    break;
                 case LAT_FLOAT:
                     dlg.lM01Height.setVisible(true);
                     dlg.tfM01Height.setVisible(true);
@@ -1058,19 +1065,4 @@ public class BuoyLat extends Buoy {
 
         Main.pref.put("tomsplugin.IALA", getRegion() ? "B" : "A"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
-
-    public void setLightColour() {
-        if (getRegion() == IALA_A) {
-            if (getBuoyIndex() == PORT_HAND || getBuoyIndex() == PREF_PORT_HAND)
-                super.setLightColour("R"); //$NON-NLS-1$
-            else
-                super.setLightColour("G"); //$NON-NLS-1$
-        } else {
-            if (getBuoyIndex() == PORT_HAND || getBuoyIndex() == PREF_PORT_HAND)
-                super.setLightColour("G"); //$NON-NLS-1$
-            else
-                super.setLightColour("R"); //$NON-NLS-1$
-        }
-    }
-
 }

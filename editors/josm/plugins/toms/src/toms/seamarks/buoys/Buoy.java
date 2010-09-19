@@ -156,6 +156,19 @@ abstract public class Buoy extends SeaMark {
 
     public void setSectored(boolean sectored) {
         Sectored = sectored;
+        if (sectored) {
+            LightColour[0] = "";
+        } else {
+            setSectorIndex(0);
+            setLightChar("");
+            setLightColour("");
+            setLightGroup("");
+            setHeight("");
+            setRange("");
+            setBearing1("");
+            setBearing2("");
+            setRadius("");
+        }
     }
 
     private int SectorIndex = 0;
