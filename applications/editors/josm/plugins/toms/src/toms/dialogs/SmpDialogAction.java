@@ -250,7 +250,7 @@ public class SmpDialogAction extends JosmAction {
          * + "Are you really sure to continue?"),
          * tr("Please abort if you are not sure"), JOptionPane.YES_NO_OPTION,
          * JOptionPane.WARNING_MESSAGE);
-         *
+         * 
          * if (option != JOptionPane.YES_OPTION) { return; }
          */
 
