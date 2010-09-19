@@ -38,7 +38,7 @@ public class SmedEx implements SmedPluggable {
 
     @Override
     public JComponent getComponent() {
-        
+
         return getJPanel();
     }
 
@@ -49,9 +49,9 @@ public class SmedEx implements SmedPluggable {
     }
 
     /**
-     * This method initializes jPanel	
-     * 	
-     * @return javax.swing.JPanel	
+     * This method initializes jPanel
+     *
+     * @return javax.swing.JPanel
      */
     private JPanel getJPanel() {
         if (jPanel == null) {
@@ -64,23 +64,23 @@ public class SmedEx implements SmedPluggable {
     }
 
     /**
-     * This method initializes jButton	
-     * 	
-     * @return javax.swing.JButton	
+     * This method initializes jButton
+     *
+     * @return javax.swing.JButton
      */
     private JButton getJButton() {
         if (jButton == null) {
             jButton = new JButton();
             jButton.setBounds(new Rectangle(15, 40, 160, 40));
             jButton.setText("Hello World!");
-            
+
             jButton.addActionListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog( null, "it works" );
                 }
-                
+
             });
         }
         return jButton;

@@ -25,7 +25,7 @@ public class SmedTabbedPane extends JPanel {
 
     public SmedTabbedPane() {
         super(new GridLayout(1, 1));
-        
+
         List<SmedPluggable> plugins = null;
         String pluginDirName = Main.pref.getPluginsDirectory().getAbsolutePath();
         try {
@@ -33,7 +33,7 @@ public class SmedTabbedPane extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         if(plugins != null) {
             Icon icon = null;
             JTabbedPane tabbedPane = new JTabbedPane();
@@ -44,7 +44,7 @@ public class SmedTabbedPane extends JPanel {
                 panel = p.getComponent();
                 tabbedPane.addTab(p.getName(),icon, panel, p.getInfo());
                 tabbedPane.setMnemonicAt(i, KeyEvent.VK_1 + i);
-            
+
                 i++;
             }
 
