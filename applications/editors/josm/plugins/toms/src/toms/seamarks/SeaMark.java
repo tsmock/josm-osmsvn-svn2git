@@ -107,11 +107,11 @@ abstract public class SeaMark {
     public final static int SPEC_FLOAT = 7;
     public final static int SPEC_SPHERE = 8;
     public final static int SPEC_BARREL = 9;
-    
+
     /**
      * Radar Beacons - correspond to Ratyp Index
      */
-    
+
     public final static int UNKNOWN_RATYPE = 0;
     public final static int RATYPE_RACON = 1;
     public final static int RATYPE_RAMARK = 2;
@@ -120,7 +120,7 @@ abstract public class SeaMark {
     /**
      * Fog Signals - correspond to FogSound Index
      */
-    
+
     public final static int UNKNOWN_FOG = 0;
     public final static int FOG_HORN = 1;
     public final static int FOG_SIREN = 2;
