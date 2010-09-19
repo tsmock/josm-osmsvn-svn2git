@@ -132,7 +132,7 @@ public class BuoySpec extends Buoy {
 
     public void refreshLights() {
         super.refreshLights();
-        
+
         switch (getStyleIndex()) {
         case SPEC_BARREL:
             dlg.cM01Fired.setSelected(false);
