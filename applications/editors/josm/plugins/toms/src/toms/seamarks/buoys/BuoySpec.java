@@ -130,13 +130,16 @@ public class BuoySpec extends Buoy {
         dlg.cM01TopMark.setSelected(hasTopMark());
     }
 
-    public void setStyleIndex(int styleIndex) {
-        super.setStyleIndex(styleIndex);
-        if (styleIndex == SPEC_BARREL) {
+    public void refreshLights() {
+        super.refreshLights();
+        
+        switch (getStyleIndex()) {
+        case SPEC_BARREL:
             dlg.cM01Fired.setSelected(false);
             dlg.cM01Fired.setEnabled(false);
             dlg.cM01TopMark.setEnabled(true);
-        } else {
+            break;
+        default:
             dlg.cM01Fired.setEnabled(true);
             dlg.cM01TopMark.setEnabled(true);
         }
@@ -144,6 +147,10 @@ public class BuoySpec extends Buoy {
 
     public boolean isValid() {
         return (getBuoyIndex() > 0) && (getStyleIndex() > 0);
+    }
+
+    public void setLightColour() {
+        super.setLightColour("W"); //$NON-NLS-1$
     }
 
     public void paintSign() {
@@ -169,8 +176,10 @@ public class BuoySpec extends Buoy {
             dlg.cM01Fog.setVisible(true);
             dlg.cM01Fired.setVisible(true);
             dlg.cM01Fired.setEnabled(true);
-            dlg.cbM01Colour.setVisible(false);
-            dlg.lM01Colour.setVisible(false);
+            if (!isSectored()) {
+                dlg.cbM01Colour.setVisible(false);
+                dlg.lM01Colour.setVisible(false);
+            }
             dlg.rbM01Fired1.setVisible(false);
             dlg.rbM01FiredN.setVisible(false);
             dlg.lM01Height.setVisible(false);
@@ -181,15 +190,8 @@ public class BuoySpec extends Buoy {
             if (isFired()) {
                 switch (getStyleIndex()) {
                 case SPEC_FLOAT:
-                    dlg.lM01Height.setVisible(true);
-                    dlg.tfM01Height.setVisible(true);
-                    dlg.lM01Range.setVisible(true);
-                    dlg.tfM01Range.setVisible(true);
-                    break;
                 case SPEC_BEACON:
                 case SPEC_TOWER:
-                    dlg.rbM01Fired1.setVisible(true);
-                    dlg.rbM01FiredN.setVisible(true);
                     dlg.lM01Height.setVisible(true);
                     dlg.tfM01Height.setVisible(true);
                     dlg.lM01Range.setVisible(true);
@@ -323,9 +325,4 @@ public class BuoySpec extends Buoy {
         saveLightData(); //$NON-NLS-1$
         saveRadarFogData();
     }
-
-    public void setLightColour() {
-        super.setLightColour("W"); //$NON-NLS-1$
-    }
-
 }
