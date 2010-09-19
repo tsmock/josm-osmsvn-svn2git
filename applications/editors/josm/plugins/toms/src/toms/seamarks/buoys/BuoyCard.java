@@ -142,40 +142,36 @@ public class BuoyCard extends Buoy {
     }
 
     public void refreshLights() {
-        int type = getBuoyIndex();
-
         dlg.cbM01Kennung.removeAllItems();
         dlg.cbM01Kennung.addItem(Messages.getString("SmpDialogAction.212")); //$NON-NLS-1$
         dlg.cbM01Kennung.setSelectedIndex(0);
 
-        switch (type) {
-        case SeaMark.CARD_NORTH:
+        switch (getBuoyIndex()) {
+        case CARD_NORTH:
             dlg.cbM01Kennung.addItem("Q"); //$NON-NLS-1$
             dlg.cbM01Kennung.addItem("VQ"); //$NON-NLS-1$
             break;
-
-        case SeaMark.CARD_EAST:
+        case CARD_EAST:
             dlg.cbM01Kennung.addItem("Q(3)"); //$NON-NLS-1$
             dlg.cbM01Kennung.addItem("VQ(3)"); //$NON-NLS-1$
             break;
-
-        case SeaMark.CARD_SOUTH:
+        case CARD_SOUTH:
             dlg.cbM01Kennung.addItem("Q(6)+LFl"); //$NON-NLS-1$
             dlg.cbM01Kennung.addItem("VQ(6)+LFl"); //$NON-NLS-1$
             break;
-
-        case SeaMark.CARD_WEST:
+        case CARD_WEST:
             dlg.cbM01Kennung.addItem("Q(9)"); //$NON-NLS-1$
             dlg.cbM01Kennung.addItem("VQ(9)"); //$NON-NLS-1$
             break;
-
-        default:
         }
-
     }
 
     public boolean isValid() {
         return (getBuoyIndex() > 0) && (getStyleIndex() > 0);
+    }
+
+    public void setLightColour() {
+        super.setLightColour("W"); //$NON-NLS-1$
     }
 
     public void paintSign() {
@@ -196,8 +192,10 @@ public class BuoyCard extends Buoy {
             dlg.cM01Fog.setVisible(true);
             dlg.cM01Fired.setEnabled(true);
             dlg.cM01Fired.setVisible(true);
-            dlg.cbM01Colour.setVisible(false);
-            dlg.lM01Colour.setVisible(false);
+            if (!isSectored()) {
+                dlg.cbM01Colour.setVisible(false);
+                dlg.lM01Colour.setVisible(false);
+            }
             dlg.rbM01Fired1.setVisible(false);
             dlg.rbM01FiredN.setVisible(false);
             dlg.lM01Height.setVisible(false);
@@ -207,16 +205,9 @@ public class BuoyCard extends Buoy {
 
             if (isFired()) {
                 switch (getStyleIndex()) {
-                case LAT_BEACON:
-                case LAT_TOWER:
-                    dlg.rbM01Fired1.setVisible(true);
-                    dlg.rbM01FiredN.setVisible(true);
-                    dlg.lM01Height.setVisible(true);
-                    dlg.tfM01Height.setVisible(true);
-                    dlg.lM01Range.setVisible(true);
-                    dlg.tfM01Range.setVisible(true);
-                    break;
-                case LAT_FLOAT:
+                case CARD_BEACON:
+                case CARD_TOWER:
+                case CARD_FLOAT:
                     dlg.lM01Height.setVisible(true);
                     dlg.tfM01Height.setVisible(true);
                     dlg.lM01Range.setVisible(true);
@@ -225,29 +216,24 @@ public class BuoyCard extends Buoy {
                 default:
                 }
             }
-            String image = "/images/Cardinal"; //$NON-NLS-1$
 
+            String image = "/images/Cardinal"; //$NON-NLS-1$
             switch (getStyleIndex()) {
             case SeaMark.CARD_PILLAR:
                 image += "_Pillar"; //$NON-NLS-1$
                 break;
-
             case SeaMark.CARD_SPAR:
                 image += "_Spar"; //$NON-NLS-1$
                 break;
-
             case SeaMark.CARD_BEACON:
                 image += "_Beacon"; //$NON-NLS-1$
                 break;
-
             case SeaMark.CARD_TOWER:
                 image += "_Tower"; //$NON-NLS-1$
                 break;
-
             case SeaMark.CARD_FLOAT:
                 image += "_Float"; //$NON-NLS-1$
                 break;
-
             default:
                 return;
             }
@@ -276,10 +262,6 @@ public class BuoyCard extends Buoy {
             } else
                 dlg.lM01Icon.setIcon(null);
         }
-    }
-
-    public void setLightColour() {
-        super.setLightColour("W"); //$NON-NLS-1$
     }
 
     public void saveSign() {
