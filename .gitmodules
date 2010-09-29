@@ -162,10 +162,6 @@
   path = applications/editors/josm/plugins/reverter
   url = ../reverter
   branch = master
-[submodule "applications/editors/josm/plugins/rgisopen"]
-  path = applications/editors/josm/plugins/rgisopen
-  url = ../rgisopen
-  branch = master
 [submodule "applications/editors/josm/plugins/roadsigns"]
   path = applications/editors/josm/plugins/roadsigns
   url = ../roadsigns
@@ -189,14 +185,6 @@
 [submodule "applications/editors/josm/plugins/smed"]
   path = applications/editors/josm/plugins/smed
   url = ../smed
-  branch = master
-[submodule "applications/editors/josm/plugins/smed_about"]
-  path = applications/editors/josm/plugins/smed_about
-  url = ../smed_about
-  branch = master
-[submodule "applications/editors/josm/plugins/smed_ex"]
-  path = applications/editors/josm/plugins/smed_ex
-  url = ../smed_ex
   branch = master
 [submodule "applications/editors/josm/plugins/surveyor"]
   path = applications/editors/josm/plugins/surveyor
