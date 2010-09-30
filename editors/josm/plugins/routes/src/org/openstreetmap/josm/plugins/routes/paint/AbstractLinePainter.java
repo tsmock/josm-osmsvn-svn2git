@@ -153,8 +153,8 @@ public abstract class AbstractLinePainter implements PathPainter {
              */
             Rectangle bounds = g.getClipBounds();
             bounds.grow(100, 100);                  // avoid arrow heads at the border
-            LineClip clip = new LineClip();
-            drawIt = clip.cohenSutherland(p1.x, p1.y, p2.x, p2.y, bounds.x, bounds.y, bounds.x+bounds.width, bounds.y+bounds.height);
+            LineClip clip = new LineClip(p1, p2, bounds);
+            drawIt = clip.execute();
             if (drawIt) {
                 p1 = clip.getP1();
                 p2 = clip.getP2();
