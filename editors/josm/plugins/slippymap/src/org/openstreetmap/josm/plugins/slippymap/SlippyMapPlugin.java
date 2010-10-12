@@ -1,11 +1,18 @@
 package org.openstreetmap.josm.plugins.slippymap;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.openstreetmap.gui.jmapviewer.OsmTileSource.CycleMap;
+import org.openstreetmap.gui.jmapviewer.OsmTileSource.Mapnik;
+import org.openstreetmap.gui.jmapviewer.OsmTileSource.TilesAtHome;
+import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.Preferences.PreferenceChangeEvent;
 import org.openstreetmap.josm.data.Preferences.PreferenceChangedListener;
 import org.openstreetmap.josm.gui.MapFrame;
+import org.openstreetmap.josm.gui.bbox.SlippyMapBBoxChooser;
+import org.openstreetmap.josm.gui.bbox.SlippyMapBBoxChooser.TileSourceProvider;
 import org.openstreetmap.josm.gui.preferences.PreferenceSetting;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
@@ -22,6 +29,18 @@ public class SlippyMapPlugin extends Plugin implements PreferenceChangedListener
     {
         super(info);
         Main.pref.addPreferenceChangeListener(this);
+        SlippyMapBBoxChooser.addTileSourceProvider(new TileSourceProvider() {
+            public List<TileSource> getTileSources() {
+                List<TileSource> result = new ArrayList<TileSource>();
+                for (TileSource ts: SlippyMapPreferences.getAllMapSources()) {
+                    if (ts instanceof Mapnik || ts instanceof CycleMap || ts instanceof TilesAtHome) {
+                        continue; // Already included in default list
+                    }
+                    result.add(ts);
+                }
+                return result;
+            }
+        });
     }
 
     @Override
