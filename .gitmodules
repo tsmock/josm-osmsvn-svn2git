@@ -18,6 +18,10 @@
   path = applications/editors/josm/plugins/Create_grid_of_ways
   url = ../Create_grid_of_ways
   branch = master
+[submodule "applications/editors/josm/plugins/DirectDownload"]
+  path = applications/editors/josm/plugins/DirectDownload
+  url = ../DirectDownload
+  branch = master
 [submodule "applications/editors/josm/plugins/DirectUpload"]
   path = applications/editors/josm/plugins/DirectUpload
   url = ../DirectUpload
