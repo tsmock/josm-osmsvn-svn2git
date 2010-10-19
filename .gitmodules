@@ -30,6 +30,10 @@
   path = applications/editors/josm/plugins/DirectUpload
   url = ../DirectUpload
   branch = master
+[submodule "applications/editors/josm/plugins/ElevationProfile"]
+  path = applications/editors/josm/plugins/ElevationProfile
+  url = ../ElevationProfile
+  branch = master
 [submodule "applications/editors/josm/plugins/ImportImagePlugin"]
   path = applications/editors/josm/plugins/ImportImagePlugin
   url = ../ImportImagePlugin
