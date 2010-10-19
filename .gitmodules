@@ -102,6 +102,10 @@
   path = applications/editors/josm/plugins/imagewaypoint
   url = ../imagewaypoint
   branch = master
+[submodule "applications/editors/josm/plugins/importvec"]
+  path = applications/editors/josm/plugins/importvec
+  url = ../importvec
+  branch = master
 [submodule "applications/editors/josm/plugins/irsrectify"]
   path = applications/editors/josm/plugins/irsrectify
   url = ../irsrectify
