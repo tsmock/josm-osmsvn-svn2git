@@ -14,6 +14,10 @@
   path = applications/editors/josm/plugins/00_plugin_dir_template
   url = ../00_plugin_dir_template
   branch = master
+[submodule "applications/editors/josm/plugins/ColumbusCSV"]
+  path = applications/editors/josm/plugins/ColumbusCSV
+  url = ../ColumbusCSV
+  branch = master
 [submodule "applications/editors/josm/plugins/Create_grid_of_ways"]
   path = applications/editors/josm/plugins/Create_grid_of_ways
   url = ../Create_grid_of_ways
