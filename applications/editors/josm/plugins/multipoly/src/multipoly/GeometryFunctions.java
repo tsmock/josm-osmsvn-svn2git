@@ -14,10 +14,10 @@ import org.openstreetmap.josm.data.osm.Node;
  *
  */
 public class GeometryFunctions {
-    public enum Intersection {INSIDE, OUTSIDE, CROSSING, EQUAL}
-    
+    public enum PolygonIntersection {FIRST_INSIDE_SECOND, SECOND_INSIDE_FIRST, OUTSIDE, CROSSING}
+
     /**
-     * Finds the intersection of two lines of inifinite length.
+     * Finds the intersection of two lines of infinite length.
      * @return EastNorth null if no intersection was found, the coordinates of the intersection otherwise
      */
     public static EastNorth getLineLineIntersection(EastNorth p1, EastNorth p2, EastNorth p3, EastNorth p4) {
@@ -54,7 +54,7 @@ public class GeometryFunctions {
     }
 
     /**
-     * Calcualtes closest point to a line segment.
+     * Calculates closest point to a line segment.
      * @param segmentP1
      * @param segmentP2
      * @param point
@@ -81,8 +81,8 @@ public class GeometryFunctions {
         else
             return new EastNorth(segmentP1.getX() + ldx * offset, segmentP1.getY() + ldy * offset);
 
-    }	
-    
+    }
+
     /**
      * This method tests if secondNode is clockwise to first node.
      * @param commonNode starting point for both vectors
@@ -102,42 +102,73 @@ public class GeometryFunctions {
 
 
     /**
-     * Tests if two polygons instersect.
+     * Tests if two polygons intersect.
      * @param first
      * @param second
-     * @return Inside if second is inside first, Outside, if second is outside first, Crossing, if they cross.
+     * @return intersection kind
+     * TODO: test segments, not only points
+     * TODO: is O(N*M), should use sweep for better performance.
      */
-    public static Intersection polygonIntersection(List<Node> outside, List<Node> inside) {
-        Set<Node> outsideNodes = new HashSet<Node>(outside);
-        
-        boolean nodesInside = false;
-        boolean nodesOutside = false;
-        
-        for (Node insideNode : inside) {
-            if (!outsideNodes.contains(insideNode)) {
-                if (nodeInsidePolygon(insideNode, outside)) {
-                    nodesInside = true;
-                }
-                else {
-                    nodesOutside = true;
-                }
+    public static PolygonIntersection polygonIntersection(List<Node> first, List<Node> second) {
+        Set<Node> firstSet = new HashSet<Node>(first);
+        Set<Node> secondSet = new HashSet<Node>(second);
+
+        int nodesInsideSecond = 0;
+        int nodesOutsideSecond = 0;
+        int nodesInsideFirst = 0;
+        int nodesOutsideFirst = 0;
+
+        for (Node insideNode : first) {
+            if (secondSet.contains(insideNode)) {
+                continue;
+                //ignore touching nodes.
+            }
+
+            if (nodeInsidePolygon(insideNode, second)) {
+                nodesInsideSecond ++;
+            }
+            else {
+                nodesOutsideSecond ++;
             }
         }
 
-        if (nodesInside) {
-            if (nodesOutside){
-                return Intersection.CROSSING;
+        for (Node insideNode : second) {
+            if (firstSet.contains(insideNode)) {
+                continue;
+                //ignore touching nodes.
+            }
+
+            if (nodeInsidePolygon(insideNode, first)) {
+                nodesInsideFirst ++;
             }
             else {
-                return Intersection.INSIDE;
+                nodesOutsideFirst ++;
             }
         }
-        else {
-            if (nodesOutside){
-                return Intersection.OUTSIDE;
+
+        if (nodesInsideFirst == 0) {
+            if (nodesInsideSecond == 0){
+                if (nodesOutsideFirst + nodesInsideSecond > 0) {
+                    return PolygonIntersection.OUTSIDE;
+                }
+                else {
+                    //all nodes common
+                    return PolygonIntersection.CROSSING;
+                }
             }
-            else {
-                return Intersection.EQUAL;
+            else
+            {
+                return PolygonIntersection.FIRST_INSIDE_SECOND;
+            }
+        }
+        else
+        {
+            if (nodesInsideSecond == 0) {
+                return PolygonIntersection.SECOND_INSIDE_FIRST;
+            }
+            else
+            {
+                return PolygonIntersection.CROSSING;
             }
         }
     }
