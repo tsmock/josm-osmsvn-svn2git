@@ -222,6 +222,10 @@
   path = applications/editors/josm/plugins/smed
   url = ../smed
   branch = master
+[submodule "applications/editors/josm/plugins/smed_fw"]
+  path = applications/editors/josm/plugins/smed_fw
+  url = ../smed_fw
+  branch = master
 [submodule "applications/editors/josm/plugins/surveyor"]
   path = applications/editors/josm/plugins/surveyor
   url = ../surveyor
