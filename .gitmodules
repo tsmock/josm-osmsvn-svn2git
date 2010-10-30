@@ -14,10 +14,6 @@
   path = applications/editors/josm/plugins/00_plugin_dir_template
   url = ../00_plugin_dir_template
   branch = master
-[submodule "applications/editors/josm/plugins/AddressEdit"]
-  path = applications/editors/josm/plugins/AddressEdit
-  url = ../FixAddresses
-  branch = master
 [submodule "applications/editors/josm/plugins/ColumbusCSV"]
   path = applications/editors/josm/plugins/ColumbusCSV
   url = ../ColumbusCSV
@@ -37,6 +33,10 @@
 [submodule "applications/editors/josm/plugins/ElevationProfile"]
   path = applications/editors/josm/plugins/ElevationProfile
   url = ../ElevationProfile
+  branch = master
+[submodule "applications/editors/josm/plugins/FixAddresses"]
+  path = applications/editors/josm/plugins/FixAddresses
+  url = ../FixAddresses
   branch = master
 [submodule "applications/editors/josm/plugins/ImportImagePlugin"]
   path = applications/editors/josm/plugins/ImportImagePlugin
