@@ -270,6 +270,10 @@
   path = applications/editors/josm/plugins/undelete
   url = ../undelete
   branch = master
+[submodule "applications/editors/josm/plugins/utilsplugin2"]
+  path = applications/editors/josm/plugins/utilsplugin2
+  url = ../utilsplugin2
+  branch = master
 [submodule "applications/editors/josm/plugins/validator"]
   path = applications/editors/josm/plugins/validator
   url = ../validator
