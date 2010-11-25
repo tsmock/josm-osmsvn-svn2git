@@ -262,6 +262,10 @@
   path = applications/editors/josm/plugins/tracer
   url = ../tracer
   branch = master
+[submodule "applications/editors/josm/plugins/trustosm"]
+  path = applications/editors/josm/plugins/trustosm
+  url = ../trustosm
+  branch = master
 [submodule "applications/editors/josm/plugins/turnrestrictions"]
   path = applications/editors/josm/plugins/turnrestrictions
   url = ../turnrestrictions
