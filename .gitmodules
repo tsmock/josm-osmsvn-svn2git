@@ -110,6 +110,10 @@
   path = applications/editors/josm/plugins/grid
   url = ../grid
   branch = master
+[submodule "applications/editors/josm/plugins/imagery"]
+  path = applications/editors/josm/plugins/imagery
+  url = ../imagery
+  branch = master
 [submodule "applications/editors/josm/plugins/imagewaypoint"]
   path = applications/editors/josm/plugins/imagewaypoint
   url = ../imagewaypoint
