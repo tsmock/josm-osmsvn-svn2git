@@ -134,6 +134,10 @@
   path = applications/editors/josm/plugins/livegps
   url = ../livegps
   branch = master
+[submodule "applications/editors/josm/plugins/mapdust"]
+  path = applications/editors/josm/plugins/mapdust
+  url = ../mapdust
+  branch = master
 [submodule "applications/editors/josm/plugins/measurement"]
   path = applications/editors/josm/plugins/measurement
   url = ../measurement
