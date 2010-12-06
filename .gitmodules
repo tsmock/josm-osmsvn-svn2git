@@ -78,10 +78,6 @@
   path = applications/editors/josm/plugins/download_along
   url = ../download_along
   branch = master
-[submodule "applications/editors/josm/plugins/duplicateway"]
-  path = applications/editors/josm/plugins/duplicateway
-  url = ../duplicateway
-  branch = master
 [submodule "applications/editors/josm/plugins/editgpx"]
   path = applications/editors/josm/plugins/editgpx
   url = ../editgpx
@@ -105,10 +101,6 @@
 [submodule "applications/editors/josm/plugins/graphview"]
   path = applications/editors/josm/plugins/graphview
   url = ../graphview
-  branch = master
-[submodule "applications/editors/josm/plugins/grid"]
-  path = applications/editors/josm/plugins/grid
-  url = ../grid
   branch = master
 [submodule "applications/editors/josm/plugins/imagery"]
   path = applications/editors/josm/plugins/imagery
@@ -157,10 +149,6 @@
 [submodule "applications/editors/josm/plugins/nearclick"]
   path = applications/editors/josm/plugins/nearclick
   url = ../nearclick
-  branch = master
-[submodule "applications/editors/josm/plugins/openlayers"]
-  path = applications/editors/josm/plugins/openlayers
-  url = ../openlayers
   branch = master
 [submodule "applications/editors/josm/plugins/openstreetbugs"]
   path = applications/editors/josm/plugins/openstreetbugs
@@ -285,10 +273,6 @@
 [submodule "applications/editors/josm/plugins/utilsplugin2"]
   path = applications/editors/josm/plugins/utilsplugin2
   url = ../utilsplugin2
-  branch = master
-[submodule "applications/editors/josm/plugins/validator"]
-  path = applications/editors/josm/plugins/validator
-  url = ../validator
   branch = master
 [submodule "applications/editors/josm/plugins/videomapping"]
   path = applications/editors/josm/plugins/videomapping
