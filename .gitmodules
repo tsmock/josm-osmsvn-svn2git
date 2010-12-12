@@ -6,10 +6,6 @@
   path = applications/editors/josm/i18n
   url = ../i18n
   branch = master
-[submodule "applications/editors/josm/wmsadapter"]
-  path = applications/editors/josm/wmsadapter
-  url = ../wmsadapter
-  branch = master
 [submodule "applications/editors/josm/plugins/00_plugin_dir_template"]
   path = applications/editors/josm/plugins/00_plugin_dir_template
   url = ../00_plugin_dir_template
@@ -102,10 +98,6 @@
   path = applications/editors/josm/plugins/graphview
   url = ../graphview
   branch = master
-[submodule "applications/editors/josm/plugins/imagery"]
-  path = applications/editors/josm/plugins/imagery
-  url = ../imagery
-  branch = master
 [submodule "applications/editors/josm/plugins/imagewaypoint"]
   path = applications/editors/josm/plugins/imagewaypoint
   url = ../imagewaypoint
@@ -182,10 +174,6 @@
   path = applications/editors/josm/plugins/public_transport
   url = ../public_transport
   branch = master
-[submodule "applications/editors/josm/plugins/remotecontrol"]
-  path = applications/editors/josm/plugins/remotecontrol
-  url = ../remotecontrol
-  branch = master
 [submodule "applications/editors/josm/plugins/restart"]
   path = applications/editors/josm/plugins/restart
   url = ../restart
@@ -213,10 +201,6 @@
 [submodule "applications/editors/josm/plugins/simplifyarea"]
   path = applications/editors/josm/plugins/simplifyarea
   url = ../simplifyarea
-  branch = master
-[submodule "applications/editors/josm/plugins/slippymap"]
-  path = applications/editors/josm/plugins/slippymap
-  url = ../slippymap
   branch = master
 [submodule "applications/editors/josm/plugins/smed"]
   path = applications/editors/josm/plugins/smed
@@ -297,10 +281,6 @@
 [submodule "applications/editors/josm/plugins/wms-turbo-challenge2"]
   path = applications/editors/josm/plugins/wms-turbo-challenge2
   url = ../wms-turbo-challenge2
-  branch = master
-[submodule "applications/editors/josm/plugins/wmsplugin"]
-  path = applications/editors/josm/plugins/wmsplugin
-  url = ../wmsplugin
   branch = master
 [submodule "applications/viewer/jmapviewer"]
   path = applications/viewer/jmapviewer
