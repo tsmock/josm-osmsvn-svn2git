@@ -98,6 +98,10 @@
   path = applications/editors/josm/plugins/graphview
   url = ../graphview
   branch = master
+[submodule "applications/editors/josm/plugins/imageryadjust"]
+  path = applications/editors/josm/plugins/imageryadjust
+  url = ../imageryadjust
+  branch = master
 [submodule "applications/editors/josm/plugins/imagewaypoint"]
   path = applications/editors/josm/plugins/imagewaypoint
   url = ../imagewaypoint
