@@ -137,8 +137,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getRegionAButton() {
         if (regionAButton == null) {
-            regionAButton = new JRadioButton(new ImageIcon(getClass()
-                    .getResource("/images/RegionAButton.png")));
+            regionAButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/RegionAButton.png")));
             regionAButton.setBounds(new Rectangle(0, 2, 34, 30));
             regionAButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             regionAButton.setToolTipText(Messages.getString("RegionATip"));
@@ -148,8 +147,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getRegionBButton() {
         if (regionBButton == null) {
-            regionBButton = new JRadioButton(new ImageIcon(getClass()
-                    .getResource("/images/RegionBButton.png")));
+            regionBButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/RegionBButton.png")));
             regionBButton.setBounds(new Rectangle(0, 32, 34, 30));
             regionBButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             regionBButton.setToolTipText(Messages.getString("RegionBTip"));
@@ -159,8 +157,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getPillarButton() {
         if (pillarButton == null) {
-            pillarButton = new JRadioButton(new ImageIcon(getClass()
-                    .getResource("/images/PillarButton.png")));
+            pillarButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/PillarButton.png")));
             pillarButton.setBounds(new Rectangle(0, 64, 34, 32));
             pillarButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             pillarButton.setToolTipText(Messages.getString("PillarTip"));
@@ -170,8 +167,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getSparButton() {
         if (sparButton == null) {
-            sparButton = new JRadioButton(new ImageIcon(getClass().getResource(
-                    "/images/SparButton.png")));
+            sparButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/SparButton.png")));
             sparButton.setBounds(new Rectangle(0, 96, 34, 32));
             sparButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             sparButton.setToolTipText(Messages.getString("SparTip"));
@@ -181,8 +177,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getConeButton() {
         if (coneButton == null) {
-            coneButton = new JRadioButton(new ImageIcon(getClass().getResource(
-                    "/images/ConeButton.png")));
+            coneButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/ConeButton.png")));
             coneButton.setBounds(new Rectangle(0, 128, 34, 32));
             coneButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             coneButton.setToolTipText(Messages.getString("ConeTip"));
@@ -192,8 +187,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getFloatButton() {
         if (floatButton == null) {
-            floatButton = new JRadioButton(new ImageIcon(getClass()
-                    .getResource("/images/FloatButton.png")));
+            floatButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/FloatButton.png")));
             floatButton.setBounds(new Rectangle(35, 0, 34, 32));
             floatButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             floatButton.setToolTipText(Messages.getString("FloatTip"));
@@ -203,8 +197,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getBeaconButton() {
         if (beaconButton == null) {
-            beaconButton = new JRadioButton(new ImageIcon(getClass()
-                    .getResource("/images/BeaconButton.png")));
+            beaconButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/BeaconButton.png")));
             beaconButton.setBounds(new Rectangle(35, 32, 34, 32));
             beaconButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             beaconButton.setToolTipText(Messages.getString("BeaconTip"));
@@ -214,8 +207,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getTowerButton() {
         if (towerButton == null) {
-            towerButton = new JRadioButton(new ImageIcon(getClass()
-                    .getResource("/images/TowerButton.png")));
+            towerButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/TowerButton.png")));
             towerButton.setBounds(new Rectangle(35, 64, 34, 32));
             towerButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             towerButton.setToolTipText(Messages.getString("TowerTip"));
@@ -225,8 +217,7 @@ public class PanelStbd extends JPanel {
 
     private JRadioButton getPerchButton() {
         if (perchButton == null) {
-            perchButton = new JRadioButton(new ImageIcon(getClass()
-                    .getResource("/images/PerchSButton.png")));
+            perchButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/PerchSButton.png")));
             perchButton.setBounds(new Rectangle(35, 96, 34, 32));
             perchButton.setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
             perchButton.setToolTipText(Messages.getString("PerchTip"));
