@@ -62,6 +62,10 @@
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
   branch = master
+[submodule "applications/editors/josm/plugins/contourmerge"]
+  path = applications/editors/josm/plugins/contourmerge
+  url = ../contourmerge
+  branch = master
 [submodule "applications/editors/josm/plugins/czechaddress"]
   path = applications/editors/josm/plugins/czechaddress
   url = ../czechaddress
