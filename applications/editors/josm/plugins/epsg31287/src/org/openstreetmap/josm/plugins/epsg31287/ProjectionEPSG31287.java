@@ -4,14 +4,15 @@ package org.openstreetmap.josm.plugins.epsg31287;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.util.Collection;
-import java.util.Arrays;
-
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.util.Arrays;
+import java.util.Collection;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.EastNorth;
@@ -47,7 +48,7 @@ public class ProjectionEPSG31287 implements org.openstreetmap.josm.data.projecti
 
     // PreferencePanel, not used in plugin mode, useful for JOSM custom-build
     @Override
-    public void setupPreferencePanel(JPanel p) {
+    public void setupPreferencePanel(JPanel p, ActionListener actionListener) {
         //p.add(new HtmlPanel("<i>EPSG:31287 - Bessel 1841 in Lambert_Conformal_Conic_2SP</i>"), GBC.eol().fill(GBC.HORIZONTAL));
         //p.add(Box.createVerticalGlue(), GBC.eol().fill(GBC.BOTH));
         p.setLayout(new GridBagLayout());
@@ -158,6 +159,11 @@ public class ProjectionEPSG31287 implements org.openstreetmap.josm.data.projecti
 
     public static String getProjCode() {
         return projCode;
+    }
+
+    @Override
+    public String[] allCodes() {
+        return new String[] {projCode};
     }
 
 }
