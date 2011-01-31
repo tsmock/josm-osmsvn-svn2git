@@ -142,10 +142,6 @@
   path = applications/editors/josm/plugins/michigan_left
   url = ../michigan_left
   branch = master
-[submodule "applications/editors/josm/plugins/multipoly"]
-  path = applications/editors/josm/plugins/multipoly
-  url = ../multipoly
-  branch = master
 [submodule "applications/editors/josm/plugins/multipoly-convert"]
   path = applications/editors/josm/plugins/multipoly-convert
   url = ../multipoly-convert
