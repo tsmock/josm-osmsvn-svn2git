@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (C) 2011 by Patrick "Petschge" Kilian, based on code        *
  *   Copyright (C) 2009 by Tomasz Stelmach                                 *
  *   http://www.stelmach-online.net/                                       *
  *                                                                         *
@@ -32,7 +33,7 @@ import org.openstreetmap.josm.actions.JosmAction;
  * 
  * TODO Four almost identical classes. Refactoring needed.
  */
-public class ResetPictureAllAction extends JosmAction {
+public class ResetPictureShearAction extends JosmAction {
 
     // Owner layer of the action
     PicLayerAbstract m_owner = null;
@@ -40,8 +41,8 @@ public class ResetPictureAllAction extends JosmAction {
     /**
      * Constructor
      */
-    public ResetPictureAllAction( PicLayerAbstract owner ) {
-        super(tr("All"), null, tr("Resets picture calibration"), null, false);
+    public ResetPictureShearAction( PicLayerAbstract owner ) {
+        super(tr("Shear"), null, tr("Resets picture shear"), null, false);
         // Remember the owner...
         m_owner = owner;
     }
@@ -51,9 +52,6 @@ public class ResetPictureAllAction extends JosmAction {
      */
     public void actionPerformed(ActionEvent arg0) {
         // Reset
-        m_owner.resetAngle();
-        m_owner.resetPosition();
-        m_owner.resetScale();
         m_owner.resetShear();
         // Redraw
         Main.map.mapView.repaint();
