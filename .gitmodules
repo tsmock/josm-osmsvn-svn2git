@@ -178,6 +178,10 @@
   path = applications/editors/josm/plugins/plastic_laf
   url = ../plastic_laf
   branch = master
+[submodule "applications/editors/josm/plugins/proj4j"]
+  path = applications/editors/josm/plugins/proj4j
+  url = ../proj4j
+  branch = master
 [submodule "applications/editors/josm/plugins/public_transport"]
   path = applications/editors/josm/plugins/public_transport
   url = ../public_transport
