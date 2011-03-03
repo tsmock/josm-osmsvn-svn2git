@@ -122,6 +122,10 @@
   path = applications/editors/josm/plugins/irsrectify
   url = ../irsrectify
   branch = master
+[submodule "applications/editors/josm/plugins/junctionchecking"]
+  path = applications/editors/josm/plugins/junctionchecking
+  url = ../junctionchecking
+  branch = master
 [submodule "applications/editors/josm/plugins/lakewalker"]
   path = applications/editors/josm/plugins/lakewalker
   url = ../lakewalker
