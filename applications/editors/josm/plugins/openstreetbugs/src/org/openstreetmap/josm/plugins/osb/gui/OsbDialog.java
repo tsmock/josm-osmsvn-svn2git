@@ -113,8 +113,8 @@ DataSetListener, SelectionChangedListener, MouseListener, OsbActionObserver {
     public OsbDialog(final OsbPlugin plugin) {
         super(tr("Open OpenStreetBugs"), "icon_error24",
                 tr("Opens the OpenStreetBugs window and activates the automatic download"), Shortcut.registerShortcut(
-                        "view:openstreetbugs", tr("Toggle: {0}", tr("Open OpenStreetBugs")), KeyEvent.VK_O,
-                        Shortcut.GROUP_MENU, Shortcut.SHIFT_DEFAULT), 150);
+                        "view:openstreetbugs", tr("Toggle: {0}", tr("Open OpenStreetBugs")), KeyEvent.VK_B,
+                        Shortcut.GROUP_LAYER, Shortcut.SHIFT_DEFAULT), 150);
 
         osbPlugin = plugin;
         bugListPanel = new JPanel(new BorderLayout());
