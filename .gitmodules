@@ -150,6 +150,10 @@
   path = applications/editors/josm/plugins/multipoly-convert
   url = ../multipoly-convert
   branch = master
+[submodule "applications/editors/josm/plugins/namemanager"]
+  path = applications/editors/josm/plugins/namemanager
+  url = ../namemanager
+  branch = master
 [submodule "applications/editors/josm/plugins/nearclick"]
   path = applications/editors/josm/plugins/nearclick
   url = ../nearclick
