@@ -1,4 +1,5 @@
-/* Copyright (c) 2010, skobbler GmbH
+/*
+ * Copyright (c) 2010, skobbler GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,40 +25,33 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Created on Feb 10, 2011 by Bea
+ * Modified on $DateTime$ by $Author$
  */
 package org.openstreetmap.josm.plugins.mapdust.gui.observer;
 
 
-import org.openstreetmap.josm.plugins.mapdust.gui.value.MapdustAction;
+import org.openstreetmap.josm.plugins.mapdust.service.value.MapdustBugFilter;
 
 
 /**
- * Observable interface for the MapdustAction list.
+ * The observer interface for the MapDust bug update action.
  *
  * @author Bea
  * @version $Revision$
  */
-public interface MapdustActionListObservable {
+public interface MapdustUpdateObserver {
 
     /**
-     * Adds a new observer to the list of observers.
+     * Updates the MapDust bugs based on the given filters. If the initialUpdate
+     * flag is true then the filters will not be applied to the MapDust bug
+     * data.
      *
-     * @param observer The <code>MapdustActionListObserver</code> object
+     * @param filter The <code>MapdustBugFilter</code> object
+     * @param initialUpdate Indicates if the update action is for the first time
+     * or not.
      */
-    public void addObserver(MapdustActionListObserver observer);
+    public void update(MapdustBugFilter filter, boolean initialUpdate);
 
-    /**
-     * Removes the given observer from the list of observers.
-     *
-     * @param observer The <code>MapdustActionListObserver</code> object
-     */
-    public void removeObserver(MapdustActionListObserver observer);
-
-    /**
-     * Notifies all the observers observing the given <code>MapdustAction</code>
-     * object.
-     *
-     * @param mapdustAction The <code>MapdustAction</code> object
-     */
-    public void notifyObservers(MapdustAction mapdustAction);
 }
