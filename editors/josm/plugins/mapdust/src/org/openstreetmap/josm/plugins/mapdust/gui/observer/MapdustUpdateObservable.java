@@ -1,4 +1,5 @@
-/* Copyright (c) 2010, skobbler GmbH
+/*
+ * Copyright (c) 2010, skobbler GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,35 +25,45 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Created on Feb 10, 2011 by Bea
+ * Modified on $DateTime$ by $Author$
  */
 package org.openstreetmap.josm.plugins.mapdust.gui.observer;
 
 
+import org.openstreetmap.josm.plugins.mapdust.service.value.MapdustBugFilter;
+
+
 /**
- * The observable interface for the refresh action.
+ * The observable interface for the MapDust bug update action.
  *
  * @author Bea
  * @version $Revision$
  */
-public interface MapdustRefreshObservable {
+public interface MapdustUpdateObservable {
 
     /**
      * Adds a new observer to the list of observers.
      *
-     * @param observer The <code>MapdustRefreshObserver</code>
+     * @param observer The <code>MapdustUpdateObserver</code> object
      */
-    public void addObserver(MapdustRefreshObserver observer);
+    public void addObserver(MapdustUpdateObserver observer);
 
     /**
      * Removes the given observer from the list of observers.
      *
-     * @param observer the <code>MapdustRefreshObserver</code>
+     * @param observer The <code>MapdustUpdateObserver</code> object
      */
-    public void removeObserver(MapdustRefreshObserver observer);
+    public void removeObserver(MapdustUpdateObserver observer);
 
     /**
-     * Notifies all the observers observing this action.
+     * Notifies all the observers observing the MapDust bug update action.
+     *
+     * @param filter The <code>MapdustBugFilter</code> object
+     * @param initialUpdate Indicates if the update action is for the first time
+     * or not.
      */
-    public void notifyObservers();
+    public void notifyObservers(MapdustBugFilter filter, boolean initialUpdate);
 
 }
