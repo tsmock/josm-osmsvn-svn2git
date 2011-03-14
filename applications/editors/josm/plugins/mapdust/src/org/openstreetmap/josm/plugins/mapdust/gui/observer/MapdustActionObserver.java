@@ -37,7 +37,7 @@ import org.openstreetmap.josm.plugins.mapdust.gui.value.MapdustAction;
  * @author Bea
  * @version $Revision$
  */
-public interface MapdustActionListObserver {
+public interface MapdustActionObserver {
 
     /**
      * Adds a new <code>MapdustAction</code> object to the MapDust action list
