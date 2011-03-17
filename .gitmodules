@@ -270,6 +270,10 @@
   path = applications/editors/josm/plugins/trustosm
   url = ../trustosm
   branch = master
+[submodule "applications/editors/josm/plugins/turnlanes"]
+  path = applications/editors/josm/plugins/turnlanes
+  url = ../turnlanes
+  branch = master
 [submodule "applications/editors/josm/plugins/turnrestrictions"]
   path = applications/editors/josm/plugins/turnrestrictions
   url = ../turnrestrictions
