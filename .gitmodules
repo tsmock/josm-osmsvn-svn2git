@@ -194,6 +194,10 @@
   path = applications/editors/josm/plugins/public_transport
   url = ../public_transport
   branch = master
+[submodule "applications/editors/josm/plugins/relcontext"]
+  path = applications/editors/josm/plugins/relcontext
+  url = ../reltoolbox
+  branch = master
 [submodule "applications/editors/josm/plugins/restart"]
   path = applications/editors/josm/plugins/restart
   url = ../restart
