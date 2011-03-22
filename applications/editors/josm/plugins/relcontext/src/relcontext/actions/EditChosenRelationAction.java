@@ -14,17 +14,18 @@ import relcontext.ChosenRelationListener;
  * @author Zverik
  */
 public class EditChosenRelationAction extends AbstractAction implements ChosenRelationListener {
-
     private ChosenRelation rel;
 
     public EditChosenRelationAction( ChosenRelation rel ) {
+        super("E");
         this.rel = rel;
+        rel.addChosenRelationListener(this);
+        setEnabled(false);
     }
 
     public void actionPerformed( ActionEvent e ) {
         Relation relation = rel.get();
         if( relation == null ) return;
-        //Main.map.relationListDialog.selectRelation(relation); // is it needed?
         RelationEditor.getEditor(Main.map.mapView.getEditLayer(), relation, null).setVisible(true);
     }
 
