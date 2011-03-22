@@ -20,14 +20,13 @@ import relcontext.ChosenRelation;
  * @author Zverik
  */
 public class CreateRelationAction extends JosmAction {
-
     private static final String ACTION_NAME = "Create relation";
     protected ChosenRelation chRel;
 
     public CreateRelationAction( ChosenRelation chRel ) {
-        super(tr(ACTION_NAME), "create_relation", "Create a relation from selected objects",
-                null, false);
+        super("+", null, "Create a relation from selected objects", null, false);
         this.chRel = chRel;
+        updateEnabledState();
     }
 
     public CreateRelationAction() {
@@ -39,8 +38,9 @@ public class CreateRelationAction extends JosmAction {
         String type = "";
 
         Relation rel = new Relation();
-        if( type != null && type.length() > 0 )
+        if( type != null && type.length() > 0 ) {
             rel.put("type", type);
+        }
         for( OsmPrimitive selected : getCurrentDataSet().getSelected() ) {
             rel.addMember(new RelationMember("", selected));
         }
@@ -48,16 +48,18 @@ public class CreateRelationAction extends JosmAction {
         Collection<Command> cmds = new LinkedList<Command>();
         Main.main.undoRedo.add(new AddCommand(rel));
 
-        if( chRel != null)
+        if( chRel != null ) {
             chRel.set(rel);
+        }
     }
 
     @Override
     protected void updateEnabledState() {
-        if( getCurrentDataSet() == null )
+        if( getCurrentDataSet() == null ) {
             setEnabled(false);
-        else
+        } else {
             updateEnabledState(getCurrentDataSet().getSelected());
+        }
     }
 
     @Override
