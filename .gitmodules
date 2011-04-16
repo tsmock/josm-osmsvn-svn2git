@@ -82,6 +82,10 @@
   path = applications/editors/josm/plugins/download_along
   url = ../download_along
   branch = master
+[submodule "applications/editors/josm/plugins/dumbutils"]
+  path = applications/editors/josm/plugins/dumbutils
+  url = ../dumbutils
+  branch = master
 [submodule "applications/editors/josm/plugins/editgpx"]
   path = applications/editors/josm/plugins/editgpx
   url = ../editgpx
