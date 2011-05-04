@@ -70,6 +70,10 @@
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
   branch = master
+[submodule "applications/editors/josm/plugins/conflation"]
+  path = applications/editors/josm/plugins/conflation
+  url = ../conflation
+  branch = master
 [submodule "applications/editors/josm/plugins/contourmerge"]
   path = applications/editors/josm/plugins/contourmerge
   url = ../contourmerge
