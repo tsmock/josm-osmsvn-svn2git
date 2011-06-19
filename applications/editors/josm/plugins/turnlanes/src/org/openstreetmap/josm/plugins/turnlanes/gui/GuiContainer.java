@@ -44,8 +44,8 @@ class GuiContainer {
     public GuiContainer(ModelContainer mc) {
         final Point2D origin = avgOrigin(locs(mc.getPrimaryJunctions()));
         
-        final LatLon originCoor = Main.proj.eastNorth2latlon(new EastNorth(origin.getX(), origin.getY()));
-        final LatLon relCoor = Main.proj.eastNorth2latlon(new EastNorth(origin.getX() + 1, origin.getY() + 1));
+        final LatLon originCoor = Main.getProjection().eastNorth2latlon(new EastNorth(origin.getX(), origin.getY()));
+        final LatLon relCoor = Main.getProjection().eastNorth2latlon(new EastNorth(origin.getX() + 1, origin.getY() + 1));
         
         // meters per source unit
         final double mpsu = relCoor.greatCircleDistance(originCoor) / sqrt(2);
