@@ -9,7 +9,7 @@ public class TurnLanesPlugin extends Plugin {
     public TurnLanesPlugin(PluginInformation info) {
         super(info);
     }
-    
+
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
         if (oldFrame == null && newFrame != null) {

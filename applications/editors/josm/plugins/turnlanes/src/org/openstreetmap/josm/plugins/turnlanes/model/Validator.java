@@ -202,14 +202,14 @@ public class Validator {
         
         // TODO this tends to produce a bunch of useless errors
         // turn lanes really should not span from one junction past another, remove??
-        //		final double length = route.getLastSegment().getLength();
-        //		final List<Double> newLeft = reduceLengths(left, length);
-        //		final List<Double> newRight = new ArrayList<Double>(right.size());
-        //		
-        //		if (route.getSegments().size() > 1) {
-        //			final Route subroute = route.subRoute(0, route.getSegments().size() - 1);
-        //			putIncomingLanes(subroute, newLeft, newRight, incomingLanes);
-        //		}
+        //      final double length = route.getLastSegment().getLength();
+        //      final List<Double> newLeft = reduceLengths(left, length);
+        //      final List<Double> newRight = new ArrayList<Double>(right.size());
+        //      
+        //      if (route.getSegments().size() > 1) {
+        //          final Route subroute = route.subRoute(0, route.getSegments().size() - 1);
+        //          putIncomingLanes(subroute, newLeft, newRight, incomingLanes);
+        //      }
     }
     
     private List<Double> reduceLengths(List<Double> lengths, double length) {
