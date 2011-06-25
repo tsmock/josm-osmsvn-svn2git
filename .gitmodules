@@ -34,6 +34,10 @@
   path = applications/editors/josm/plugins/ElevationProfile
   url = ../ElevationProfile
   branch = master
+[submodule "applications/editors/josm/plugins/FastDraw"]
+  path = applications/editors/josm/plugins/FastDraw
+  url = ../FastDraw
+  branch = master
 [submodule "applications/editors/josm/plugins/FixAddresses"]
   path = applications/editors/josm/plugins/FixAddresses
   url = ../FixAddresses
@@ -73,10 +77,6 @@
 [submodule "applications/editors/josm/plugins/conflation"]
   path = applications/editors/josm/plugins/conflation
   url = ../conflation
-  branch = master
-[submodule "applications/editors/josm/plugins/contourmerge"]
-  path = applications/editors/josm/plugins/contourmerge
-  url = ../contourmerge
   branch = master
 [submodule "applications/editors/josm/plugins/czechaddress"]
   path = applications/editors/josm/plugins/czechaddress
@@ -206,8 +206,8 @@
   path = applications/editors/josm/plugins/public_transport
   url = ../public_transport
   branch = master
-[submodule "applications/editors/josm/plugins/relcontext"]
-  path = applications/editors/josm/plugins/relcontext
+[submodule "applications/editors/josm/plugins/reltoolbox"]
+  path = applications/editors/josm/plugins/reltoolbox
   url = ../reltoolbox
   branch = master
 [submodule "applications/editors/josm/plugins/restart"]
@@ -233,10 +233,6 @@
 [submodule "applications/editors/josm/plugins/routing"]
   path = applications/editors/josm/plugins/routing
   url = ../routing
-  branch = master
-[submodule "applications/editors/josm/plugins/scripting"]
-  path = applications/editors/josm/plugins/scripting
-  url = ../scripting
   branch = master
 [submodule "applications/editors/josm/plugins/simplifyarea"]
   path = applications/editors/josm/plugins/simplifyarea
@@ -285,10 +281,6 @@
 [submodule "applications/editors/josm/plugins/trustosm"]
   path = applications/editors/josm/plugins/trustosm
   url = ../trustosm
-  branch = master
-[submodule "applications/editors/josm/plugins/turbopen"]
-  path = applications/editors/josm/plugins/turbopen
-  url = ../FastDraw
   branch = master
 [submodule "applications/editors/josm/plugins/turnlanes"]
   path = applications/editors/josm/plugins/turnlanes
