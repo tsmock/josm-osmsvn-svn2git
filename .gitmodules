@@ -94,6 +94,10 @@
   path = applications/editors/josm/plugins/editgpx
   url = ../editgpx
   branch = master
+[submodule "applications/editors/josm/plugins/epci-fr"]
+  path = applications/editors/josm/plugins/epci-fr
+  url = ../epci-fr
+  branch = master
 [submodule "applications/editors/josm/plugins/epsg31287"]
   path = applications/editors/josm/plugins/epsg31287
   url = ../epsg31287
