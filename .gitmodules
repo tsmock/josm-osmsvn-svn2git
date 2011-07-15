@@ -170,6 +170,10 @@
   path = applications/editors/josm/plugins/namemanager
   url = ../namemanager
   branch = master
+[submodule "applications/editors/josm/plugins/native-password-manager"]
+  path = applications/editors/josm/plugins/native-password-manager
+  url = ../native-password-manager
+  branch = master
 [submodule "applications/editors/josm/plugins/nearclick"]
   path = applications/editors/josm/plugins/nearclick
   url = ../nearclick
