@@ -162,6 +162,10 @@
   path = applications/editors/josm/plugins/measurement
   url = ../measurement
   branch = master
+[submodule "applications/editors/josm/plugins/merge-overlap"]
+  path = applications/editors/josm/plugins/merge-overlap
+  url = ../merge-overlap
+  branch = master
 [submodule "applications/editors/josm/plugins/michigan_left"]
   path = applications/editors/josm/plugins/michigan_left
   url = ../michigan_left
