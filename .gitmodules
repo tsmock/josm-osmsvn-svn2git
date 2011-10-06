@@ -206,6 +206,10 @@
   path = applications/editors/josm/plugins/osmarender
   url = ../osmarender
   branch = master
+[submodule "applications/editors/josm/plugins/pbf"]
+  path = applications/editors/josm/plugins/pbf
+  url = ../pbf
+  branch = master
 [submodule "applications/editors/josm/plugins/pdfimport"]
   path = applications/editors/josm/plugins/pdfimport
   url = ../pdfimport
