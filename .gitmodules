@@ -282,6 +282,10 @@
   path = applications/editors/josm/plugins/surveyor
   url = ../surveyor
   branch = master
+[submodule "applications/editors/josm/plugins/tag2link"]
+  path = applications/editors/josm/plugins/tag2link
+  url = ../tag2link
+  branch = master
 [submodule "applications/editors/josm/plugins/tageditor"]
   path = applications/editors/josm/plugins/tageditor
   url = ../tageditor
