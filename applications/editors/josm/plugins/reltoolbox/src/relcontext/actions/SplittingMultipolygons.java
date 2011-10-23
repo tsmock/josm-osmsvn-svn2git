@@ -35,16 +35,17 @@ public class SplittingMultipolygons {
         arcs.add(way);
     }
     
-    /* Process all segments, no matter which
-    for( Way segment : arcs ) {
+    // If there are more that one segment, check that they touch rings
+    if( arcs.size() > 1 ) {
+        for( Way segment : arcs ) {
         boolean found = false;
         for( Way ring : rings )
-        if( ring.containsNode(segment.firstNode()) && ring.containsNode(segment.lastNode())
-            && !segmentInsidePolygon(segment.getNode(0), segment.getNode(1), ring.getNodes()) )
+            if( ring.containsNode(segment.firstNode()) && ring.containsNode(segment.lastNode()) )
             found = true;
         if( !found )
-        return false;
-    }*/
+            return false;
+        }
+    }
 
     if( rings.isEmpty() && arcs.isEmpty() )
         return false;
