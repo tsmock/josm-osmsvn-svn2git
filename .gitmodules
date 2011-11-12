@@ -226,6 +226,10 @@
   path = applications/editors/josm/plugins/plastic_laf
   url = ../plastic_laf
   branch = master
+[submodule "applications/editors/josm/plugins/print"]
+  path = applications/editors/josm/plugins/print
+  url = ../print
+  branch = master
 [submodule "applications/editors/josm/plugins/proj4j"]
   path = applications/editors/josm/plugins/proj4j
   url = ../proj4j
