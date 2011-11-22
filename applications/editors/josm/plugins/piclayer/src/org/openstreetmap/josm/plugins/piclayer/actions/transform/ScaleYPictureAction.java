@@ -18,55 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-package org.openstreetmap.josm.plugins.piclayer;
+package org.openstreetmap.josm.plugins.piclayer.actions.transform;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
+import org.openstreetmap.josm.gui.MapFrame;
 
 /**
- * Layer displaying a picture copied from the clipboard.
+ * This class handles the input during scaling the picture.
  */
-public class PicLayerFromClipboard extends PicLayerAbstract {
-
-    @Override
-    protected Image createImage() throws IOException {
-        // Return item
-        Image image = null;
-        // Access the clipboard
-        Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-        // Check result
-        if ( t == null ) {
-            throw new IOException(tr("Nothing in clipboard"));
-        }
-
-        // TODO: Why is it so slow?
-        // Try to make it an image data
-        try {
-            if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-                image = (Image)t.getTransferData(DataFlavor.imageFlavor);
-            } else {
-                throw new IOException(tr("The clipboard data is not an image"));
-            }
-        } catch (UnsupportedFlavorException e) {
-            throw new IOException( e.getMessage() );
-        }
-
-        return image;
+@SuppressWarnings("serial")
+public class ScaleYPictureAction extends ScalePictureActionAbstract
+{
+    /*
+     * Constructor
+     */
+    public ScaleYPictureAction(MapFrame frame) {
+        super(tr("PicLayer scale Y"), "scale_y", tr("Drag to scale the picture in the Y Axis"), frame);
     }
 
-    @Override
-    protected String getPicLayerName() {
-        return "Clipboard";
+    public void doTheScale( double scale ) {
+        currentLayer.scalePictureBy( 1.0, scale );
     }
-
-    @Override
-    protected void lookForCalibration() throws IOException {
-    }
-
 }

@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-package org.openstreetmap.josm.plugins.piclayer;
+package org.openstreetmap.josm.plugins.piclayer.layer;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
