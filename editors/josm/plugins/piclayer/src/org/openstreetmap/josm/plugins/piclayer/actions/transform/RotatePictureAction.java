@@ -18,41 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-package org.openstreetmap.josm.plugins.piclayer;
+package org.openstreetmap.josm.plugins.piclayer.actions.transform;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.actions.JosmAction;
+import org.openstreetmap.josm.gui.MapFrame;
+import org.openstreetmap.josm.plugins.piclayer.actions.GenericPicTransformAction;
+import org.openstreetmap.josm.tools.ImageProvider;
 
 /**
- * Action for resetting properties of an image.
- * 
- * TODO Four almost identical classes. Refactoring needed.
+ * This class handles the input during rotating the picture.
  */
-public class ResetPictureScaleAction extends JosmAction {
+@SuppressWarnings("serial")
+public class RotatePictureAction extends GenericPicTransformAction {
 
-    // Owner layer of the action
-    PicLayerAbstract m_owner = null;
-    
     /**
      * Constructor
      */
-    public ResetPictureScaleAction( PicLayerAbstract owner ) {
-        super(tr("Scale"), null, tr("Resets picture scale"), null, false);
-        // Remember the owner...
-        m_owner = owner;
+    public RotatePictureAction(MapFrame frame) {
+        super(tr("PicLayer rotate"), "rotate", tr("Drag to rotate the picture"), frame, ImageProvider.getCursor("crosshair", null));
     }
-    
-    /**
-     * Action handler
-     */
-    public void actionPerformed(ActionEvent arg0) {
-        // Reset
-        m_owner.resetScale();
-        // Redraw
-        Main.map.mapView.repaint();
+
+    @Override
+    protected void doAction(MouseEvent e) {
+        double factor;
+        if ( ( e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK ) != 0 ) {
+            factor = Main.pref.getDouble("piclayer.rotatefactors.high_precision", 100.0);
+        }
+        else {
+            factor = Main.pref.getDouble("piclayer.rotatefactors.low_precision", 10.0 );
+        }            
+        currentLayer.rotatePictureBy( ( e.getY() - prevMousePoint.getY() ) / factor );
     }
 }
