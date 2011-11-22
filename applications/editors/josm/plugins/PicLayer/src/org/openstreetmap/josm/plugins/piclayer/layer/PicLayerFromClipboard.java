@@ -1,5 +1,4 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Patrick "Petschge" Kilian, based on code        *
  *   Copyright (C) 2009 by Tomasz Stelmach                                 *
  *   http://www.stelmach-online.net/                                       *
  *                                                                         *
@@ -19,41 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-package org.openstreetmap.josm.plugins.piclayer;
+package org.openstreetmap.josm.plugins.piclayer.layer;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.event.ActionEvent;
-
-import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.actions.JosmAction;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 /**
- * Action for resetting properties of an image.
- * 
- * TODO Four almost identical classes. Refactoring needed.
+ * Layer displaying a picture copied from the clipboard.
  */
-public class ResetPictureShearAction extends JosmAction {
+public class PicLayerFromClipboard extends PicLayerAbstract {
 
-    // Owner layer of the action
-    PicLayerAbstract m_owner = null;
-    
-    /**
-     * Constructor
-     */
-    public ResetPictureShearAction( PicLayerAbstract owner ) {
-        super(tr("Shear"), null, tr("Resets picture shear"), null, false);
-        // Remember the owner...
-        m_owner = owner;
+    @Override
+    protected Image createImage() throws IOException {
+        // Return item
+        Image image = null;
+        // Access the clipboard
+        Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+        // Check result
+        if ( t == null ) {
+            throw new IOException(tr("Nothing in clipboard"));
+        }
+
+        // TODO: Why is it so slow?
+        // Try to make it an image data
+        try {
+            if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                image = (Image)t.getTransferData(DataFlavor.imageFlavor);
+            } else {
+                throw new IOException(tr("The clipboard data is not an image"));
+            }
+        } catch (UnsupportedFlavorException e) {
+            throw new IOException( e.getMessage() );
+        }
+
+        return image;
     }
-    
-    /**
-     * Action handler
-     */
-    public void actionPerformed(ActionEvent arg0) {
-        // Reset
-        m_owner.resetShear();
-        // Redraw
-        Main.map.mapView.repaint();
+
+    @Override
+    public String getPicLayerName() {
+        return "Clipboard";
     }
+
+    @Override
+    protected void lookForCalibration() throws IOException {
+    }
+
 }

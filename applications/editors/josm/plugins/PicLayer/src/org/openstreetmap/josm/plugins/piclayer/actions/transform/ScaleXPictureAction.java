@@ -18,44 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-package org.openstreetmap.josm.plugins.piclayer;
+package org.openstreetmap.josm.plugins.piclayer.actions.transform;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.event.ActionEvent;
-
-import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.actions.JosmAction;
+import org.openstreetmap.josm.gui.MapFrame;
 
 /**
- * Action for resetting properties of an image.
- * 
- * TODO Four almost identical classes. Refactoring needed.
+ * This class handles the input during scaling the picture.
  */
-public class ResetPictureAllAction extends JosmAction {
-
-    // Owner layer of the action
-    PicLayerAbstract m_owner = null;
-    
-    /**
+@SuppressWarnings("serial")
+public class ScaleXPictureAction extends ScalePictureActionAbstract
+{
+    /*
      * Constructor
      */
-    public ResetPictureAllAction( PicLayerAbstract owner ) {
-        super(tr("All"), null, tr("Resets picture calibration"), null, false);
-        // Remember the owner...
-        m_owner = owner;
+    public ScaleXPictureAction(MapFrame frame) {
+        super(tr("PicLayer scale X"), "scale_x", tr("Drag to scale the picture in the X Axis"), frame);
     }
-    
-    /**
-     * Action handler
-     */
-    public void actionPerformed(ActionEvent arg0) {
-        // Reset
-        m_owner.resetAngle();
-        m_owner.resetPosition();
-        m_owner.resetScale();
-        m_owner.resetShear();
-        // Redraw
-        Main.map.mapView.repaint();
-    }
+
+    public void doTheScale( double scale ) {
+            currentLayer.scalePictureBy( scale, 1.0 );
+        }
 }

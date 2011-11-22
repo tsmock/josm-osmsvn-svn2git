@@ -18,31 +18,49 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-package org.openstreetmap.josm.plugins.piclayer;
+package org.openstreetmap.josm.plugins.piclayer.actions.newlayer;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.actions.mapmode.MapMode;
-import org.openstreetmap.josm.gui.MapFrame;
-import org.openstreetmap.josm.tools.ImageProvider;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
-// TODO: Move/Rotate/Scale/Shear action classes are similar. Do the redesign!
+import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.actions.JosmAction;
+import org.openstreetmap.josm.plugins.piclayer.layer.PicLayerFromClipboard;
 
 /**
- * This class handles the input during scaling the picture.
+ * Action responsible for creation of a new layer based on
+ * the content of the clipboard.
  */
-public class ScaleYPictureAction extends ScalePictureActionAbstract
-{
-    /*
-     * Constructor
+@SuppressWarnings("serial")
+public class NewLayerFromClipboardAction extends JosmAction {
+
+    /**
+     * Constructor...
      */
-    public ScaleYPictureAction(MapFrame frame) {
-        super(tr("PicLayer scale Y"), "scale_y", tr("Drag to scale the picture in the Y Axis"), frame);
-        // TODO Auto-generated constructor stub
+    public NewLayerFromClipboardAction() {
+        super(tr("New picture layer from clipboard"), null, null, null, false);
     }
 
-    public void doTheScale( double scale ) {
-            m_currentLayer.scalePictureBy( 1.0, scale );
+    /**
+     * Action handler
+     */
+    public void actionPerformed(ActionEvent arg0) {
+        // Create layer from clipboard
+        PicLayerFromClipboard layer = new PicLayerFromClipboard();
+        // Add layer only if successfully initialized
+        try {
+            layer.initialize();
         }
+        catch (IOException e) {
+            // Failed
+            System.out.println( "NewLayerFromClipboardAction::actionPerformed - " + e.getMessage() );
+            JOptionPane.showMessageDialog(null, e.getMessage() );
+            return;
+        }
+        // Add layer
+        Main.main.addLayer( layer );
+    }
 }
