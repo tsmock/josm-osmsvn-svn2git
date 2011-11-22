@@ -9,7 +9,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.gui.IconToggleButton;
 
 enum PicActions {MOVE_PICTURE, MOVE_POINT, TRANSFORM_POINT, SCALEX, SCALEY, SCALEXY, SHEAR, ROTATE}
 
@@ -18,32 +17,26 @@ public class ActionVisibilityChangeMenu extends JMenu {
     public ActionVisibilityChangeMenu() {
         super(tr("Change visibility of controls"));
 
-        add(new SwitchVisibilityMenuItem("Move Picture", "piclayer.actionvisibility.move", PicLayerPlugin.movePictureButton, true));
-        add(new SwitchVisibilityMenuItem("Move Point", "piclayer.actionvisibility.movepoint", PicLayerPlugin.movePointButton, true));
-        add(new SwitchVisibilityMenuItem("Transform Point", "piclayer.actionvisibility.transformpoint", PicLayerPlugin.transformPointButton, true));
-        add(new SwitchVisibilityMenuItem("Rotate", "piclayer.actionvisibility.rotate", PicLayerPlugin.rotatePictureButton, false));
-        add(new SwitchVisibilityMenuItem("Scale X", "piclayer.actionvisibility.scalex", PicLayerPlugin.scalexPictureButton, false));
-        add(new SwitchVisibilityMenuItem("Scale Y", "piclayer.actionvisibility.scaley", PicLayerPlugin.scaleyPictureButton, false));
-        add(new SwitchVisibilityMenuItem("Scale", "piclayer.actionvisibility.scale", PicLayerPlugin.scalexyPictureButton, false));
-        add(new SwitchVisibilityMenuItem("Shear", "piclayer.actionvisibility.shear", PicLayerPlugin.shearPictureButton, false));
+        for (int i = 0;i < PicLayerPlugin.buttonList.size(); i++) {
+            add(new SwitchVisibilityMenuItem(PicLayerPlugin.buttonList.get(i)));
+        }
     }
 }
 
 @SuppressWarnings("serial")
 class SwitchVisibilityMenuItem extends JCheckBoxMenuItem {
-    public SwitchVisibilityMenuItem(String name, final String key, final IconToggleButton button, final boolean def) {
+    public SwitchVisibilityMenuItem(final PicToggleButton button) {
         super();
-        setSelected(Main.pref.getBoolean(key, def));
-        button.setVisible(isSelected());
+        setSelected(Main.pref.getBoolean(button.getVisibilityKey(), button.getDefVisibility()));
         setAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean val = !Main.pref.getBoolean(key, def);
-                Main.pref.put(key, val);
+                boolean val = !Main.pref.getBoolean(button.getVisibilityKey(), button.getDefVisibility());
+                Main.pref.put(button.getVisibilityKey(), val);
                 SwitchVisibilityMenuItem.this.setSelected(val);
                 button.setVisible(val);
             }
         });
-        setText(name);
+        setText(tr(button.getBtnName()));
     }
 }
