@@ -114,10 +114,6 @@
   path = applications/editors/josm/plugins/gpxfilter
   url = ../gpxfilter
   branch = master
-[submodule "applications/editors/josm/plugins/gpxpoints"]
-  path = applications/editors/josm/plugins/gpxpoints
-  url = ../gpxpoints
-  branch = master
 [submodule "applications/editors/josm/plugins/graphview"]
   path = applications/editors/josm/plugins/graphview
   url = ../graphview
