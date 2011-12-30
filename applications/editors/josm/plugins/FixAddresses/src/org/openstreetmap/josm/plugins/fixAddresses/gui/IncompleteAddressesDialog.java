@@ -15,10 +15,8 @@ package org.openstreetmap.josm.plugins.fixAddresses.gui;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.BorderLayout;
+import java.util.LinkedList;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
@@ -51,7 +49,6 @@ public class IncompleteAddressesDialog extends ToggleDialog implements DataSetLi
 
     private AddressEditContainer container;
 
-
     // Array containing the available actions
     private AbstractAddressEditAction[] actions = new AbstractAddressEditAction[]{
             AddressActions.getSelectAction(),
@@ -59,7 +56,6 @@ public class IncompleteAddressesDialog extends ToggleDialog implements DataSetLi
             AddressActions.getApplyGuessesAction(),
             AddressActions.getRemoveTagsAction(),
     };
-
 
     private JTable incompleteAddr;
 
@@ -72,8 +68,6 @@ public class IncompleteAddressesDialog extends ToggleDialog implements DataSetLi
 
         this.container = new AddressEditContainer();
         container.addChangedListener(this);
-        // Top-level panel
-        JPanel p = new JPanel(new BorderLayout());
         // Table containing address entities
         IncompleteAddressesTableModel model = new IncompleteAddressesTableModel(container);
         incompleteAddr = new JTable(model);
@@ -81,27 +75,14 @@ public class IncompleteAddressesDialog extends ToggleDialog implements DataSetLi
         header.addMouseListener(model.new ColumnListener(incompleteAddr));
         incompleteAddr.getSelectionModel().addListSelectionListener(this);
 
-        // Scroll pane hosting the table
-        JScrollPane sp = new JScrollPane(incompleteAddr);
-        p.add(sp, BorderLayout.CENTER);
-        this.add(p);
-
-        // Button panel containing the commands
-        JPanel buttonPanel = getButtonPanel(actions.length);
-
-        // Populate panel with actions
-        for (int i = 0; i < actions.length; i++) {
-            SideButton sb = new SideButton(actions[i]);
-            buttonPanel.add(sb);
-        }
-
-        this.add(buttonPanel, BorderLayout.SOUTH);
-
+        LinkedList<SideButton> buttons = new LinkedList<SideButton>();
         // Link actions with address container
         for (AbstractAddressEditAction action : actions) {
+            buttons.add(new SideButton(action));
             action.setContainer(container);
         }
-    }
+        createLayout(incompleteAddr, true, buttons);
+     }
 
     /* (non-Javadoc)
      * @see org.openstreetmap.josm.gui.dialogs.ToggleDialog#hideNotify()
