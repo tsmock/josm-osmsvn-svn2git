@@ -298,10 +298,6 @@
   path = applications/editors/josm/plugins/terracer
   url = ../terracer
   branch = master
-[submodule "applications/editors/josm/plugins/toms"]
-  path = applications/editors/josm/plugins/toms
-  url = ../toms
-  branch = master
 [submodule "applications/editors/josm/plugins/touchscreenhelper"]
   path = applications/editors/josm/plugins/touchscreenhelper
   url = ../touchscreenhelper
