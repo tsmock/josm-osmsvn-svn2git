@@ -42,13 +42,13 @@
   path = applications/editors/josm/plugins/FixAddresses
   url = ../FixAddresses
   branch = master
+[submodule "applications/editors/josm/plugins/HouseNumberTaggingTool"]
+  path = applications/editors/josm/plugins/HouseNumberTaggingTool
+  url = ../HouseNumberTaggingTool
+  branch = master
 [submodule "applications/editors/josm/plugins/ImportImagePlugin"]
   path = applications/editors/josm/plugins/ImportImagePlugin
   url = ../ImportImagePlugin
-  branch = master
-[submodule "applications/editors/josm/plugins/ImproveWayAccuracy"]
-  path = applications/editors/josm/plugins/ImproveWayAccuracy
-  url = ../ImproveWayAccuracy
   branch = master
 [submodule "applications/editors/josm/plugins/OpeningHoursEditor"]
   path = applications/editors/josm/plugins/OpeningHoursEditor
