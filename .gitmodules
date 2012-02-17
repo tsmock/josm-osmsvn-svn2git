@@ -250,10 +250,6 @@
   path = applications/editors/josm/plugins/reverter
   url = ../reverter
   branch = master
-[submodule "applications/editors/josm/plugins/rgisopen"]
-  path = applications/editors/josm/plugins/rgisopen
-  url = ../rgisopen
-  branch = master
 [submodule "applications/editors/josm/plugins/roadsigns"]
   path = applications/editors/josm/plugins/roadsigns
   url = ../roadsigns
