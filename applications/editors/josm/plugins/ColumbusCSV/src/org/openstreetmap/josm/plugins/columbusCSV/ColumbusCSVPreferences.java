@@ -15,9 +15,6 @@ package org.openstreetmap.josm.plugins.columbusCSV;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 
@@ -30,7 +27,7 @@ import org.openstreetmap.josm.gui.preferences.PreferenceTabbedPane;
  * Implements the preferences dialog for this plugin.
  * @author Oliver Wieland <oliver.wieland@online.de>
  */
-public class ColumbusCSVPreferences implements PreferenceSetting, ItemListener {
+public class ColumbusCSVPreferences implements PreferenceSetting {
     public static final String PREFIX = "columbuscsv.";
     
     /**
@@ -68,13 +65,13 @@ public class ColumbusCSVPreferences implements PreferenceSetting, ItemListener {
      * Creates a new preferences instance.
      */
     public ColumbusCSVPreferences() {
-        super();
-    
+       super();
     }
 
     /**
      * Applies the (new) settings after settings dialog has been closed successfully.
      */
+    @Override
     public boolean ok() {
         Main.pref.put(SHOW_SUMMARY, colCSVShowSummary.isSelected());
         Main.pref.put(ZOOM_AFTER_IMPORT, colCSVDontZoomAfterImport.isSelected());
@@ -84,16 +81,6 @@ public class ColumbusCSVPreferences implements PreferenceSetting, ItemListener {
         return false;
     }
     
-    /**
-     * Handles state changes of check buttons
-     */
-    public void itemStateChanged(ItemEvent itemEv) {
-        /*
-        if (itemEv.getSource() == colCSVShowSummary) {
-            colCSVWarnMissingAudio.setEnabled(colCSVIgnoreAudio.isSelected());
-        }*/
-    }
-
     /**
      * If <tt>true</tt>, a summary dialog is shown after import. Default is <tt>true</tt>.
      * @return
@@ -140,27 +127,16 @@ public class ColumbusCSVPreferences implements PreferenceSetting, ItemListener {
 
     /**
      * Populates the UI with our settings.
-     * @param gui The dialog to populate.
-     */
-    public void addGui(PreferenceDialog gui) {
-        addPrefs();
-    }	
-    
-    /**
-     * Populates the UI with our settings.
      * @param gui The pane to populate.
      */
+    @Override
     public void addGui(PreferenceTabbedPane gui) {
-        addPrefs();
-    }
-    
-    private void addPrefs() {
         // Import settings
         ButtonGroup gpsImportGroup = new ButtonGroup();
         gpsImportGroup.add(colCSVShowSummary);
         gpsImportGroup.add(colCSVDontZoomAfterImport);
         gpsImportGroup.add(colCSVIgnoreVDOP);
-        
+      
         // Warning settings
         ButtonGroup gpsWarningsGroup = new ButtonGroup();
         gpsWarningsGroup.add(colCSVWarnMissingAudio);
@@ -173,5 +149,9 @@ public class ColumbusCSVPreferences implements PreferenceSetting, ItemListener {
         colCSVWarnConversionErrors.setSelected(Main.pref.getBoolean(WARN_CONVERSION_ERRORS, true));
         colCSVWarnMissingAudio.setSelected(Main.pref.getBoolean(WARN_MISSING_AUDIO, true));
     }
-            
+    
+    @Override
+    public boolean isExpert() {
+        return false;
+    }
 }
