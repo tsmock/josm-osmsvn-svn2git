@@ -70,6 +70,10 @@
   path = applications/editors/josm/plugins/cadastre-fr
   url = ../cadastre-fr
   branch = master
+[submodule "applications/editors/josm/plugins/canvec_helper"]
+  path = applications/editors/josm/plugins/canvec_helper
+  url = ../canvec_helper
+  branch = master
 [submodule "applications/editors/josm/plugins/colorscheme"]
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
