@@ -50,6 +50,10 @@
   path = applications/editors/josm/plugins/ImportImagePlugin
   url = ../ImportImagePlugin
   branch = master
+[submodule "applications/editors/josm/plugins/NanoLog"]
+  path = applications/editors/josm/plugins/NanoLog
+  url = ../NanoLog
+  branch = master
 [submodule "applications/editors/josm/plugins/OpeningHoursEditor"]
   path = applications/editors/josm/plugins/OpeningHoursEditor
   url = ../OpeningHoursEditor
