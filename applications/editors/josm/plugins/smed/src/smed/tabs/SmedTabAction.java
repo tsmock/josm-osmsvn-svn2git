@@ -30,17 +30,13 @@ public class SmedTabAction extends JosmAction {
     private SmedMenuBar smedMenu = new SmedMenuBar();
     private JFrame frame = null;
     private boolean isOpen = false;
-    private JMenuItem osmItem =null;
+    private JMenuItem osmItem = null;
     public static JTextField smedStatusBar = null;
-    private static String editor =tr("SeaMap Editor");
-    
-    public SmedTabAction() {
-        super( editor, "Smed",editor, 
-        Shortcut.registerShortcut("tools:Seamaps", tr("Tool: {0}", tr("SeaMap Editor")),
-        KeyEvent.VK_K, Shortcut.SHIFT),
-        true);  //$NON-NLS-1$ //$NON-NLS-2$
-    }
+    private static String editor = tr("SeaMap Editor");
 
+    public SmedTabAction() {
+//        super( editor, "Smed",editor, Shortcut.registerShortcut("tools:Seamaps", tr("Tool: {0}", tr("SeaMap Editor")), KeyEvent.VK_K, Shortcut.SHIFT), true);  //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -49,32 +45,32 @@ public class SmedTabAction extends JosmAction {
                 createAndShowTabs();
             }
         });
-        
+
         isOpen = true;
-        if (osmItem == null) return;
+        if (osmItem == null)
+            return;
 
         osmItem.setEnabled(false);
     }
 
-
     protected void createAndShowTabs() {
-        //Create and set up the window.
+        // Create and set up the window.
         frame = new JFrame(editor);
         smedStatusBar = new JTextField();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setAlwaysOnTop(true);
 
-        //Add content to the window.
+        // Add content to the window.
         frame.setJMenuBar(smedMenu);
         frame.add(smedTabs, BorderLayout.CENTER);
-        frame.add(smedStatusBar,BorderLayout.PAGE_END);
+        frame.add(smedStatusBar, BorderLayout.PAGE_END);
 
-        //Display the window.
+        // Display the window.
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 osmItem.setEnabled(true);
-                
+
                 closeDialog();
             }
         });
@@ -83,25 +79,24 @@ public class SmedTabAction extends JosmAction {
         frame.setVisible(true);
     }
 
-
     public void closeDialog() {
         List<SmedPluggable> plugins = SmedTabbedPane.getPlugins();
-        
-        if(plugins != null) {
-            for(SmedPluggable p : plugins) p.stop();
+
+        if (plugins != null) {
+            for (SmedPluggable p : plugins)
+                p.stop();
         }
-        
-        if(isOpen) {
+
+        if (isOpen) {
             frame.setVisible(false);
             frame.dispose();
         }
-        
+
         isOpen = false;
     }
 
-
     public void setOsmItem(JMenuItem item) {
-        osmItem = item;		
+        osmItem = item;
     }
 
 }
