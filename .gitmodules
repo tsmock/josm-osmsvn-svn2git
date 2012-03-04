@@ -130,6 +130,10 @@
   path = applications/editors/josm/plugins/imagery-xml-bounds
   url = ../imagery-xml-bounds
   branch = master
+[submodule "applications/editors/josm/plugins/imagery_offset_db"]
+  path = applications/editors/josm/plugins/imagery_offset_db
+  url = ../imagery_offset_db
+  branch = master
 [submodule "applications/editors/josm/plugins/imageryadjust"]
   path = applications/editors/josm/plugins/imageryadjust
   url = ../imageryadjust
