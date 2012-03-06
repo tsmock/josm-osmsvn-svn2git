@@ -206,6 +206,10 @@
   path = applications/editors/josm/plugins/nearclick
   url = ../nearclick
   branch = master
+[submodule "applications/editors/josm/plugins/opendata"]
+  path = applications/editors/josm/plugins/opendata
+  url = ../opendata
+  branch = master
 [submodule "applications/editors/josm/plugins/openstreetbugs"]
   path = applications/editors/josm/plugins/openstreetbugs
   url = ../openstreetbugs
