@@ -149,9 +149,9 @@ public class ColumbusCSVPreferences implements PreferenceSetting {
         colCSVWarnConversionErrors.setSelected(Main.pref.getBoolean(WARN_CONVERSION_ERRORS, true));
         colCSVWarnMissingAudio.setSelected(Main.pref.getBoolean(WARN_MISSING_AUDIO, true));
     }
-    
-    @Override
+
     public boolean isExpert() {
         return false;
     }
+    
 }
