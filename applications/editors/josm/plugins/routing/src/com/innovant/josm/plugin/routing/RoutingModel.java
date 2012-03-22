@@ -63,16 +63,23 @@ public class RoutingModel {
     private List<Node> nodes=null;
 
     private List<OsmEdge> path=null;
+
     /**
      * Flag to advise about changes in the selected nodes.
      */
     private boolean changeNodes=false;
+
+    /**
+     * Flag to advise about changes in ways.
+     */
+    private boolean changeOneway=false;
+
     /**
      * Default Constructor.
      */
     public RoutingModel(DataSet data) {
         nodes = new ArrayList<Node>();
-System.out.println("gr " + data);
+        System.out.println("gr " + data);
         routingGraph = new RoutingGraph(data);
     }
 
@@ -137,6 +144,7 @@ System.out.println("gr " + data);
         {
             path=this.routingGraph.applyAlgorithm(nodes, Algorithm.ROUTING_ALG_DIJKSTRA);
             this.changeNodes=false;
+            this.changeOneway=false;
         }
         return path;
     }
@@ -146,6 +154,20 @@ System.out.println("gr " + data);
      */
     public void setNodesChanged() {
         this.changeNodes = true;
+    }
+
+    /**
+     * Marks that "Ignore oneway" option has changed so the path should be computed again
+     */
+    public void setOnewayChanged() {
+        this.changeOneway = true;
+    }
+
+    /**
+     * Marks that "Ignore oneway" option has changed so the path should be computed again
+     */
+    public boolean getOnewayChanged() {
+        return this.changeOneway;
     }
 
     /**
