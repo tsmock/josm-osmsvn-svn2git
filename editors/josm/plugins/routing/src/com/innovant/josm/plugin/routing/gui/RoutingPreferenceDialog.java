@@ -109,7 +109,7 @@ public class RoutingPreferenceDialog extends DefaultTabPreferenceSetting {
             public void actionPerformed(ActionEvent e) {
                 JPanel p = new JPanel(new GridBagLayout());
                 p.add(new JLabel(tr("Weight")), GBC.std().insets(0, 0, 5, 0));
-                JComboBox key = new JComboBox();
+                JComboBox<String> key = new JComboBox<String>();
                 for (OsmWayTypes pk : OsmWayTypes.values())
                     key.addItem(pk.getTag());
                 JTextField value = new JTextField(10);
@@ -155,7 +155,7 @@ public class RoutingPreferenceDialog extends DefaultTabPreferenceSetting {
         Opciones.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
         Opciones.addTab("Profile", null, p, null);
-//      Opciones.addTab("Preferences", new JPanel());
+        //      Opciones.addTab("Preferences", new JPanel());
 
         list.addMouseListener(new MouseAdapter(){
             @Override public void mouseClicked(MouseEvent e) {
@@ -218,7 +218,7 @@ public class RoutingPreferenceDialog extends DefaultTabPreferenceSetting {
         }
         else logger.debug("Default preferences already exist.");
     }
-
+    /*
     private String getKeyTag(String tag) {
         return tag.split(".", 5)[4];
     }
@@ -230,4 +230,5 @@ public class RoutingPreferenceDialog extends DefaultTabPreferenceSetting {
     private String getNameTag(String tag) {
         return tag.split(".", 5)[2];
     }
+     */
 }

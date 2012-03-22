@@ -63,12 +63,12 @@ public class RoutingMenu extends JMenu {
      */
     private static final long serialVersionUID = 3559922048225708480L;
 
-    private JMenuItem startMI;
-    private JMenuItem reverseMI;
-    private JMenuItem clearMI;
-    private JMenuItem regraphMI;
-    private JMenu criteriaM;
-    private JMenu menu;
+    private final JMenuItem startMI;
+    private final JMenuItem reverseMI;
+    private final JMenuItem clearMI;
+    private final JMenuItem regraphMI;
+    private final JMenu criteriaM;
+    private final JMenu menu;
 
     /**
      * @param s
@@ -102,8 +102,8 @@ public class RoutingMenu extends JMenu {
                     } else {
                         routingModel.routingGraph.setTypeRoute(RouteType.FASTEST);
                     }
-                //  routingModel.routingGraph.resetGraph();
-                //  routingModel.routingGraph.createGraph();
+                    //  routingModel.routingGraph.resetGraph();
+                    //  routingModel.routingGraph.createGraph();
                     //TODO: Change this way
                     //FIXME: do not change node but recalculate routing.
                     routingModel.setNodesChanged();
@@ -131,6 +131,7 @@ public class RoutingMenu extends JMenu {
                     else
                         routingModel.routingGraph.getRoutingProfile().setOnewayUse(true);
                     routingModel.setNodesChanged();
+                    routingModel.setOnewayChanged();
                     Main.map.repaint();
                 }
             }
@@ -166,22 +167,22 @@ public class RoutingMenu extends JMenu {
             }
         });
         menu.add(clearMI);
-        
+
         regraphMI = new JMenuItem(tr("Reconstruct Graph"));
         regraphMI.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+
                 if (Main.map.mapView.getActiveLayer() instanceof RoutingLayer) {
                     RoutingLayer layer = (RoutingLayer)Main.map.mapView.getActiveLayer();
                     RoutingModel routingModel = layer.getRoutingModel();
-                routingModel.routingGraph.resetGraph();
-                routingModel.routingGraph.createGraph();
+                    routingModel.routingGraph.resetGraph();
+                    routingModel.routingGraph.createGraph();
                 }
 
             }
         });
         menu.add(regraphMI);
-        
+
 
         // Initially disabled
         disableAllItems();

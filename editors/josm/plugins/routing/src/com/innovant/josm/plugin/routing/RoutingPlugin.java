@@ -34,11 +34,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.data.osm.event.DataChangedEvent;
-import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.event.AbstractDatasetChangedEvent;
-import org.openstreetmap.josm.data.osm.event.AbstractDatasetChangedEvent.DatasetEventType;
-import org.openstreetmap.josm.data.osm.event.DataSetListener;
 import org.openstreetmap.josm.data.osm.event.DataSetListenerAdapter;
 import org.openstreetmap.josm.data.osm.event.DatasetEventManager;
 import org.openstreetmap.josm.data.osm.event.DatasetEventManager.FireMode;
@@ -76,17 +72,17 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
     /**
      * The list of routing layers
      */
-    private ArrayList<RoutingLayer> layers;
+    private final ArrayList<RoutingLayer> layers;
 
     /**
      * The side dialog where nodes are listed
      */
-    private RoutingDialog routingDialog;
+    private final RoutingDialog routingDialog;
 
     /**
      * Preferences Settings Dialog.
      */
-    private PreferenceSetting preferenceSettings;
+    private final PreferenceSetting preferenceSettings;
 
     /**
      * MapMode for adding route nodes.
@@ -124,27 +120,27 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
     /**
      * IconToggleButton for moving route nodes, we use this field to show or hide the button.
      */
-    private RoutingMenu menu;
+    private final RoutingMenu menu;
 
     /**
      * Reference for the plugin class (as if it were a singleton)
      */
     private static RoutingPlugin plugin;
-    
-    private DataSetListenerAdapter datasetAdapter;
+
+    private final DataSetListenerAdapter datasetAdapter;
 
     /**
      * Default Constructor
      */
     public RoutingPlugin(PluginInformation info) {
         super(info);
-        
+
         datasetAdapter = new DataSetListenerAdapter(this);
         plugin = this; // Assign reference to the plugin class
-    if (new java.io.File("log4j.xml").exists()) {
+        if (new java.io.File("log4j.xml").exists()) {
             DOMConfigurator.configure("log4j.xml");
         } else {
-            System.err.println("Routing plugin warning: log4j configuration not found"); 
+            System.err.println("Routing plugin warning: log4j configuration not found");
         }
         logger.debug("Loading routing plugin...");
         preferenceSettings=new RoutingPreferenceDialog();
@@ -215,14 +211,14 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
      * @see org.openstreetmap.josm.gui.layer.Layer.LayerChangeListener#activeLayerChange(org.openstreetmap.josm.gui.layer.Layer, org.openstreetmap.josm.gui.layer.Layer)
      */
     public void activeLayerChange(Layer oldLayer, Layer newLayer) {
-            if (newLayer instanceof RoutingLayer) {			/*   show Routing toolbar and dialog window  */
-                menu.enableRestOfItems();    		
-                routingDialog.showDialog();
-                routingDialog.refresh();
-            }else{											/*   hide Routing toolbar and dialog window  */
-                menu.disableRestOfItems();
-                routingDialog.hideDialog();
-            }
+        if (newLayer instanceof RoutingLayer) {			/*   show Routing toolbar and dialog window  */
+            menu.enableRestOfItems();
+            routingDialog.showDialog();
+            routingDialog.refresh();
+        }else{											/*   hide Routing toolbar and dialog window  */
+            menu.disableRestOfItems();
+            routingDialog.hideDialog();
+        }
     }
 
     /*
@@ -270,10 +266,10 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
         // Reload RoutingDialog table model
         routingDialog.refresh();
     }
-    
+
     public void processDatasetEvent(AbstractDatasetChangedEvent event){
-        
-        
+
+
     }
     /* (non-Javadoc)
      * @see org.openstreetmap.josm.plugins.Plugin#getPreferenceSetting()

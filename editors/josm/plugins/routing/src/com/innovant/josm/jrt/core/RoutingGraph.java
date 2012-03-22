@@ -35,13 +35,15 @@ import org.apache.log4j.Logger;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.BellmanFordShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgrapht.graph.AsUndirectedGraph;
 import org.jgrapht.graph.DirectedWeightedMultigraph;
+import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.Way;
 
 import com.innovant.josm.jrt.osm.OsmEdge;
+import com.innovant.josm.plugin.routing.RoutingLayer;
+import com.innovant.josm.plugin.routing.RoutingModel;
 
 /**
  * Class utility to work with graph routers.
@@ -55,7 +57,7 @@ public class RoutingGraph {
     /**
      * Routing Profile
      */
-    private RoutingProfile routingProfile;
+    private final RoutingProfile routingProfile;
 
     /**
      * Diferent algorithms to apply to the graph.
@@ -77,7 +79,7 @@ public class RoutingGraph {
     /**
      * Associated Osm DataSet
      */
-    private DataSet data;
+    private final DataSet data;
 
     /**
      * Logger.
@@ -89,39 +91,39 @@ public class RoutingGraph {
      * <code>true</code> Graph in memory.
      * <code>false</code> Graph not created.
      */
-//  public boolean graphState;
+    //  public boolean graphState;
 
     /**
      * OSM Graph.
      */
-//  private DirectedWeightedMultigraph<Node, OsmEdge> graph;
-//  private WeightedMultigraph<Node, OsmEdge> graph;
+    //  private DirectedWeightedMultigraph<Node, OsmEdge> graph;
+    //  private WeightedMultigraph<Node, OsmEdge> graph;
     private Graph<Node, OsmEdge> graph;
     private RoutingGraphDelegator rgDelegator=null;
 
-    
+
     /**
      * Graph getter
      */
     public Graph<Node, OsmEdge> getGraph(){
         return graph;
-    
+
     }
-    
-    
+
+
     private void addEdgeBidirectional( Way way, Node from, Node to){
         addEdge(way,from,to);
         addEdge(way,to,from);
     }
-    
+
     private void addEdgeReverseOneway( Way way, Node from, Node to){
         addEdge(way,to,from);
     }
-    
+
     private void addEdgeNormalOneway( Way way, Node from, Node to){
         addEdge(way,from,to);
     }
-    
+
     /**
      * Speeds
      */
@@ -131,7 +133,7 @@ public class RoutingGraph {
      * Default Constructor.
      */
     public RoutingGraph(DataSet data) {
-//      this.graphState = false;
+        //      this.graphState = false;
         this.graph = null;
         this.data = data;
         routeType=RouteType.SHORTEST;
@@ -154,74 +156,78 @@ public class RoutingGraph {
         rgDelegator.setRouteType(this.routeType);
         // iterate all ways and segments for all nodes:
         for (Way way : data.getWays()) {
-        
-        // skip way if not suitable for routing.
+
+            // skip way if not suitable for routing.
             if (way == null || way.isDeleted() || !this.isvalidWay(way)
                     || way.getNodes().size() < 1) continue;
-  
-          // INIT
-                Node from = null;
-                Node to = null;
-                List<Node> nodes = way.getNodes();
-                int nodes_count = nodes.size();
-                
-                /*
-           * Assume node is A B C D E. The procedure should be
-           * 
-           *  case 1 - bidirectional ways:
-           *  1) Add vertex A B C D E
-           *  2) Link A<->B, B<->C, C<->D, D<->E as Edges
-           *  
-           *  case 2 - oneway reverse:
-           *  1) Add vertex A B C D E
-           *  2) Link B->A,C->B,D->C,E->D as Edges. result: A<-B<-C<-D<-E
-           *                  
-           *  case 3 - oneway normal:
-           *  1) Add vertex A B C D E
-           *  2) Link A->B, B->C, C->D, D->E as Edges. result: A->B->C->D->E
-           *  
-           *                  
-           */
-            
-                String oneway_val = way.get("oneway");   /*   get (oneway=?) tag for this way.   */
-                String junction_val = way.get("junction");   /*   get (junction=?) tag for this way.   */
-            
-                from = nodes.get(0);                   /*   1st node A  */
-                graph.addVertex(from);                 /*   add vertex A */
-  
-                for (int i = 1; i < nodes_count; i++) { /*   loop from B until E */
-  
-                    to = nodes.get(i);                   /*   2nd node B   */
-                    
-                    if (to != null && !to.isDeleted()) {
-                        graph.addVertex(to);               /*   add vertex B */
-                        
-                    
+
+            // INIT
+            Node from = null;
+            Node to = null;
+            List<Node> nodes = way.getNodes();
+            int nodes_count = nodes.size();
+
+            /*
+             * Assume node is A B C D E. The procedure should be
+             * 
+             *  case 1 - bidirectional ways:
+             *  1) Add vertex A B C D E
+             *  2) Link A<->B, B<->C, C<->D, D<->E as Edges
+             * 
+             *  case 2 - oneway reverse:
+             *  1) Add vertex A B C D E
+             *  2) Link B->A,C->B,D->C,E->D as Edges. result: A<-B<-C<-D<-E
+             * 
+             *  case 3 - oneway normal:
+             *  1) Add vertex A B C D E
+             *  2) Link A->B, B->C, C->D, D->E as Edges. result: A->B->C->D->E
+             * 
+             * 
+             */
+
+            String oneway_val = way.get("oneway");   /*   get (oneway=?) tag for this way.   */
+            String junction_val = way.get("junction");   /*   get (junction=?) tag for this way.   */
+
+            from = nodes.get(0);                   /*   1st node A  */
+            graph.addVertex(from);                 /*   add vertex A */
+
+            for (int i = 1; i < nodes_count; i++) { /*   loop from B until E */
+
+                to = nodes.get(i);                   /*   2nd node B   */
+
+                if (to != null && !to.isDeleted()) {
+                    graph.addVertex(to);               /*   add vertex B */
+
+
                     //this is where we link the vertices
-                        if (oneway_val == null && junction_val == "roundabout") {
+                    if (!routingProfile.isOnewayUsed()) {
+                        //"Ignore oneways" is selected
+                        addEdgeBidirectional(way, from, to);
+
+                    } else if (oneway_val == null && junction_val == "roundabout") {
                         //Case (roundabout): oneway=implicit yes
-                          addEdgeNormalOneway(way, from, to);
-                        
-                        } else if (oneway_val == null || oneway_val == "false" || oneway_val == "no" || oneway_val == "0") {
+                        addEdgeNormalOneway(way, from, to);
+
+                    } else if (oneway_val == null || oneway_val == "false" || oneway_val == "no" || oneway_val == "0") {
                         //Case (bi-way): oneway=false OR oneway=unset OR oneway=0 OR oneway=no
-                          addEdgeBidirectional(way, from, to);
-                          
-                        } else if (oneway_val == "-1") {
+                        addEdgeBidirectional(way, from, to);
+
+                    } else if (oneway_val == "-1") {
                         //Case (oneway reverse): oneway=-1
-                          addEdgeReverseOneway(way, from, to);
-                        
-                        } else if (oneway_val == "1" || oneway_val == "yes" || oneway_val == "true") {
+                        addEdgeReverseOneway(way, from, to);
+
+                    } else if (oneway_val == "1" || oneway_val == "yes" || oneway_val == "true") {
                         //Case (oneway normal): oneway=yes OR 1 OR true
-                          addEdgeNormalOneway(way, from, to);				
-                        
-                        }
-  
-                        from = to;                         /*   we did A<->B, next loop we will do B<->C, so from=B,to=C for next loop. */
+                        addEdgeNormalOneway(way, from, to);
+
                     }
-                    
-                } // end of looping thru nodes
-          } // end of looping thru ways
-          
+
+                    from = to;                         /*   we did A<->B, next loop we will do B<->C, so from=B,to=C for next loop. */
+                }
+
+            } // end of looping thru nodes
+        } // end of looping thru ways
+
         logger.debug("End Create Graph");
         logger.debug("Vertex: "+graph.vertexSet().size());
         logger.debug("Edges: "+graph.edgeSet().size());
@@ -243,8 +249,8 @@ public class RoutingGraph {
         double weight = getWeight(way, length);
         setWeight(edge, length);
         logger.debug("edge for way " + way.getId()
-                     + "(from node " + from.getId() + " to node "
-                     + to.getId() + ") has weight: " + weight);
+                + "(from node " + from.getId() + " to node "
+                + to.getId() + ") has weight: " + weight);
         //((GraphDelegator<Node,OsmEdge>) graph).setEdgeWeight(edge, weight);
         ((DirectedWeightedMultigraph<Node,OsmEdge>)graph).setEdgeWeight(edge, weight);
     }
@@ -329,8 +335,10 @@ public class RoutingGraph {
         List<OsmEdge> path = new ArrayList<OsmEdge>();
         Graph<Node,OsmEdge> g;
         double totalWeight = 0;
+        RoutingLayer layer = (RoutingLayer)Main.map.mapView.getActiveLayer();
+        RoutingModel routingModel = layer.getRoutingModel();
 
-        if (graph == null)
+        if (graph == null || routingModel.getOnewayChanged())
             this.createGraph();
         logger.debug("apply algorithm between nodes ");
 
@@ -339,13 +347,9 @@ public class RoutingGraph {
         }
         logger.debug("-----------------------------------");
 
-        // Assign the graph or an undirected view of the graph to g,
-        // depending on whether oneway tags are used or not
-        if (routingProfile.isOnewayUsed())
-            g = graph;
-        else
-            g = new AsUndirectedGraph<Node, OsmEdge>((DirectedWeightedMultigraph<Node,OsmEdge>)graph);
-        //TODO: Problemas no tiene encuenta el tema de oneway.
+        // Assign the graph to g
+        g = graph;
+
         switch (algorithm) {
         case ROUTING_ALG_DIJKSTRA:
             logger.debug("Using Dijkstra algorithm");
@@ -378,7 +382,7 @@ public class RoutingGraph {
         }
 
         logger.debug("shortest path found: " + path + "\nweight: "
-                        + totalWeight);
+                + totalWeight);
         return path;
     }
 
