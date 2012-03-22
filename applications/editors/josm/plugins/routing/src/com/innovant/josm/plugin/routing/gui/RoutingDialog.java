@@ -29,17 +29,12 @@ package com.innovant.josm.plugin.routing.gui;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
-import java.awt.Font;
 import java.awt.event.KeyEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EtchedBorder;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.osm.Node;
@@ -56,8 +51,8 @@ import com.innovant.josm.plugin.routing.RoutingModel;
  */
 public class RoutingDialog extends ToggleDialog {
 
-    private DefaultListModel model;
-    private JList jList = null;
+    private final DefaultListModel<String> model;
+    private JList<String> jList = null;
     private JScrollPane jScrollPane = null;
 
     /**
@@ -68,7 +63,7 @@ public class RoutingDialog extends ToggleDialog {
     public RoutingDialog() {
         super(tr("Routing"), "routing", tr("Open a list of routing nodes"),
                 Shortcut.registerShortcut("subwindow:routing", tr("Toggle: {0}", tr("Routing")), KeyEvent.VK_R, Shortcut.ALT_CTRL_SHIFT), 150);
-        model = new DefaultListModel();
+        model = new DefaultListModel<String>();
         createLayout(getJScrollPane(), false, null);
     }
 
@@ -92,9 +87,9 @@ public class RoutingDialog extends ToggleDialog {
      *
      * @return javax.swing.JList
      */
-    private JList getJList() {
+    private JList<String> getJList() {
         if (jList == null) {
-            jList = new JList();
+            jList = new JList<String>();
             jList.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
             jList.setModel(model);
         }
