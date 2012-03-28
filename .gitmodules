@@ -278,6 +278,10 @@
   path = applications/editors/josm/plugins/routing
   url = ../routing
   branch = master
+[submodule "applications/editors/josm/plugins/sds"]
+  path = applications/editors/josm/plugins/sds
+  url = ../sds
+  branch = master
 [submodule "applications/editors/josm/plugins/simplifyarea"]
   path = applications/editors/josm/plugins/simplifyarea
   url = ../simplifyarea
