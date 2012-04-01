@@ -82,10 +82,6 @@
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
   branch = master
-[submodule "applications/editors/josm/plugins/conflation"]
-  path = applications/editors/josm/plugins/conflation
-  url = ../conflation
-  branch = master
 [submodule "applications/editors/josm/plugins/czechaddress"]
   path = applications/editors/josm/plugins/czechaddress
   url = ../czechaddress
@@ -153,10 +149,6 @@
 [submodule "applications/editors/josm/plugins/irsrectify"]
   path = applications/editors/josm/plugins/irsrectify
   url = ../irsrectify
-  branch = master
-[submodule "applications/editors/josm/plugins/jts"]
-  path = applications/editors/josm/plugins/jts
-  url = ../jts
   branch = master
 [submodule "applications/editors/josm/plugins/junctionchecking"]
   path = applications/editors/josm/plugins/junctionchecking
