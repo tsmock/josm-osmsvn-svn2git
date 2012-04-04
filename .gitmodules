@@ -358,6 +358,10 @@
   path = applications/editors/josm/plugins/wayselector
   url = ../wayselector
   branch = master
+[submodule "applications/editors/josm/plugins/wikipedia"]
+  path = applications/editors/josm/plugins/wikipedia
+  url = ../wikipedia
+  branch = master
 [submodule "applications/editors/josm/plugins/wms-turbo-challenge2"]
   path = applications/editors/josm/plugins/wms-turbo-challenge2
   url = ../wms-turbo-challenge2
