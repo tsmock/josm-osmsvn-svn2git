@@ -150,6 +150,10 @@
   path = applications/editors/josm/plugins/irsrectify
   url = ../irsrectify
   branch = master
+[submodule "applications/editors/josm/plugins/jts"]
+  path = applications/editors/josm/plugins/jts
+  url = ../jts
+  branch = master
 [submodule "applications/editors/josm/plugins/junctionchecking"]
   path = applications/editors/josm/plugins/junctionchecking
   url = ../junctionchecking
