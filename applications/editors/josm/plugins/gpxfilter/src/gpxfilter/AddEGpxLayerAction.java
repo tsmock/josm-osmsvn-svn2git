@@ -13,7 +13,7 @@ import org.openstreetmap.josm.tools.Shortcut;
 public class AddEGpxLayerAction extends JosmAction {
 
     public AddEGpxLayerAction() {
-        super(tr("Add EGPX layer"),null,tr("Add EGPX layer"),
+        super(tr("Add EGPX layer"),(String)null,tr("Add EGPX layer"),
             Shortcut.registerShortcut("gpxfilter:egpx", tr("Tool: {0}", tr("Add EGPX layer")),
                  KeyEvent.VK_X, Shortcut.ALT_SHIFT),
             true, "gpxfilter/addegpxlayer", true);
@@ -24,6 +24,7 @@ public class AddEGpxLayerAction extends JosmAction {
         setEnabled(getCurrentDataSet() != null);
     }
 
+    @Override
     public void actionPerformed(ActionEvent arg0)  {
         Main.main.addLayer(new EGpxLayer(Main.map.mapView.getRealBounds()));
     }
