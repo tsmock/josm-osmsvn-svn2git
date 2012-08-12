@@ -158,10 +158,6 @@
   path = applications/editors/josm/plugins/lakewalker
   url = ../lakewalker
   branch = master
-[submodule "applications/editors/josm/plugins/licensechange"]
-  path = applications/editors/josm/plugins/licensechange
-  url = ../licensechange
-  branch = master
 [submodule "applications/editors/josm/plugins/livegps"]
   path = applications/editors/josm/plugins/livegps
   url = ../livegps
