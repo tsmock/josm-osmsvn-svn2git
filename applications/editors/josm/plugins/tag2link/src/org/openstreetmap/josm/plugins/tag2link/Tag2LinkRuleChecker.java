@@ -1,5 +1,5 @@
 //    JOSM tag2link plugin.
-//    Copyright (C) 2011 Don-vip & FrViPofm
+//    Copyright (C) 2011-2012 Don-vip & FrViPofm
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -36,12 +36,20 @@ import org.openstreetmap.josm.plugins.tag2link.data.Rule.MatchingTag;
 import org.openstreetmap.josm.plugins.tag2link.data.Source;
 import org.openstreetmap.josm.plugins.tag2link.io.SourcesReader;
 
+/**
+ * Class matching rules against a specified OSM primitive in order to get its relevant links. 
+ * @author Don-vip
+ *
+ */
 public class Tag2LinkRuleChecker implements Tag2LinkConstants {
 
     private static Collection<Source> sources = new ArrayList<Source>();
     
     private static boolean initialized = false;
-        
+    
+    /**
+     * Initializes the matching rules mechanism.
+     */
     public static void init() {
         if (!initialized) {
             sources = SourcesReader.readSources();
@@ -161,6 +169,11 @@ public class Tag2LinkRuleChecker implements Tag2LinkConstants {
         return result;
     }
     
+    /**
+     * Replies the links relevant to the given OSM primitive.
+     * @param p The OSM primitive
+     * @return the links relevant to the {@code p}.
+     */
     public static Collection<Link> getLinks(IPrimitive p) {
         Collection<Link> result = new ArrayList<Link>();
         for (Source source : sources) {
@@ -171,6 +184,11 @@ public class Tag2LinkRuleChecker implements Tag2LinkConstants {
         return result;
     }
 
+    /**
+     * Replies the links relevant to the given OSM tag.
+     * @param tag The OSM tag
+     * @return the links relevant to the {@code tag}.
+     */
     public static Collection<Link> getLinks(Tag tag) {
         Collection<Link> result = new ArrayList<Link>();
         for (Source source : sources) {

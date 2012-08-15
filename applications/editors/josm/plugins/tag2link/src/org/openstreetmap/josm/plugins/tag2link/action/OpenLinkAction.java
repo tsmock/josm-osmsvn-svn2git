@@ -1,5 +1,5 @@
 //    JOSM tag2link plugin.
-//    Copyright (C) 2011 Don-vip & FrViPofm
+//    Copyright (C) 2011-2012 Don-vip & FrViPofm
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -32,11 +32,20 @@ import org.openstreetmap.josm.plugins.tag2link.data.Link;
 import org.openstreetmap.josm.plugins.tag2link.data.LinkPost;
 import org.openstreetmap.josm.tools.OpenBrowser;
 
+/**
+ * Action allowing to open a general link.
+ * @author Don-vip
+ *
+ */
 @SuppressWarnings("serial")
 public class OpenLinkAction extends JosmAction implements Tag2LinkConstants {
 
     private Link link;
     
+    /**
+     * Constructs a new {@code OpenLinkAction}.
+     * @param link The link to open
+     */
     public OpenLinkAction(Link link) {
         super(tr(link.name), ICON_24, tr("Launch browser with information about the selected object"), null, false);
         this.link = link;
