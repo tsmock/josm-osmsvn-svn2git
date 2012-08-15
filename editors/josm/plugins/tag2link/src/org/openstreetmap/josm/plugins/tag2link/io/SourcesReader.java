@@ -1,5 +1,5 @@
 //    JOSM tag2link plugin.
-//    Copyright (C) 2011 Don-vip & FrViPofm
+//    Copyright (C) 2011-2012 Don-vip & FrViPofm
 //
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -41,14 +41,27 @@ import org.openstreetmap.josm.plugins.tag2link.data.LinkPost;
 import org.openstreetmap.josm.plugins.tag2link.data.Rule;
 import org.openstreetmap.josm.plugins.tag2link.data.Source;
 
+/**
+ * Class allowing to read the sources file.
+ * @author Don-vip
+ *
+ */
 public class SourcesReader implements Tag2LinkConstants {
     
     XMLStreamReader parser;
     
+    /**
+     * Constructs a new {@code SourcesReader}.
+     * @param parser The XML parser
+     */
     public SourcesReader(XMLStreamReader parser) {
         this.parser = parser;
     }
 
+    /**
+     * Reads the sources and replies them as a {@code Collection}. 
+     * @return The colleciton of sources.
+     */
     public static Collection<Source> readSources() {
         List<Source> result = new ArrayList<Source>();
 
