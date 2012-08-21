@@ -106,6 +106,10 @@
   path = applications/editors/josm/plugins/ext_tools
   url = ../ext_tools
   branch = master
+[submodule "applications/editors/josm/plugins/geotools"]
+  path = applications/editors/josm/plugins/geotools
+  url = ../geotools
+  branch = master
 [submodule "applications/editors/josm/plugins/globalsat"]
   path = applications/editors/josm/plugins/globalsat
   url = ../globalsat
