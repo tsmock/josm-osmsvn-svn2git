@@ -64,8 +64,7 @@ public class JunctionCheckerPlugin extends Plugin implements LayerChangeListener
             if (normalMapMode != null) {
                 Main.map.selectMapMode(normalMapMode);
             }
-        }
-        if (newLayer == channelDigraphLayer) {
+        } else if (newLayer instanceof ChannelDiGraphLayer) {
             this.getJunctionCheckDialog().setActivateCreateDigraph(false);
             this.getJunctionCheckDialog().setActivateJunctionCheckOrSearch(true);
             Main.map.selectMapMode(jcMapMode);
