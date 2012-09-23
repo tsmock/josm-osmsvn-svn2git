@@ -114,6 +114,10 @@
   path = applications/editors/josm/plugins/globalsat
   url = ../globalsat
   branch = master
+[submodule "applications/editors/josm/plugins/gpsblam"]
+  path = applications/editors/josm/plugins/gpsblam
+  url = ../gpsblam
+  branch = master
 [submodule "applications/editors/josm/plugins/gpxfilter"]
   path = applications/editors/josm/plugins/gpxfilter
   url = ../gpxfilter
