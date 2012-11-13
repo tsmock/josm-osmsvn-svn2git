@@ -58,6 +58,10 @@
   path = applications/editors/josm/plugins/OpeningHoursEditor
   url = ../OpeningHoursEditor
   branch = master
+[submodule "applications/editors/josm/plugins/OsmInspectorPlugin"]
+  path = applications/editors/josm/plugins/OsmInspectorPlugin
+  url = ../OsmInspectorPlugin
+  branch = master
 [submodule "applications/editors/josm/plugins/addrinterpolation"]
   path = applications/editors/josm/plugins/addrinterpolation
   url = ../addrinterpolation
