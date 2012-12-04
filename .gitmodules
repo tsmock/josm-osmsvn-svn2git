@@ -306,6 +306,10 @@
   path = applications/editors/josm/plugins/smed
   url = ../smed
   branch = master
+[submodule "applications/editors/josm/plugins/smed1"]
+  path = applications/editors/josm/plugins/smed1
+  url = ../smed1
+  branch = master
 [submodule "applications/editors/josm/plugins/smed2"]
   path = applications/editors/josm/plugins/smed2
   url = ../smed2
