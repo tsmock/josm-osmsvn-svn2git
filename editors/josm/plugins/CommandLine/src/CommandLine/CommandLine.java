@@ -37,7 +37,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JMenu;
@@ -65,6 +64,7 @@ import org.openstreetmap.josm.io.OsmWriter;
 import org.openstreetmap.josm.io.OsmWriterFactory;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
+import org.openstreetmap.josm.tools.SubclassFilteredCollection;
 
 public class CommandLine extends Plugin {
     protected JTextField textField;
@@ -81,6 +81,7 @@ public class CommandLine extends Plugin {
 
     static final String pluginDir = Main.pref.getPluginsDirectory().getAbsolutePath() + "/CommandLine/";
 
+    @SuppressWarnings("serial")
     public CommandLine(PluginInformation info) {
         super(info);
         commandSymbol = ": ";
@@ -90,7 +91,7 @@ public class CommandLine extends Plugin {
             @Override
             protected void processKeyEvent(KeyEvent e) {
                 if (e.getID() == KeyEvent.KEY_PRESSED) {
-                    String text = textField.getText();
+                    //String text = textField.getText();
                     int code = e.getKeyCode();
                     if (code == KeyEvent.VK_ENTER) {
                         String commandText = textField.getText().substring(prefix.length());
@@ -505,40 +506,31 @@ public class CommandLine extends Plugin {
                 Collection<OsmPrimitive> refObjects = currentCommand.getDepsObjects();
                 Collection<OsmPrimitive> pObjects;
                 osmWriter.header();
+                Collection<OsmPrimitive> contents = new ArrayList<OsmPrimitive>();
                 for (OsmPrimitive primitive : refObjects) {
-                    if (primitive instanceof Node)
-                        osmWriter.visit((Node)primitive);
-                    else if (primitive instanceof Way)
-                        osmWriter.visit((Way)primitive);
-                    else if (primitive instanceof Relation)
-                        osmWriter.visit((Relation)primitive);
+                    contents.add(primitive);
                     if (bbox == null)
                         bbox = new BBox(primitive.getBBox());
                     else
                         bbox.addPrimitive(primitive, 0.0);
                 }
-                osmWriter.footer();
-                osmWriter.flush();
                 for (Parameter parameter : parameters) {
                     if (!parameter.isOsm())
                         continue;
-                    osmWriter.header();
                     pObjects = parameter.getParameterObjects();
                     for (OsmPrimitive primitive : pObjects) {
-                        if (primitive instanceof Node)
-                            osmWriter.visit((Node)primitive);
-                        else if (primitive instanceof Way)
-                            osmWriter.visit((Way)primitive);
-                        else if (primitive instanceof Relation)
-                            osmWriter.visit((Relation)primitive);
+                        contents.add(primitive);
                         if (bbox == null)
                             bbox = new BBox(primitive.getBBox());
                         else
                             bbox.addPrimitive(primitive, 0.0);
                     }
-                    osmWriter.footer();
-                    osmWriter.flush();
                 }
+                osmWriter.writeNodes(new SubclassFilteredCollection<OsmPrimitive, Node>(contents, OsmPrimitive.nodePredicate));
+                osmWriter.writeWays(new SubclassFilteredCollection<OsmPrimitive, Way>(contents, OsmPrimitive.wayPredicate));
+                osmWriter.writeRelations(new SubclassFilteredCollection<OsmPrimitive, Relation>(contents, OsmPrimitive.relationPredicate));
+                osmWriter.footer();
+                osmWriter.flush();
                 if (tracks) {
                     final GpxWriter gpxWriter = new GpxWriter(printWriter);
                     GpxFilter gpxFilter = new GpxFilter();
@@ -565,7 +557,7 @@ public class CommandLine extends Plugin {
             public void run() {
                 try {
                     String commandName = currentCommand.name;
-                    HashMap<Long, Long> inexiDMap = new HashMap<Long, Long>();
+                    //HashMap<Long, Long> inexiDMap = new HashMap<Long, Long>();
                     final InputStream inputStream = tp.process.getInputStream();
                     osmToCmd.parseStream(inputStream);
                     final List<org.openstreetmap.josm.command.Command> cmdlist = osmToCmd.getCommandList();
