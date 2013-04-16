@@ -1,8 +1,8 @@
 /*
  *	  OsmToCmd.java
- *	  
+ *	
  *	  Copyright 2011 Hind <foxhind@gmail.com>
- *	  
+ *	
  */
 
 package CommandLine;
@@ -14,38 +14,48 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.command.AddCommand;
 import org.openstreetmap.josm.command.ChangeCommand;
-import org.openstreetmap.josm.command.ChangeNodesCommand;
 import org.openstreetmap.josm.command.Command;
 import org.openstreetmap.josm.command.DeleteCommand;
 import org.openstreetmap.josm.data.coor.LatLon;
-import org.openstreetmap.josm.data.osm.*;
+import org.openstreetmap.josm.data.osm.DataSet;
+import org.openstreetmap.josm.data.osm.Node;
+import org.openstreetmap.josm.data.osm.NodeData;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.OsmPrimitiveType;
+import org.openstreetmap.josm.data.osm.PrimitiveData;
+import org.openstreetmap.josm.data.osm.PrimitiveId;
+import org.openstreetmap.josm.data.osm.Relation;
+import org.openstreetmap.josm.data.osm.RelationData;
+import org.openstreetmap.josm.data.osm.RelationMember;
+import org.openstreetmap.josm.data.osm.SimplePrimitiveId;
+import org.openstreetmap.josm.data.osm.User;
+import org.openstreetmap.josm.data.osm.Way;
+import org.openstreetmap.josm.data.osm.WayData;
 import org.openstreetmap.josm.io.IllegalDataException;
 import org.openstreetmap.josm.io.OsmDataParsingException;
 import org.openstreetmap.josm.io.UTFInputStreamReader;
 import org.openstreetmap.josm.tools.DateUtils;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.DefaultHandler;
 
 final class OsmToCmd {
-    private CommandLine parentPlugin;
+    private final CommandLine parentPlugin;
     private final DataSet targetDataSet;
     private final LinkedList<Command> cmds = new LinkedList<Command>();
-    private HashMap<PrimitiveId, OsmPrimitive> externalIdMap; // Maps external ids to internal primitives
+    private final HashMap<PrimitiveId, OsmPrimitive> externalIdMap; // Maps external ids to internal primitives
 
     public OsmToCmd(CommandLine parentPlugin, DataSet targetDataSet) {
         this.parentPlugin = parentPlugin;
@@ -74,10 +84,10 @@ final class OsmToCmd {
     public LinkedList<Command> getCommandList() {
         return cmds;
     }
-    
+
     private class Parser extends DefaultHandler implements LexicalHandler {
         private Locator locator;
-        
+
         @Override
         public void setDocumentLocator(Locator locator) {
             this.locator = locator;
@@ -88,9 +98,9 @@ final class OsmToCmd {
         }
 
         private OsmPrimitive currentPrimitive;
-        private long currentExternalId;
-        private List<Node> currentWayNodes = new ArrayList<Node>();
-        private List<RelationMember> currentRelationMembers = new ArrayList<RelationMember>();
+        //private long currentExternalId;
+        private final List<Node> currentWayNodes = new ArrayList<Node>();
+        private final List<RelationMember> currentRelationMembers = new ArrayList<RelationMember>();
 
         @Override
         public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
@@ -115,16 +125,16 @@ final class OsmToCmd {
                     source.setCoor(new LatLon(getDouble(atts, "lat"), getDouble(atts, "lon")));
                     readCommon(atts, source);
                     Node target = (Node)targetDataSet.getPrimitiveById( source.getUniqueId(), source.getType() );
-                    
+
                     if (target == null || !(source.isModified() || source.isDeleted()) )
                         n.load(source);
                     else {
                         n.cloneFrom(target);
                         n.load(source);
                     }
-                    
+
                     currentPrimitive = n;
-                    externalIdMap.put(source.getPrimitiveId(), (OsmPrimitive)n);
+                    externalIdMap.put(source.getPrimitiveId(), n);
                     //System.out.println("NODE " + String.valueOf(source.getUniqueId()) + " HAS MAPPED TO INNER " + String.valueOf(n.getUniqueId()) );
                 }
                 else if (qName.equals("way")) {
@@ -132,17 +142,17 @@ final class OsmToCmd {
                     WayData source = new WayData();
                     readCommon(atts, source);
                     Way target = (Way)targetDataSet.getPrimitiveById( source.getUniqueId(), source.getType() );
-                    
+
                     if (target == null || !(source.isModified() || source.isDeleted()) )
                         w.load(source);
                     else {
                         w.cloneFrom(target);
                         w.load(source);
                     }
-                    
+
                     currentPrimitive = w;
                     currentWayNodes.clear();
-                    externalIdMap.put(source.getPrimitiveId(), (OsmPrimitive)w);
+                    externalIdMap.put(source.getPrimitiveId(), w);
                     //System.out.println("WAY " + String.valueOf(source.getUniqueId()) + " HAS MAPPED TO INNER " + String.valueOf(w.getUniqueId()) );
                 }
                 else if (qName.equals("nd")) {
@@ -160,24 +170,24 @@ final class OsmToCmd {
                     }
                     currentWayNodes.add(node);
                 }
-                    // ---- PARSING RELATIONS ----
+                // ---- PARSING RELATIONS ----
 
                 else if (qName.equals("relation")) {
                     Relation r = new Relation();
                     RelationData source = new RelationData();
                     readCommon(atts, source);
                     Relation target = (Relation)targetDataSet.getPrimitiveById( source.getUniqueId(), source.getType() );
-                    
+
                     if (target == null || !(source.isModified() || source.isDeleted()) )
                         r.load(source);
                     else {
                         r.cloneFrom(target);
                         r.load(source);
                     }
-                    
+
                     currentPrimitive = r;
                     currentRelationMembers.clear();
-                    externalIdMap.put(source.getPrimitiveId(), (OsmPrimitive)r);
+                    externalIdMap.put(source.getPrimitiveId(), r);
                     //System.out.println("RELATION " + String.valueOf(source.getUniqueId()) + " HAS MAPPED TO INNER " + String.valueOf(r.getUniqueId()) );
                 }
                 else if (qName.equals("member")) {
@@ -212,7 +222,7 @@ final class OsmToCmd {
                     currentRelationMembers.add(relationMember);
                 }
 
-                    // ---- PARSING TAGS (applicable to all objects) ----
+                // ---- PARSING TAGS (applicable to all objects) ----
 
                 else if (qName.equals("tag")) {
                     String key = atts.getValue("k");
@@ -239,7 +249,7 @@ final class OsmToCmd {
                 }
                 else if (currentPrimitive.isModified()) {
                     //System.out.println(String.valueOf(currentPrimitive.getUniqueId()) + " IS MODIFIED BY SCRIPT");
-                    cmds.add(new ChangeCommand(Main.map.mapView.getEditLayer(), (Node)targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()), currentPrimitive));
+                    cmds.add(new ChangeCommand(Main.map.mapView.getEditLayer(), targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()), currentPrimitive));
                 }
                 else if (currentPrimitive.isNew()) {
                     cmds.add(new AddCommand(currentPrimitive));
@@ -251,7 +261,7 @@ final class OsmToCmd {
                     cmds.add(new DeleteCommand( targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()) ));
                 }
                 else if (currentPrimitive.isModified()) {
-                    cmds.add(new ChangeCommand(Main.map.mapView.getEditLayer(), (Way)targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()), currentPrimitive));
+                    cmds.add(new ChangeCommand(Main.map.mapView.getEditLayer(), targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()), currentPrimitive));
                 }
                 else if (currentPrimitive.isNew()) {
                     cmds.add(new AddCommand(currentPrimitive));
@@ -263,7 +273,7 @@ final class OsmToCmd {
                     cmds.add(new DeleteCommand( targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()) ));
                 }
                 else if (currentPrimitive.isModified()) {
-                    cmds.add(new ChangeCommand(Main.map.mapView.getEditLayer(), (Relation)targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()), currentPrimitive));
+                    cmds.add(new ChangeCommand(Main.map.mapView.getEditLayer(), targetDataSet.getPrimitiveById(currentPrimitive.getPrimitiveId()), currentPrimitive));
                 }
                 else if (currentPrimitive.isNew()) {
                     cmds.add(new AddCommand(currentPrimitive));
@@ -275,25 +285,31 @@ final class OsmToCmd {
         public void comment(char[] ch, int start, int length) {
             parentPlugin.printHistory(String.valueOf(ch));
         }
-        
+
+        @Override
         public void startCDATA() {
         }
-        
+
+        @Override
         public void endCDATA() {
         }
-        
+
+        @Override
         public void startEntity(String name) {
         }
-        
+
+        @Override
         public void endEntity(String name) {
         }
-        
+
+        @Override
         public void startDTD(String name, String publicId, String systemId) {
         }
-        
+
+        @Override
         public void endDTD() {
         }
-        
+
         private double getDouble(Attributes atts, String value) {
             return Double.parseDouble(atts.getValue(value));
         }
@@ -301,13 +317,13 @@ final class OsmToCmd {
         private long getLong(Attributes atts, String name) throws SAXException {
             String value = atts.getValue(name);
             if (value == null) {
-                    throwException(tr("Missing required attribute ''{0}''.",name));
-                }
-                try {
-                    return Long.parseLong(value);
-                }
-                catch(NumberFormatException e) {
-                    throwException(tr("Illegal long value for attribute ''{0}''. Got ''{1}''.",name, value));
+                throwException(tr("Missing required attribute ''{0}''.",name));
+            }
+            try {
+                return Long.parseLong(value);
+            }
+            catch(NumberFormatException e) {
+                throwException(tr("Illegal long value for attribute ''{0}''. Got ''{1}''.",name, value));
             }
             return 0; // should not happen
         }

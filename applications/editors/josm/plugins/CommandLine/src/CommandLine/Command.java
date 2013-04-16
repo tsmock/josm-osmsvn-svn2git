@@ -1,22 +1,21 @@
 /*
  *      Command.java
- *      
+ * 
  *      Copyright 2011 Hind <foxhind@gmail.com>
- *      
+ * 
  */
 
 package CommandLine;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.Relation;
 import org.openstreetmap.josm.data.osm.Way;
-import org.openstreetmap.josm.data.osm.DataSet;
 
 public class Command {
     public String name;						// Command name
@@ -26,7 +25,7 @@ public class Command {
     public ArrayList<Parameter> optParameters;	// Optional parameters list
     public int currentParameterNum;
     public boolean tracks;
-    
+
     public Command () {	parameters = new ArrayList<Parameter>(); optParameters = new ArrayList<Parameter>(); currentParameterNum = 0; tracks = false; icon = ""; }
 
     public boolean loadObject(Object obj) {
@@ -45,7 +44,7 @@ public class Command {
             //System.out.println("mI = " + String.valueOf(currentParameter.maxInstances));
             ArrayList<OsmPrimitive> multiValue = currentParameter.getValueList();
             if (obj instanceof Collection) {
-                if ( ((Collection)obj).size() > currentParameter.maxInstances && currentParameter.maxInstances != 0)
+                if ( ((Collection<?>)obj).size() > currentParameter.maxInstances && currentParameter.maxInstances != 0)
                     return false;
                 //System.out.println("Candidate (selected) accepted");
                 multiValue.clear();
@@ -105,73 +104,73 @@ public class Command {
 
     private static boolean isPair(Object obj, Parameter parameter) {
         switch (parameter.type) {
-            case POINT:
-                if (obj instanceof String) {
-                    Pattern p = Pattern.compile("(-?\\d*\\.?\\d*,-?\\d*\\.?\\d*;?)*");
-                    Matcher m = p.matcher((String)obj);
-                    return m.matches();
+        case POINT:
+            if (obj instanceof String) {
+                Pattern p = Pattern.compile("(-?\\d*\\.?\\d*,-?\\d*\\.?\\d*;?)*");
+                Matcher m = p.matcher((String)obj);
+                return m.matches();
+            }
+            break;
+        case NODE:
+            if (obj instanceof Node) return true;
+            break;
+        case WAY:
+            if (obj instanceof Way) return true;
+            break;
+        case RELATION:
+            if (obj instanceof Relation) return true;
+            break;
+        case ANY:
+            if (obj instanceof Node || obj instanceof Way || obj instanceof Relation) return true;
+            break;
+        case LENGTH:
+            if (obj instanceof String) {
+                Pattern p = Pattern.compile("\\d*\\.?\\d*");
+                Matcher m = p.matcher((String)obj);
+                if (m.matches()) {
+                    Float value = Float.parseFloat((String)obj);
+                    if (parameter.minVal != 0 && value < parameter.minVal)
+                        break;
+                    if (parameter.maxVal != 0 && value > parameter.maxVal)
+                        break;
+                    return true;
                 }
-                break;
-            case NODE:
-                if (obj instanceof Node) return true;
-                break;
-            case WAY:
-                if (obj instanceof Way) return true;
-                break;
-            case RELATION:
-                if (obj instanceof Relation) return true;
-                break;
-            case ANY:
-                if (obj instanceof Node || obj instanceof Way || obj instanceof Relation) return true;
-                break;
-            case LENGTH:
-                if (obj instanceof String) {
-                    Pattern p = Pattern.compile("\\d*\\.?\\d*");
-                    Matcher m = p.matcher((String)obj);
-                    if (m.matches()) {
-                        Float value = Float.parseFloat((String)obj);
-                        if (parameter.minVal != 0 && value < parameter.minVal)
-                            break;
-                        if (parameter.maxVal != 0 && value > parameter.maxVal)
-                            break;
+            }
+            break;
+        case NATURAL:
+            if (obj instanceof String) {
+                Pattern p = Pattern.compile("\\d*");
+                Matcher m = p.matcher((String)obj);
+                if (m.matches()) {
+                    Integer value = Integer.parseInt((String)obj);
+                    if (parameter.minVal != 0 && value < parameter.minVal)
+                        break;
+                    if (parameter.maxVal != 0 && value > parameter.maxVal)
+                        break;
+                    return true;
+                }
+            }
+            break;
+        case STRING:
+            if (obj instanceof String) return true;
+            break;
+        case RELAY:
+            if (obj instanceof String) {
+                if (parameter.getRawValue() instanceof Relay) {
+                    if ( ((Relay)(parameter.getRawValue())).isCorrectValue((String)obj) )
                         return true;
-                    }
                 }
-                break;
-            case NATURAL:
-                if (obj instanceof String) {
-                    Pattern p = Pattern.compile("\\d*");
-                    Matcher m = p.matcher((String)obj);
-                    if (m.matches()) {
-                        Integer value = Integer.parseInt((String)obj);
-                        if (parameter.minVal != 0 && value < parameter.minVal)
-                            break;
-                        if (parameter.maxVal != 0 && value > parameter.maxVal)
-                            break;
-                        return true;
-                    }
-                }
-                break;
-            case STRING:
-                if (obj instanceof String) return true;
-                break;
-            case RELAY:
-                if (obj instanceof String) {
-                    if (parameter.getRawValue() instanceof Relay) {
-                        if ( ((Relay)(parameter.getRawValue())).isCorrectValue((String)obj) )
-                            return true;
-                    }
-                }
-                break;
-            case USERNAME:
-                if (obj instanceof String) return true;
-                break;
-            case IMAGERYURL:
-                if (obj instanceof String) return true;
-                break;
-            case IMAGERYOFFSET:
-                if (obj instanceof String) return true;
-                break;
+            }
+            break;
+        case USERNAME:
+            if (obj instanceof String) return true;
+            break;
+        case IMAGERYURL:
+            if (obj instanceof String) return true;
+            break;
+        case IMAGERYOFFSET:
+            if (obj instanceof String) return true;
+            break;
         }
         return false;
     }
@@ -180,7 +179,7 @@ public class Command {
         ArrayList<OsmPrimitive> depsObjects = new ArrayList<OsmPrimitive>();
         for (Parameter parameter : parameters) {
             if (!parameter.isOsm())
-                        continue;
+                continue;
             if (parameter.maxInstances == 1) {
                 depsObjects.addAll(getDepsObjects(depsObjects, (OsmPrimitive)parameter.getRawValue()));
             }
