@@ -110,6 +110,10 @@
   path = applications/editors/josm/plugins/ext_tools
   url = ../ext_tools
   branch = master
+[submodule "applications/editors/josm/plugins/geochat"]
+  path = applications/editors/josm/plugins/geochat
+  url = ../geochat
+  branch = master
 [submodule "applications/editors/josm/plugins/geotools"]
   path = applications/editors/josm/plugins/geotools
   url = ../geotools
