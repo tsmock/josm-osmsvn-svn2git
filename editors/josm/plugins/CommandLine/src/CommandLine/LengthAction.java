@@ -37,11 +37,11 @@ import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.tools.ImageProvider;
 
 public class LengthAction extends MapMode implements MapViewPaintable, AWTEventListener {
-    private CommandLine parentPlugin;
+    private final CommandLine parentPlugin;
     final private Cursor cursorCrosshair;
     final private Cursor cursorJoinNode;
     private Cursor currentCursor;
-    private Color selectedColor;
+    private final Color selectedColor;
     private Point drawStartPos;
     private Point drawEndPos;
     private LatLon startCoor;
@@ -95,6 +95,7 @@ public class LengthAction extends MapMode implements MapViewPaintable, AWTEventL
         parentPlugin.abortInput();
     }
 
+    @Override
     public void eventDispatched(AWTEvent arg0) {
         if (!(arg0 instanceof KeyEvent))
             return;
@@ -112,6 +113,7 @@ public class LengthAction extends MapMode implements MapViewPaintable, AWTEventL
         }
     }
 
+    @Override
     public void paint(Graphics2D g, MapView mv, Bounds bbox) {
         if (!drawing)
             return;
@@ -154,26 +156,27 @@ public class LengthAction extends MapMode implements MapViewPaintable, AWTEventL
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-          if (!Main.map.mapView.isActiveLayerDrawable())
-            return;
-          drawingStart(e);
+            if (!Main.map.mapView.isActiveLayerDrawable())
+                return;
+            requestFocusInMapView();
+            drawingStart(e);
         }
         else
-          drawing = false;
+            drawing = false;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      if (e.getButton() != MouseEvent.BUTTON1)
-          return;
-      if (!Main.map.mapView.isActiveLayerDrawable())
-          return;
-      boolean dragged = true;
-      if (drawStartPos != null)
-          dragged = drawEndPos.distance(drawStartPos) > 10;
-      if (drawing && dragged)
-        drawingFinish();
-      drawing = false;
+        if (e.getButton() != MouseEvent.BUTTON1)
+            return;
+        if (!Main.map.mapView.isActiveLayerDrawable())
+            return;
+        boolean dragged = true;
+        if (drawStartPos != null)
+            dragged = drawEndPos.distance(drawStartPos) > 10;
+            if (drawing && dragged)
+                drawingFinish();
+            drawing = false;
     }
 
     @Override
@@ -185,10 +188,10 @@ public class LengthAction extends MapMode implements MapViewPaintable, AWTEventL
         else
             drawEndPos = mousePos;
         endCoor = Main.map.mapView.getLatLon(drawEndPos.x, drawEndPos.y);
-    if (drawing) {
-      Main.map.statusLine.setDist(startCoor.greatCircleDistance(endCoor));
+        if (drawing) {
+            Main.map.statusLine.setDist(startCoor.greatCircleDistance(endCoor));
             Main.map.mapView.repaint();
-    }
+        }
     }
 
     @Override
@@ -234,6 +237,7 @@ public class LengthAction extends MapMode implements MapViewPaintable, AWTEventL
         try {
             // We invoke this to prevent strange things from happening
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     // Don't change cursor when mode has changed already
                     if (!(Main.map.mapMode instanceof LengthAction))
