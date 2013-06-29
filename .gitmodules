@@ -206,10 +206,6 @@
   path = applications/editors/josm/plugins/mirrored_download
   url = ../mirrored_download
   branch = master
-[submodule "applications/editors/josm/plugins/multipoly-convert"]
-  path = applications/editors/josm/plugins/multipoly-convert
-  url = ../multipoly-convert
-  branch = master
 [submodule "applications/editors/josm/plugins/namemanager"]
   path = applications/editors/josm/plugins/namemanager
   url = ../namemanager
