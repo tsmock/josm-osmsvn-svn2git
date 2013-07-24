@@ -129,9 +129,10 @@ public class WayAction extends MapMode implements AWTEventListener {
         super.mousePressed(e);
     }
 
+        @Override
     public void eventDispatched(AWTEvent arg0) {
         if (!(arg0 instanceof KeyEvent))
-            return;
+                return;
         KeyEvent ev = (KeyEvent) arg0;
         isCtrlDown = (ev.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0;
         if (ev.getKeyCode() == KeyEvent.VK_ESCAPE && ev.getID() == KeyEvent.KEY_PRESSED) {
@@ -143,7 +144,7 @@ public class WayAction extends MapMode implements AWTEventListener {
     private void updCursor() {
         if (mousePos != null) {
             if (!Main.isDisplayingMapView())
-                return;
+                    return;
             nearestWay = Main.map.mapView.getNearestWay(mousePos, OsmPrimitive.isUsablePredicate);
             if (nearestWay != null) {
                 setCursor(cursorActive);
@@ -164,6 +165,7 @@ public class WayAction extends MapMode implements AWTEventListener {
         try {
             // We invoke this to prevent strange things from happening
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     // Don't change cursor when mode has changed already
                     if (!(Main.map.mapMode instanceof WayAction))
