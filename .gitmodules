@@ -310,10 +310,6 @@
   path = applications/editors/josm/plugins/smed2
   url = ../smed2
   branch = master
-[submodule "applications/editors/josm/plugins/sumoConverter"]
-  path = applications/editors/josm/plugins/sumoConverter
-  url = ../sumoconvert
-  branch = master
 [submodule "applications/editors/josm/plugins/surveyor"]
   path = applications/editors/josm/plugins/surveyor
   url = ../surveyor
@@ -345,6 +341,10 @@
 [submodule "applications/editors/josm/plugins/tracer"]
   path = applications/editors/josm/plugins/tracer
   url = ../tracer
+  branch = master
+[submodule "applications/editors/josm/plugins/tracer2"]
+  path = applications/editors/josm/plugins/tracer2
+  url = ../tracer2
   branch = master
 [submodule "applications/editors/josm/plugins/trustosm"]
   path = applications/editors/josm/plugins/trustosm
