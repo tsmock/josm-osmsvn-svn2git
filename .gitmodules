@@ -250,6 +250,10 @@
   path = applications/editors/josm/plugins/photo_geotagging
   url = ../photo_geotagging
   branch = master
+[submodule "applications/editors/josm/plugins/photoadjust"]
+  path = applications/editors/josm/plugins/photoadjust
+  url = ../photoadjust
+  branch = master
 [submodule "applications/editors/josm/plugins/piclayer"]
   path = applications/editors/josm/plugins/piclayer
   url = ../PicLayer
