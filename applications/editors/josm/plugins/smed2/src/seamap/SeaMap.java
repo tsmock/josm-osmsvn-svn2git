@@ -23,47 +23,28 @@ public class SeaMap {
     public enum Nflag {
         ANON,	// Edge inner nodes
         ISOL,	// Node not part of Edge
-        CONN,	// Edge first and last nodes
-        DPTH	// Member of sounding array
+        CONN	// Edge first and last nodes
     }
 
     public class Snode {	// All coordinates in map
         public double lat;	// Latitude
         public double lon;	// Longitude
         public Nflag flg;		// Role of node
-        public double val;	// Sounding value
 
         public Snode() {
             flg = Nflag.ANON;
             lat = 0;
             lon = 0;
-            val = 0;
         }
         public Snode(double ilat, double ilon) {
             flg = Nflag.ANON;
             lat = ilat;
             lon = ilon;
-            val = 0;
         }
         public Snode(double ilat, double ilon, Nflag iflg) {
             lat = ilat;
             lon = ilon;
             flg = iflg;
-            val = 0;
-        }
-        public Snode(double ilat, double ilon, Nflag iflg, double ival) {
-            lat = ilat;
-            lon = ilon;
-            flg = iflg;
-            val = ival;
-        }
-    }
-
-    public class Sarray {	// A sounding array
-        public ArrayList<Long> nodes; // Sounding nodes
-
-        public Sarray() {
-            nodes = new ArrayList<Long>();
         }
     }
 
@@ -144,12 +125,6 @@ public class SeaMap {
         }
     }
 
-    public class DpthTab extends HashMap<Long, Snode> {
-        public DpthTab() {
-            super();
-        }
-    }
-
     public class EdgeTab extends HashMap<Long, Edge> {
         public EdgeTab() {
             super();
@@ -201,7 +176,6 @@ public class SeaMap {
     }
 
     public NodeTab nodes;
-    public DpthTab depths;
     public EdgeTab edges;
     public AreaTab areas;
 
@@ -376,7 +350,7 @@ public class SeaMap {
                     atts = new AttMap();
                     items.put(idx, atts);
                 }
-                AttVal<?> attval = S57val.convertValue(val, att);
+                AttVal attval = S57val.convertValue(val, att);
                 if (attval.val != null)
                     atts.put(att, new AttItem(attval.conv, attval.val));
             } else {
@@ -388,7 +362,7 @@ public class SeaMap {
                 } else {
                     Att att = S57att.enumAttribute(subkeys[1], Obj.UNKOBJ);
                     if (att != Att.UNKATT) {
-                        AttVal<?> attval = S57val.convertValue(val, att);
+                        AttVal attval = S57val.convertValue(val, att);
                         if (attval.val != null)
                             feature.atts.put(att, new AttItem(attval.conv, attval.val));
                     }
@@ -460,8 +434,6 @@ public class SeaMap {
                 }
             }
             areas.put(id, area);
-            break;
-        default:
             break;
         }
         if ((feature.type != Obj.UNKOBJ) && !((edge != null) && (edge.last == 0))) {
@@ -583,8 +555,6 @@ public class SeaMap {
                 llat = lat;
             }
             return new Snode((sarc > 0.0 ? slat / sarc : 0.0), (sarc > 0.0 ? slon / sarc : 0.0));
-        default:
-            break;
         }
         return null;
     }
