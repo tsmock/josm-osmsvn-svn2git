@@ -1,5 +1,15 @@
+/* Copyright 2014 Malcolm Herring
+ *
+ * This is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License.
+ *
+ * For a copy of the GNU General Public License, see <http://www.gnu.org/licenses/>.
+ */
+
 package s57;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -133,11 +143,39 @@ public class S57dat {
         fields.put(S57field.AR2D, S57ar2d); fields.put(S57field.EL2D, S57el2d); fields.put(S57field.CT2D, S57ct2d); 
     }
 
+    private static final EnumMap<S57field, String> FldStr = new EnumMap<S57field, String>(S57field.class);
+    static {
+        FldStr.put(S57field.I8RI, "0001");
+        FldStr.put(S57field.DSID, "DSID"); FldStr.put(S57field.DSSI, "DSSI"); FldStr.put(S57field.DSPM, "DSPM"); FldStr.put(S57field.DSPR, "DSPR");
+        FldStr.put(S57field.DSRC, "DSRC"); FldStr.put(S57field.DSHT, "DSHT"); FldStr.put(S57field.DSAC, "DSAC"); FldStr.put(S57field.CATD, "CATD");
+        FldStr.put(S57field.CATX, "CATX"); FldStr.put(S57field.DDDF, "DDDF"); FldStr.put(S57field.DDDR, "DDDR"); FldStr.put(S57field.DDDI, "DDDI");
+        FldStr.put(S57field.DDOM, "DDOM"); FldStr.put(S57field.DDRF, "DDRF"); FldStr.put(S57field.DDSI, "DDSI"); FldStr.put(S57field.DDSC, "DDSC");
+        FldStr.put(S57field.FRID, "FRID"); FldStr.put(S57field.FOID, "FOID"); FldStr.put(S57field.ATTF, "ATTF"); FldStr.put(S57field.NATF, "NATF");
+        FldStr.put(S57field.FFPC, "FFPC"); FldStr.put(S57field.FFPT, "FFPT"); FldStr.put(S57field.FFPC, "FFPC"); FldStr.put(S57field.FSPT, "FSPT");
+        FldStr.put(S57field.VRID, "VRID"); FldStr.put(S57field.ATTV, "ATTV"); FldStr.put(S57field.VRPC, "VRPC"); FldStr.put(S57field.VRPT, "VRPT");
+        FldStr.put(S57field.SGCC, "SGCC"); FldStr.put(S57field.SG2D, "SG2D"); FldStr.put(S57field.SG3D, "SG3D"); FldStr.put(S57field.ARCC, "ARCC");
+        FldStr.put(S57field.AR2D, "AR2D"); FldStr.put(S57field.EL2D, "EL2D"); FldStr.put(S57field.CT2D, "CT2D"); 
+    }
+    
+    public static String stringField (S57field field) {
+        return FldStr.get(field);
+    }
+    
+    public static S57field enumField (String field) {
+        for (S57field fld : FldStr.keySet()) {
+            if (FldStr.get(fld).equals(field))
+                return fld;
+        }
+        return null;
+    }
+
     private static byte[] buffer;
     private static int offset;
     private static int maxoff;
     private static int index;
     private static S57field field;
+    private static String aall = "US-ASCII";
+    private static String nall = "US-ASCII";
     public static int rnum;
     
     private static S57conv findSubf(S57subf subf) {
@@ -172,7 +210,7 @@ public class S57dat {
     }
     
     public static boolean more() {
-        return ((offset < maxoff) && (buffer[offset] != 0x1e));
+        return (offset < maxoff);
     }
     
     public static Object getSubf(byte[] buf, int off, S57field fld, S57subf subf) {
@@ -192,11 +230,19 @@ public class S57dat {
         S57conv conv = findSubf(subf);
         if (conv.bin == 0) {
             String str = "";
+            int i = 0;
             if (conv.asc == 0) {
-                while (buffer[offset] != 0x1f) {
-                    str += (char)(buffer[offset++]);
+                for (i=0; buffer[offset+i] != 0x1f; i++) {}
+                try {
+                    String charset = "";
+                    if (field == S57field.ATTF) charset = aall;
+                    else if (field == S57field.NATF) charset = nall;
+                    else charset = "US-ASCII";
+                    str = new String(buffer, offset, i, charset);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
-                offset++;
+                offset += i + 1;
             } else {
                 str = new String(buffer, offset, conv.asc);
                 offset += conv.asc;
@@ -212,6 +258,25 @@ public class S57dat {
                     val = (val << 8) + (buffer[offset + --f] & 0xff);
                 }
                 offset += Math.abs(conv.bin);
+                if ((subf == S57subf.AALL) || (subf == S57subf.NALL)) {
+                    String charset = "";
+                    switch ((int)val) {
+                    case 0:
+                        charset = "US-ASCII";
+                        break;
+                    case 1:
+                        charset = "ISO-8859-1";
+                        break;
+                    case 2:
+                        charset = "UTF-16LE";
+                        break;
+                    }
+                    if (subf == S57subf.NALL) {
+                        nall = charset;
+                    } else {
+                        aall = charset;
+                    }
+                }
                 return val;
             } else {
                 f /= 8;
