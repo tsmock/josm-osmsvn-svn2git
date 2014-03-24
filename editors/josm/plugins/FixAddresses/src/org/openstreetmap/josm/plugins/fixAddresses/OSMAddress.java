@@ -1,16 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -48,13 +36,6 @@ public class OSMAddress extends OSMEntityBase {
     super(osmObject);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.openstreetmap.josm.plugins.addressEdit.NodeEntityBase#setOsmObject
-     * (org.openstreetmap.josm.data.osm.OsmPrimitive)
-     */
     @Override
     public void setOsmObject(OsmPrimitive osmObject) {
     super.setOsmObject(osmObject);
@@ -323,11 +304,6 @@ public class OSMAddress extends OSMEntityBase {
         || isPartOfInterpolation;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.openstreetmap.josm.plugins.fixAddresses.OSMEntityBase#getName()
-     */
     public String getName() {
     String name = TagUtils.getNameValue(osmObject);
     if (!StringUtils.isNullOrEmpty(name)) {
@@ -436,13 +412,6 @@ public class OSMAddress extends OSMEntityBase {
     return TagUtils.hasTag(osmObject, tag) || hasDerivedValue(tag);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.openstreetmap.josm.plugins.addressEdit.NodeEntityBase#compareTo(org
-     * .openstreetmap.josm.plugins.addressEdit.INodeEntity)
-     */
     @Override
     public int compareTo(IOSMEntity o) {
     if (o == null || !(o instanceof OSMAddress)) {
@@ -465,7 +434,7 @@ public class OSMAddress extends OSMEntityBase {
             if (hasGuessedStreetName()) {
                 if (other.hasStreetName()) {
                 // Compare guessed name with the real name
-                String gsm = this.getGuessedStreetName();
+                /*String gsm =*/ this.getGuessedStreetName();
                 cc = this.getGuessedStreetName().compareTo(
                     other.getStreetName());
                 if (cc == 0) {
@@ -721,12 +690,6 @@ public class OSMAddress extends OSMEntityBase {
     setOSMTag(TagUtils.ADDR_POSTCODE_TAG, postCode);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.openstreetmap.josm.plugins.fixAddresses.OSMEntityBase#visit(org.
-     * openstreetmap.josm.plugins.fixAddresses.IProblemVisitor)
-     */
     @Override
     public void visit(IAllKnowingTrashHeap trashHeap, IProblemVisitor visitor) {
     CheckParameterUtil.ensureParameterNotNull(visitor, "visitor");
@@ -819,11 +782,6 @@ public class OSMAddress extends OSMEntityBase {
     problem.addSolution(s);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.openstreetmap.josm.plugins.fixAddresses.OSMEntityBase#toString()
-     */
     @Override
     public String toString() {
     return OSMAddress.getFormatString(this);

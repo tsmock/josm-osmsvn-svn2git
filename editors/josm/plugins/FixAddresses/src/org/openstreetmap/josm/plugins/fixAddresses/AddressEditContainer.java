@@ -1,18 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
-
-/* File created on 24.10.2010 */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses;
 
 import java.util.ArrayList;
@@ -56,7 +42,6 @@ import org.openstreetmap.josm.tools.CheckParameterUtil;
  * @author Oliver Wieland <oliver.wieland@online.de>
  *
  */
-
 public class AddressEditContainer implements Visitor, DataSetListener, IAddressEditContainerListener, IProblemVisitor, IAllKnowingTrashHeap {
 
     private Collection<? extends OsmPrimitive> workingSet;
@@ -188,9 +173,6 @@ public class AddressEditContainer implements Visitor, DataSetListener, IAddressE
         return visitedWays.contains(w);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Node)
-     */
     @Override
     public void visit(Node n) {
         if (hasBeenVisited(n)) {
@@ -208,9 +190,6 @@ public class AddressEditContainer implements Visitor, DataSetListener, IAddressE
         markNodeAsVisited(n);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Way)
-     */
     @Override
     public void visit(Way w) {
         // This doesn't matter, we just need the street name
@@ -316,16 +295,10 @@ public class AddressEditContainer implements Visitor, DataSetListener, IAddressE
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Relation)
-     */
     @Override
     public void visit(Relation e) {
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Changeset)
-     */
     @Override
     public void visit(Changeset cs) {
     }
@@ -614,93 +587,57 @@ public class AddressEditContainer implements Visitor, DataSetListener, IAddressE
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#dataChanged(org.openstreetmap.josm.data.osm.event.DataChangedEvent)
-     */
     @Override
     public void dataChanged(DataChangedEvent event) {
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#nodeMoved(org.openstreetmap.josm.data.osm.event.NodeMovedEvent)
-     */
     @Override
     public void nodeMoved(NodeMovedEvent event) {
 
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#otherDatasetChange(org.openstreetmap.josm.data.osm.event.AbstractDatasetChangedEvent)
-     */
     @Override
     public void otherDatasetChange(AbstractDatasetChangedEvent event) {
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#primitivesAdded(org.openstreetmap.josm.data.osm.event.PrimitivesAddedEvent)
-     */
-        @Override
+    @Override
     public void primitivesAdded(PrimitivesAddedEvent event) {
         invalidate();
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#primitivesRemoved(org.openstreetmap.josm.data.osm.event.PrimitivesRemovedEvent)
-     */
-        @Override
+    @Override
     public void primitivesRemoved(PrimitivesRemovedEvent event) {
         invalidate();
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#relationMembersChanged(org.openstreetmap.josm.data.osm.event.RelationMembersChangedEvent)
-     */
     @Override
     public void relationMembersChanged(RelationMembersChangedEvent event) {
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#tagsChanged(org.openstreetmap.josm.data.osm.event.TagsChangedEvent)
-     */
     @Override
     public void tagsChanged(TagsChangedEvent event) {
         invalidate();
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.event.DataSetListener#wayNodesChanged(org.openstreetmap.josm.data.osm.event.WayNodesChangedEvent)
-     */
     @Override
     public void wayNodesChanged(WayNodesChangedEvent event) {
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IAddressEditContainerListener#containerChanged(org.openstreetmap.josm.plugins.fixAddresses.AddressEditContainer)
-     */
     @Override
     public void containerChanged(AddressEditContainer container) {
         invalidate();
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IAddressEditContainerListener#entityChanged(org.openstreetmap.josm.plugins.fixAddresses.IOSMEntity)
-     */
     @Override
     public void entityChanged(IOSMEntity entity) {
         fireEntityChanged(entity);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IProblemVisitor#addProblem(org.openstreetmap.josm.plugins.fixAddresses.IProblem)
-     */
     @Override
     public void addProblem(IProblem problem) {
         problems.add(problem);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IProblemVisitor#removeProblemsOfSource(org.openstreetmap.josm.plugins.fixAddresses.IOSMEntity)
-     */
     @Override
     public void removeProblemsOfSource(IOSMEntity entity) {
         CheckParameterUtil.ensureParameterNotNull(entity, "entity");
@@ -717,9 +654,6 @@ public class AddressEditContainer implements Visitor, DataSetListener, IAddressE
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IAllKnowingTrashHeap#getClosestStreetName(java.lang.String)
-     */
     @Override
     public String getClosestStreetName(String name) {
         List<String> matches = getClosestStreetNames(name, 1);
@@ -731,9 +665,6 @@ public class AddressEditContainer implements Visitor, DataSetListener, IAddressE
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IAllKnowingTrashHeap#getClosestStreetNames(java.lang.String, int)
-     */
     @Override
     public List<String> getClosestStreetNames(String name, int maxEntries) {
         CheckParameterUtil.ensureParameterNotNull(name, "name");
@@ -766,9 +697,6 @@ public class AddressEditContainer implements Visitor, DataSetListener, IAddressE
         return matches;
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IAllKnowingTrashHeap#isValidStreetName(java.lang.String)
-     */
     @Override
     public boolean isValidStreetName(String name) {
         if (streetDict == null) return false;

@@ -1,16 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses.gui.actions;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -45,9 +33,6 @@ public class ConvertToRelationAction extends AbstractAddressEditAction {
         super(name, iconName, tooltip, toolbar);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.gui.actions.AbstractAddressEditAction#addressEditActionPerformed(org.openstreetmap.josm.plugins.fixAddresses.gui.AddressEditSelectionEvent)
-     */
     @Override
     public void addressEditActionPerformed(AddressEditSelectionEvent ev) {
         OSMStreet streetNode = ev.getSelectedStreet();
@@ -85,25 +70,16 @@ public class ConvertToRelationAction extends AbstractAddressEditAction {
         finishTransaction();
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.gui.actions.AbstractAddressEditAction#addressEditActionPerformed(org.openstreetmap.josm.plugins.fixAddresses.AddressEditContainer)
-     */
     @Override
     public void addressEditActionPerformed(AddressEditContainer container) {
         // Nothing to do (yet).
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.gui.actions.AbstractAddressEditAction#updateEnabledState(org.openstreetmap.josm.plugins.fixAddresses.AddressEditContainer)
-     */
     @Override
     protected void updateEnabledState(AddressEditContainer container) {
         setEnabled(false);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.gui.actions.AbstractAddressEditAction#updateEnabledState(org.openstreetmap.josm.plugins.fixAddresses.gui.AddressEditSelectionEvent)
-     */
     @Override
     protected void updateEnabledState(AddressEditSelectionEvent event) {
         if (event == null) return;
@@ -111,5 +87,4 @@ public class ConvertToRelationAction extends AbstractAddressEditAction {
         OSMStreet street = event.getSelectedStreet();
         setEnabled(street != null && street.hasAddresses() && !street.hasAssociatedStreetRelation());
     }
-
 }

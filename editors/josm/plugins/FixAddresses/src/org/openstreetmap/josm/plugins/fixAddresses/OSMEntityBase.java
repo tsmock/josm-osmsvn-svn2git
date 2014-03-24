@@ -1,16 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -144,9 +132,6 @@ public class OSMEntityBase implements IOSMEntity, Comparable<IOSMEntity> {
         return "";
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.addressEdit.INodeEntity#hasName()
-     */
     @Override
     public boolean hasName() {
         return TagUtils.hasNameTag(osmObject);
@@ -188,9 +173,6 @@ public class OSMEntityBase implements IOSMEntity, Comparable<IOSMEntity> {
         setOSMTag(tag, null); // a value of null removes the tag
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         if (hasName()) {
@@ -199,26 +181,17 @@ public class OSMEntityBase implements IOSMEntity, Comparable<IOSMEntity> {
         return this.getClass().getName() + ": " + ANONYMOUS;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
     @Override
     public int compareTo(IOSMEntity o) {
         if (o == null || !(o instanceof OSMEntityBase)) return -1;
         return this.getName().compareTo(o.getName());
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IOSMEntity#visit(org.openstreetmap.josm.plugins.fixAddresses.IAllKnowingTrashHeap, org.openstreetmap.josm.plugins.fixAddresses.IProblemVisitor)
-     */
     @Override
     public void visit(IAllKnowingTrashHeap trashHeap, IProblemVisitor visitor) {
         // do nothing
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IOSMEntity#getCoor()
-     */
     @Override
     public LatLon getCoor() {
         OsmPrimitive osm = getOsmObject();

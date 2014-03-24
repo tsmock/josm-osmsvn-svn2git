@@ -1,16 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -110,31 +98,22 @@ public class GuessAddressRunnable extends PleaseWaitRunnable {
      */
     protected void fireFinished() {
         for (IProgressMonitorFinishedListener l : finishListeners) {
-            l.finished();			
+            l.finished();            
         }
         // this event is fired only once, then we disconnect all listeners
         finishListeners.clear();
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.gui.PleaseWaitRunnable#cancel()
-     */
     @Override
     protected void cancel() {
         canceled = true;
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.gui.PleaseWaitRunnable#finish()
-     */
     @Override
     protected void finish() {
         // nothing to do yet
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.gui.PleaseWaitRunnable#realRun()
-     */
     @Override
     protected void realRun() throws SAXException, IOException,
     OsmTransferException {
@@ -176,7 +155,7 @@ public class GuessAddressRunnable extends PleaseWaitRunnable {
                         if (canceled) {
                             break;
                         }
-                        way.accept(guesser);						
+                        way.accept(guesser);                        
                     }
                     
                     String guessedVal = guesser.getCurrentValue();
@@ -196,7 +175,7 @@ public class GuessAddressRunnable extends PleaseWaitRunnable {
                         if (canceled) {
                             break;
                         }
-                        node.accept(guesser);						
+                        node.accept(guesser);                        
                     }
                     
                     String guessedVal = guesser.getCurrentValue();
@@ -224,17 +203,11 @@ public class GuessAddressRunnable extends PleaseWaitRunnable {
             super(tag, aNode, 200.0);
         }
 
-        /* (non-Javadoc)
-         * @see org.openstreetmap.josm.plugins.fixAddresses.GuessedValueHandler#visit(org.openstreetmap.josm.data.osm.Node)
-         */
         @Override
         public void visit(Node n) {
             // do nothing
         }
 
-        /* (non-Javadoc)
-         * @see org.openstreetmap.josm.plugins.fixAddresses.GuessedValueHandler#visit(org.openstreetmap.josm.data.osm.Way)
-         */
         @Override
         public void visit(Way w) {
             if (TagUtils.isStreetSupportingHousenumbers(w)) {
