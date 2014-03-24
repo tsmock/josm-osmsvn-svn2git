@@ -21,7 +21,7 @@ import org.openstreetmap.josm.io.OsmTransferException;
  */
 public class UploadOsmConnection extends OsmConnection {
 
-    // singleton, see http://en.wikipedia.org/wiki/Singleton_pattern#Traditional_simple_way
+    // singleton, see https://en.wikipedia.org/wiki/Singleton_pattern#Traditional_simple_way
     private static final UploadOsmConnection INSTANCE = new UploadOsmConnection();
 
     // Private constructor prevents instantiation from other classes
