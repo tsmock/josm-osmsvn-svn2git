@@ -314,7 +314,7 @@ public class VehicleExceptionEditor extends JPanel implements Observer{
             this.enabled = enabled;
         }
         
-        public void itemStateChanged(ItemEvent e) {        	
+        public void itemStateChanged(ItemEvent e) {
             if (!enabled) return;
             exceptValue.setVehicleException("bicycle", cbBicyle.isSelected());
             exceptValue.setVehicleException("hgv", cbHgv.isSelected());
