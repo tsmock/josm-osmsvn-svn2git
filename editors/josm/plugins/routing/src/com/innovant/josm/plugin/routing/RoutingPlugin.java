@@ -181,10 +181,6 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.Plugin#mapFrameInitialized(org.openstreetmap.josm.gui.MapFrame, org.openstreetmap.josm.gui.MapFrame)
-     */
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
         if (newFrame != null) {
@@ -216,18 +212,14 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.openstreetmap.josm.gui.layer.Layer.LayerChangeListener#activeLayerChange(org.openstreetmap.josm.gui.layer.Layer, org.openstreetmap.josm.gui.layer.Layer)
-     */
     public void activeLayerChange(Layer oldLayer, Layer newLayer) {
-        if (newLayer instanceof RoutingLayer) {			/*   show Routing toolbar and dialog window  */
+        if (newLayer instanceof RoutingLayer) {            /*   show Routing toolbar and dialog window  */
             menu.enableRestOfItems();
             if (routingDialog != null) {
                 routingDialog.showDialog();
                 routingDialog.refresh();
             }
-        }else{											/*   hide Routing toolbar and dialog window  */
+        }else{                                            /*   hide Routing toolbar and dialog window  */
             menu.disableRestOfItems();
             if (routingDialog != null) {
                 routingDialog.hideDialog();
@@ -235,10 +227,6 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.openstreetmap.josm.gui.layer.Layer.LayerChangeListener#layerAdded(org.openstreetmap.josm.gui.layer.Layer)
-     */
     public void layerAdded(Layer newLayer) {
         // Add button(s) to the tool bar when the routing layer is added
         if (newLayer instanceof RoutingLayer) {
@@ -249,10 +237,6 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.openstreetmap.josm.gui.layer.Layer.LayerChangeListener#layerRemoved(org.openstreetmap.josm.gui.layer.Layer)
-     */
     public void layerRemoved(Layer oldLayer) {
         if ((oldLayer instanceof RoutingLayer) & (layers.size()==1)) {
             // Remove button(s) from the tool bar when the last routing layer is removed
@@ -285,11 +269,8 @@ public class RoutingPlugin extends Plugin implements LayerChangeListener,DataSet
 
     public void processDatasetEvent(AbstractDatasetChangedEvent event){
 
-
     }
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.Plugin#getPreferenceSetting()
-     */
+
     @Override
     public PreferenceSetting getPreferenceSetting() {
         return preferenceSettings;
