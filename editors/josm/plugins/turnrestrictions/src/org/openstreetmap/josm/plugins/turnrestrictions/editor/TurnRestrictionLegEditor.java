@@ -283,13 +283,13 @@ public class TurnRestrictionLegEditor extends JPanel implements Observer, Primit
              putValue(NAME, tr("Accept"));
              putValue(SMALL_ICON, ImageProvider.get("accept"));
              model.getJosmSelectionListModel().getListSelectionModel().addListSelectionListener(this);
-             updateEnabledState();	         
+             updateEnabledState();
         }
         
          public void actionPerformed(ActionEvent e) {
              List<Way> selWays = OsmPrimitive.getFilteredList(model.getJosmSelectionListModel().getSelected(), Way.class);
              if (selWays.size() != 1) return;
-             Way w = selWays.get(0);    		 
+             Way w = selWays.get(0);
              model.setTurnRestrictionLeg(role, w);            
          }       
          

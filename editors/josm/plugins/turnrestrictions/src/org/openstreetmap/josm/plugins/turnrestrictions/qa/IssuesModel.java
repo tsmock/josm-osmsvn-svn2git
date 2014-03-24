@@ -223,7 +223,7 @@ public class IssuesModel extends Observable implements Observer{
                 // the two turn restriction legs aren't connected and we don't have configured
                 // via objects 
                 issues.add(new MissingViaError(this));
-            }        	
+            }
         }               
     }
     

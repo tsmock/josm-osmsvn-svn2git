@@ -63,7 +63,7 @@ public class TurnRestrictionBuilder {
         
         double x = n1.getCoor().getX() - n0.getCoor().getX();
         double y = n1.getCoor().getY() - n0.getCoor().getY();
-        return Math.atan2(y, x);  	
+        return Math.atan2(y, x);      
     }    
 
     /**
@@ -118,7 +118,7 @@ public class TurnRestrictionBuilder {
         if (!w.getNodes().contains(n)) return false;
         if (isStartNode(w, n)) return false;
         if (isEndNode(w, n)) return false;
-        return true;     	
+        return true;         
     }
     
     /**
@@ -140,14 +140,14 @@ public class TurnRestrictionBuilder {
      */
     static public double intersectionAngle(Way from, Way to) throws IllegalArgumentException {
         Node via = getUniqueCommonNode(from, to);
-        if (via == null) 
+        if (via == null)
             throw new IllegalArgumentException("the two ways must share exactly one common node"); // no I18n required
-        if (!isStartNode(from, via) && ! isEndNode(from, via)) 
+        if (!isStartNode(from, via) && ! isEndNode(from, via))
             throw new IllegalArgumentException("via node must be start or end node of from-way"); // no I18n required
-        if (!isStartNode(to, via) && ! isEndNode(to, via)) 
+        if (!isStartNode(to, via) && ! isEndNode(to, via))
             throw new IllegalArgumentException("via node must be start or end node of to-way"); // no I18n required
         double phi1 = phi(from, isStartNode(from, via));
-        double phi2 = phi(to, isEndNode(to, via));		
+        double phi2 = phi(to, isEndNode(to, via));
         return phi1 - phi2;
     }   
         
@@ -195,7 +195,7 @@ public class TurnRestrictionBuilder {
         if (isClosedAt(from, via)) return null;
         if (isClosedAt(to, via)) return null;
         
-        double phi = intersectionAngle(from, to);    	
+        double phi = intersectionAngle(from, to);
         if (phi >=0 && phi <= Math.PI) {
             return RelativeWayJoinOrientation.RIGHT;
         } else {
@@ -245,12 +245,12 @@ public class TurnRestrictionBuilder {
         if (cn1 == null) return null;
         Node cn2 = TurnRestrictionBuilder.getUniqueCommonNode(from, to2);
         if (cn2 == null) return null;
-        if (cn1 != cn2) return null;        	
+        if (cn1 != cn2) return null;
         
         if (! isStartNode(from, cn1) && ! isEndNode(from, cn1)) {
             /*
              * the now split to-way still *intersects* the from-way. We
-             * can't adjust the split decisions. 
+             * can't adjust the split decisions.
              */
             return null;
         }
@@ -272,10 +272,10 @@ public class TurnRestrictionBuilder {
             else return null;
             
         default:
-             /*
-              * For restriction types like NO_U_TURN, NO_STRAIGHT_ON, etc. we
-              * can select a "left" or "right" way after splitting.
-              */
+                /*
+                 * For restriction types like NO_U_TURN, NO_STRAIGHT_ON, etc. we
+                 * can select a "left" or "right" way after splitting.
+                 */
             return null;
         }
     }
@@ -327,7 +327,7 @@ public class TurnRestrictionBuilder {
         tr.addMember(new RelationMember("to", way));
         tr.addMember(new RelationMember("via", node));
         tr.put("restriction", TurnRestrictionType.NO_U_TURN.getTagValue());
-        return tr;    	
+        return tr;
     }
 
     /**
@@ -376,7 +376,7 @@ public class TurnRestrictionBuilder {
             if (selWays.size() != 2) return null;
             w1 = selWays.get(0);
             w2 = selWays.get(1);
-            via = getUniqueCommonNode(w1, w2);    		
+            via = getUniqueCommonNode(w1, w2);
         } else if (primitives.size() == 3){
             // if we have exactly three selected primitives, we need two ways and a 
             // node, which should be an acceptable via node 
@@ -417,7 +417,7 @@ public class TurnRestrictionBuilder {
                     break;
                 case RIGHT:
                     tr.put("restriction", TurnRestrictionType.NO_RIGHT_TURN.getTagValue());
-                    break;    				
+                    break;                    
                 }
             }
         }
@@ -459,9 +459,9 @@ public class TurnRestrictionBuilder {
             if (tr != null) return tr;
             tr = initTurnRestrictionFromTwoWays(primitives);
             if (tr != null) return tr;
-            return initEmptyTurnRestriction();       
+            return initEmptyTurnRestriction();
             
-        default:        	
+        default:
             tr = initTurnRestrictionFromTwoWays(primitives);
             if (tr != null) return tr;
             return initEmptyTurnRestriction();       
