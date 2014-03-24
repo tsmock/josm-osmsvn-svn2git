@@ -1,16 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses;
 
 import org.openstreetmap.josm.data.osm.Changeset;
@@ -89,7 +77,7 @@ public class GuessedValueHandler implements Visitor {
         
         this.tag = tag;
         this.maxDist = maxDist;
-        setAddressNode(aNode);		
+        setAddressNode(aNode);        
     }
 
     /**
@@ -106,12 +94,12 @@ public class GuessedValueHandler implements Visitor {
      * Sets the address node to make the guess for.
      * @param aNode
      */
-    public void setAddressNode(OSMAddress aNode) {		
+    public void setAddressNode(OSMAddress aNode) {        
         this.aNode = aNode;
         // reset search results
         minDist = Double.MAX_VALUE;
         srcNode = null;
-        currentValue = null;		
+        currentValue = null;        
     }
 
     /**
@@ -170,9 +158,6 @@ public class GuessedValueHandler implements Visitor {
         return aNode.needsGuessedValue(tag);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Node)
-     */
     @Override
     public void visit(Node n) {
         assert aNode != null;
@@ -187,9 +172,6 @@ public class GuessedValueHandler implements Visitor {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Way)
-     */
     @Override
     public void visit(Way w) {
         assert aNode != null;
@@ -204,17 +186,11 @@ public class GuessedValueHandler implements Visitor {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Relation)
-     */
     @Override
     public void visit(Relation e) {
         // nothing to do (yet)
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.osm.visitor.Visitor#visit(org.openstreetmap.josm.data.osm.Changeset)
-     */
     @Override
     public void visit(Changeset cs) {
         // nothing to do (yet)
