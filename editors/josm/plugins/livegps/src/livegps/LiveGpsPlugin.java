@@ -166,12 +166,12 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener {
             acquirer = new LiveGpsAcquirer();
             acquirerThread = new Thread(acquirer);
 
-        if (lgpslayer == null) {
-        lgpslayer = new LiveGpsLayer(data);
-        Main.main.addLayer(lgpslayer);
-        MapView.addLayerChangeListener(this);
-        lgpslayer.setAutoCenter(isAutoCenter());
-        }
+            if (lgpslayer == null) {
+                lgpslayer = new LiveGpsLayer(data);
+                Main.main.addLayer(lgpslayer);
+                MapView.addLayerChangeListener(this);
+                lgpslayer.setAutoCenter(isAutoCenter());
+            }
 
             acquirer.addPropertyChangeListener(lgpslayer);
             acquirer.addPropertyChangeListener(lgpsdialog);
@@ -180,19 +180,19 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener {
 
             acquirerThread.start();
 
-        enabled = true;
+            enabled = true;
 
         } else if (!enable && enabled) {
-        assert (lgpslayer != null);
+            assert (lgpslayer != null);
             assert (acquirer != null);
             assert (acquirerThread != null);
 
-        acquirer.shutdown();
-        acquirer = null;
-        acquirerThread = null;
+            acquirer.shutdown();
+            acquirer = null;
+            acquirerThread = null;
 
-        enabled = false;
-    }
+            enabled = false;
+        }
     }
 
     /** 
@@ -219,9 +219,6 @@ public class LiveGpsPlugin extends Plugin implements LayerChangeListener {
             acquirer.removePropertyChangeListener(listener); 
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.Plugin#mapFrameInitialized(org.openstreetmap.josm.gui.MapFrame, org.openstreetmap.josm.gui.MapFrame)
-     */
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
         if (newFrame != null)
