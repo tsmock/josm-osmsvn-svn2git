@@ -1,16 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses.gui;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -33,34 +21,22 @@ public class StreetTableModel extends AddressEditTableModel {
         super(addressContainer);
     }
 
-    /* (non-Javadoc)
-     * @see javax.swing.table.DefaultTableModel#getColumnCount()
-     */
     @Override
     public int getColumnCount() {
         // TODO Auto-generated method stub
         return NUMBER_OF_COLUMNS;
     }
 
-    /* (non-Javadoc)
-     * @see javax.swing.table.DefaultTableModel#getColumnName(int)
-     */
     @Override
     public String getColumnName(int column) {
         return COLUMN_NAMES[column];
     }
 
-    /* (non-Javadoc)
-     * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
-     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return COLUMN_CLASSES[columnIndex];
     }
 
-    /* (non-Javadoc)
-     * @see javax.swing.table.DefaultTableModel#getRowCount()
-     */
     @Override
     public int getRowCount() {
         if (addressContainer == null || addressContainer.getStreetList() == null) {
@@ -69,9 +45,6 @@ public class StreetTableModel extends AddressEditTableModel {
         return addressContainer.getNumberOfStreets();
     }
 
-    /* (non-Javadoc)
-     * @see javax.swing.table.DefaultTableModel#getValueAt(int, int)
-     */
     @Override
     public Object getValueAt(int row, int column) {
         OSMStreet sNode = (OSMStreet) getEntityOfRow(row);
@@ -123,9 +96,6 @@ public class StreetTableModel extends AddressEditTableModel {
         return addressContainer.getStreetList().indexOf(entity);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.gui.AddressEditTableModel#sortByColumn(int, boolean)
-     */
     @Override
     protected void sortByColumn(int column, boolean ascending) {
         Collections.sort(addressContainer.getStreetList(), new StreetModelSorter(column, ascending));

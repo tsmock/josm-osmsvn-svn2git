@@ -1,16 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses.gui.actions;
 
 import java.awt.event.ActionEvent;
@@ -101,9 +89,6 @@ public abstract class AbstractAddressEditAction extends JosmAction implements IA
         updateEnabledState();
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (event != null) { // use the event acquired previously.
@@ -118,9 +103,6 @@ public abstract class AbstractAddressEditAction extends JosmAction implements IA
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.actions.JosmAction#updateEnabledState()
-     */
     @Override
     protected void updateEnabledState() {
         if (this.event != null) {
@@ -160,18 +142,11 @@ public abstract class AbstractAddressEditAction extends JosmAction implements IA
      */
     public abstract void addressEditActionPerformed(AddressEditContainer container);
 
-
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IAddressEditContainerListener#containerChanged(org.openstreetmap.josm.plugins.fixAddresses.AddressEditContainer)
-     */
     @Override
     public void containerChanged(AddressEditContainer container) {
         updateEnabledState();
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.IAddressEditContainerListener#entityChanged(org.openstreetmap.josm.plugins.fixAddresses.IOSMEntity)
-     */
     @Override
     public void entityChanged(IOSMEntity node) {
         container.removeProblemsOfSource(node); // clear problems of changed node...
@@ -236,9 +211,6 @@ public abstract class AbstractAddressEditAction extends JosmAction implements IA
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.plugins.fixAddresses.ICommandListener#commandIssued(org.openstreetmap.josm.plugins.fixAddresses.IOSMEntity, org.openstreetmap.josm.command.Command)
-     */
     @Override
     public void commandIssued(IOSMEntity entity, Command command) {
         if (commands == null) {

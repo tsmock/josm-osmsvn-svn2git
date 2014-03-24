@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.fixAddresses;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -19,7 +20,6 @@ import org.openstreetmap.josm.tools.Shortcut;
  *
  * @author Oliver Wieland <oliver.wieland@online.de>
  */
-
 @SuppressWarnings("serial")
 public class FixUnresolvedStreetsAction extends JosmAction implements SelectionChangedListener {
     private AddressEditContainer addressEditContainer;
@@ -36,18 +36,12 @@ public class FixUnresolvedStreetsAction extends JosmAction implements SelectionC
         DataSet.addSelectionListener(this);
     }
 
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.data.SelectionChangedListener#selectionChanged(java.util.Collection)
-     */
     @Override
     public void selectionChanged(Collection<? extends OsmPrimitive> newSelection) {
         /* remember new selection for actionPerformed */
         this.newSelection = newSelection;
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (addressEditContainer != null) {
@@ -62,10 +56,6 @@ public class FixUnresolvedStreetsAction extends JosmAction implements SelectionC
         }
     }
 
-
-    /* (non-Javadoc)
-     * @see org.openstreetmap.josm.actions.JosmAction#updateEnabledState()
-     */
     @Override
     protected void updateEnabledState() {
         setEnabled(getCurrentDataSet() != null);
