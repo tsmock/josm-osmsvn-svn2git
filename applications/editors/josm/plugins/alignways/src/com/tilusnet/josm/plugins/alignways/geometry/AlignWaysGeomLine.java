@@ -94,7 +94,7 @@ public class AlignWaysGeomLine {
         // - if (det1 == 0) and any of det2 or det3 != 0, the lines are parallel
 
         // See: http://www.mathwizz.com/algebra/help/help21.htm
-        //  and http://en.wikipedia.org/wiki/Cramers_rule
+        //  and https://en.wikipedia.org/wiki/Cramer%27s_rule
 
 
         double det1 = (coef_a * other_line.coef_b) - (other_line.coef_a * coef_b);
