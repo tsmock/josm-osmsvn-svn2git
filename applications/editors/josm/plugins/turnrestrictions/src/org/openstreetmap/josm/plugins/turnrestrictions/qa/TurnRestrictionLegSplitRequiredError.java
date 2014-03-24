@@ -46,7 +46,7 @@ public class TurnRestrictionLegSplitRequiredError extends Issue{
     public TurnRestrictionLegSplitRequiredError(IssuesModel parent, Way from, Way to){
         super(parent, Severity.ERROR);
         CheckParameterUtil.ensureParameterNotNull(from, "from");
-        CheckParameterUtil.ensureParameterNotNull(to, "to"); 
+        CheckParameterUtil.ensureParameterNotNull(to, "to");
         
         intersect= TurnRestrictionBuilder.getUniqueCommonNode(from, to);
         if (intersect == null)
@@ -84,7 +84,7 @@ public class TurnRestrictionLegSplitRequiredError extends Issue{
              * from and to intersect at a common node. Both have to be split.
              */
             return tr("The way <span class=\"object-name\">{0}</span> with role <tt>from</tt> and the "
-                    + "way <span class=\"object-name\">{1}</span> with role <tt>to</tt> intersect "        			
+                    + "way <span class=\"object-name\">{1}</span> with role <tt>to</tt> intersect "                    
                     + "at node <span class=\"object-name\">{2}</span>. "
                     + "<p> "
                     + "Both ways should be split at the intersecting node.",
@@ -167,14 +167,14 @@ public class TurnRestrictionLegSplitRequiredError extends Issue{
                 getIssuesModel().getEditorModel().setTurnRestrictionLeg(
                          TurnRestrictionLegRole.TO,
                          adjustedTo
-                );	     
+                );         
                 getIssuesModel().getEditorModel().getLayer().data.setSelected(
-                         Arrays.asList(from, adjustedTo)
-                 );	
+                           Arrays.asList(from, adjustedTo)
+                 );    
             } else {
                 getIssuesModel().getEditorModel().getLayer().data.setSelected(
-                         Arrays.asList(from, to)
-                 );	            	
+                           Arrays.asList(from, to)
+                 );
             }           
         }
     }
