@@ -15,11 +15,11 @@
  */
 package org.openstreetmap.josm.plugins.gpsblam;
 
-import java.awt.Color;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.AWTEvent;
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -28,7 +28,6 @@ import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -51,7 +50,7 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
     int radius;
     MouseWheelListener mapViewWheelListeners[];
     GPSBlamLayer currentBlamLayer;
-       
+
     public GPSBlamMode(MapFrame mapFrame, String name, String desc) {
         super(name, "gpsblam_mode.png", desc, mapFrame, Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         radius = 10;
@@ -70,8 +69,7 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
     }
 
     public void eventDispatched(AWTEvent e) {
-        if (e instanceof KeyEvent)
-        {
+        if (e instanceof KeyEvent) {
             KeyEvent ke = (KeyEvent)e;
             if (ke.getKeyCode()==KeyEvent.VK_UP)
                 changeRadiusBy(1);
@@ -79,8 +77,7 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
                 changeRadiusBy(-1);
         }
     }
-  
-    
+
     @Override public void exitMode() {
         super.exitMode();
         Main.map.mapView.removeMouseListener(this);
@@ -88,7 +85,6 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
         Main.map.mapView.removeMouseWheelListener(this);
         Toolkit.getDefaultToolkit().removeAWTEventListener(this);
     }
-
 
     @Override public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
@@ -104,7 +100,7 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
     }
 
     @Override public void mouseDragged(MouseEvent e) {
-        if ( (e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) ==  InputEvent.BUTTON1_DOWN_MASK) {
+         if ( (e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) ==  InputEvent.BUTTON1_DOWN_MASK) {
             //if button1 is hold, draw the line
             paintBox(e.getPoint(), radius);
         }
@@ -121,27 +117,23 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
         }
 
         xorDrawBox(pointPressed, oldP2, radius); // clear box
-        
-       // Collection <CachedLatLon> selectedCLLs = getSelectedGPXCLLs(pointPressed, e.getPoint());
+
+        // Collection <CachedLatLon> selectedCLLs = getSelectedGPXCLLs(pointPressed, e.getPoint());
         GPSBlamInputData inputData = new GPSBlamInputData(pointPressed, e.getPoint(), radius);
-        if (!inputData.isEmpty())
-        {
+        if (!inputData.isEmpty()) {
             if(currentBlamLayer == null) {
                 currentBlamLayer = new GPSBlamLayer(tr("GPSBlam"));
                 Main.main.addLayer(currentBlamLayer);           
             }
-            currentBlamLayer.addBlamMarker(new GPSBlamMarker(inputData));
+             currentBlamLayer.addBlamMarker(new GPSBlamMarker(inputData));
             Main.map.mapView.repaint();
         }
- 
+
         pointPressed = oldP2 = null;
     }
-    
-    
-    
+
     public void changeRadiusBy(int delta) {
-        if (pointPressed != null)
-        {
+        if (pointPressed != null) {
             int new_radius = radius + delta;
             if (new_radius < 1)
                 new_radius = 1;
@@ -153,23 +145,20 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
         if ( (e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) ==  InputEvent.BUTTON1_DOWN_MASK) {
             changeRadiusBy(-e.getWheelRotation());
-
         }
     }
-        
+
     private void xorDrawBox(Point p1, Point p2, int radius){
         if (frame != null) {
-  //          Graphics2D g = (Graphics2D)frame.getGraphics();
             Graphics2D g = (Graphics2D)Main.map.mapView.getGraphics();
             g.setXORMode(Color.BLACK);
             g.setColor(Color.WHITE);
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);// AA+XOR broken in some versions of Java
             g.setStroke(new BasicStroke(2.0f));
-           if (p2==null)
+            if (p2==null)
                 p2 = p1;
             double length = Math.sqrt((p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y)); 
-            if (length > 0)
-            {
+            if (length > 0) {
                 double dir_x = (p2.x-p1.x)/length, dir_y = (p2.y-p1.y)/length; // unit direction vector from p1.x,p1.y to p2.x, p2.y
                 double perpdir_x = dir_y, perpdir_y = -dir_x; // unit vector 90deg CW from direction vector
                 double angle = Math.atan2(-perpdir_y, perpdir_x); // polar angle of perpdir 
@@ -184,21 +173,23 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
                         Math.toDegrees(angle)-180, -180, Arc2D.OPEN), true);
                 path.closePath();
                 g.draw(path);
-
-            }
-            else
-            {
-                g.setXORMode(Color.BLACK);
-                g.setColor(Color.WHITE);
-                g.drawOval((int)Math.round(p2.x-radius), (int)Math.round(p2.y-radius), 
-                (int)Math.round(radius*2), (int)Math.round(radius*2));
+            } else {
+                try {
+                    g.setXORMode(Color.BLACK);
+                    g.setColor(Color.WHITE);
+                    g.drawOval((int)Math.round(p2.x-radius), (int)Math.round(p2.y-radius), 
+                    (int)Math.round(radius*2), (int)Math.round(radius*2));
+                } catch (InternalError e) {
+                    // Robustness against Java bug https://bugs.openjdk.java.net/browse/JDK-8041647
+                    Main.error(e);
+                    Main.error("Java bug JDK-8041647 occured. To avoid this bug, please consult https://bugs.openjdk.java.net/browse/JDK-8041647."
+                            +" If the bug is fixed, please update your Java Runtime Environment.");
+                }
             }
         }
     }
 
-
     private void paintBox(Point p2, int new_radius) {
-               
         if (frame != null) {
             if (oldP2 != null) {
                 xorDrawBox(pointPressed, oldP2, radius); // clear old box
@@ -207,12 +198,11 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
             oldP2 = p2;
         }
     }    
-    
+
     public void setFrame(MapFrame mapFrame) {
         frame = mapFrame;
     }
 
-    
     @Override
     public void activeLayerChange(Layer arg0, Layer arg1) {
     }
@@ -230,11 +220,9 @@ public class GPSBlamMode extends MapMode implements LayerChangeListener, MouseWh
         }
     }
 
-    
     @Override
     public void destroy() {
         super.destroy();
         MapView.removeLayerChangeListener(this);
     }
-
 }
