@@ -121,6 +121,7 @@ public class JunctionChecker {
      * darf keine weiteren Kreuzungen enthalten)
      */
     private ArrayList<HashSet<Channel>> checkJunctionCandidates(ArrayList<HashSet<Channel>> junctioncandidates){
+        @SuppressWarnings("unchecked")
         ArrayList<HashSet<Channel>> junctions = (ArrayList<HashSet<Channel>>) junctioncandidates.clone();
         for (int i = 0; i < junctioncandidates.size(); i++) {
             for (int j = 0; j < junctioncandidates.size(); j++) {
