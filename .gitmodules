@@ -2,3 +2,7 @@
 	path = editors/josm/core
 	url = ../josm.git
 	branch = master
+[submodule "editors/josm/plugins/areaselector"]
+  path = editors/josm/plugins/areaselector
+  url = ../areaselector.git
+  branch = master
