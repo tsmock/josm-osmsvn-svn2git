@@ -1,4 +1,8 @@
-[submodule "editors/josm"]
-  path = editors/josm
+[submodule "applications/editors/josm/core"]
+  path = applications/editors/josm/core
   url = ../josm.git
+  branch = master
+[submodule "applications/editors/josm/plugins/areaselector"]
+  path = applications/editors/josm/plugins/areaselector
+  url = ../areaselector.git
   branch = master
