@@ -6,3 +6,7 @@
   path = applications/editors/josm/plugins/areaselector
   url = ../areaselector.git
   branch = master
+[submodule "applications/editors/josm/plugins/conflation"]
+  path = applications/editors/josm/plugins/conflation
+  url = ../conflation.git
+  branch = master
