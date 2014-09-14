@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugin.download_along;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -38,7 +39,7 @@ class DownloadAlongWayAction extends DownloadAlongAction {
                         KeyEvent.VK_D, Shortcut.ALT_SHIFT), true);
     }
 
-        @Override
+    @Override
     public void actionPerformed(ActionEvent e) {
         Set<Way> selectedWays = OsmPrimitive.getFilteredSet(Main.main.getCurrentDataSet().getSelected(), Way.class);
 
@@ -100,14 +101,14 @@ class DownloadAlongWayAction extends DownloadAlongAction {
                 if (previous != null && c.greatCircleDistance(previous) > buffer_dist) {
                     Double d = c.greatCircleDistance(previous) / buffer_dist;
                     int nbNodes = d.intValue();
-                    System.out.println(tr("{0} intermediate nodes to download.", nbNodes));
-                    System.out.println(tr("between {0} {1} and {2} {3}", c.lat(), c.lon(), previous.lat(),
+                    Main.info(tr("{0} intermediate nodes to download.", nbNodes));
+                    Main.info(tr("between {0} {1} and {2} {3}", c.lat(), c.lon(), previous.lat(),
                             previous.lon()));
                     for (int i = 1; i < nbNodes; i++) {
                         intermediateNodes.add(new LatLon(previous.lat()
                                 + (i * (c.lat() - previous.lat()) / (nbNodes + 1)), previous.lon()
                                 + (i * (c.lon() - previous.lon()) / (nbNodes + 1))));
-                        System.out.println(tr("  adding {0} {1}", previous.lat()
+                        Main.info(tr("  adding {0} {1}", previous.lat()
                                 + (i * (c.lat() - previous.lat()) / (nbNodes + 1)), previous.lon()
                                 + (i * (c.lon() - previous.lon()) / (nbNodes + 1))));
                     }
