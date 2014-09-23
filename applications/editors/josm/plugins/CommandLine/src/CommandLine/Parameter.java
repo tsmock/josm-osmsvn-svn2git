@@ -1,10 +1,10 @@
 /*
  *      Parameter.java
- *      
+ *
  *      Copyright 2011 Hind <foxhind@gmail.com>
- *      
+ *
  */
- 
+
 package CommandLine;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -20,51 +20,59 @@ public class Parameter {
     public String name;
     public String description;
     private Object value;
-    private ArrayList<OsmPrimitive> valueList;
+    private final ArrayList<OsmPrimitive> valueList;
     protected float maxVal;
     protected float minVal;
     protected int maxInstances;
-    
-    public Parameter () { required = false; maxInstances = 1; maxVal = 0; minVal = 0; value = ""; valueList = new ArrayList<OsmPrimitive>(); }
+
+    public Parameter() {
+        required = false;
+        maxInstances = 1;
+        maxVal = 0;
+        minVal = 0;
+        value = "";
+        valueList = new ArrayList<>();
+    }
+
     public String getValue() {
         String out = "";
         switch (type) {
-            case POINT:
-                out = (String)value;
-                break;
-            case LENGTH:
-                out = String.valueOf(value);
-                break;
-            case NATURAL:
-                out = String.valueOf(value);
-                break;
-            case STRING:
-                out = String.valueOf(value);
-                break;
-            case RELAY:
-                out = String.valueOf(((Relay)value).getValue());
-                break;
-            case NODE:
-                out = String.valueOf(valueList.size()) + " " + tr("nodes");
-                break;
-            case WAY:
-                out = String.valueOf(valueList.size()) + " " + tr("ways");
-                break;
-            case RELATION:
-                out = String.valueOf(valueList.size()) + " " + tr("relations");
-                break;
-            case ANY:
-                out = String.valueOf(valueList.size()) + " " + tr("OSM objects");
-                break;
-            case USERNAME:
-                out = String.valueOf(value);
-                break;
-            case IMAGERYURL:
-                out = String.valueOf(value);
-                break;
-            case IMAGERYOFFSET:
-                out = String.valueOf(value);
-                break;
+        case POINT:
+            out = (String)value;
+            break;
+        case LENGTH:
+            out = String.valueOf(value);
+            break;
+        case NATURAL:
+            out = String.valueOf(value);
+            break;
+        case STRING:
+            out = String.valueOf(value);
+            break;
+        case RELAY:
+            out = String.valueOf(((Relay)value).getValue());
+            break;
+        case NODE:
+            out = String.valueOf(valueList.size()) + " " + tr("nodes");
+            break;
+        case WAY:
+            out = String.valueOf(valueList.size()) + " " + tr("ways");
+            break;
+        case RELATION:
+            out = String.valueOf(valueList.size()) + " " + tr("relations");
+            break;
+        case ANY:
+            out = String.valueOf(valueList.size()) + " " + tr("OSM objects");
+            break;
+        case USERNAME:
+            out = String.valueOf(value);
+            break;
+        case IMAGERYURL:
+            out = String.valueOf(value);
+            break;
+        case IMAGERYOFFSET:
+            out = String.valueOf(value);
+            break;
         }
         return out;
     }
@@ -86,7 +94,7 @@ public class Parameter {
     }
 
     public Collection<OsmPrimitive> getParameterObjects() {
-        ArrayList<OsmPrimitive> pObjects = new ArrayList<OsmPrimitive>();
+        ArrayList<OsmPrimitive> pObjects = new ArrayList<>();
         if (isOsm()) {
             if (maxInstances == 1) {
                 pObjects.add((OsmPrimitive)value);

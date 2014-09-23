@@ -1,25 +1,25 @@
 /*
  *      History.java
- *      
+ *
  *      Copyright 2010 Hind <foxhind@gmail.com>
- *      
+ *
  */
- 
+
 package CommandLine;
 
 import java.util.LinkedList;
 
 public class History {
-    private LinkedList<String> historyList;
-    private int maxLen;
+    private final LinkedList<String> historyList;
+    private final int maxLen;
     private int num;
-    
+
     public History(int len) {
         num = 0;
         maxLen = len;
-        historyList = new LinkedList<String>();
+        historyList = new LinkedList<>();
     }
-    
+
     public void addItem(String item) {
         if (!item.equals("")) {
             String prevItem = historyList.peekFirst();
@@ -36,7 +36,7 @@ public class History {
         }
         num = -1;
     }
-    
+
     public String getPrevItem() {
         num += 1;
         if (num >= historyList.size()) {
@@ -48,7 +48,7 @@ public class History {
         }
         return historyList.get(num);
     }
-    
+
     public String getLastItem() {
         if (historyList.size() > 0)
             return historyList.get(0);
