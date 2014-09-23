@@ -1,8 +1,8 @@
 /*
  *      WayAction.java
- *      
+ *
  *      Copyright 2011 Hind <foxhind@gmail.com>
- *      
+ *
  */
 
 package CommandLine;
@@ -24,7 +24,7 @@ import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.tools.ImageProvider;
 
 public class WayAction extends MapMode implements AWTEventListener {
-    private CommandLine parentPlugin;
+    private final CommandLine parentPlugin;
     final private Cursor cursorNormal, cursorActive;
     private Cursor currentCursor;
     private Point mousePos;
@@ -35,7 +35,7 @@ public class WayAction extends MapMode implements AWTEventListener {
     public WayAction(MapFrame mapFrame, CommandLine parentPlugin) {
         super(null, "addsegment.png", null, mapFrame, ImageProvider.getCursor("normal", "selection"));
         this.parentPlugin = parentPlugin;
-/*
+        /*
         this.type = type;
         switch (type) {
             case POINT:
@@ -47,17 +47,17 @@ public class WayAction extends MapMode implements AWTEventListener {
                 cursorActive = ImageProvider.getCursor("normal", "joinnode");
                 break;
             case WAY:
-*/
-                cursorNormal = ImageProvider.getCursor("normal", "selection");
-                cursorActive = ImageProvider.getCursor("normal", "joinway");
-/*
+         */
+        cursorNormal = ImageProvider.getCursor("normal", "selection");
+        cursorActive = ImageProvider.getCursor("normal", "joinway");
+        /*
                 break;
             default:
                 cursorNormal = ImageProvider.getCursor("normal", "selection");
                 cursorActive = ImageProvider.getCursor("normal", null);
                 break;
         }
-*/
+         */
         currentCursor = cursorNormal;
         nearestWay = null;
     }
@@ -122,17 +122,17 @@ public class WayAction extends MapMode implements AWTEventListener {
                         Main.map.mapView.repaint();
                     }
                     else
-                        System.out.println("Maximum instances!");
+                        Main.info("Maximum instances!");
                 }
             }
         }
         super.mousePressed(e);
     }
 
-        @Override
+    @Override
     public void eventDispatched(AWTEvent arg0) {
         if (!(arg0 instanceof KeyEvent))
-                return;
+            return;
         KeyEvent ev = (KeyEvent) arg0;
         isCtrlDown = (ev.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0;
         if (ev.getKeyCode() == KeyEvent.VK_ESCAPE && ev.getID() == KeyEvent.KEY_PRESSED) {
@@ -144,7 +144,7 @@ public class WayAction extends MapMode implements AWTEventListener {
     private void updCursor() {
         if (mousePos != null) {
             if (!Main.isDisplayingMapView())
-                    return;
+                return;
             nearestWay = Main.map.mapView.getNearestWay(mousePos, OsmPrimitive.isUsablePredicate);
             if (nearestWay != null) {
                 setCursor(cursorActive);

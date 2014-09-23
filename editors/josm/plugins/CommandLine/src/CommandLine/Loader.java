@@ -1,10 +1,10 @@
 /*
  *	  Loader.java
- *	  
+ *
  *	  Copyright 2011 Hind <foxhind@gmail.com>
- *	  
+ *
  */
- 
+
 package CommandLine;
 
 import java.io.File;
@@ -13,18 +13,19 @@ import java.util.ArrayList;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.openstreetmap.josm.Main;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class Loader extends DefaultHandler {
-    private String dirToScan;
+    private final String dirToScan;
     private String currentFile; // For debug XML-files
     private String currentTag;
     private Command currentCommand;
     private Parameter currentParameter;
-    private ArrayList<Command> loadingCommands;
+    private final ArrayList<Command> loadingCommands;
 
     public Loader (String dir) {
         dirToScan = dir;
@@ -37,7 +38,7 @@ public class Loader extends DefaultHandler {
             // Creating parser
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
-            
+
             // Files loading
             File path = new File(dirToScan + "/");
             String[] list;
@@ -57,16 +58,16 @@ public class Loader extends DefaultHandler {
     private void loadFile(SAXParser parser, String fileName) {
         try {
             String a = new File(fileName).toURI().toString().replace("file:/", "file:///");
-            System.out.println(a);
+            Main.info(a);
             parser.parse(a, this);
         }
         catch (Exception e) {
-            System.err.println(e);
+            Main.error(e);
         }
         // TODO: Create links for each argument
     }
 
-        @Override
+    @Override
     public void startElement(String namespaceURI, String localName, String rawName, Attributes attrs) {
         int len = attrs.getLength();
         String Name, Value;
@@ -127,7 +128,7 @@ public class Loader extends DefaultHandler {
     }
 
     @Override
-    public void characters(char ch[], int start, int length) 
+    public void characters(char ch[], int start, int length)
     {
         String text = (new String(ch, start, length)).trim();
         if (currentParameter != null) {
@@ -150,6 +151,7 @@ public class Loader extends DefaultHandler {
         }
     }
 
+    @Override
     public void endElement(String namespaceURI, String localName, String rawName) {
         if (rawName.equals("command")) {
             loadingCommands.add(currentCommand);

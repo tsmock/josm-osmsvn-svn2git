@@ -1,8 +1,8 @@
 /*
  *      AnyAction.java
- *      
+ *
  *      Copyright 2010 Hind <foxhind@gmail.com>
- *      
+ *
  */
 
 package CommandLine;
@@ -23,7 +23,7 @@ import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.tools.ImageProvider;
 
 public class AnyAction extends MapMode implements AWTEventListener {
-    private CommandLine parentPlugin;
+    private final CommandLine parentPlugin;
     final private Cursor cursorNormal, cursorActive;
     private Cursor currentCursor;
     private Point mousePos;
@@ -33,8 +33,8 @@ public class AnyAction extends MapMode implements AWTEventListener {
     public AnyAction(MapFrame mapFrame, CommandLine parentPlugin) {
         super(null, "addsegment.png", null, mapFrame, ImageProvider.getCursor("normal", "selection"));
         this.parentPlugin = parentPlugin;
-    cursorNormal = ImageProvider.getCursor("normal", "selection");
-    cursorActive = ImageProvider.getCursor("normal", "joinnode");
+        cursorNormal = ImageProvider.getCursor("normal", "selection");
+        cursorActive = ImageProvider.getCursor("normal", "joinnode");
         currentCursor = cursorNormal;
         nearestPrimitive = null;
     }
@@ -99,17 +99,17 @@ public class AnyAction extends MapMode implements AWTEventListener {
                         Main.map.mapView.repaint();
                     }
                     else
-                        System.out.println("Maximum instances!");
+                        Main.info("Maximum instances!");
                 }
             }
         }
         super.mousePressed(e);
     }
 
-        @Override
+    @Override
     public void eventDispatched(AWTEvent arg0) {
         if (!(arg0 instanceof KeyEvent))
-                return;
+            return;
         KeyEvent ev = (KeyEvent) arg0;
         isCtrlDown = (ev.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0;
         if (ev.getKeyCode() == KeyEvent.VK_ESCAPE && ev.getID() == KeyEvent.KEY_PRESSED) {
