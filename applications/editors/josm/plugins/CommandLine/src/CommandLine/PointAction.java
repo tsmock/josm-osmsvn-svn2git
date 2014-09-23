@@ -1,8 +1,8 @@
 /*
  *	  PointAction.java
- *	  
+ *
  *	  Copyright 2011 Hind <foxhind@gmail.com>
- *	  
+ *
  */
 
 package CommandLine;
@@ -30,13 +30,13 @@ import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.tools.ImageProvider;
 
 public class PointAction extends MapMode implements AWTEventListener {
-    private CommandLine parentPlugin;
+    private final CommandLine parentPlugin;
     final private Cursor cursorCrosshair;
     final private Cursor cursorJoinNode;
     private Cursor currentCursor;
     private Point mousePos;
     private Node nearestNode;
-    private ArrayList<String> pointList;
+    private final ArrayList<String> pointList;
     private boolean isCtrlDown;
 
     public PointAction(MapFrame mapFrame, CommandLine parentPlugin) {
@@ -104,7 +104,7 @@ public class PointAction extends MapMode implements AWTEventListener {
                         updateTextEdit();
                     }
                     else
-                        System.out.println("Maximum instances!");
+                        Main.info("Maximum instances!");
                 }
             }
         }
@@ -119,7 +119,7 @@ public class PointAction extends MapMode implements AWTEventListener {
         Main.map.mapView.repaint();
     }
 
-        @Override
+    @Override
     public void eventDispatched(AWTEvent arg0) {
         if (!(arg0 instanceof KeyEvent))
             return;
@@ -157,7 +157,7 @@ public class PointAction extends MapMode implements AWTEventListener {
         try {
             // We invoke this to prevent strange things from happening
             EventQueue.invokeLater(new Runnable() {
-                                @Override
+                @Override
                 public void run() {
                     // Don't change cursor when mode has changed already
                     if (!(Main.map.mapMode instanceof PointAction))
@@ -191,7 +191,7 @@ public class PointAction extends MapMode implements AWTEventListener {
         }
         return out;
     }
-    
+
     private void updateTextEdit() {
         Parameter currentParameter = parentPlugin.currentCommand.parameters.get(parentPlugin.currentCommand.currentParameterNum);
         String prefix = tr(currentParameter.description);
