@@ -20,7 +20,6 @@
  *
  *
  */
-
 package org.openstreetmap.josm.plugins.print;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -45,9 +44,8 @@ public class PrintAction extends JosmAction implements Runnable {
      */
     public PrintAction() {
         super(tr("Print..."), (String)null, tr("Print the map"),
-        Shortcut.registerShortcut("print:print", tr("File: {0}", tr("Print...")),
-    KeyEvent.VK_P, Shortcut.CTRL),
-            true, "print/print", true);
+                Shortcut.registerShortcut("system:print", tr("File: {0}", tr("Print...")),
+                        KeyEvent.VK_P, Shortcut.CTRL), true, "print/print", true);
     }
 
     /**
