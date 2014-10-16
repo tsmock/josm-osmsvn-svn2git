@@ -48,7 +48,7 @@ abstract public class TrustOsmPrimitive {
     }
 
     protected OsmPrimitive osm;
-    private final Map<String, TrustSignatures> keySig = new HashMap<String, TrustSignatures>();
+    private final Map<String, TrustSignatures> keySig = new HashMap<>();
 
     public TrustOsmPrimitive(OsmPrimitive osmItem) {
         setOsmPrimitive(osmItem);

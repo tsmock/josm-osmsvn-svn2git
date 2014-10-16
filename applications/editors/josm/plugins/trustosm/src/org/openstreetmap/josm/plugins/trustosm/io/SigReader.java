@@ -29,7 +29,6 @@ import org.openstreetmap.josm.data.osm.Way;
 import org.openstreetmap.josm.gui.progress.NullProgressMonitor;
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 import org.openstreetmap.josm.io.IllegalDataException;
-import org.openstreetmap.josm.io.OsmDataParsingException;
 import org.openstreetmap.josm.io.UTFInputStreamReader;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustNode;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustOsmPrimitive;
@@ -37,6 +36,7 @@ import org.openstreetmap.josm.plugins.trustosm.data.TrustRelation;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustSignatures;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustWay;
 import org.openstreetmap.josm.tools.CheckParameterUtil;
+import org.openstreetmap.josm.tools.XmlParsingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -46,8 +46,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class SigReader {
 
-    private final Map<String,TrustOsmPrimitive> trustitems = new HashMap<String,TrustOsmPrimitive>();
-    private final Set<OsmPrimitive> missingData = new HashSet<OsmPrimitive>();
+    private final Map<String,TrustOsmPrimitive> trustitems = new HashMap<>();
+    private final Set<OsmPrimitive> missingData = new HashSet<>();
 
     public Map<String,TrustOsmPrimitive> getTrustItems() {
         return trustitems;
@@ -65,8 +65,8 @@ public class SigReader {
             this.locator = locator;
         }
 
-        protected void throwException(String msg) throws OsmDataParsingException{
-            throw new OsmDataParsingException(msg).rememberLocation(locator);
+        protected void throwException(String msg) throws XmlParsingException {
+            throw new XmlParsingException(msg).rememberLocation(locator);
         }
 
         /**
@@ -134,7 +134,7 @@ public class SigReader {
                 try {
                     parseOpenPGP(tmpbuf.toString());
                 } catch (IOException e) {
-                    throw new OsmDataParsingException(tr("Could not parse OpenPGP message."),e).rememberLocation(locator);
+                    throw new XmlParsingException(tr("Could not parse OpenPGP message."),e).rememberLocation(locator);
                 }
             } else if (qName.equals("key")) {
                 String[] kv = TrustOsmPrimitive.generateTagsFromSigtext(tsigs.getOnePlainText());
@@ -210,8 +210,8 @@ public class SigReader {
 
             InputSource inputSource = new InputSource(UTFInputStreamReader.create(source, "UTF-8"));
             SAXParserFactory.newInstance().newSAXParser().parse(inputSource, reader.new Parser());
-            //			if (missingData != null)
-            //				missingData.addAll(reader.getMissingData());
+            //            if (missingData != null)
+            //                missingData.addAll(reader.getMissingData());
             progressMonitor.worked(1);
 
             return reader.getTrustItems();
