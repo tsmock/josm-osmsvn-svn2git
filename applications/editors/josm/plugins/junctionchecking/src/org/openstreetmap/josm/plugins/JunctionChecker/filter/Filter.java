@@ -20,7 +20,7 @@ public class Filter {
         return tagValues.contains(value);
     }
     
-    public Filter() {	
+    public Filter() {    
     }
     
     public String[] getTagValues() {
