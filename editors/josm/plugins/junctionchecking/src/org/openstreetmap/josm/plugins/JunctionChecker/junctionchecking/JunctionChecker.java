@@ -156,8 +156,8 @@ public class JunctionChecker {
                         && E.get(y).getReachableNodes().contains(E.get(x))) {
                     Grid[y][x] = 1;
                     //log.trace("Grid-Position auf 1 gesetzT (y/x): " + y + ":"
-                    //		+ x + "(Entry/exit):" + E.get(y).getNewid() + ":" +
-                    //		E.get(x).getNewid());
+                    //        + x + "(Entry/exit):" + E.get(y).getNewid() + ":" +
+                    //        E.get(x).getNewid());
                 } else {
                     Grid[y][x] = 0;
                 }

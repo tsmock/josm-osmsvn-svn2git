@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 import org.openstreetmap.josm.plugins.JunctionChecker.datastructure.Channel;
 import org.openstreetmap.josm.plugins.JunctionChecker.datastructure.ChannelDiGraph;
@@ -87,7 +88,7 @@ public class JMinimality {
         int[][] v; // this is a column variable containing n y-index entries plus true false values (0/1)
         List<Object> C; //The column is packed together with 2 indices into this variable
         for (int i = 0; i < Grid.length;i++) {
-            int h = 0;	//this is the index denoting the "n out of Grid.length"- combination, indicating a subcolumn of length n
+            int h = 0;    //this is the index denoting the "n out of Grid.length"- combination, indicating a subcolumn of length n
             do {
                 int missing = 0;
                 C = new ArrayList<Object>(3);
@@ -102,7 +103,7 @@ public class JMinimality {
                     else{
                         v[t][1]= 1;
                     } //true
-                    v[t][0]=(int)c.data[t];	//Write a y index of the combination into column
+                    v[t][0]=(int)c.data[t];    //Write a y index of the combination into column
                 }
                 if (missing <=1){//If column has at most one missing entry
                     C.add(v);//insert column as the third position of column variable C
@@ -114,6 +115,7 @@ public class JMinimality {
             c = new Combination(Grid.length, n); //For each original column in the grid, generate new subcolumns
         }
         Collections.sort(L, new Comparator<List<Object>>() {
+            @Override
             public int compare(List<Object> o1, List<Object> o2) {
                 return (Integer)o1.get(1) - (Integer)o2.get(1); //sort according to h index in each column
             }});
@@ -164,7 +166,7 @@ public class JMinimality {
                 boolean smallerjunction = false;
                 for (int k =0; k<ans;k++){ //Makes sure that subset of m columns contains an n*n subgrid, because ans = m over n would be 0 otherwise
                     for (int y = 0; y < n; y++){//Iterates over all rows of subgrid k
-                        missing =0;	//test = "";
+                        missing =0;    //test = "";
                         for (int x = 0; x <c.data.length;x++) { //Iterates over all columns of subgrid k
                             x_i=((Integer)L.get((int)(lindex-m+c.data[x])).get(0));//columnindex in grid
                             v=((int[][])(L.get((int)(lindex-m+c.data[x])).get(2))); //subcolumn of grid
