@@ -65,7 +65,7 @@ public class CLI {
 
         // DiGraph "versiegeln"
         //DiGraphSealer sealer = new DiGraphSealer(cdgb.getDigraph(), cdgb
-        //		.getNewid());
+        //        .getNewid());
         //sealer.sealingGraph();
 
         StrongConnectednessCalculator scc = new StrongConnectednessCalculator(cdgb.getDigraph());
