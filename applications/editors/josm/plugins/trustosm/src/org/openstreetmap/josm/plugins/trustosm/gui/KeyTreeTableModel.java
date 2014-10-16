@@ -27,7 +27,7 @@ public class KeyTreeTableModel extends AbstractTreeTableModel {
 
         PGPPublicKey pub = TrustOSMplugin.gpg.getPublicKeyFromRing(s.getKeyID());
         if (pub != null){
-            Iterator i = pub.getUserIDs();
+            Iterator<?> i = pub.getUserIDs();
             if (i.hasNext())
                 return (String)i.next();
 
@@ -37,14 +37,14 @@ public class KeyTreeTableModel extends AbstractTreeTableModel {
 
     private final SignatureTreeNode root;
     private final String[] allTitle = {tr("UID"),tr("KeyID"),tr("OSM-Info"),tr("Signed")};
-    private final List<String> columns = new ArrayList<String>(Arrays.asList(allTitle));
+    private final List<String> columns = new ArrayList<>(Arrays.asList(allTitle));
 
     public KeyTreeTableModel(Collection<PGPSignature> sigs) {
         root = new SignatureTreeNode();
         for (PGPSignature s : sigs){
             SignatureTreeNode sn = new SignatureTreeNode(s);
             PGPPublicKey pub = TrustOSMplugin.gpg.getPublicKeyFromRing(s.getKeyID());
-            Iterator iter = pub.getSignatures();
+            Iterator<?> iter = pub.getSignatures();
             while (iter.hasNext()){
                 PGPSignature ks = (PGPSignature)iter.next();
                 sn.getChildren().add(new SignatureTreeNode(ks));
@@ -115,7 +115,7 @@ public class KeyTreeTableModel extends AbstractTreeTableModel {
 
     public class SignatureTreeNode {
         private PGPSignature s;
-        private final List<SignatureTreeNode> children = new ArrayList<SignatureTreeNode>();
+        private final List<SignatureTreeNode> children = new ArrayList<>();
         private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:hh.mm.ss");
         public SignatureTreeNode() {
         }

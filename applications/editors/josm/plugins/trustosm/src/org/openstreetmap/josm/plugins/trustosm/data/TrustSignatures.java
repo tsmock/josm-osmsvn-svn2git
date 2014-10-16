@@ -21,8 +21,8 @@ public class TrustSignatures {
     public final static byte ITEM_REMOVED = -2;
 
     //private final Vector<PGPSignature> signatures = new Vector<PGPSignature>();
-    //	private final HashMap<PGPSignature, String> signatureTextMap = new HashMap<PGPSignature, String>();
-    private final Map<String, List<PGPSignature>> textsigs = new HashMap<String, List<PGPSignature>>();
+    //    private final HashMap<PGPSignature, String> signatureTextMap = new HashMap<PGPSignature, String>();
+    private final Map<String, List<PGPSignature>> textsigs = new HashMap<>();
     private byte status;
     private double reputation;
 
@@ -36,7 +36,7 @@ public class TrustSignatures {
     }
 
     public int countSigs() {
-        //		return signatures.size();
+        //        return signatures.size();
         //return signatureTextMap.size();
         int count = 0;
         for (List<PGPSignature> siglist : textsigs.values()) {
@@ -61,13 +61,13 @@ public class TrustSignatures {
         return status;
     }
 
-    /*	public void setSignatures(Vector<PGPSignature> signatures) {
+    /*    public void setSignatures(Vector<PGPSignature> signatures) {
         this.signatures.addAll(signatures);
     }
      */
     public Vector<PGPSignature> getSignatures() {
-        //		return signatures;
-        Vector<PGPSignature> sigs = new Vector<PGPSignature>();
+        //        return signatures;
+        Vector<PGPSignature> sigs = new Vector<>();
         for (List<PGPSignature> siglist : textsigs.values()) {
             sigs.addAll(siglist);
         }
@@ -75,7 +75,7 @@ public class TrustSignatures {
     }
 
     public Map<String, List<PGPSignature>> getSignaturesWithText() {
-        //		return signatures;
+        //        return signatures;
         return textsigs;
     }
 
@@ -84,18 +84,18 @@ public class TrustSignatures {
     }
 
     public void addSignature(PGPSignature signature, String sigtext) {
-        //		signatures.add(signature);
+        //        signatures.add(signature);
         //signatureTextMap.put(signature, sigtext);
         if (textsigs.containsKey(sigtext)) {
             textsigs.get(sigtext).add(signature);
         } else {
-            List<PGPSignature> l = new ArrayList<PGPSignature>();
+            List<PGPSignature> l = new ArrayList<>();
             l.add(signature);
             textsigs.put(sigtext, l);
         }
     }
 
-    /*	public void addSignatures(List<PGPSignature> signatures, String sigtext) {
+    /*    public void addSignatures(List<PGPSignature> signatures, String sigtext) {
         textsigs.get(sigtext).addAll(signatures);
     }
      */

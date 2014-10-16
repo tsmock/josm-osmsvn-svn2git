@@ -76,7 +76,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
 
 
     public final static Color BGCOLOR_NO_SIG = new Color(234, 234, 234);
-    //	public final static Color BGCOLOR_VALID_SIG = new Color(235,255,177);
+    //    public final static Color BGCOLOR_VALID_SIG = new Color(235,255,177);
     public final static Color BGCOLOR_VALID_SIG = new Color(74,245,106);
     public final static Color BGCOLOR_BROKEN_SIG = new Color(255, 197, 197);
     public final static Color BGCOLOR_REMOVED_ITEM = new Color(255, 100, 100);
@@ -95,14 +95,14 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
     /** The show sigs button */
     private final SideButton showButton;
 
-    private final Map<String, Byte> rowStatus = new HashMap<String, Byte>();
+    private final Map<String, Byte> rowStatus = new HashMap<>();
 
     /** The selected osmData */
     private Collection<? extends OsmPrimitive> osmData;
 
 
-    private final List<WaySegment> selectedSegments = new ArrayList<WaySegment>();
-    private final List<OsmPrimitive> selectedPrimitives = new ArrayList<OsmPrimitive>();
+    private final List<WaySegment> selectedSegments = new ArrayList<>();
+    private final List<OsmPrimitive> selectedPrimitives = new ArrayList<>();
 
     /** The JTree for showing the geometry */
     private final JTree geomTree;
@@ -402,7 +402,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
                             TrustOSMplugin.signedItems.put(id, trust);
 
 
-                            /*						TreePath parentPath = tp.getParentPath();
+                            /*                        TreePath parentPath = tp.getParentPath();
                             if (geomTree.isPathSelected(parentPath)) return;
 
                             Node osmNode = ((Node) osm);
@@ -426,7 +426,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
                         TreePath parentPath = tp.getParentPath();
                         if (geomTree.isPathSelected(parentPath)) return;
                         WaySegment seg = (WaySegment) o;
-                        List<Node> nodes = new ArrayList<Node>();
+                        List<Node> nodes = new ArrayList<>();
                         nodes.add(seg.getFirstNode());
                         nodes.add(seg.getSecondNode());
                         Way w = seg.way;
@@ -465,7 +465,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
                         WaySegment seg = (WaySegment) o;
                         String id = TrustOsmPrimitive.createUniqueObjectIdentifier(seg.way);
                         if (TrustOSMplugin.signedItems.containsKey(id)) {
-                            List<Node> nodes = new ArrayList<Node>();
+                            List<Node> nodes = new ArrayList<>();
                             nodes.add(seg.getFirstNode());
                             nodes.add(seg.getSecondNode());
                             TrustSignaturesDialog.showSignaturesDialog((TrustWay) TrustOSMplugin.signedItems.get(id),nodes);
@@ -509,7 +509,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
     }
      */
     public static List<WaySegment> generateSegmentListFromWay(Way w) {
-        List<WaySegment> segList = new ArrayList<WaySegment>();
+        List<WaySegment> segList = new ArrayList<>();
         for (int i = 0; i < w.getNodesCount()-1; i++) {
             segList.add(new WaySegment(w,i));
         }
@@ -567,7 +567,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
         // re-load property data
         propertyData.setRowCount(0);
 
-        Map<String, Map<String, Integer>> valueCount = new TreeMap<String, Map<String, Integer>>();
+        Map<String, Map<String, Integer>> valueCount = new TreeMap<>();
 
         TrustOsmPrimitive trust;
 
@@ -597,7 +597,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
                 sigsAvailable = false;
             }
 
-            //		trust = TrustOSMplugin.signedItems.containsKey(osm) ? TrustOSMplugin.signedItems.get(osm) : new TrustOSMItem(osm);
+            //        trust = TrustOSMplugin.signedItems.containsKey(osm) ? TrustOSMplugin.signedItems.get(osm) : new TrustOSMItem(osm);
 
             for (String key: osm.keySet()) {
                 String value = osm.get(key);
@@ -618,7 +618,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
                     Map<String, Integer> v = valueCount.get(key);
                     v.put(value, v.containsKey(value)? v.get(value) + 1 : 1 );
                 } else {
-                    TreeMap<String,Integer> v = new TreeMap<String, Integer>();
+                    TreeMap<String,Integer> v = new TreeMap<>();
                     v.put(value, 1);
                     valueCount.put(key, v);
                 }
@@ -651,7 +651,7 @@ public class TrustDialog extends ToggleDialog implements ActionListener, Selecti
             return;
         geomTree.setModel(createTree());
         updateTable();
-        //		signButton.setEnabled(newSelection.size() == 1);
+        //        signButton.setEnabled(newSelection.size() == 1);
     }
 
     @Override

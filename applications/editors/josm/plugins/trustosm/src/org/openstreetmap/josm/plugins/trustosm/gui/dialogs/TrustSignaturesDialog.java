@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.Box;
@@ -59,7 +58,7 @@ public class TrustSignaturesDialog {
         JPanel p = new JPanel(new GridBagLayout());
         p.add(new JLabel(label),GBC.eol());
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:hh.mm.ss");
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:hh.mm.ss");
 
         for (String plain : sigs.getAllPlainTexts()) {
             JTextArea sigtext = new JTextArea(sigs.getArmoredFulltextSignatureAll(plain));
@@ -98,9 +97,9 @@ public class TrustSignaturesDialog {
             signerPanel.add(new JScrollPane(t));
 
 
-            //			JTreeTable tt = new JTreeTable();
+            //            JTreeTable tt = new JTreeTable();
 
-            /*				for (PGPSignature s : siglist) {
+            /*                for (PGPSignature s : siglist) {
                 signerPanel.add(createKeyButton(tr("Signature created at {0} by User {1}",formatter.format(s.getCreationTime()),s.getHashedSubPackets().getSignerUserID()),s.getKeyID()),GBC.eol());
                 //signerPanel.add(new JLabel(tr("Signature created at {0} by User {1}",formatter.format(s.getCreationTime()),s.getHashedSubPackets().getSignerUserID())),GBC.eol());
             }*/
