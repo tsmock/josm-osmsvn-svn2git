@@ -33,7 +33,7 @@ public class GetMissingDataAction extends JosmAction {
     }
 
     public boolean downloadMissing() {
-        Collection<OsmPrimitive> missingData = new HashSet<OsmPrimitive>();
+        Collection<OsmPrimitive> missingData = new HashSet<>();
         Map<String,TrustOsmPrimitive> trustitems = TrustOSMplugin.signedItems;
         getMissing(trustitems, missingData);
 

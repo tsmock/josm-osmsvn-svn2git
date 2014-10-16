@@ -53,7 +53,7 @@ public class SigWriter extends XmlWriter {
         out.println("  <!ELEMENT key (openpgp)+>");
         out.println("  <!ATTLIST key k CDATA #IMPLIED >");
         out.println("  <!ELEMENT node (openpgp)>");
-        //		out.println("  <!ATTLIST node id CDATA #REQUIRED >");
+        //        out.println("  <!ATTLIST node id CDATA #REQUIRED >");
         out.println("  <!ELEMENT segmentlist (segment)*>");
         out.println("  <!ELEMENT segment (openpgp)+>");
         out.println("  <!ELEMENT memberlist (member)*>");
@@ -152,7 +152,7 @@ public class SigWriter extends XmlWriter {
                 closeln("trustrelation");
             }
 
-            //			openAtt("trustitem", "osmid=\""+String.valueOf(osm.getUniqueId())+"\" type=\""+osm.getType().getAPIName()+"\"");
+            //            openAtt("trustitem", "osmid=\""+String.valueOf(osm.getUniqueId())+"\" type=\""+osm.getType().getAPIName()+"\"");
 
         }
     }
@@ -172,9 +172,9 @@ public class SigWriter extends XmlWriter {
         indent += "  ";
     }
 
-    private void inline(String tag, String attributes) {
+    /*private void inline(String tag, String attributes) {
         out.println(indent + "<" + tag + " " + attributes + " />");
-    }
+    }*/
 
     private void close(String tag) {
         indent = indent.substring(2);

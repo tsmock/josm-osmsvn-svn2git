@@ -68,7 +68,7 @@ public class TrustPreferenceEditor implements PreferenceSetting {
     public boolean ok() {
         Main.pref.put("trustosm.gpg.showSignedDeleted", showSignedDeleted.isSelected());
         Main.pref.put("trustosm.gpg.separateHomedir", separateHomedir.isSelected());
-        //		TrustOSMplugin.gpg.refreshGpg();
+        //        TrustOSMplugin.gpg.refreshGpg();
         return false;
     }
 

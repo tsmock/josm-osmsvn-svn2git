@@ -45,7 +45,7 @@ public class TrustOSMplugin extends Plugin {
     public static TrustGPG gpg;
 
     /** A global list with all OSM-Ids and corresponding TrustOSMItems */
-    public static final Map<String, TrustOsmPrimitive> signedItems = new HashMap<String, TrustOsmPrimitive>();
+    public static final Map<String, TrustOsmPrimitive> signedItems = new HashMap<>();
 
     /**
      * Will be invoked by JOSM to bootstrap the plugin
@@ -136,7 +136,7 @@ public class TrustOSMplugin extends Plugin {
 
         /*
 
-        Process	p;
+        Process    p;
         int exitCode;
         String stdout,stderr;
         String sysSecPath = System.getProperty("java.home")+"/lib/security";
@@ -148,7 +148,7 @@ public class TrustOSMplugin extends Plugin {
 
 
         String cmd = "sh -c sudo -S mv "+sysSecPath+"/local_policy.jar "+sysSecPath+"/local_policy.jar.restricted";
-        /*		String cmd2 = "sudo -S mv "+sysSecPath+"/US_export_policy.jar "+sysSecPath+"/US_export_policy.jar.restricted";
+        /*        String cmd2 = "sudo -S mv "+sysSecPath+"/US_export_policy.jar "+sysSecPath+"/US_export_policy.jar.restricted";
         String cmd3 = "sudo -S cp "+Main.pref.getPluginsDirectory().getPath()+"/trustosm/jce/US_export_policy.jar "+sysSecPath;
         String cmd4 = "sudo -S cp "+Main.pref.getPluginsDirectory().getPath()+"/trustosm/jce/local_policy.jar "+sysSecPath;
 
@@ -213,9 +213,9 @@ public class TrustOSMplugin extends Plugin {
     }
 
     public static boolean extractFiles(String pluginname, String extractDir) {
-        try {
-            if (extractDir == null) extractDir = "lib";
-            JarFile jar = new JarFile(Main.pref.getPluginsDirectory().getPath()+"/"+pluginname+".jar");
+        if (extractDir == null) extractDir = "lib";
+        String path = Main.pref.getPluginsDirectory().getPath();
+        try (JarFile jar = new JarFile(path+"/"+pluginname+".jar")) {
             Enumeration<JarEntry> entries = jar.entries();
             InputStream is;
             FileOutputStream fos;
@@ -224,8 +224,7 @@ public class TrustOSMplugin extends Plugin {
                 JarEntry entry = entries.nextElement();
                 String name = entry.getName();
                 if (name.startsWith(extractDir+"/") && !entry.isDirectory()) {
-                    System.out.println(Main.pref.getPluginsDirectory().getPath()+"/"+pluginname+"/"+name);
-                    file = new File(Main.pref.getPluginsDirectory().getPath()+"/"+pluginname+"/"+name);
+                    file = new File(path+"/"+pluginname+"/"+name);
                     file.getParentFile().mkdirs();
                     is = jar.getInputStream(entry);
                     fos = new FileOutputStream(file);
@@ -242,7 +241,6 @@ public class TrustOSMplugin extends Plugin {
             e.printStackTrace();
             return false;
         }
-
     }
 
     public static void refreshMenu() {
@@ -281,5 +279,4 @@ public class TrustOSMplugin extends Plugin {
     public static String getGpgPath() {
         return Main.pref.getPluginsDirectory().getPath() + "/trustosm/gnupg/";
     }
-
 }

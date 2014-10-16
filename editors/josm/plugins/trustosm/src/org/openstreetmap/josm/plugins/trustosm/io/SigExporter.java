@@ -35,11 +35,9 @@ public class SigExporter extends FileExporter {
             fn += ".tosm";
             file = new File(fn);
         }
-        try {
-            FileOutputStream fo = new FileOutputStream(file);
+        try (FileOutputStream fo = new FileOutputStream(file)) {
             new SigWriter(fo).write(TrustOSMplugin.signedItems.values());
             fo.flush();
-            fo.close();
         } catch (IOException x) {
             x.printStackTrace();
             JOptionPane.showMessageDialog(Main.parent, tr("Error while exporting {0}:\n{1}", fn, x.getMessage()),

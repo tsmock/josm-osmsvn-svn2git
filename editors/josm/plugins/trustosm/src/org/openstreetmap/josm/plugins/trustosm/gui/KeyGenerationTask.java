@@ -22,7 +22,7 @@ public class KeyGenerationTask extends PleaseWaitRunnable {
     protected void cancel() {
         canceled = true;
         synchronized(this) {
-            /*		if (objectReader != null) {
+            /*        if (objectReader != null) {
                 objectReader.cancel();
             }*/
         }
@@ -42,7 +42,7 @@ public class KeyGenerationTask extends PleaseWaitRunnable {
     protected void realRun() throws SAXException, IOException,
     OsmTransferException {
         try {
-            /*			synchronized (this) {
+            /*            synchronized (this) {
                 if (canceled) return;
                 objectReader = new MultiFetchServerObjectReader();
             }

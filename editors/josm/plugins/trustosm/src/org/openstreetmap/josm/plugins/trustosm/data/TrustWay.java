@@ -25,7 +25,7 @@ public class TrustWay extends TrustOsmPrimitive {
 
     public static List<Node> generateSegmentFromSigtext(String sigtext) {
         String[] lines = sigtext.split("\n");
-        List<Node> nodes = new ArrayList<Node>();
+        List<Node> nodes = new ArrayList<>();
         for (int i=1; i<lines.length; i++){
             nodes.add(TrustNode.generateNodeFromSigtext(lines[i]));
         }
@@ -41,7 +41,7 @@ public class TrustWay extends TrustOsmPrimitive {
     }
 
 
-    private final Map<List<Node>, TrustSignatures> segmentSig = new HashMap<List<Node>, TrustSignatures>();
+    private final Map<List<Node>, TrustSignatures> segmentSig = new HashMap<>();
 
     public TrustWay(OsmPrimitive osmItem) {
         super(osmItem);
@@ -74,7 +74,7 @@ public class TrustWay extends TrustOsmPrimitive {
     }
 
     public TrustSignatures getSigsOnSegment(WaySegment seg) {
-        List<Node> nodes = new ArrayList<Node>();
+        List<Node> nodes = new ArrayList<>();
         nodes.add(seg.getFirstNode());
         nodes.add(seg.getSecondNode());
         return getSigsOnSegment(nodes);

@@ -47,7 +47,7 @@ public class SigImporter extends FileImporter {
             final OsmDataLayer layer = new OsmDataLayer(dataSet, associatedFile.getName(), associatedFile);
             Main.main.addLayer(layer);
         }
-        //		Set<OsmPrimitive> missingData = new HashSet<OsmPrimitive>();
+        //        Set<OsmPrimitive> missingData = new HashSet<OsmPrimitive>();
         Map<String,TrustOsmPrimitive> trustitems = SigReader.parseSignatureXML(in, NullProgressMonitor.INSTANCE);
         System.out.println(trustitems.size());
         /*

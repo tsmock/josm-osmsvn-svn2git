@@ -33,7 +33,7 @@ public class KeySignaturesDialog extends JPanel {
         super(new BorderLayout());
 
         String userid = "Unknown";
-        Iterator iter = key.getUserIDs();
+        Iterator<?> iter = key.getUserIDs();
         if (iter.hasNext()) {
             userid = (String)iter.next();
         }
@@ -49,7 +49,7 @@ public class KeySignaturesDialog extends JPanel {
     public static JPanel createKeySigPanel(PGPPublicKey key) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
-        Iterator iter = key.getSignatures();
+        Iterator<?> iter = key.getSignatures();
         while (iter.hasNext()) {
             PGPSignature sig = (PGPSignature)iter.next();
             String uid = "0x"+Long.toHexString(sig.getKeyID()).substring(8).toUpperCase();
@@ -79,7 +79,7 @@ public class KeySignaturesDialog extends JPanel {
      */
     protected void expand() {
         if (isCollapsed) {
-            //		setContentVisible(true);
+            //        setContentVisible(true);
             isCollapsed = false;
             setPreferredSize(new Dimension(0,200));
             setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));

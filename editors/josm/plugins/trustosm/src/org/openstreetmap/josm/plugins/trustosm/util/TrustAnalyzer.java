@@ -16,7 +16,6 @@ import org.openstreetmap.josm.data.osm.Way;
 import org.openstreetmap.josm.plugins.trustosm.TrustOSMplugin;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustNode;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustOsmPrimitive;
-import org.openstreetmap.josm.plugins.trustosm.data.TrustRelation;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustSignatures;
 import org.openstreetmap.josm.plugins.trustosm.data.TrustWay;
 
@@ -44,7 +43,7 @@ public class TrustAnalyzer {
 
 
     public static void checkTag(TrustOsmPrimitive trust, String key) {
-        Map<String, List<PGPSignature>> validRatings = new HashMap<String, List<PGPSignature>>();
+        Map<String, List<PGPSignature>> validRatings = new HashMap<>();
 
         TrustSignatures sigs;
         if ((sigs = trust.getSigsOnKey(key))!=null) {
@@ -65,7 +64,7 @@ public class TrustAnalyzer {
                         if (validRatings.containsKey(signedPlaintext)) {
                             validRatings.get(signedPlaintext).add(sig);
                         } else {
-                            List<PGPSignature> l = new ArrayList<PGPSignature>();
+                            List<PGPSignature> l = new ArrayList<>();
                             l.add(sig);
                             validRatings.put(signedPlaintext, l);
                         }
@@ -102,11 +101,11 @@ public class TrustAnalyzer {
     /**
      * Check if the ratings made for a Node are valid for the current position of that node
      * and compute reputation.
-     * @param trust	The current TrustNode with its ratings
+     * @param trust    The current TrustNode with its ratings
      */
     public static void checkNode(TrustNode trust) {
-        Map<String, List<PGPSignature>> validRatings = new HashMap<String, List<PGPSignature>>();
-        Node node = (Node)trust.getOsmPrimitive();
+        Map<String, List<PGPSignature>> validRatings = new HashMap<>();
+        //Node node = (Node)trust.getOsmPrimitive();
         TrustSignatures sigs;
         if ((sigs = trust.getNodeSigs())!=null) {
             for (String signedPlaintext : sigs.getAllPlainTexts()) {
@@ -121,7 +120,7 @@ public class TrustAnalyzer {
                             if (validRatings.containsKey(signedPlaintext)) {
                                 validRatings.get(signedPlaintext).add(sig);
                             } else {
-                                List<PGPSignature> l = new ArrayList<PGPSignature>();
+                                List<PGPSignature> l = new ArrayList<>();
                                 l.add(sig);
                                 validRatings.put(signedPlaintext, l);
                             }
@@ -175,7 +174,7 @@ public class TrustAnalyzer {
      * @param seg the current WaySegment to check for reputation
      */
     public static void checkSegment(TrustWay trust, List<Node> nodes) {
-        Map<String, List<PGPSignature>> validRatings = new HashMap<String, List<PGPSignature>>();
+        Map<String, List<PGPSignature>> validRatings = new HashMap<>();
 
         TrustSignatures sigs;
         if ((sigs = trust.getSigsOnSegment(nodes))!=null) {
@@ -191,7 +190,7 @@ public class TrustAnalyzer {
                             if (validRatings.containsKey(signedPlaintext)) {
                                 validRatings.get(signedPlaintext).add(sig);
                             } else {
-                                List<PGPSignature> l = new ArrayList<PGPSignature>();
+                                List<PGPSignature> l = new ArrayList<>();
                                 l.add(sig);
                                 validRatings.put(signedPlaintext, l);
                             }
@@ -229,15 +228,15 @@ public class TrustAnalyzer {
             /** check all reputation for every Segment of this Way */
             List<Node> wayNodes = ((Way)tw.getOsmPrimitive()).getNodes();
             for (int i=0; i<wayNodes.size()-1; i++) {
-                List<Node> nodes = new ArrayList<Node>();
+                List<Node> nodes = new ArrayList<>();
                 nodes.add(wayNodes.get(i));
                 nodes.add(wayNodes.get(i+1));
                 checkSegment(tw,nodes);
             }
 
-        } else if (trust instanceof TrustRelation){
+        } /*else if (trust instanceof TrustRelation){
             TrustRelation tr = (TrustRelation) trust;
-        }
+        }*/
 
     }
 }

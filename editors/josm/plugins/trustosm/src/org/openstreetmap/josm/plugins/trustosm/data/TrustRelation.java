@@ -40,7 +40,7 @@ public class TrustRelation extends TrustOsmPrimitive {
         return sigtext;
     }
 
-    private final Map<String, TrustSignatures> memberSig = new HashMap<String, TrustSignatures>();
+    private final Map<String, TrustSignatures> memberSig = new HashMap<>();
 
     public TrustRelation(OsmPrimitive osmItem) {
         super(osmItem);
