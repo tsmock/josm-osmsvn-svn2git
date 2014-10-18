@@ -25,6 +25,7 @@ public class OSMStreet extends OSMEntityBase {
         super(osmPrimitive);
     }
 
+    @Override
     public List<IOSMEntity> getChildren() {
         return children;
     }
@@ -45,7 +46,7 @@ public class OSMStreet extends OSMEntityBase {
      */
     private void lazyCreateChildren() {
         if (children == null) {
-            children = new ArrayList<IOSMEntity>();
+            children = new ArrayList<>();
         }
     }
 
@@ -64,7 +65,7 @@ public class OSMStreet extends OSMEntityBase {
      */
     private void lazyCreateAddresses() {
         if (addresses == null) {
-            addresses = new ArrayList<OSMAddress>();
+            addresses = new ArrayList<>();
         }
     }
 
@@ -117,7 +118,7 @@ public class OSMStreet extends OSMEntityBase {
      * @return
      */
     public String getType() {
-        List<String> types = new ArrayList<String>();
+        List<String> types = new ArrayList<>();
 
         for (IOSMEntity seg : getChildren()) {
             OsmPrimitive osmPrim = seg.getOsmObject();
