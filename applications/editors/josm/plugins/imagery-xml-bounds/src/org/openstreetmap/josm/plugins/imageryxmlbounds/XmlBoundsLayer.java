@@ -23,22 +23,23 @@ import org.openstreetmap.josm.plugins.imageryxmlbounds.actions.ShowBoundsAction;
 
 /**
  * An "OSM data" layer that cannot be uploaded, merged, and in which real OSM data cannot be imported.
- * Its sole purpose is to allow "classic" OSM edition tools to edit Imagery bounds (as XML files) without compromising OSM database integrity. 
- * 
+ * Its sole purpose is to allow "classic" OSM edition tools to edit Imagery bounds (as XML files)
+ * without compromising OSM database integrity.
+ *
  * @author Don-vip
  */
 public class XmlBoundsLayer extends OsmDataLayer implements LayerChangeListener, XmlBoundsConstants {
 
     @Override
     public Action[] getMenuEntries() {
-        List<Action> result = new ArrayList<Action>();
+        List<Action> result = new ArrayList<>();
         for (Action action : super.getMenuEntries()) {
             if (action instanceof LayerSaveAction) {
                 result.add(new BoundsLayerSaveAction(this));
 
             } else if (action instanceof LayerSaveAsAction) {
                 result.add(new BoundsLayerSaveAsAction(this));
-                
+
             } else if (!(action instanceof LayerGpxExportAction) && !(action instanceof ConvertToGpxLayerAction)) {
                 // Add everything else, expect GPX-related action
                 result.add(action);
@@ -48,7 +49,7 @@ public class XmlBoundsLayer extends OsmDataLayer implements LayerChangeListener,
         return result.toArray(new Action[0]);
     }
 
-    private static final JosmAction[] actionsToDisable = new JosmAction[] {
+    private static final JosmAction[] ACTIONS_TO_DISABLE = new JosmAction[] {
         Main.main.menu.download,
         Main.main.menu.downloadPrimitive,
         Main.main.menu.downloadReferrers,
@@ -59,18 +60,28 @@ public class XmlBoundsLayer extends OsmDataLayer implements LayerChangeListener,
         Main.main.menu.updateSelection,
         Main.main.menu.openLocation
     };
-    
-    private static final Map<JosmAction, Boolean> actionsStates = new HashMap<JosmAction, Boolean>();
-    
+
+    private static final Map<JosmAction, Boolean> ACTIONS_STATES = new HashMap<>();
+
+    /**
+     * Constructs a new {@code XmlBoundsLayer}.
+     * @param data data
+     */
     public XmlBoundsLayer(DataSet data) {
         this(data, OsmDataLayer.createNewName(), null);
     }
 
+    /**
+     * Constructs a new {@code XmlBoundsLayer}.
+     * @param data data
+     * @param name Layer name
+     * @param associatedFile Associated file (can be null)
+     */
     public XmlBoundsLayer(DataSet data, String name, File associatedFile) {
         super(data, name, associatedFile);
         MapView.addLayerChangeListener(this);
     }
-    
+
     @Override
     public boolean isMergable(Layer other) {
         return other instanceof XmlBoundsLayer;
@@ -89,25 +100,26 @@ public class XmlBoundsLayer extends OsmDataLayer implements LayerChangeListener,
     @Override
     public void activeLayerChange(Layer oldLayer, Layer newLayer) {
         if (newLayer == this && !(oldLayer instanceof XmlBoundsLayer)) {
-            for (JosmAction action : actionsToDisable) {
-                actionsStates.put(action, action.isEnabled());
+            for (JosmAction action : ACTIONS_TO_DISABLE) {
+                ACTIONS_STATES.put(action, action.isEnabled());
                 action.setEnabled(false);
             }
         } else if (oldLayer == this && !(newLayer instanceof XmlBoundsLayer)) {
-            for (JosmAction action : actionsToDisable) {
-                action.setEnabled(actionsStates.get(action));
+            for (JosmAction action : ACTIONS_TO_DISABLE) {
+                action.setEnabled(ACTIONS_STATES.get(action));
             }
         }
     }
 
     @Override
     public void layerAdded(Layer newLayer) {
+        // Do nothing
     }
 
     @Override
     public void layerRemoved(Layer oldLayer) {
         if (Main.main.getEditLayer() instanceof XmlBoundsLayer) {
-            for (JosmAction action : actionsToDisable) {
+            for (JosmAction action : ACTIONS_TO_DISABLE) {
                 action.setEnabled(false);
             }
         }
