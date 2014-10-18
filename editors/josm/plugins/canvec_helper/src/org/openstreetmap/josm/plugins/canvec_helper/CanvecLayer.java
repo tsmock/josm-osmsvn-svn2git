@@ -1,34 +1,38 @@
 package org.openstreetmap.josm.plugins.canvec_helper;
 
+import static org.openstreetmap.josm.tools.I18n.tr;
+
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.osm.visitor.BoundingXYVisitor;
+import org.openstreetmap.josm.gui.MapView;
 import org.openstreetmap.josm.gui.dialogs.LayerListDialog;
 import org.openstreetmap.josm.gui.dialogs.LayerListPopup;
 import org.openstreetmap.josm.gui.layer.Layer;
-import org.openstreetmap.josm.gui.MapView;
 import org.openstreetmap.josm.io.CachedFile;
-import static org.openstreetmap.josm.tools.I18n.tr;
 
 // most of the layout was copied from the openstreetbugs plugin to get things started
 public class CanvecLayer extends Layer implements MouseListener {
@@ -43,16 +47,17 @@ public class CanvecLayer extends Layer implements MouseListener {
         super(name);
         plugin_self = self;
         this.setBackgroundLayer(true);
-/*		for (int i = 0; i < 119; i++) {
+/*        for (int i = 0; i < 119; i++) {
             CanVecTile tile = new CanVecTile(i,"",0,"",plugin_self);
             if (tile.isValid()) tiles.add(tile);
         }*/
         layerIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(getClass().getResource("/images/layericon.png")));
-        try {
-            long start = System.currentTimeMillis();
-            Pattern p = Pattern.compile("(\\d\\d\\d)([A-Z]\\d\\d).*");
+        long start = System.currentTimeMillis();
+        try (
             InputStream index = new CachedFile("http://ftp2.cits.rncan.gc.ca/OSM/pub/ZippedOsm.txt").getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(index));
+        ) {
+            Pattern p = Pattern.compile("(\\d\\d\\d)([A-Z]\\d\\d).*");
             String line;
             int last_cell = -1;
             ArrayList<String> list = new ArrayList<>();
@@ -71,21 +76,22 @@ public class CanvecLayer extends Layer implements MouseListener {
                     last_cell = cell;
                 } else if (line.contains("Metadata.txt")) {
                 } else {
-                        System.out.print("bad line '" + line + "'\n");
+                    System.out.print("bad line '" + line + "'\n");
                 }
             }
-            br.close();
             CanVecTile tile = new CanVecTile(last_cell,"",0,"",this,list);
             if (tile.isValid()) tiles.add(tile);
 
-            long end = System.currentTimeMillis();
-            System.out.println((end-start)+"ms spent");
+            if (Main.isDebugEnabled()) {
+                long end = System.currentTimeMillis();
+                Main.debug((end-start)+"ms spent");
+            }
         } catch (IOException e) {
-            System.out.println("exception getting index");
-            e.printStackTrace();
+            Main.error("exception getting index");
+            Main.error(e);
         }
     }
-        @Override
+    @Override
     public Action[] getMenuEntries() {
         return new Action[]{
             LayerListDialog.getInstance().createShowHideLayerAction(),

@@ -68,7 +68,7 @@ public class SplittingMultipolygons {
     }
     
     public static List<Relation> process( Collection<Way> selectedWays ) {
-//	System.out.println("---------------------------------------");
+//    System.out.println("---------------------------------------");
     List<Relation> result = new ArrayList<>();
     List<Way> rings = new ArrayList<>();
     List<Way> arcs = new ArrayList<>();
@@ -325,13 +325,13 @@ public class SplittingMultipolygons {
     for( Way w : touchingWays.keySet() )
         if( touchingWays.get(w) ) {
         otherWays.add(new TheRing(w));
-//		System.out.println("Touching ring: " + otherWays.get(otherWays.size()-1));
+//        System.out.println("Touching ring: " + otherWays.get(otherWays.size()-1));
         }
     
-//	for( Iterator<Way> keys = touchingWays.keySet().iterator(); keys.hasNext(); ) {
-//	    if( !touchingWays.get(keys.next()) )
-//		keys.remove();
-//	}
+//    for( Iterator<Way> keys = touchingWays.keySet().iterator(); keys.hasNext(); ) {
+//        if( !touchingWays.get(keys.next()) )
+//        keys.remove();
+//    }
     
     // now touchingWays has only ways that touch the ring twice
     List<Command> commands = new ArrayList<>();
