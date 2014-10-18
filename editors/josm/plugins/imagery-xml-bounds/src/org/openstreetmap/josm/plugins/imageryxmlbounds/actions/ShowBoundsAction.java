@@ -18,15 +18,21 @@ import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.plugins.imageryxmlbounds.XmlBoundsLayer;
 
 /**
+ * Show XML bounds.
  * @author Don-vip
- *
  */
-@SuppressWarnings("serial")
 public class ShowBoundsAction extends ComputeBoundsAction implements OsmPrimitiveAction {
 
+    /**
+     * Constructs a new {@code ShowBoundsAction}.
+     */
     public ShowBoundsAction() {
     }
-    
+
+    /**
+     * Constructs a new {@code ShowBoundsAction}.
+     * @param xmlBoundsLayer XML bounds layer
+     */
     public ShowBoundsAction(XmlBoundsLayer xmlBoundsLayer) {
         super(xmlBoundsLayer);
     }
@@ -34,7 +40,7 @@ public class ShowBoundsAction extends ComputeBoundsAction implements OsmPrimitiv
     @Override
     public void actionPerformed(ActionEvent e) {
         XmlTextPane pane = new XmlTextPane();
-        Font courierNew = Font.getFont("Courier New"); 
+        Font courierNew = Font.getFont("Courier New");
         if (courierNew != null) {
             pane.setFont(courierNew);
         }
