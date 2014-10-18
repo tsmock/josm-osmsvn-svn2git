@@ -27,6 +27,7 @@ public class ResourceLoader {
      * @return the inputstream.
      * @throws IOException if an error occurs on opening the url, or if the file is not found.
      */
+    @SuppressWarnings("resource")
     public static InputStream getInputStream(String source) throws IOException {
         InputStream in = null;
         if (source.startsWith("http://") || source.startsWith("https://") || source.startsWith("ftp://") || source.startsWith("file:")) {
