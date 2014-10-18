@@ -328,7 +328,7 @@ public class TheRing {
             rel = new Relation((Relation)p);
             relationChangeMap.put((Relation)p, rel);
             }
-        } else {		    
+        } else {            
             rel = new Relation((Relation)p);
             relationCommands.add(new ChangeCommand((Relation)p, rel));
         }
@@ -421,7 +421,7 @@ public class TheRing {
     }*/
     
     private static void log( String s ) {
-//	System.out.println(s);
+//    System.out.println(s);
     }
     
     private static class RingSegment {
