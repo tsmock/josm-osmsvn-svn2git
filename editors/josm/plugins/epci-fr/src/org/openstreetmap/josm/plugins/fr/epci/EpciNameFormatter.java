@@ -10,14 +10,14 @@ import org.openstreetmap.josm.gui.NameFormatterHook;
  * @author Don-vip
  */
 public class EpciNameFormatter implements NameFormatterHook {
-    
+
     @Override
     public String checkRelationTypeName(IRelation relation, String defaultName) {
         if (relation == null) return null;
-        String local_authority_FR = relation.get("local_authority:FR");
-        if (local_authority_FR != null) {
-            return (defaultName != null ? defaultName : "") + 
-                    "["+(local_authority_FR.equals("metropole") ? "MP" : local_authority_FR)+"]";
+        String localAuthorityFR = relation.get("local_authority:FR");
+        if (localAuthorityFR != null) {
+            return (defaultName != null ? defaultName : "") +
+                    "["+("metropole".equals(localAuthorityFR) ? "MP" : localAuthorityFR)+"]";
         } else {
             return null;
         }
