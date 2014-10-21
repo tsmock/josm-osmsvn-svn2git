@@ -1,14 +1,16 @@
+// License: GPL. Copyright (C) 2012 Russell Edwards
 package org.openstreetmap.josm.plugins.gpsblam;
+
+import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import javax.swing.ImageIcon;
-
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.osm.visitor.BoundingXYVisitor;
@@ -16,22 +18,22 @@ import org.openstreetmap.josm.gui.MapView;
 import org.openstreetmap.josm.gui.dialogs.LayerListDialog;
 import org.openstreetmap.josm.gui.dialogs.LayerListPopup;
 import org.openstreetmap.josm.gui.layer.Layer;
-import static org.openstreetmap.josm.tools.I18n.tr;
 
-public class GPSBlamLayer extends Layer {
-    
-    private Collection<GPSBlamMarker> blamMarkers;
-    
-    public GPSBlamLayer(String name) {
+class GPSBlamLayer extends Layer {
+
+    private final Collection<GPSBlamMarker> blamMarkers;
+
+    GPSBlamLayer(String name) {
         super(name);
         blamMarkers = new LinkedList<>();
     }
 
-    private static Icon icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(GPSBlamPlugin.class.getResource("/images/gpsblam_layer.png")));
+    private static final Icon ICON = new ImageIcon(Toolkit.getDefaultToolkit().createImage(
+            GPSBlamPlugin.class.getResource("/images/gpsblam_layer.png")));
 
     @Override
     public Icon getIcon() {
-        return icon;
+        return ICON;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class GPSBlamLayer extends Layer {
 
     @Override
     public void mergeFrom(Layer arg0) {
-
+        // Do nothing
     }
 
     @Override
@@ -71,10 +73,10 @@ public class GPSBlamLayer extends Layer {
 
     @Override
     public void visitBoundingBox(BoundingXYVisitor arg0) {
+        // Do nothing
     }
 
-    public void addBlamMarker(GPSBlamMarker blamMarker) {
-        blamMarkers.add(blamMarker);	
+    void addBlamMarker(GPSBlamMarker blamMarker) {
+        blamMarkers.add(blamMarker);
     }
-    
 }
