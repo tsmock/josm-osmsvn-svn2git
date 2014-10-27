@@ -19,6 +19,11 @@ import javax.swing.JOptionPane;
 
 import org.openstreetmap.josm.Main;
 
+/**
+ * Utility functions. 
+ * @author Oliver Wieland <oliver.wieland@online.de>
+ * 
+ */
 public class ColumbusCSVUtils {
     /**
      * Private constructor for the utility class.
@@ -90,5 +95,5 @@ public class ColumbusCSVUtils {
             f = Float.NaN;
         }
         return f;
-    }	
+    }    
 }
