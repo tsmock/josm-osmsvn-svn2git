@@ -24,6 +24,7 @@ import static java.lang.Math.toRadians;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.data.gpx.WayPoint;
 
@@ -37,6 +38,11 @@ public class WayPointHelper {
      */
     public static final String HEIGHT_ATTRIBUTE = "ele";
 
+    private static final double R = 6378135;
+    
+    private WayPointHelper() {
+       // Private constructor for the utility class. 
+    }
 
     /**
      * Gets the elevation (Z coordinate) of a JOSM way point.
@@ -54,18 +60,14 @@ public class WayPointHelper {
 
             String height = wpt.getString(WayPointHelper.HEIGHT_ATTRIBUTE);
             try {
-                double z = Double.parseDouble(height);
-
-                return z;
+                return Double.parseDouble(height);
             } catch (NumberFormatException e) {
-                System.err.println(String.format(
+                Main.error(String.format(
                         "Cannot parse double from '%s': %s", height, e
                                 .getMessage()));
-                return 0;
             }
-        } else {
-            return 0;
         }
+        return 0;
     }
     
     public static double getLonDist(WayPoint w1, WayPoint w2) {
@@ -87,8 +89,6 @@ public class WayPointHelper {
      * @return 
      */
     public static LatLon moveLatLon(LatLon src, double dlat, double dlon) {
-        final double R = 6378135;
-        
         double lat1 = toRadians(src.lat());
         double lon1 = toRadians(src.lon());
         
@@ -102,11 +102,7 @@ public class WayPointHelper {
         double lon2 = toDegrees(lon2rad);
         double lat2 = toDegrees(lat2rad);
         
-        LatLon llmoved = new LatLon(lat2, lon2);
-        
-        //double d2 = llmoved.greatCircleDistance(src);
-        
-        return llmoved;
+        return new LatLon(lat2, lon2);
     }
 
     /**
@@ -135,7 +131,7 @@ public class WayPointHelper {
 
         int delta = (int) Math.max(Math.ceil(origSize / targetSize), 2);
 
-        List<WayPoint> res = new ArrayList<WayPoint>(targetSize);
+        List<WayPoint> res = new ArrayList<>(targetSize);
         for (int i = 0; i < origSize; i += delta) {
             res.add(origList.get(i));
         }
