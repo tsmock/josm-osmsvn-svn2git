@@ -127,8 +127,7 @@ public abstract class DatabaseParser {
             con.disconnect();
 
         } catch (IOException ioexp) {
-            ioexp.printStackTrace();
-            throw new DatabaseLoadException("Chyba při načítání databáze");
+            throw new DatabaseLoadException("Chyba při načítání databáze", ioexp);
         }
     }
 }
