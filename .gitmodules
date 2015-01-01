@@ -314,6 +314,10 @@
   path = applications/editors/josm/plugins/seachart
   url = ../seachart
   branch = master
+[submodule "applications/editors/josm/plugins/seachartedit"]
+  path = applications/editors/josm/plugins/seachartedit
+  url = ../seachartedit
+  branch = master
 [submodule "applications/editors/josm/plugins/simplifyarea"]
   path = applications/editors/josm/plugins/simplifyarea
   url = ../simplifyarea
