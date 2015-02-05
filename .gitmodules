@@ -202,6 +202,10 @@
   path = applications/editors/josm/plugins/mapdust
   url = ../mapdust
   branch = master
+[submodule "applications/editors/josm/plugins/mapillary"]
+  path = applications/editors/josm/plugins/mapillary
+  url = ../Mapillary
+  branch = master
 [submodule "applications/editors/josm/plugins/measurement"]
   path = applications/editors/josm/plugins/measurement
   url = ../measurement
