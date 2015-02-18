@@ -25,6 +25,7 @@ public class TagBufferAction extends JosmAction {
         super(TITLE, "dumbutils/tagbuffer", tr("Pastes tags of previously selected object(s)"),
                 Shortcut.registerShortcut("tools:tagbuffer", tr("Tool: {0}", tr("Copy tags from previous selection")), KeyEvent.VK_R, Shortcut.SHIFT)
         , true, false);
+        // The fields are not initialized while the super constructor is running, so we have to call this afterwards:
         installAdapters();
     }
 
