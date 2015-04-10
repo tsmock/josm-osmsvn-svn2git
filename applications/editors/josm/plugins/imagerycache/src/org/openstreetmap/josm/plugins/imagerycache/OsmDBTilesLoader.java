@@ -15,7 +15,6 @@ import org.openstreetmap.gui.jmapviewer.JobDispatcher;
 import org.openstreetmap.gui.jmapviewer.OsmTileLoader;
 import org.openstreetmap.gui.jmapviewer.Tile;
 import org.openstreetmap.gui.jmapviewer.interfaces.CachedTileLoader;
-import org.openstreetmap.gui.jmapviewer.interfaces.TileClearController;
 import org.openstreetmap.gui.jmapviewer.interfaces.TileJob;
 import org.openstreetmap.gui.jmapviewer.interfaces.TileLoaderListener;
 import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
@@ -40,7 +39,6 @@ class OsmDBTilesLoader extends OsmTileLoader implements CachedTileLoader {
     protected long maxCacheFileAge = FILE_AGE_ONE_WEEK;
     protected long recheckAfter = FILE_AGE_ONE_DAY;
 
-
     public OsmDBTilesLoader(TileLoaderListener smap, File cacheFolder) {
         super(smap);
         dao = TileDAOMapDB.getInstance();
@@ -54,11 +52,6 @@ class OsmDBTilesLoader extends OsmTileLoader implements CachedTileLoader {
 
     @Override
     public void clearCache(TileSource source) {
-        clearCache(source, null);
-    }
-
-    @Override
-    public void clearCache(TileSource source, TileClearController controller) {
         dao.cleanStorage(source.getName());
     }
 
@@ -94,22 +87,25 @@ class OsmDBTilesLoader extends OsmTileLoader implements CachedTileLoader {
                     return;
                 tile.initLoading();
             }
-            if (loadTileFromFile()) {
-                return;
-            }
-            if (dbTile != null) {
-                TileJob job = new TileJob() {
-                    @Override public void run() {
-                        loadOrUpdateTileFromServer();
+
+            TileJob job = new TileJob() {
+                @Override public void run() {
+                    if (loadTileFromFile()) {
+                        return;
                     }
-                    @Override public Tile getTile() {
-                        return tile;
-                    }
-                };
-                JobDispatcher.getInstance().addJob(job);
-            } else {
-                loadOrUpdateTileFromServer();
-            }
+
+                    loadOrUpdateTileFromServer();
+                }
+                @Override public Tile getTile() {
+                    return tile;
+                }
+                @Override
+                public void submit() {
+                    run();
+
+                }
+            };
+            JobDispatcher.getInstance().addJob(job);
         }
 
         /**
@@ -164,7 +160,9 @@ class OsmDBTilesLoader extends OsmTileLoader implements CachedTileLoader {
             } catch (Error e) { // this is bad, bat MapDB throws it
                 Main.error("Serious database error: Can not load tile from database: "+sourceName+":"+id);
                 Main.error(e);
-                dbTile = null;  fileAge = 0;  return false;
+                dbTile = null;  
+                fileAge = 0; 
+                return false;
             }
         }
 
@@ -339,6 +337,12 @@ class OsmDBTilesLoader extends OsmTileLoader implements CachedTileLoader {
             for (String k: m.keySet()) {
                 tile.putValue(k, m.get(k));
             }
+        }
+
+        @Override
+        public void submit() {
+            run();
+            
         }
     }
 }
