@@ -330,6 +330,10 @@
   path = applications/editors/josm/plugins/smed
   url = ../smed
   branch = master
+[submodule "applications/editors/josm/plugins/sumoconvert"]
+  path = applications/editors/josm/plugins/sumoconvert
+  url = ../sumoconvert
+  branch = master
 [submodule "applications/editors/josm/plugins/surveyor"]
   path = applications/editors/josm/plugins/surveyor
   url = ../surveyor
