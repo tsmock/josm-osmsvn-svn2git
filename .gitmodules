@@ -334,6 +334,10 @@
   path = applications/editors/josm/plugins/smed
   url = ../smed
   branch = master
+[submodule "applications/editors/josm/plugins/splinex"]
+  path = applications/editors/josm/plugins/splinex
+  url = ../splinex
+  branch = master
 [submodule "applications/editors/josm/plugins/sumoconvert"]
   path = applications/editors/josm/plugins/sumoconvert
   url = ../sumoconvert
