@@ -298,6 +298,10 @@
   path = applications/editors/josm/plugins/public_transport
   url = ../public_transport
   branch = master
+[submodule "applications/editors/josm/plugins/public_transport_layer"]
+  path = applications/editors/josm/plugins/public_transport_layer
+  url = ../public_transport_layer
+  branch = master
 [submodule "applications/editors/josm/plugins/reltoolbox"]
   path = applications/editors/josm/plugins/reltoolbox
   url = ../reltoolbox
