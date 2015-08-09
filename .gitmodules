@@ -302,6 +302,10 @@
   path = applications/editors/josm/plugins/public_transport_layer
   url = ../public_transport_layer
   branch = master
+[submodule "applications/editors/josm/plugins/rasterfilters"]
+  path = applications/editors/josm/plugins/rasterfilters
+  url = ../rasterfilters
+  branch = master
 [submodule "applications/editors/josm/plugins/reltoolbox"]
   path = applications/editors/josm/plugins/reltoolbox
   url = ../reltoolbox
