@@ -422,10 +422,6 @@
   path = applications/editors/josm/plugins/waypoint_search
   url = ../waypoint_search
   branch = master
-[submodule "applications/editors/josm/plugins/wayselector"]
-  path = applications/editors/josm/plugins/wayselector
-  url = ../wayselector
-  branch = master
 [submodule "applications/editors/josm/plugins/wikipedia"]
   path = applications/editors/josm/plugins/wikipedia
   url = ../wikipedia
