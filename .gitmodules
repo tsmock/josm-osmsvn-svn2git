@@ -226,10 +226,6 @@
   path = applications/editors/josm/plugins/michigan_left
   url = ../michigan_left
   branch = master
-[submodule "applications/editors/josm/plugins/mirrored_download"]
-  path = applications/editors/josm/plugins/mirrored_download
-  url = ../mirrored_download
-  branch = master
 [submodule "applications/editors/josm/plugins/namemanager"]
   path = applications/editors/josm/plugins/namemanager
   url = ../namemanager
