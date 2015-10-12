@@ -182,6 +182,10 @@
   path = applications/editors/josm/plugins/jna
   url = ../jna
   branch = master
+[submodule "applications/editors/josm/plugins/josm-tofix-plugin"]
+  path = applications/editors/josm/plugins/josm-tofix-plugin
+  url = ../tofix
+  branch = master
 [submodule "applications/editors/josm/plugins/jts"]
   path = applications/editors/josm/plugins/jts
   url = ../jts
