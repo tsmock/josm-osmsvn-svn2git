@@ -182,10 +182,6 @@
   path = applications/editors/josm/plugins/jna
   url = ../jna
   branch = master
-[submodule "applications/editors/josm/plugins/josm-tofix-plugin"]
-  path = applications/editors/josm/plugins/josm-tofix-plugin
-  url = ../tofix
-  branch = master
 [submodule "applications/editors/josm/plugins/jts"]
   path = applications/editors/josm/plugins/jts
   url = ../jts
@@ -370,6 +366,9 @@
   path = applications/editors/josm/plugins/terracer
   url = ../terracer
   branch = master
+[submodule "applications/editors/josm/plugins/tofix"]
+  path = applications/editors/josm/plugins/tofix
+  url = ../tofix.git
 [submodule "applications/editors/josm/plugins/touchscreenhelper"]
   path = applications/editors/josm/plugins/touchscreenhelper
   url = ../touchscreenhelper
