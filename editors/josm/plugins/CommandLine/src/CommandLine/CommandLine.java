@@ -21,7 +21,6 @@
 package CommandLine;
 
 import static org.openstreetmap.josm.gui.help.HelpUtil.ht;
-import static org.openstreetmap.josm.tools.I18n.marktr;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.BorderLayout;
@@ -194,7 +193,7 @@ public class CommandLine extends Plugin {
         };
 
         if (Main.main.menu != null) {
-            commandMenu = Main.main.menu.addMenu(marktr("Commands") , KeyEvent.VK_O, Main.main.menu.getDefaultMenuPos(), ht("/Plugin/CommandLine"));
+            commandMenu = Main.main.menu.addMenu("Commands", tr("Commands"), KeyEvent.VK_O, Main.main.menu.getDefaultMenuPos(), ht("/Plugin/CommandLine"));
             MainMenu.add(commandMenu, new CommandLineAction(this));
         }
         loadCommands();
