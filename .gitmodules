@@ -74,6 +74,10 @@
   path = applications/editors/josm/plugins/alignways
   url = ../alignways
   branch = master
+[submodule "applications/editors/josm/plugins/apache-commons"]
+  path = applications/editors/josm/plugins/apache-commons
+  url = ../apache-commons
+  branch = master
 [submodule "applications/editors/josm/plugins/areaselector"]
   path = applications/editors/josm/plugins/areaselector
   url = ../areaselector.git
@@ -93,10 +97,6 @@
 [submodule "applications/editors/josm/plugins/colorscheme"]
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
-  branch = master
-[submodule "applications/editors/josm/plugins/commons-imaging"]
-  path = applications/editors/josm/plugins/commons-imaging
-  url = ../apache-commons
   branch = master
 [submodule "applications/editors/josm/plugins/conflation"]
   path = applications/editors/josm/plugins/conflation
