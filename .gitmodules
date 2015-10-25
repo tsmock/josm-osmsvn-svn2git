@@ -78,6 +78,10 @@
   path = applications/editors/josm/plugins/apache-commons
   url = ../apache-commons
   branch = master
+[submodule "applications/editors/josm/plugins/apache-http"]
+  path = applications/editors/josm/plugins/apache-http
+  url = ../apache-http
+  branch = master
 [submodule "applications/editors/josm/plugins/areaselector"]
   path = applications/editors/josm/plugins/areaselector
   url = ../areaselector.git
