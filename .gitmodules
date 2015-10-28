@@ -10,6 +10,10 @@
   path = editors/josm/plugins/conflation
   url = ../conflation.git
   branch = master
+[submodule "editors/josm/plugins/continuosDownload"]
+  path = editors/josm/plugins/continuosDownload
+  url = ../continuos-download.git
+  branch = master
 [submodule "editors/josm/plugins/tofix"]
   path = editors/josm/plugins/tofix
   url = ../tofix.git
