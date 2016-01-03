@@ -29,7 +29,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,6 +36,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -296,9 +297,7 @@ public class CommandLine extends Plugin {
                         throw new IOException("Could not create file: " + file.getAbsolutePath());
                     }
                     // Write file
-                    try (FileOutputStream fos = new FileOutputStream(file)) {
-                        Utils.copyStream(zis, fos);
-                    }
+                    Files.copy(zis, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     // Set last modification date
                     long time = entry.getTime();
                     if (time > -1) {
