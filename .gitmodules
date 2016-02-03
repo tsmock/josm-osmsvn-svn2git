@@ -22,6 +22,10 @@
   path = applications/editors/josm/plugins/Create_grid_of_ways
   url = ../Create_grid_of_ways
   branch = master
+[submodule "applications/editors/josm/plugins/CustomizePublicTransportStop"]
+  path = applications/editors/josm/plugins/CustomizePublicTransportStop
+  url = ../CustomizePublicTransportStop
+  branch = master
 [submodule "applications/editors/josm/plugins/DirectDownload"]
   path = applications/editors/josm/plugins/DirectDownload
   url = ../DirectDownload
