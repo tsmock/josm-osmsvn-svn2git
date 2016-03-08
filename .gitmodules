@@ -190,6 +190,10 @@
   path = applications/editors/josm/plugins/importvec
   url = ../importvec
   branch = master
+[submodule "applications/editors/josm/plugins/indoor_sweepline"]
+  path = applications/editors/josm/plugins/indoor_sweepline
+  url = ../indoor_sweepline
+  branch = master
 [submodule "applications/editors/josm/plugins/infomode"]
   path = applications/editors/josm/plugins/infomode
   url = ../infomode
