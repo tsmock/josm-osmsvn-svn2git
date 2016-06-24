@@ -30,7 +30,10 @@ import org.openstreetmap.josm.gui.layer.ImageryLayer;
 import render.ChartContext;
 import render.Renderer;
 import s57.S57map;
-import s57.S57map.*;
+import s57.S57map.Feature;
+import s57.S57map.GeomIterator;
+import s57.S57map.Pflag;
+import s57.S57map.Snode;
 import s57.S57obj.Obj;
 import symbols.Symbols;
 
@@ -43,13 +46,13 @@ public class ChartImage extends ImageryLayer implements ZoomChangeListener, Char
     double width;
     double height;
     int zoom;
-    
+
     public ChartImage(ImageryInfo info) {
         super(info);
         MapView.addZoomChangeListener(this);
         zoomChanged();
     }
-    
+
     @Override
     public Action[] getMenuEntries() {
         return null;
@@ -92,18 +95,22 @@ public class ChartImage extends ImageryLayer implements ZoomChangeListener, Char
         }
     }
 
+    @Override
     public Point2D.Double getPoint(Snode coord) {
         return (Double) Main.map.mapView.getPoint2D(new LatLon(Math.toDegrees(coord.lat), Math.toDegrees(coord.lon)));
     }
 
+    @Override
     public double mile(Feature feature) {
         return 185000 / Main.map.mapView.getDist100Pixel();
     }
-    
+
+    @Override
     public boolean clip() {
         return true;
     }
-    
+
+    @Override
     public Color background(S57map map) {
         if (map.features.containsKey(Obj.COALNE)) {
             for (Feature feature : map.features.get(Obj.COALNE)) {
@@ -118,7 +125,8 @@ public class ChartImage extends ImageryLayer implements ZoomChangeListener, Char
                         Snode node = git.next();
                         if (node == null)
                             continue;
-                        if ((node.lat >= map.bounds.minlat) && (node.lat <= map.bounds.maxlat) && (node.lon >= map.bounds.minlon) && (node.lon <= map.bounds.maxlon)) {
+                        if ((node.lat >= map.bounds.minlat) && (node.lat <= map.bounds.maxlat)
+                                && (node.lon >= map.bounds.minlon) && (node.lon <= map.bounds.maxlon)) {
                             return Symbols.Bwater;
                         }
                     }
@@ -126,7 +134,8 @@ public class ChartImage extends ImageryLayer implements ZoomChangeListener, Char
             }
             return Symbols.Yland;
         } else {
-            if (map.features.containsKey(Obj.ROADWY) || map.features.containsKey(Obj.RAILWY) || map.features.containsKey(Obj.LAKARE) || map.features.containsKey(Obj.RIVERS) || map.features.containsKey(Obj.CANALS)) {
+            if (map.features.containsKey(Obj.ROADWY) || map.features.containsKey(Obj.RAILWY)
+                    || map.features.containsKey(Obj.LAKARE) || map.features.containsKey(Obj.RIVERS) || map.features.containsKey(Obj.CANALS)) {
                 return Symbols.Yland;
             } else {
                 return Symbols.Bwater;
@@ -134,6 +143,7 @@ public class ChartImage extends ImageryLayer implements ZoomChangeListener, Char
         }
     }
 
+    @Override
     public RuleSet ruleset() {
         return RuleSet.ALL;
     }

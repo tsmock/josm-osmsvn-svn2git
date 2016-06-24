@@ -14,19 +14,26 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.font.TextLayout;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 public class Symbols {
-
+    // CHECKSTYLE.OFF: LineLength
     public static final Color Yland = new Color(0xedbc0c);
-//	public static final Color Bwater = new Color(0x78acd2);
+    //    public static final Color Bwater = new Color(0x78acd2);
     public static final Color Bwater = new Color(0x9bc5e3);
     public static final Color Gdries = new Color(0x689868);
     public static final Color Mline = new Color(0x9a6078);
     public static final Color Msymb = new Color(0xa30075);
     public static final Color Mtss = new Color(0xc0c480ff, true);
-    
+
     public enum Form {
         BBOX, STRK, COLR, FILL, LINE, RECT, RRCT, ELPS, EARC, PLIN, PGON, RSHP, TEXT, SYMB, N1, N2, P1, P2, H2, H3, H4, H5, V2, V3, D2, D3, D4, B1, S2, S3, S4, C2, X2
     }
@@ -57,6 +64,7 @@ public class Symbols {
             h = ih;
             t = it;
         }
+
         public Delta(Handle ih) {
             h = ih;
             t = new AffineTransform();
@@ -71,15 +79,18 @@ public class Symbols {
             pat = new ArrayList<>();
             col = icol;
         }
+
         public Scheme(ArrayList<Patt> ipat, ArrayList<Color> icol) {
             pat = ipat;
             col = icol;
         }
+
         public Scheme(Color icol) {
             pat = new ArrayList<>();
             col = new ArrayList<>();
             col.add(icol);
         }
+
         public Scheme() {
             pat = new ArrayList<>();
             col = new ArrayList<>();
@@ -112,24 +123,28 @@ public class Symbols {
             dash = null;
             fill = ifill;
         }
+
         public LineStyle(Color iline, float iwidth) {
             line = iline;
             width = iwidth;
             dash = null;
             fill = null;
         }
+
         public LineStyle(Color iline, float iwidth, float[] idash) {
             line = iline;
             width = iwidth;
             dash = idash;
             fill = null;
         }
+
         public LineStyle(Color iline, float iwidth, Color ifill) {
             line = iline;
             width = iwidth;
             dash = null;
             fill = ifill;
         }
+
         public LineStyle(Color iline, float iwidth, float[] idash, Color ifill) {
             line = iline;
             width = iwidth;
@@ -144,7 +159,7 @@ public class Symbols {
             super();
         }
     }
-    
+
     public static class SubSymbol {
         public Symbol instr;
         public double scale;
@@ -413,7 +428,7 @@ public class Symbols {
                             break;
                         }
                     }
-                    layout.draw(g2, (float)dx, (float)dy);
+                    layout.draw(g2, (float) dx, (float) dy);
                     break;
                 default:
                     break;
