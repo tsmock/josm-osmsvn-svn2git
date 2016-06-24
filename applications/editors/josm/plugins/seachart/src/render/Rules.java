@@ -17,18 +17,71 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 
-import s57.S57val;
-import s57.S57val.*;
-import s57.S57att.*;
-import s57.S57obj.*;
-import s57.S57map.*;
 import render.ChartContext.RuleSet;
-import render.Renderer.*;
-import symbols.*;
-import symbols.Symbols.*;
+import render.Renderer.LabelStyle;
+import s57.S57att.Att;
+import s57.S57map.AttMap;
+import s57.S57map.Feature;
+import s57.S57map.ObjTab;
+import s57.S57map.Pflag;
+import s57.S57map.Rflag;
+import s57.S57obj.Obj;
+import s57.S57val;
+import s57.S57val.AddMRK;
+import s57.S57val.AttVal;
+import s57.S57val.BcnSHP;
+import s57.S57val.BnkWTW;
+import s57.S57val.BoySHP;
+import s57.S57val.CatACH;
+import s57.S57val.CatCBL;
+import s57.S57val.CatCRN;
+import s57.S57val.CatDIS;
+import s57.S57val.CatHAF;
+import s57.S57val.CatLAM;
+import s57.S57val.CatLMK;
+import s57.S57val.CatMOR;
+import s57.S57val.CatNMK;
+import s57.S57val.CatOBS;
+import s57.S57val.CatOFP;
+import s57.S57val.CatPIL;
+import s57.S57val.CatPRA;
+import s57.S57val.CatREA;
+import s57.S57val.CatROD;
+import s57.S57val.CatSCF;
+import s57.S57val.CatSEA;
+import s57.S57val.CatSIL;
+import s57.S57val.CatSIT;
+import s57.S57val.CatSIW;
+import s57.S57val.CatSLC;
+import s57.S57val.CatWED;
+import s57.S57val.CatWRK;
+import s57.S57val.ColCOL;
+import s57.S57val.ColPAT;
+import s57.S57val.FncFNC;
+import s57.S57val.MarSYS;
+import s57.S57val.StsSTS;
+import s57.S57val.TopSHP;
+import s57.S57val.TrfTRF;
+import s57.S57val.UniHLU;
+import s57.S57val.WatLEV;
+import symbols.Areas;
+import symbols.Beacons;
+import symbols.Buoys;
+import symbols.Facilities;
+import symbols.Harbours;
+import symbols.Landmarks;
+import symbols.Notices;
+import symbols.Symbols;
+import symbols.Symbols.Delta;
+import symbols.Symbols.Handle;
+import symbols.Symbols.LineStyle;
+import symbols.Symbols.Patt;
+import symbols.Symbols.Scheme;
+import symbols.Symbols.Symbol;
+import symbols.Topmarks;
 
 public class Rules {
-    
+
     static final DecimalFormat df = new DecimalFormat("#.#");
 
     static final EnumMap<ColCOL, Color> bodyColours = new EnumMap<>(ColCOL.class);
@@ -61,7 +114,7 @@ public class Rules {
         pattMap.put(ColPAT.PAT_SALT, Patt.X);
         pattMap.put(ColPAT.PAT_STRP, Patt.H);
     }
-    
+
     static String getName() {
         AttVal<?> name = feature.atts.get(Att.OBJNAM);
         if (name == null) {
@@ -70,23 +123,26 @@ public class Rules {
                 name = atts.get(Att.OBJNAM);
             }
         }
-        return (name != null) ? (String)name.val: null;
+        return (name != null) ? (String) name.val : null;
     }
 
     public static void addName(int z, Font font) {
         addName(z, font, Color.black, new Delta(Handle.CC, new AffineTransform()));
     }
+
     public static void addName(int z, Font font, Color colour) {
         addName(z, font, colour, new Delta(Handle.CC, new AffineTransform()));
     }
+
     public static void addName(int z, Font font, Delta delta) {
         addName(z, font, Color.black, delta);
     }
+
     public static void addName(int z, Font font, Color colour, Delta delta) {
         if (Renderer.zoom >= z) {
             String name = getName();
             if (name != null) {
-                Renderer.labelText(name, font,  colour, delta);
+                Renderer.labelText(name, font, colour, delta);
             }
         }
     }
@@ -112,35 +168,35 @@ public class Rules {
         else
             return item.val;
     }
-    
+
     public static String getAttStr(Obj obj, Att att) {
-        String str = (String)getAttVal(obj, att);
+        String str = (String) getAttVal(obj, att);
         if (str != null) {
             return str;
         }
-        return ""; 
+        return "";
     }
 
     @SuppressWarnings("unchecked")
     public static Enum<?> getAttEnum(Obj obj, Att att) {
-        ArrayList<?> list = (ArrayList<?>)getAttVal(obj, att);
+        ArrayList<?> list = (ArrayList<?>) getAttVal(obj, att);
         if (list != null) {
-            return ((ArrayList<Enum<?>>)list).get(0);
+            return ((ArrayList<Enum<?>>) list).get(0);
         }
         return S57val.unknAtt(att);
     }
-    
+
     @SuppressWarnings("unchecked")
     public static ArrayList<?> getAttList(Obj obj, Att att) {
-        ArrayList<Enum<?>> list = (ArrayList<Enum<?>>)getAttVal(obj, att);
+        ArrayList<Enum<?>> list = (ArrayList<Enum<?>>) getAttVal(obj, att);
         if (list != null) {
             return list;
         }
         list = new ArrayList<>();
         list.add(S57val.unknAtt(att));
-        return list; 
+        return list;
     }
-    
+
     @SuppressWarnings("unchecked")
     static Scheme getScheme(Obj obj) {
         ArrayList<Color> colours = new ArrayList<>();
@@ -162,7 +218,7 @@ public class Rules {
         }
         return false;
     }
-    
+
     static boolean testAttribute(Obj obj, Att att, Object val) {
         AttMap atts;
         if ((atts = getAtts(obj, 0)) != null) {
@@ -171,10 +227,10 @@ public class Rules {
                 switch (item.conv) {
                 case S:
                 case A:
-                    return ((String)item.val).equals(val);
+                    return ((String) item.val).equals(val);
                 case E:
                 case L:
-                    return ((ArrayList<?>)item.val).contains(val);
+                    return ((ArrayList<?>) item.val).contains(val);
                 case F:
                 case I:
                     return item.val == val;
@@ -183,23 +239,23 @@ public class Rules {
         }
         return false;
     }
-    
+
     static boolean hasObject(Obj obj) {
         return (feature.objs.containsKey(obj));
     }
-    
+
     public static Feature feature;
     static ArrayList<Feature> objects;
-    
+
     static boolean testObject(Obj obj) {
         return ((objects = Renderer.map.features.get(obj)) != null);
     }
-    
+
     static boolean testFeature(Feature f) {
         return ((feature = f).reln == Rflag.MASTER);
     }
-    
-    public static void rules () {
+
+    public static void rules() {
         if ((Renderer.context.ruleset() == RuleSet.ALL) || (Renderer.context.ruleset() == RuleSet.BASE)) {
             if (testObject(Obj.LNDARE)) for (Feature f : objects) if (testFeature(f)) areas();
             if (testObject(Obj.BUAARE)) for (Feature f : objects) if (testFeature(f)) areas();
@@ -295,7 +351,7 @@ public class Rules {
             if (testObject(Obj.BCNSPP)) for (Feature f : objects) if (testFeature(f)) beacons();
         }
     }
-    
+
     private static void areas() {
         String name = getName();
         switch (feature.type) {
@@ -318,17 +374,17 @@ public class Rules {
             break;
         case DRGARE:
             if (Renderer.zoom < 16)
-                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] { 25, 25 }, new Color(0x40ffffff, true)));
+                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] {25, 25 }, new Color(0x40ffffff, true)));
             else
-                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] { 25, 25 }));
+                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] {25, 25 }));
             addName(12, new Font("Arial", Font.PLAIN, 100), new Delta(Handle.CC, new AffineTransform()));
             break;
         case FAIRWY:
             if (feature.geom.area > 2.0) {
                 if (Renderer.zoom < 16)
-                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] { 50, 50 }, new Color(0x40ffffff, true)));
+                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] {50, 50 }, new Color(0x40ffffff, true)));
                 else
-                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] { 50, 50 }));
+                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] {50, 50 }));
             } else {
                 if (Renderer.zoom >= 14)
                     Renderer.lineVector(new LineStyle(new Color(0x40ffffff, true)));
@@ -361,14 +417,14 @@ public class Rules {
                     Renderer.symbol(Areas.MarineFarm);
                 }
                 if ((feature.geom.area > 0.2) || ((feature.geom.area > 0.05) && (Renderer.zoom >= 14)) || ((feature.geom.area > 0.005) && (Renderer.zoom >= 16))) {
-                    Renderer.lineVector(new LineStyle(Color.black, 4, new float[] { 10, 10 }));
+                    Renderer.lineVector(new LineStyle(Color.black, 4, new float[] {10, 10}));
                 }
             }
             break;
         case OSPARE:
             if (testAttribute(feature.type, Att.CATPRA, CatPRA.PRA_WFRM)) {
                 Renderer.symbol(Areas.WindFarm);
-                Renderer.lineVector(new LineStyle(Color.black, 20, new float[] { 40, 40 }));
+                Renderer.lineVector(new LineStyle(Color.black, 20, new float[] {40, 40}));
                 addName(15, new Font("Arial", Font.BOLD, 80), new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 10)));
             }
             break;
@@ -383,7 +439,7 @@ public class Rules {
             break;
         case PRCARE:
             if (Renderer.zoom >= 12) {
-                Renderer.lineVector(new LineStyle(Symbols.Mline, 10, new float[] { 40, 40 }));
+                Renderer.lineVector(new LineStyle(Symbols.Mline, 10, new float[] {40, 40}));
             }
             break;
         case SEAARE:
@@ -407,7 +463,7 @@ public class Rules {
             case SEA_SHOL:
                 if (Renderer.zoom >= 14) {
                     if (feature.geom.prim == Pflag.AREA) {
-                        Renderer.lineVector(new LineStyle(new Color(0xc480ff), 4, new float[] { 25, 25 }));
+                        Renderer.lineVector(new LineStyle(new Color(0xc480ff), 4, new float[] {25, 25}));
                         if (name != null) {
                             Renderer.labelText(name, new Font("Arial", Font.ITALIC, 75), Color.black, new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
                             Renderer.labelText("(Shoal)", new Font("Arial", Font.PLAIN, 60), Color.black, new Delta(Handle.BC));
@@ -440,7 +496,7 @@ public class Rules {
             if (Renderer.zoom >= 12) {
                 switch ((CatWED) getAttEnum(feature.type, Att.CATWED)) {
                 case WED_KELP:
-                    if (feature.geom.prim == Pflag.AREA) { 
+                    if (feature.geom.prim == Pflag.AREA) {
                         Renderer.fillPattern(Areas.KelpA);
                     } else {
                         Renderer.symbol(Areas.KelpS);
@@ -462,12 +518,12 @@ public class Rules {
             break;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void beacons() {
         if ((Renderer.zoom >= 14) || ((Renderer.zoom >= 12) && ((feature.type == Obj.BCNLAT) || (feature.type == Obj.BCNCAR)))
                 || ((Renderer.zoom >= 11) && ((feature.type == Obj.BCNSAW) || hasObject(Obj.RTPBCN)))) {
-            BcnSHP shape = (BcnSHP)getAttEnum(feature.type, Att.BCNSHP);
+            BcnSHP shape = (BcnSHP) getAttEnum(feature.type, Att.BCNSHP);
             if (shape == BcnSHP.BCN_UNKN)
                 shape = BcnSHP.BCN_PILE;
             if ((shape == BcnSHP.BCN_WTHY) && (feature.type == Obj.BCNLAT)) {
@@ -497,12 +553,12 @@ public class Rules {
                 if (feature.objs.containsKey(Obj.TOPMAR)) {
                     AttMap topmap = feature.objs.get(Obj.TOPMAR).get(0);
                     if (topmap.containsKey(Att.TOPSHP)) {
-                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>)(topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.BeaconDelta);
+                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.BeaconDelta);
                     }
                 } else if (feature.objs.containsKey(Obj.DAYMAR)) {
                     AttMap topmap = feature.objs.get(Obj.DAYMAR).get(0);
                     if (topmap.containsKey(Att.TOPSHP)) {
-                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>)(topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.BeaconDelta);
+                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.BeaconDelta);
                     }
                 }
             }
@@ -512,7 +568,7 @@ public class Rules {
             Signals.addSignals();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void buoys() {
         if ((Renderer.zoom >= 14) || ((Renderer.zoom >= 12) && ((feature.type == Obj.BOYLAT) || (feature.type == Obj.BOYCAR)))
@@ -523,19 +579,19 @@ public class Rules {
             if (feature.objs.containsKey(Obj.TOPMAR)) {
                 AttMap topmap = feature.objs.get(Obj.TOPMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>)(topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.BuoyDeltas.get(shape));
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.BuoyDeltas.get(shape));
                 }
             } else if (feature.objs.containsKey(Obj.DAYMAR)) {
                 AttMap topmap = feature.objs.get(Obj.DAYMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>)(topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.BuoyDeltas.get(shape));
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.BuoyDeltas.get(shape));
                 }
             }
             addName(15, new Font("Arial", Font.BOLD, 40), new Delta(Handle.BL, AffineTransform.getTranslateInstance(60, -50)));
             Signals.addSignals();
         }
     }
-    
+
     private static void bridges() {
         if (Renderer.zoom >= 16) {
             double verclr, verccl, vercop, horclr;
@@ -547,8 +603,8 @@ public class Rules {
                     horclr = (Double) atts.get(Att.HORCLR).val;
                     hstr = String.valueOf(horclr);
                 }
-                    if (atts.containsKey(Att.VERCLR)) {
-                        verclr = (Double) atts.get(Att.VERCLR).val;
+                if (atts.containsKey(Att.VERCLR)) {
+                    verclr = (Double) atts.get(Att.VERCLR).val;
                 } else {
                     verclr = atts.containsKey(Att.VERCSA) ? (Double) atts.get(Att.VERCSA).val : 0;
                 }
@@ -574,7 +630,7 @@ public class Rules {
             }
         }
     }
-    
+
     private static void cables() {
         if ((Renderer.zoom >= 16) && (feature.geom.length < 2)) {
             if (feature.type == Obj.CBLSUB) {
@@ -588,15 +644,15 @@ public class Rules {
                 }
                 if (atts != null) {
                     if (atts.containsKey(Att.VERCLR)) {
-                        Renderer.labelText(String.valueOf((Double) atts.get(Att.VERCLR).val), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.VCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0,25)));
+                        Renderer.labelText(String.valueOf(atts.get(Att.VERCLR).val), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.VCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
                     } else if (atts.containsKey(Att.VERCSA)) {
-                        Renderer.labelText(String.valueOf((Double) atts.get(Att.VERCSA).val), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.PCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0,25)));
+                        Renderer.labelText(String.valueOf(atts.get(Att.VERCSA).val), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.PCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
                     }
                 }
             }
         }
     }
-    
+
     private static void callpoint() {
         if (Renderer.zoom >= 14) {
             Symbol symb = Harbours.CallPoint2;
@@ -611,32 +667,33 @@ public class Rules {
             Renderer.symbol(symb, new Delta(Handle.CC, AffineTransform.getRotateInstance(Math.toRadians(orient))));
             String chn;
             if (!(chn = getAttStr(feature.type, Att.COMCHA)).isEmpty()) {
-                Renderer.labelText(("Ch." + chn), new Font("Arial", Font.PLAIN, 50), Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0,50)));
+                Renderer.labelText(("Ch." + chn), new Font("Arial", Font.PLAIN, 50), Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 50)));
             }
         }
     }
-    
+
     private static void depths() {
         switch (feature.type) {
         case SOUNDG:
             if ((Renderer.zoom >= 14) && hasAttribute(Obj.SOUNDG, Att.VALSOU)) {
-                double depth = (double)getAttVal(Obj.SOUNDG, Att.VALSOU);
+                double depth = (double) getAttVal(Obj.SOUNDG, Att.VALSOU);
                 String dstr = df.format(depth);
-                String tok[] = dstr.split("[-.]");
+                String[] tok = dstr.split("[-.]");
                 String ul = "";
                 String id = tok[0];
                 String dd = "";
                 if (tok[0].equals("")) {
-                    for (int i = 0; i <  tok[1].length(); i++)
+                    for (int i = 0; i < tok[1].length(); i++) {
                         ul += "_";
+                    }
                     id = tok[1];
                     dd = (tok.length == 3) ? tok[2] : "";
                 } else {
                     dd = (tok.length == 2) ? tok[1] : "";
                 }
-                Renderer.labelText(ul, new Font("Arial", Font.PLAIN, 30), Color.black, new Delta(Handle.RC, AffineTransform.getTranslateInstance(10,15)));
-                Renderer.labelText(id, new Font("Arial", Font.PLAIN, 30), Color.black, new Delta(Handle.RC, AffineTransform.getTranslateInstance(10,0)));
-                Renderer.labelText(dd, new Font("Arial", Font.PLAIN, 20), Color.black, new Delta(Handle.LC, AffineTransform.getTranslateInstance(15,10)));
+                Renderer.labelText(ul, new Font("Arial", Font.PLAIN, 30), Color.black, new Delta(Handle.RC, AffineTransform.getTranslateInstance(10, 15)));
+                Renderer.labelText(id, new Font("Arial", Font.PLAIN, 30), Color.black, new Delta(Handle.RC, AffineTransform.getTranslateInstance(10, 0)));
+                Renderer.labelText(dd, new Font("Arial", Font.PLAIN, 20), Color.black, new Delta(Handle.LC, AffineTransform.getTranslateInstance(15, 10)));
             }
             break;
         case DEPCNT:
@@ -645,7 +702,7 @@ public class Rules {
             break;
         }
     }
-    
+
     private static void distances() {
         if (Renderer.zoom >= 14) {
             if (!testAttribute(Obj.DISMAR, Att.CATDIS, CatDIS.DIS_NONI)) {
@@ -688,7 +745,7 @@ public class Rules {
             }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void floats() {
         if ((Renderer.zoom >= 12) || ((Renderer.zoom >= 11) && ((feature.type == Obj.LITVES) || (feature.type == Obj.BOYINB) || hasObject(Obj.RTPBCN)))) {
@@ -708,19 +765,19 @@ public class Rules {
             if (feature.objs.containsKey(Obj.TOPMAR)) {
                 AttMap topmap = feature.objs.get(Obj.TOPMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>)(topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.FloatDelta);
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.FloatDelta);
                 }
             } else if (feature.objs.containsKey(Obj.DAYMAR)) {
                 AttMap topmap = feature.objs.get(Obj.DAYMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>)(topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.FloatDelta);
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.FloatDelta);
                 }
             }
             addName(15, new Font("Arial", Font.BOLD, 40), new Delta(Handle.BL, AffineTransform.getTranslateInstance(20, -50)));
             Signals.addSignals();
         }
     }
-    
+
     private static void gauges() {
         if (Renderer.zoom >= 14) {
             Renderer.symbol(Harbours.TideGauge);
@@ -728,7 +785,7 @@ public class Rules {
             Signals.addSignals();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void harbours() {
         String name = getName();
@@ -747,7 +804,7 @@ public class Rules {
                     if (units == UniHLU.HLU_UNKN) {
                         units = UniHLU.HLU_METR;
                     }
-                    Renderer.lineCircle(new LineStyle(Symbols.Mline, 4, new float[] { 10, 10 }, null), radius, units);
+                    Renderer.lineCircle(new LineStyle(Symbols.Mline, 4, new float[] {10, 10}, null), radius, units);
                 }
             }
             break;
@@ -799,7 +856,7 @@ public class Rules {
             break;
         case BERTHS:
             if (Renderer.zoom >= 14) {
-                Renderer.lineVector(new LineStyle(Symbols.Mline, 6, new float[] { 20, 20 }));
+                Renderer.lineVector(new LineStyle(Symbols.Mline, 6, new float[] {20, 20}));
                 Renderer.labelText(name == null ? " " : name, new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, LabelStyle.RRCT, Symbols.Mline, Color.white);
             }
             break;
@@ -846,7 +903,7 @@ public class Rules {
             break;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void highways() {
         switch (feature.type) {
@@ -872,12 +929,12 @@ public class Rules {
             break;
         case RAILWY:
             Renderer.lineVector(new LineStyle(Color.gray, 10));
-            Renderer.lineVector(new LineStyle(Color.black, 10, new float[] { 30, 30 }));
+            Renderer.lineVector(new LineStyle(Color.black, 10, new float[] {30, 30}));
             break;
         default:
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void landmarks() {
         if (!hasAttribute(Obj.LNDMRK, Att.CATLMK)
@@ -887,17 +944,17 @@ public class Rules {
         else if (Renderer.zoom >= 12) {
             switch (feature.type) {
             case LNDMRK:
-            ArrayList<CatLMK> cats = (ArrayList<CatLMK>) getAttList(feature.type, Att.CATLMK);
-            Symbol catSym = Landmarks.Shapes.get(cats.get(0));
-            ArrayList<FncFNC> fncs = (ArrayList<FncFNC>) getAttList(feature.type, Att.FUNCTN);
-            Symbol fncSym = Landmarks.Funcs.get(fncs.get(0));
-            if ((fncs.get(0) == FncFNC.FNC_CHCH) && (cats.get(0) == CatLMK.LMK_TOWR))
-                catSym = Landmarks.ChurchTower;
-            if (cats.get(0) == CatLMK.LMK_RADR)
-                fncSym = Landmarks.RadioTV;
-            Renderer.symbol(catSym);
-            Renderer.symbol(fncSym);
-            break;
+                ArrayList<CatLMK> cats = (ArrayList<CatLMK>) getAttList(feature.type, Att.CATLMK);
+                Symbol catSym = Landmarks.Shapes.get(cats.get(0));
+                ArrayList<FncFNC> fncs = (ArrayList<FncFNC>) getAttList(feature.type, Att.FUNCTN);
+                Symbol fncSym = Landmarks.Funcs.get(fncs.get(0));
+                if ((fncs.get(0) == FncFNC.FNC_CHCH) && (cats.get(0) == CatLMK.LMK_TOWR))
+                    catSym = Landmarks.ChurchTower;
+                if (cats.get(0) == CatLMK.LMK_RADR)
+                    fncSym = Landmarks.RadioTV;
+                Renderer.symbol(catSym);
+                Renderer.symbol(fncSym);
+                break;
             case SILTNK:
                 if (testAttribute(feature.type, Att.CATSIL, CatSIL.SIL_WTRT))
                     Renderer.symbol(Landmarks.WaterTower);
@@ -910,7 +967,7 @@ public class Rules {
             Signals.addSignals();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void points() {
         boolean ok = false;
@@ -949,7 +1006,7 @@ public class Rules {
             Signals.addSignals();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private static void lights() {
         boolean ok = false;
@@ -999,7 +1056,7 @@ public class Rules {
             Renderer.cluster(symbols);
         }
     }
-    
+
     private static void moorings() {
         if (Renderer.zoom >= 14) {
             switch ((CatMOR) getAttEnum(feature.type, Att.CATMOR)) {
@@ -1053,9 +1110,9 @@ public class Rules {
             MarSYS sys = MarSYS.SYS_CEVN;
             BnkWTW bnk = BnkWTW.BWW_UNKN;
             AttVal<?> att = feature.atts.get(Att.MARSYS);
-            if (att != null) sys = (MarSYS)att.val;
+            if (att != null) sys = (MarSYS) att.val;
             att = feature.atts.get(Att.BNKWTW);
-            if (att != null) bnk = (BnkWTW)att.val;
+            if (att != null) bnk = (BnkWTW) att.val;
             ObjTab objs = feature.objs.get(Obj.NOTMRK);
             int n = objs.size();
             if (n > 5) {
@@ -1063,14 +1120,14 @@ public class Rules {
             } else {
                 int i = 0;
                 for (AttMap atts : objs.values()) {
-                    if (atts.get(Att.MARSYS) != null) sys = ((ArrayList<MarSYS>)(atts.get(Att.MARSYS).val)).get(0);
-                    if (atts.get(Att.BNKWTW) != null) bnk = ((ArrayList<BnkWTW>)(atts.get(Att.BNKWTW).val)).get(0);
+                    if (atts.get(Att.MARSYS) != null) sys = ((ArrayList<MarSYS>) (atts.get(Att.MARSYS).val)).get(0);
+                    if (atts.get(Att.BNKWTW) != null) bnk = ((ArrayList<BnkWTW>) (atts.get(Att.BNKWTW).val)).get(0);
                     CatNMK cat = CatNMK.NMK_UNKN;
-                    if (atts.get(Att.CATNMK) != null) cat = ((ArrayList<CatNMK>)(atts.get(Att.CATNMK).val)).get(0);
+                    if (atts.get(Att.CATNMK) != null) cat = ((ArrayList<CatNMK>) (atts.get(Att.CATNMK).val)).get(0);
                     Symbol sym = Notices.getNotice(cat, sys, bnk);
                     Scheme sch = Notices.getScheme(sys, bnk);
                     ArrayList<AddMRK> add = new ArrayList<>();
-                    if (atts.get(Att.ADDMRK) != null) add = (ArrayList<AddMRK>)(atts.get(Att.ADDMRK).val);
+                    if (atts.get(Att.ADDMRK) != null) add = (ArrayList<AddMRK>) (atts.get(Att.ADDMRK).val);
                     Handle h = Handle.CC;
                     double ax = 0.0;
                     double ay = 0.0;
@@ -1083,8 +1140,7 @@ public class Rules {
                             h = Handle.RC;
                             ax = -30;
                             ay = dy;
-                        }
-                        else {
+                        } else {
                             h = Handle.BR;
                         }
                         break;
@@ -1106,7 +1162,8 @@ public class Rules {
                     }
                     if (h != null) {
                         Renderer.symbol(sym, sch, new Delta(h, AffineTransform.getTranslateInstance(dx, dy)));
-                        if (!add.isEmpty()) Renderer.symbol(Notices.NoticeBoard, new Delta(Handle.BC, AffineTransform.getTranslateInstance(ax, ay - 30)));
+                        if (!add.isEmpty())
+                            Renderer.symbol(Notices.NoticeBoard, new Delta(Handle.BC, AffineTransform.getTranslateInstance(ax, ay - 30)));
                     }
                     i++;
                 }
@@ -1118,7 +1175,7 @@ public class Rules {
         if ((Renderer.zoom >= 12) && (feature.type == Obj.OBSTRN)) {
             switch ((CatOBS) getAttEnum(feature.type, Att.CATOBS)) {
             case OBS_BOOM:
-                Renderer.lineVector(new LineStyle(Color.black, 5, new float[] { 20, 20 }, null));
+                Renderer.lineVector(new LineStyle(Color.black, 5, new float[] {20, 20}, null));
                 if (Renderer.zoom >= 15) {
                     Renderer.lineText("Boom", new Font("Arial", Font.PLAIN, 80), Color.black, -20);
                 }
@@ -1157,7 +1214,7 @@ public class Rules {
                         verclr = atts.containsKey(Att.VERCSA) ? (Double) atts.get(Att.VERCSA).val : 0;
                     }
                     if (verclr > 0) {
-                        Renderer.labelText(String.valueOf(verclr), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.VCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0,25)));
+                        Renderer.labelText(String.valueOf(verclr), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.VCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
                     }
                 }
             }
@@ -1167,7 +1224,7 @@ public class Rules {
     @SuppressWarnings("unchecked")
     private static void platforms() {
         ArrayList<CatOFP> cats = (ArrayList<CatOFP>) getAttList(Obj.OFSPLF, Att.CATOFP);
-        if ((CatOFP) cats.get(0) == CatOFP.OFP_FPSO)
+        if (cats.get(0) == CatOFP.OFP_FPSO)
             Renderer.symbol(Buoys.Storage);
         else
             Renderer.symbol(Landmarks.Platform);
@@ -1207,7 +1264,7 @@ public class Rules {
             Renderer.lineSymbols(Areas.LaneArrow, 0.5, null, null, 0, Symbols.Mtss);
             break;
         case TSSBND:
-            Renderer.lineVector(new LineStyle(Symbols.Mtss, 20, new float[] { 40, 40 }, null));
+            Renderer.lineVector(new LineStyle(Symbols.Mtss, 20, new float[] {40, 40}, null));
             break;
         case ISTZNE:
             Renderer.lineSymbols(Areas.Restricted, 1.0, null, null, 0, Symbols.Mtss);
@@ -1235,7 +1292,7 @@ public class Rules {
                 case SLC_TWAL:
                     WatLEV lev = (WatLEV) getAttEnum(feature.type, Att.WATLEV);
                     if (lev == WatLEV.LEV_CVRS) {
-                        Renderer.lineVector(new LineStyle(Color.black, 10, new float[] { 40, 40 }, null));
+                        Renderer.lineVector(new LineStyle(Color.black, 10, new float[] {40, 40}, null));
                         if (Renderer.zoom >= 15)
                             Renderer.lineText("(covers)", new Font("Arial", Font.PLAIN, 60), Color.black, 80);
                     } else {
@@ -1346,7 +1403,7 @@ public class Rules {
                 break;
             case PILBOP:
                 Renderer.symbol(Harbours.Pilot);
-                addName(15, new Font("Arial", Font.BOLD, 40), Symbols.Msymb , new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, -40)));
+                addName(15, new Font("Arial", Font.BOLD, 40), Symbols.Msymb, new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, -40)));
                 CatPIL cat = (CatPIL) getAttEnum(feature.type, Att.CATPIL);
                 if (cat == CatPIL.PIL_HELI) {
                     Renderer.labelText("H", new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, 0)));
@@ -1355,7 +1412,7 @@ public class Rules {
             case CGUSTA:
                 Renderer.symbol(Harbours.SignalStation);
                 str = "CG";
-              if (feature.objs.containsKey(Obj.RSCSTA)) Renderer.symbol(Harbours.Rescue, new Delta(Handle.CC, AffineTransform.getTranslateInstance(130, 0)));
+                if (feature.objs.containsKey(Obj.RSCSTA)) Renderer.symbol(Harbours.Rescue, new Delta(Handle.CC, AffineTransform.getTranslateInstance(130, 0)));
                 break;
             case RSCSTA:
                 Renderer.symbol(Harbours.Rescue);
@@ -1371,10 +1428,10 @@ public class Rules {
     }
 
     private static void transits() {
-      if (Renderer.zoom >= 14) {
-        if (feature.type == Obj.RECTRC) Renderer.lineVector (new LineStyle(Color.black, 10, null, null));
-        else if (feature.type == Obj.NAVLNE) Renderer.lineVector (new LineStyle(Color.black, 10, new float[] { 25, 25 }, null));
-      }
+        if (Renderer.zoom >= 14) {
+            if (feature.type == Obj.RECTRC) Renderer.lineVector(new LineStyle(Color.black, 10, null, null));
+            else if (feature.type == Obj.NAVLNE) Renderer.lineVector(new LineStyle(Color.black, 10, new float[] {25, 25}, null));
+        }
         if (Renderer.zoom >= 15) {
             String str = "";
             String name = getName();

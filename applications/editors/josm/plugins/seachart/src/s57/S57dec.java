@@ -12,10 +12,12 @@ package s57;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import s57.S57dat.*;
-import s57.S57map.*;
+import s57.S57dat.S57field;
+import s57.S57dat.S57subf;
+import s57.S57map.Nflag;
 
 public class S57dec { // S57 ENC file input & map conversion
+    // CHECKSTYLE.OFF: LineLength
 
     public static void decodeChart(FileInputStream in, S57map map) throws IOException {
         S57dat.rnum = 0;
@@ -36,13 +38,13 @@ public class S57dec { // S57 ENC file input & map conversion
         S57map.Nflag nflag = Nflag.ANON;
         S57map.Pflag pflag = S57map.Pflag.NOSP;
         long objl = 0;
-        
+
         while (in.read(leader) == 24) {
             try {
-            length = Integer.parseInt(new String(leader, 0, 5)) - 24;
-            record = new byte[length];
-            ddr = (leader[6] == 'L');
-            fields = Integer.parseInt(new String(leader, 12, 5)) - 24;
+                length = Integer.parseInt(new String(leader, 0, 5)) - 24;
+                record = new byte[length];
+                ddr = (leader[6] == 'L');
+                fields = Integer.parseInt(new String(leader, 12, 5)) - 24;
             } catch (Exception e) {
                 System.err.println("Invalid file format - Encrypted/compressed ENC file?");
                 System.exit(-1);
@@ -61,23 +63,23 @@ public class S57dec { // S57 ENC file input & map conversion
                     switch (tag.toString()) {
                     case "0001":
                         int i8rn = ((Long) S57dat.decSubf(record, fields + pos, S57field.I8RI, S57subf.I8RN)).intValue();
-//						if (i8rn != ++S57dat.rnum) {
-//							System.err.println("Out of order record ID");
-//							in.close();
-//							System.exit(-1);
-//						}
+                        //                        if (i8rn != ++S57dat.rnum) {
+                        //                            System.err.println("Out of order record ID");
+                        //                            in.close();
+                        //                            System.exit(-1);
+                        //                        }
                         break;
                     case "DSSI":
                         S57dat.decSubf(record, fields + pos, S57field.DSSI, S57subf.AALL);
                         S57dat.decSubf(S57subf.NALL);
                         break;
                     case "DSPM":
-                        comf = (double) (Long) S57dat.decSubf(record, fields + pos, S57field.DSPM, S57subf.COMF);
-                        somf = (double) (Long) S57dat.decSubf(S57subf.SOMF);
+                        comf = (Long) S57dat.decSubf(record, fields + pos, S57field.DSPM, S57subf.COMF);
+                        somf = (Long) S57dat.decSubf(S57subf.SOMF);
                         break;
                     case "FRID":
                         inFeature = true;
-                        switch (((Long)S57dat.decSubf(record, fields + pos, S57field.FRID, S57subf.PRIM)).intValue()) {
+                        switch (((Long) S57dat.decSubf(record, fields + pos, S57field.FRID, S57subf.PRIM)).intValue()) {
                         case 1:
                             pflag = S57map.Pflag.POINT;
                             break;
@@ -90,7 +92,7 @@ public class S57dec { // S57 ENC file input & map conversion
                         default:
                             pflag = S57map.Pflag.NOSP;
                         }
-                        objl = (Long)S57dat.decSubf(S57subf.OBJL);
+                        objl = (Long) S57dat.decSubf(S57subf.OBJL);
                         break;
                     case "FOID":
                         name = (long) S57dat.decSubf(record, fields + pos, S57field.LNAM, S57subf.LNAM);
@@ -125,7 +127,7 @@ public class S57dec { // S57 ENC file input & map conversion
                         break;
                     case "VRID":
                         inFeature = false;
-                        name = (long) (Long)S57dat.decSubf(record, fields + pos, S57field.VRID, S57subf.RCNM);
+                        name = (Long) S57dat.decSubf(record, fields + pos, S57field.VRID, S57subf.RCNM);
                         switch ((int) name) {
                         case 110:
                             nflag = Nflag.ISOL;
@@ -206,8 +208,8 @@ public class S57dec { // S57 ENC file input & map conversion
         }
         map.endFile();
         in.close();
-        
+
         return;
     }
-    
+
 }

@@ -10,14 +10,18 @@
 package s57;
 
 import java.io.BufferedReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import s57.S57obj.*;
-import s57.S57att.*;
-import s57.S57val.*;
+import s57.S57att.Att;
+import s57.S57obj.Obj;
+import s57.S57val.CatBUA;
+import s57.S57val.CatROD;
+import s57.S57val.Conv;
 
 public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conversions
-    
+    // CHECKSTYLE.OFF: LineLength
+
     static class KeyVal<V> {
         Obj obj;
         Att att;
@@ -30,14 +34,14 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
             val = v;
         }
     }
-    
+
     private static final HashMap<String, KeyVal<?>> OSMtags = new HashMap<>();
     static {
         OSMtags.put("natural=coastline", new KeyVal<>(Obj.COALNE, Att.UNKATT, null, null)); OSMtags.put("natural=water", new KeyVal<>(Obj.LAKARE, Att.UNKATT, null, null));
         OSMtags.put("water=river", new KeyVal<>(Obj.RIVERS, Att.UNKATT, null, null)); OSMtags.put("water=canal", new KeyVal<>(Obj.CANALS, Att.UNKATT, null, null));
         OSMtags.put("waterway=riverbank", new KeyVal<>(Obj.RIVERS, Att.UNKATT, null, null)); OSMtags.put("waterway=dock", new KeyVal<>(Obj.HRBBSN, Att.UNKATT, null, null));
         OSMtags.put("waterway=lock", new KeyVal<>(Obj.HRBBSN, Att.UNKATT, null, null)); OSMtags.put("landuse=basin", new KeyVal<>(Obj.LAKARE, Att.UNKATT, null, null));
-        OSMtags.put("wetland=tidalflat", new KeyVal<>(Obj.DEPARE, Att.DRVAL2, Conv.F, (Double)0.0)); OSMtags.put("tidal=yes", new KeyVal<>(Obj.DEPARE, Att.DRVAL2, Conv.F, (Double)0.0));
+        OSMtags.put("wetland=tidalflat", new KeyVal<>(Obj.DEPARE, Att.DRVAL2, Conv.F, 0.0)); OSMtags.put("tidal=yes", new KeyVal<>(Obj.DEPARE, Att.DRVAL2, Conv.F, 0.0));
         OSMtags.put("natural=mud", new KeyVal<>(Obj.DEPARE, Att.UNKATT, null, null)); OSMtags.put("natural=sand", new KeyVal<>(Obj.DEPARE, Att.UNKATT, null, null));
         OSMtags.put("highway=motorway", new KeyVal<>(Obj.ROADWY, Att.CATROD, Conv.E, CatROD.ROD_MWAY)); OSMtags.put("highway=trunk", new KeyVal<>(Obj.ROADWY, Att.CATROD, Conv.E, CatROD.ROD_MAJR));
         OSMtags.put("highway=primary", new KeyVal<>(Obj.ROADWY, Att.CATROD, Conv.E, CatROD.ROD_MAJR)); OSMtags.put("highway=secondary", new KeyVal<>(Obj.ROADWY, Att.CATROD, Conv.E, CatROD.ROD_MINR));
@@ -49,14 +53,14 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
         OSMtags.put("landuse=retail", new KeyVal<>(Obj.BUAARE, Att.UNKATT, null, null)); OSMtags.put("landuse=residential", new KeyVal<>(Obj.BUAARE, Att.UNKATT, null, null));
         OSMtags.put("place=city", new KeyVal<>(Obj.BUAARE, Att.CATBUA, Conv.E, CatBUA.BUA_CITY)); OSMtags.put("place=town", new KeyVal<>(Obj.BUAARE, Att.CATBUA, Conv.E, CatBUA.BUA_TOWN));
         OSMtags.put("place=village", new KeyVal<>(Obj.BUAARE, Att.CATBUA, Conv.E, CatBUA.BUA_VLLG));
-        }
-    
+    }
+
     public static void OSMtag(ArrayList<KeyVal<?>> osm, String key, String val) {
         KeyVal<?> kv = OSMtags.get(key + "=" + val);
         if (kv != null) {
             if (kv.conv == Conv.E) {
                 ArrayList<Enum<?>> list = new ArrayList<>();
-                list.add((Enum<?>)kv.val);
+                list.add((Enum<?>) kv.val);
                 osm.add(new KeyVal<>(kv.obj, kv.att, kv.conv, list));
             } else {
                 osm.add(kv);
@@ -86,7 +90,7 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
         }
         return;
     }
-    
+
     public static void OSMmap(BufferedReader in, S57map map, boolean bb) throws Exception {
         String k = "";
         String v = "";
@@ -99,10 +103,10 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
         boolean inNode = false;
         boolean inWay = false;
         boolean inRel = false;
-        map.nodes.put(1l, map.new Snode());
-        map.nodes.put(2l, map.new Snode());
-        map.nodes.put(3l, map.new Snode());
-        map.nodes.put(4l, map.new Snode());
+        map.nodes.put(1L, map.new Snode());
+        map.nodes.put(2L, map.new Snode());
+        map.nodes.put(3L, map.new Snode());
+        map.nodes.put(4L, map.new Snode());
 
         String ln;
         while ((ln = in.readLine()) != null) {
@@ -111,20 +115,20 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
                     for (String token : ln.split("[ ]+")) {
                         if (token.matches("^minlat=.+")) {
                             map.bounds.minlat = Math.toRadians(Double.parseDouble(token.split("[\"\']")[1]));
-                            map.nodes.get(2l).lat = map.bounds.minlat;
-                            map.nodes.get(3l).lat = map.bounds.minlat;
+                            map.nodes.get(2L).lat = map.bounds.minlat;
+                            map.nodes.get(3L).lat = map.bounds.minlat;
                         } else if (token.matches("^minlon=.+")) {
                             map.bounds.minlon = Math.toRadians(Double.parseDouble(token.split("[\"\']")[1]));
-                            map.nodes.get(1l).lon = map.bounds.minlon;
-                            map.nodes.get(2l).lon = map.bounds.minlon;
+                            map.nodes.get(1L).lon = map.bounds.minlon;
+                            map.nodes.get(2L).lon = map.bounds.minlon;
                         } else if (token.matches("^maxlat=.+")) {
                             map.bounds.maxlat = Math.toRadians(Double.parseDouble(token.split("[\"\']")[1]));
-                            map.nodes.get(1l).lat = map.bounds.maxlat;
-                            map.nodes.get(4l).lat = map.bounds.maxlat;
+                            map.nodes.get(1L).lat = map.bounds.maxlat;
+                            map.nodes.get(4L).lat = map.bounds.maxlat;
                         } else if (token.matches("^maxlon=.+")) {
                             map.bounds.maxlon = Math.toRadians(Double.parseDouble(token.split("[\"\']")[1]));
-                            map.nodes.get(3l).lon = map.bounds.maxlon;
-                            map.nodes.get(4l).lon = map.bounds.maxlon;
+                            map.nodes.get(3L).lon = map.bounds.maxlon;
+                            map.nodes.get(4L).lon = map.bounds.maxlon;
                         }
                     }
                 } else {
@@ -204,7 +208,7 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
                                 } else if (token.matches("^type=.+")) {
                                     type = (token.split("[\"\']")[1]);
                                 } else if (token.matches("^role=.+")) {
-                                    String str[] = token.split("[\"\']");
+                                    String[] str = token.split("[\"\']");
                                     if (str.length > 1) {
                                         role = (token.split("[\"\']")[1]);
                                     }
@@ -237,7 +241,7 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
         }
         return;
     }
-    
+
     public static void OSMmeta(S57map map) {
         map.addEdge(++map.xref);
         for (long ref = 0; ref <= 4; ref++) {
@@ -247,5 +251,5 @@ public class S57osm { // OSM to S57 Object/Attribute and Object/Primitive conver
         map.addTag("seamark:coverage:category", "coverage");
         map.tagsDone(map.xref);
     }
-    
+
 }

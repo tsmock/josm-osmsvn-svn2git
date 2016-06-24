@@ -9,22 +9,48 @@
 
 package render;
 
-import java.awt.*;
-import java.awt.font.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import java.util.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.TexturePaint;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
-import s57.S57val.*;
 import s57.S57map;
-import s57.S57map.*;
+import s57.S57map.GeomIterator;
+import s57.S57map.Pflag;
+import s57.S57map.Snode;
+import s57.S57val.UniHLU;
 import symbols.Areas;
 import symbols.Symbols;
-import symbols.Symbols.*;
+import symbols.Symbols.Caption;
+import symbols.Symbols.Delta;
+import symbols.Symbols.Form;
+import symbols.Symbols.Handle;
+import symbols.Symbols.Instr;
+import symbols.Symbols.LineStyle;
+import symbols.Symbols.Scheme;
+import symbols.Symbols.SubSymbol;
+import symbols.Symbols.Symbol;
 
 public class Renderer {
 
-    public static final double symbolScale[] = { 256.0, 128.0, 64.0, 32.0, 16.0, 8.0, 4.0, 2.0, 1.0, 0.61, 0.372, 0.227, 0.138, 0.0843, 0.0514, 0.0313, 0.0191, 0.0117, 0.007 };
+    public static final double[] symbolScale = {256.0, 128.0, 64.0, 32.0, 16.0, 8.0, 4.0, 2.0, 1.0, 0.61, 0.372, 0.227, 0.138, 0.0843, 0.0514, 0.0313, 0.0191, 0.0117, 0.007 };
 
     public enum LabelStyle { NONE, RRCT, RECT, ELPS, CIRC, VCLR, PCLR, HCLR }
 
@@ -59,19 +85,22 @@ public class Renderer {
         Point2D point = context.getPoint(Rules.feature.geom.centre);
         Symbols.drawSymbol(g2, symbol, sScale, point.getX(), point.getY(), null, null);
     }
+
     public static void symbol(Symbol symbol, Scheme scheme) {
         Point2D point = context.getPoint(Rules.feature.geom.centre);
         Symbols.drawSymbol(g2, symbol, sScale, point.getX(), point.getY(), scheme, null);
     }
+
     public static void symbol(Symbol symbol, Delta delta) {
         Point2D point = context.getPoint(Rules.feature.geom.centre);
         Symbols.drawSymbol(g2, symbol, sScale, point.getX(), point.getY(), null, delta);
     }
+
     public static void symbol(Symbol symbol, Scheme scheme, Delta delta) {
         Point2D point = context.getPoint(Rules.feature.geom.centre);
         Symbols.drawSymbol(g2, symbol, sScale, point.getX(), point.getY(), scheme, delta);
     }
-    
+
     public static void cluster(ArrayList<Symbol> symbols) {
         Rectangle2D.Double bbox = null;
         if (symbols.size() > 4) {
@@ -296,7 +325,7 @@ public class Renderer {
             g2.draw(p);
         }
     }
-    
+
     public static void lineCircle(LineStyle style, double radius, UniHLU units) {
         switch (units) {
         case HLU_FEET:
@@ -321,11 +350,11 @@ public class Renderer {
         Symbol circle = new Symbol();
         if (style.fill != null) {
             circle.add(new Instr(Form.FILL, style.fill));
-            circle.add(new Instr(Form.RSHP, new Ellipse2D.Double(-radius,-radius,radius*2,radius*2)));
+            circle.add(new Instr(Form.RSHP, new Ellipse2D.Double(-radius, -radius, radius*2, radius*2)));
         }
         circle.add(new Instr(Form.FILL, style.line));
         circle.add(new Instr(Form.STRK, new BasicStroke(style.width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1, style.dash, 0)));
-        circle.add(new Instr(Form.ELPS, new Ellipse2D.Double(-radius,-radius,radius*2,radius*2)));
+        circle.add(new Instr(Form.ELPS, new Ellipse2D.Double(-radius, -radius, radius*2, radius*2)));
         Point2D point = context.getPoint(Rules.feature.geom.centre);
         Symbols.drawSymbol(g2, circle, 1, point.getX(), point.getY(), null, null);
     }
@@ -338,7 +367,7 @@ public class Renderer {
         case POINT:
             point = context.getPoint(Rules.feature.geom.centre);
             g2.drawImage(image, new AffineTransformOp(AffineTransform.getScaleInstance(sScale, sScale), AffineTransformOp.TYPE_NEAREST_NEIGHBOR),
-                    (int)(point.getX() - (50 * sScale)), (int)(point.getY() - (50 * sScale)));
+                    (int) (point.getX() - (50 * sScale)), (int) (point.getY() - (50 * sScale)));
             break;
         case AREA:
             GeomIterator git = map.new GeomIterator(Rules.feature.geom);
@@ -362,113 +391,118 @@ public class Renderer {
                     }
                 }
             }
-        g2.setPaint(new TexturePaint(image, new Rectangle(0, 0, 1 + (int)(300 * sScale), 1 + (int)(300 * sScale))));
-        g2.fill(p);
-        break;
+            g2.setPaint(new TexturePaint(image, new Rectangle(0, 0, 1 + (int) (300 * sScale), 1 + (int) (300 * sScale))));
+            g2.fill(p);
+            break;
         default:
             break;
         }
     }
-    
+
     public static void labelText(String str, Font font, Color tc) {
         labelText(str, font, tc, LabelStyle.NONE, null, null, null);
     }
+
     public static void labelText(String str, Font font, Color tc, Delta delta) {
         labelText(str, font, tc, LabelStyle.NONE, null, null, delta);
     }
+
     public static void labelText(String str, Font font, Color tc, LabelStyle style, Color fg) {
         labelText(str, font, tc, style, fg, null, null);
     }
+
     public static void labelText(String str, Font font, Color tc, LabelStyle style, Color fg, Color bg) {
         labelText(str, font, tc, style, fg, bg, null);
     }
+
     public static void labelText(String str, Font font, Color tc, LabelStyle style, Color fg, Delta delta) {
         labelText(str, font, tc, style, fg, null, delta);
     }
+
     public static void labelText(String str, Font font, Color tc, LabelStyle style, Color fg, Color bg, Delta delta) {
         if (delta == null) delta = new Delta(Handle.CC);
         if (bg == null) bg = new Color(0x00000000, true);
         if ((str == null) || (str.isEmpty())) str = " ";
-    FontRenderContext frc = g2.getFontRenderContext();
-    GlyphVector gv = font.deriveFont((float)(font.getSize())).createGlyphVector(frc, str.equals(" ") ? "M" : str);
-    Rectangle2D bounds = gv.getVisualBounds();
-    double width = bounds.getWidth();
-    double height = bounds.getHeight();
+        FontRenderContext frc = g2.getFontRenderContext();
+        GlyphVector gv = font.deriveFont((float) (font.getSize())).createGlyphVector(frc, str.equals(" ") ? "M" : str);
+        Rectangle2D bounds = gv.getVisualBounds();
+        double width = bounds.getWidth();
+        double height = bounds.getHeight();
         Symbol label = new Symbol();
         double lx, ly, tx, ty;
         switch (style) {
         case RRCT:
             width += height * 1.0;
             height *= 1.5;
-        if (width < height) width = height;
-        lx = -width / 2;
-        ly = -height / 2;
-        tx = lx + (height * 0.34);
-        ty = ly + (height * 0.17);
-            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx,ly,width,height)));
+            if (width < height) width = height;
+            lx = -width / 2;
+            ly = -height / 2;
+            tx = lx + (height * 0.34);
+            ty = ly + (height * 0.17);
+            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx, ly, width, height)));
             label.add(new Instr(Form.FILL, bg));
-            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx,ly,width,height,height,height)));
+            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx, ly, width, height, height, height)));
             label.add(new Instr(Form.FILL, fg));
-            label.add(new Instr(Form.STRK, new BasicStroke(1 + (int)(height/10), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER)));
-            label.add(new Instr(Form.RRCT, new RoundRectangle2D.Double(lx,ly,width,height,height,height)));
+            label.add(new Instr(Form.STRK, new BasicStroke(1 + (int) (height/10), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER)));
+            label.add(new Instr(Form.RRCT, new RoundRectangle2D.Double(lx, ly, width, height, height, height)));
             break;
         case VCLR:
             width += height * 1.0;
             height *= 2.0;
-        if (width < height) width = height;
-        lx = -width / 2;
-        ly = -height / 2;
-        tx = lx + (height * 0.27);
-        ty = ly + (height * 0.25);
-            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx,ly,width,height)));
+            if (width < height) width = height;
+            lx = -width / 2;
+            ly = -height / 2;
+            tx = lx + (height * 0.27);
+            ty = ly + (height * 0.25);
+            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx, ly, width, height)));
             label.add(new Instr(Form.FILL, bg));
-            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx,ly,width,height,height,height)));
+            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx, ly, width, height, height, height)));
             label.add(new Instr(Form.FILL, fg));
-            int sw = 1 + (int)(height/10);
+            int sw = 1 + (int) (height/10);
             double po = sw / 2;
             label.add(new Instr(Form.STRK, new BasicStroke(sw, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER)));
-            Path2D.Double p = new Path2D.Double(); p.moveTo(-height*0.2,-ly-po); p.lineTo(height*0.2,-ly-po); p.moveTo(0,-ly-po); p.lineTo(0,-ly-po-(height*0.15));
-            p.moveTo(-height*0.2,ly+po); p.lineTo((height*0.2),ly+po); p.moveTo(0,ly+po); p.lineTo(0,ly+po+(height*0.15));
+            Path2D.Double p = new Path2D.Double(); p.moveTo(-height*0.2, -ly-po); p.lineTo(height*0.2, -ly-po); p.moveTo(0, -ly-po); p.lineTo(0, -ly-po-(height*0.15));
+            p.moveTo(-height*0.2, ly+po); p.lineTo((height*0.2), ly+po); p.moveTo(0, ly+po); p.lineTo(0, ly+po+(height*0.15));
             label.add(new Instr(Form.PLIN, p));
             break;
         case PCLR:
             width += height * 1.0;
             height *= 2.0;
-        if (width < height) width = height;
-        lx = -width / 2;
-        ly = -height / 2;
-        tx = lx + (height * 0.27);
-        ty = ly + (height * 0.25);
-            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx,ly,width,height)));
+            if (width < height) width = height;
+            lx = -width / 2;
+            ly = -height / 2;
+            tx = lx + (height * 0.27);
+            ty = ly + (height * 0.25);
+            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx, ly, width, height)));
             label.add(new Instr(Form.FILL, bg));
-            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx,ly,width,height,height,height)));
+            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx, ly, width, height, height, height)));
             label.add(new Instr(Form.FILL, fg));
-            sw = 1 + (int)(height/10);
+            sw = 1 + (int) (height/10);
             po = sw / 2;
             label.add(new Instr(Form.STRK, new BasicStroke(sw, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER)));
-            p = new Path2D.Double(); p.moveTo(-height*0.2,-ly-po); p.lineTo(height*0.2,-ly-po); p.moveTo(0,-ly-po); p.lineTo(0,-ly-po-(height*0.15));
-            p.moveTo(-height*0.2,ly+po); p.lineTo((height*0.2),ly+po); p.moveTo(0,ly+po); p.lineTo(0,ly+po+(height*0.15));
+            p = new Path2D.Double(); p.moveTo(-height*0.2, -ly-po); p.lineTo(height*0.2, -ly-po); p.moveTo(0, -ly-po); p.lineTo(0, -ly-po-(height*0.15));
+            p.moveTo(-height*0.2, ly+po); p.lineTo((height*0.2), ly+po); p.moveTo(0, ly+po); p.lineTo(0, ly+po+(height*0.15));
             label.add(new Instr(Form.PLIN, p));
-            label.add(new Instr(Form.SYMB, new Symbols.SubSymbol(Areas.CableFlash, 1, 0, 0, null, new Delta(Handle.CC, new AffineTransform(0,-1,1,0,-width/2,0)))));
-            label.add(new Instr(Form.SYMB, new Symbols.SubSymbol(Areas.CableFlash, 1, 0, 0, null, new Delta(Handle.CC, new AffineTransform(0,-1,1,0,width/2,0)))));
+            label.add(new Instr(Form.SYMB, new Symbols.SubSymbol(Areas.CableFlash, 1, 0, 0, null, new Delta(Handle.CC, new AffineTransform(0, -1, 1, 0, -width/2, 0)))));
+            label.add(new Instr(Form.SYMB, new Symbols.SubSymbol(Areas.CableFlash, 1, 0, 0, null, new Delta(Handle.CC, new AffineTransform(0, -1, 1, 0, width/2, 0)))));
             break;
         case HCLR:
             width += height * 1.5;
             height *= 1.5;
-        if (width < height) width = height;
-        lx = -width / 2;
-        ly = -height / 2;
-        tx = lx + (height * 0.5);
-        ty = ly + (height * 0.17);
-            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx,ly,width,height)));
+            if (width < height) width = height;
+            lx = -width / 2;
+            ly = -height / 2;
+            tx = lx + (height * 0.5);
+            ty = ly + (height * 0.17);
+            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx, ly, width, height)));
             label.add(new Instr(Form.FILL, bg));
-            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx,ly,width,height,height,height)));
+            label.add(new Instr(Form.RSHP, new RoundRectangle2D.Double(lx, ly, width, height, height, height)));
             label.add(new Instr(Form.FILL, fg));
-            sw = 1 + (int)(height/10);
+            sw = 1 + (int) (height/10);
             double vo = height / 4;
             label.add(new Instr(Form.STRK, new BasicStroke(sw, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER)));
-            p = new Path2D.Double(); p.moveTo(-width*0.4-sw,-ly-vo); p.lineTo(-width*0.4-sw,ly+vo); p.moveTo(-width*0.4-sw,0); p.lineTo(-width*0.4+sw,0);
-            p.moveTo(width*0.4+sw,-ly-vo); p.lineTo(width*0.4+sw,ly+vo); p.moveTo(width*0.4-sw,0); p.lineTo(width*0.4+sw,0);
+            p = new Path2D.Double(); p.moveTo(-width*0.4-sw, -ly-vo); p.lineTo(-width*0.4-sw, ly+vo); p.moveTo(-width*0.4-sw, 0); p.lineTo(-width*0.4+sw, 0);
+            p.moveTo(width*0.4+sw, -ly-vo); p.lineTo(width*0.4+sw, ly+vo); p.moveTo(width*0.4-sw, 0); p.lineTo(width*0.4+sw, 0);
             label.add(new Instr(Form.PLIN, p));
             break;
         default:
@@ -476,7 +510,7 @@ public class Renderer {
             ly = -height / 2;
             tx = lx;
             ty = ly;
-            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx,ly,width,height)));
+            label.add(new Instr(Form.BBOX, new Rectangle2D.Double(lx, ly, width, height)));
             break;
         }
         label.add(new Instr(Form.TEXT, new Caption(str, font, tc, new Delta(Handle.TL, AffineTransform.getTranslateInstance(tx, ty)))));
@@ -548,13 +582,13 @@ public class Renderer {
             }
         }
     }
-    
+
     public static void lightSector(Color col1, Color col2, double radius, double s1, double s2, Double dir, String str) {
         if ((zoom >= 16) && (radius > 0.2)) {
             radius /= (Math.pow(2, zoom-15));
         }
-        double mid = (((s1 + s2)  / 2) + (s1 > s2 ? 180 : 0)) % 360;
-        g2.setStroke(new BasicStroke((float) (3.0 * sScale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1, new float[] {20 * (float)sScale, 20 * (float)sScale}, 0));
+        double mid = (((s1 + s2) / 2) + (s1 > s2 ? 180 : 0)) % 360;
+        g2.setStroke(new BasicStroke((float) (3.0 * sScale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1, new float[] {20 * (float) sScale, 20 * (float) sScale}, 0));
         g2.setPaint(Color.black);
         Point2D.Double centre = (Point2D.Double) context.getPoint(Rules.feature.geom.centre);
         double radial = radius * context.mile(Rules.feature);
@@ -566,8 +600,8 @@ public class Renderer {
                 g2.draw(new Line2D.Double(centre.x, centre.y, centre.x - radial * Math.sin(Math.toRadians(s2)), centre.y + radial * Math.cos(Math.toRadians(s2))));
             }
         }
-        double arcWidth =  10.0 * sScale;
-        g2.setStroke(new BasicStroke((float)arcWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1));
+        double arcWidth = 10.0 * sScale;
+        g2.setStroke(new BasicStroke((float) arcWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1));
         g2.setPaint(col1);
         g2.draw(new Arc2D.Double(centre.x - radial, centre.y - radial, 2 * radial, 2 * radial, -(s1 + 90), ((s1 < s2) ? (s1 - s2) : (s1 - s2 - 360)), Arc2D.OPEN));
         if (col2 != null) {
