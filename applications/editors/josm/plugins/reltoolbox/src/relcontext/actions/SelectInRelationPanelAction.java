@@ -4,25 +4,24 @@ package relcontext.actions;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 
 import javax.swing.AbstractAction;
 
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.command.Command;
-import org.openstreetmap.josm.command.DeleteCommand;
 import org.openstreetmap.josm.data.osm.Relation;
 import org.openstreetmap.josm.tools.ImageProvider;
 
 import relcontext.ChosenRelation;
 import relcontext.ChosenRelationListener;
 
-public class DeleteChosenRelationAction extends AbstractAction implements ChosenRelationListener {
+public class SelectInRelationPanelAction extends AbstractAction implements ChosenRelationListener {
     private ChosenRelation rel;
 
-    public DeleteChosenRelationAction(ChosenRelation rel) {
-        super(tr("Delete relation"));
-        putValue(SMALL_ICON, ImageProvider.get("dialogs", "delete"));
+    public SelectInRelationPanelAction(ChosenRelation rel) {
+        super();
+        putValue(NAME, tr("Select in relation list"));
+        putValue(SHORT_DESCRIPTION, tr("Select relation in relation list."));
+        putValue(SMALL_ICON, ImageProvider.get("dialogs", "relationlist"));
         this.rel = rel;
         rel.addChosenRelationListener(this);
         setEnabled(rel.get() != null);
@@ -30,11 +29,9 @@ public class DeleteChosenRelationAction extends AbstractAction implements Chosen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Relation r = rel.get();
-        rel.clear();
-        Command c = DeleteCommand.delete(Main.main.getEditLayer(), Collections.singleton(r), true, true);
-        if (c != null ) {
-            Main.main.undoRedo.add(c);
+        if (rel.get() != null) {
+            Main.map.relationListDialog.selectRelation(rel.get());
+            Main.map.relationListDialog.unfurlDialog();
         }
     }
 
