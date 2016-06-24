@@ -11,23 +11,30 @@ package render;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
+import s57.S57att.Att;
+import s57.S57map.AttMap;
+import s57.S57map.ObjTab;
+import s57.S57obj.Obj;
+import s57.S57val.BoySHP;
+import s57.S57val.CatFOG;
 import s57.S57val.CatLIT;
+import s57.S57val.CatROS;
+import s57.S57val.CatRTB;
 import s57.S57val.ColCOL;
-import s57.S57att.*;
-import s57.S57obj.*;
-import s57.S57val.*;
-import s57.S57map.*;
+import s57.S57val.LitCHR;
 import symbols.Beacons;
 import symbols.Symbols;
+import symbols.Symbols.Delta;
+import symbols.Symbols.Handle;
+import symbols.Symbols.Scheme;
 import symbols.Topmarks;
-import symbols.Symbols.*;
 
-public class Signals extends Rules{
+public class Signals extends Rules {
 
     static final EnumMap<ColCOL, Color> LightColours = new EnumMap<>(ColCOL.class);
     static {
@@ -82,7 +89,7 @@ public class Signals extends Rules{
         LightCharacters.put(LitCHR.CHR_AL, "Al");
         LightCharacters.put(LitCHR.CHR_ALFFL, "Al.FFl");
     }
-    
+
     static final EnumMap<CatFOG, String> fogSignals = new EnumMap<>(CatFOG.class);
     static {
         fogSignals.put(CatFOG.FOG_EXPL, "Explos");
@@ -98,14 +105,14 @@ public class Signals extends Rules{
     }
 
     static final DecimalFormat df = new DecimalFormat("#.#");
-    
+
     public static void addSignals() {
-      if (feature.objs.containsKey(Obj.RADRFL)) reflectors();
-      if (feature.objs.containsKey(Obj.FOGSIG)) fogSignals();
-      if (feature.objs.containsKey(Obj.RTPBCN)) radarStations();
-      if (feature.objs.containsKey(Obj.RADSTA)) radarStations();
-      if (feature.objs.containsKey(Obj.RDOSTA)) radioStations();
-      if (feature.objs.containsKey(Obj.LIGHTS)) lights();
+        if (feature.objs.containsKey(Obj.RADRFL)) reflectors();
+        if (feature.objs.containsKey(Obj.FOGSIG)) fogSignals();
+        if (feature.objs.containsKey(Obj.RTPBCN)) radarStations();
+        if (feature.objs.containsKey(Obj.RADSTA)) radarStations();
+        if (feature.objs.containsKey(Obj.RDOSTA)) radioStations();
+        if (feature.objs.containsKey(Obj.LIGHTS)) lights();
     }
 
     public static void reflectors() {
@@ -163,7 +170,7 @@ public class Signals extends Rules{
             }
         }
     }
-    
+
     public static void fogSignals() {
         if (Renderer.zoom >= 11)
             Renderer.symbol(Beacons.FogSignal);
@@ -359,15 +366,15 @@ public class Signals extends Rules{
     }
 
     class Sect {
-    int dir;
-    LitCHR chr;
-    ColCOL col;
-    ColCOL alt;
-    String grp;
-    double per;
-    double rng;
+        int dir;
+        LitCHR chr;
+        ColCOL col;
+        ColCOL alt;
+        String grp;
+        double per;
+        double rng;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static void lights() {
         Enum<ColCOL> col = null;
@@ -508,6 +515,7 @@ public class Signals extends Rules{
                         double rng;
                         double hgt;
                     }
+
                     ArrayList<LitSect> litatts = new ArrayList<>();
                     for (AttMap atts : lights.values()) {
                         LitSect sect = new LitSect();
@@ -571,11 +579,12 @@ public class Signals extends Rules{
                         ColCOL col;
                         double rng;
 
-                        public ColRng(ColCOL c, double r) {
+                        ColRng(ColCOL c, double r) {
                             col = c;
                             rng = r;
                         }
                     }
+
                     int y = -30;
                     for (ArrayList<LitSect> group : groupings) {
                         ArrayList<ColRng> colrng = new ArrayList<>();
