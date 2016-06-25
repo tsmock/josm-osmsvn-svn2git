@@ -146,6 +146,10 @@
   path = applications/editors/josm/plugins/geochat
   url = ../geochat
   branch = master
+[submodule "applications/editors/josm/plugins/geojson"]
+  path = applications/editors/josm/plugins/geojson
+  url = ../geojson.git
+  branch = master
 [submodule "applications/editors/josm/plugins/geotools"]
   path = applications/editors/josm/plugins/geotools
   url = ../geotools
