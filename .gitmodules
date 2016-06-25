@@ -14,6 +14,10 @@
   path = editors/josm/plugins/continuosDownload
   url = ../continuos-download.git
   branch = master
+[submodule "editors/josm/plugins/geojson"]
+  path = editors/josm/plugins/geojson
+  url = ../geojson.git
+  branch = master
 [submodule "editors/josm/plugins/tofix"]
   path = editors/josm/plugins/tofix
   url = ../tofix.git
