@@ -16,10 +16,16 @@
 		<Class name="~com.hp.*" />
 	</Match>
 	<Match>
+		<Class name="~com.jgoodies.*" />
+	</Match>
+	<Match>
 		<Class name="~com.sun.*" />
 	</Match>
 	<Match>
 		<Class name="~com.thoughtworks.*" />
+	</Match>
+	<Match>
+		<Class name="~com.vividsolutions.*" />
 	</Match>
 	<Match>
 		<Class name="~crosby.*" />
