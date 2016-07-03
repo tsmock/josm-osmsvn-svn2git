@@ -1,8 +1,9 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import java.awt.Color;
 
-public class LayerInfo{
+public class LayerInfo {
     public Color fill;
     public Color stroke;
     public int dash;
@@ -13,9 +14,8 @@ public class LayerInfo{
     public int nr;
 
     @Override
-    public int hashCode()
-    {
-        int code =  Double.toString(width).hashCode() ^ this.divider ^ this.dash;
+    public int hashCode() {
+        int code = Double.toString(width).hashCode() ^ this.divider ^ this.dash;
 
         if (this.fill != null) {
             code ^= this.fill.hashCode();
@@ -29,15 +29,14 @@ public class LayerInfo{
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         LayerInfo l = (LayerInfo) o;
         boolean eq = this.width == l.width &&
         this.divider == l.divider &&
         this.dash == l.dash;
 
 
-        if (this.fill != null){
+        if (this.fill != null) {
             eq &= this.fill.equals(l.fill);
         }
 

@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import java.awt.geom.Point2D;
@@ -9,7 +10,6 @@ public class PdfPath {
 
     LayerContents layer;
     public int nr;
-
 
     public PdfPath(List<Point2D> nodes) {
         points = nodes;
@@ -30,7 +30,7 @@ public class PdfPath {
     public void calculateLength() {
         double len = 0;
 
-        for(int pos =1; pos < points.size(); pos ++) {
+        for (int pos = 1; pos < points.size(); pos++) {
             len += points.get(pos).distance(points.get(pos -1));
         }
 

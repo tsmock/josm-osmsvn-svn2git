@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import java.awt.Color;
@@ -24,8 +25,7 @@ public class PathOptimizer {
 
     LayerContents prevLayer = null;
 
-    public PathOptimizer(double _pointsTolerance, Color _color, boolean _splitOnColorChange)
-    {
+    public PathOptimizer(double _pointsTolerance, Color _color, boolean _splitOnColorChange) {
         uniquePointMap = new HashMap<>();
         uniquePoints = new ArrayList<>();
         layerMap = new HashMap<>();
@@ -37,19 +37,17 @@ public class PathOptimizer {
 
     public Point2D getUniquePoint(Point2D point) {
 
-        if (uniquePointMap.containsKey(point)){
+        if (uniquePointMap.containsKey(point)) {
             return uniquePointMap.get(point);
-        }
-        else {
+        } else {
             uniquePointMap.put(point, point);
             uniquePoints.add(point);
             return point;
         }
     }
 
-    public void addPath(LayerInfo info, PdfPath path)
-    {
-        if (!isColorOK(info)){
+    public void addPath(LayerInfo info, PdfPath path) {
+        if (!isColorOK(info)) {
             return;
         }
 
@@ -59,7 +57,7 @@ public class PathOptimizer {
 
     public void addMultiPath(LayerInfo info, List<PdfPath> paths) {
 
-        if (!isColorOK(info)){
+        if (!isColorOK(info)) {
             return;
         }
 
@@ -67,19 +65,19 @@ public class PathOptimizer {
 
         //optimize the paths
         Set<Point2D> points = new HashSet<>();
-        for(PdfPath path: paths) {
+        for (PdfPath path: paths) {
             points.addAll(path.points);
         }
         LayerContents multipathLayer = new LayerContents();
         multipathLayer.paths = paths;
         Map<Point2D, Point2D> pointMap = DuplicateNodesFinder.findDuplicateNodes(points, pointsTolerance);
-        this.fixPoints(multipathLayer,pointMap);
+        this.fixPoints(multipathLayer, pointMap);
         this.concatenatePaths(multipathLayer);
 
         paths = multipathLayer.paths;
 
         boolean goodMultiPath = true;
-        for(PdfPath path: paths) {
+        for (PdfPath path: paths) {
             goodMultiPath &= path.isClosed();
         }
 
@@ -111,9 +109,8 @@ public class PathOptimizer {
         return good;
     }
 
-
-    public void removeParallelLines(double maxDistance){
-        for(LayerContents layer: this.layers) {
+    public void removeParallelLines(double maxDistance) {
+        for (LayerContents layer: this.layers) {
             this.removeParallelLines(layer, maxDistance);
         }
     }
@@ -121,37 +118,35 @@ public class PathOptimizer {
     public void mergeNodes() {
         Map<Point2D, Point2D> pointMap = DuplicateNodesFinder.findDuplicateNodes(uniquePoints, pointsTolerance);
 
-        for(LayerContents layer: this.layers) {
+        for (LayerContents layer: this.layers) {
             this.fixPoints(layer, pointMap);
         }
     }
 
     public void mergeSegments() {
-        for(LayerContents layer: this.layers) {
+        for (LayerContents layer: this.layers) {
             this.concatenatePaths(layer);
         }
     }
 
-
     public void removeSmallObjects(double tolerance) {
-        for(LayerContents layer: this.layers) {
+        for (LayerContents layer: this.layers) {
             this.removeSmallObjects(layer, tolerance, Double.POSITIVE_INFINITY);
         }
     }
 
-
     public void removeLargeObjects(double tolerance) {
-        for(LayerContents layer: this.layers) {
+        for (LayerContents layer: this.layers) {
             this.removeSmallObjects(layer, 0.0, tolerance);
         }
     }
 
     public void splitLayersBySimilarShapes(double tolerance) {
         List<LayerContents> newLayers = new ArrayList<>();
-        for(LayerContents l: this.layers) {
+        for (LayerContents l: this.layers) {
             List<LayerContents> splitResult = splitBySimilarGroups(l);
 
-            for(LayerContents ll: splitResult) {
+            for (LayerContents ll: splitResult) {
                 newLayers.add(ll);
             }
         }
@@ -160,10 +155,10 @@ public class PathOptimizer {
 
     public void splitLayersByPathKind(boolean closed, boolean single, boolean orthogonal) {
         List<LayerContents> newLayers = new ArrayList<>();
-        for(LayerContents l: this.layers) {
+        for (LayerContents l: this.layers) {
             List<LayerContents> splitResult = splitBySegmentKind(l, closed, single, orthogonal);
 
-            for(LayerContents ll: splitResult) {
+            for (LayerContents ll: splitResult) {
                 newLayers.add(ll);
             }
         }
@@ -171,23 +166,20 @@ public class PathOptimizer {
         this.layers = newLayers;
     }
 
-
     public void finish() {
         int nr = 0;
-        for(LayerContents layer: this.layers) {
+        for (LayerContents layer: this.layers) {
             layer.info.nr = nr;
             nr++;
             finalizeLayer(layer);
         }
     }
 
-
     private LayerContents getLayer(LayerInfo info) {
 
         LayerContents layer = null;
 
-        if (this.layerMap.containsKey(info))
-        {
+        if (this.layerMap.containsKey(info)) {
             layer = this.layerMap.get(info);
 
             if (layer != this.prevLayer && this.splitOnColorChange) {
@@ -195,8 +187,7 @@ public class PathOptimizer {
             }
         }
 
-        if (layer == null)
-        {
+        if (layer == null) {
             layer = new LayerContents();
             layer.info = info.copy();
             layer.info.nr = this.layers.size();
@@ -208,15 +199,14 @@ public class PathOptimizer {
         return layer;
     }
 
-
-    private void finalizeLayer(LayerContents layer){
+    private void finalizeLayer(LayerContents layer) {
         Set<Point2D> points = new HashSet<>();
         layer.points = new ArrayList<>();
 
-        for(PdfPath pp: layer.paths){
+        for (PdfPath pp: layer.paths) {
             pp.layer = layer;
 
-            for(Point2D point: pp.points){
+            for (Point2D point: pp.points) {
                 if (!points.contains(point)) {
                     layer.points.add(point);
                     points.add(point);
@@ -226,10 +216,10 @@ public class PathOptimizer {
 
         for (PdfMultiPath multipath: layer.multiPaths) {
             multipath.layer = layer;
-            for(PdfPath pp: multipath.paths){
+            for (PdfPath pp: multipath.paths) {
                 pp.layer = layer;
 
-                for(Point2D point: pp.points){
+                for (Point2D point: pp.points) {
                     if (!points.contains(point)) {
                         layer.points.add(point);
                         points.add(point);
@@ -243,10 +233,10 @@ public class PathOptimizer {
 
         List<PdfPath> newPaths = new ArrayList<>(layer.paths.size());
 
-        for(PdfPath path: layer.paths) {
+        for (PdfPath path: layer.paths) {
             List<Point2D> points = fixPoints(path.points, pointMap);
             path.points = points;
-            if (points.size() > 2 || (!path.isClosed() && points.size() > 1)){
+            if (points.size() > 2 || (!path.isClosed() && points.size() > 1)) {
 
                 newPaths.add(path);
             }
@@ -254,27 +244,26 @@ public class PathOptimizer {
 
         layer.paths = newPaths;
 
-        for (PdfMultiPath mp: layer.multiPaths){
-            for(PdfPath path: mp.paths) {
+        for (PdfMultiPath mp: layer.multiPaths) {
+            for (PdfPath path: mp.paths) {
                 path.points = fixPoints(path.points, pointMap);
             }
         }
     }
-
 
     private List<Point2D> fixPoints(List<Point2D> points, Map<Point2D, Point2D> pointMap) {
 
         List<Point2D> newPoints = new ArrayList<>(points.size());
         Point2D prevPoint = null;
 
-        for(Point2D p: points){
+        for (Point2D p: points) {
             Point2D pp = p;
 
-            if (pointMap.containsKey(p)){
+            if (pointMap.containsKey(p)) {
                 pp = pointMap.get(p);
             }
 
-            if (prevPoint != pp){
+            if (prevPoint != pp) {
                 newPoints.add(pp);
             }
 
@@ -284,11 +273,10 @@ public class PathOptimizer {
         return newPoints;
     }
 
-
     private void removeSmallObjects(LayerContents layer, double min, double max) {
         List<PdfPath> newPaths = new ArrayList<>(layer.paths.size());
 
-        for(PdfPath path: layer.paths) {
+        for (PdfPath path: layer.paths) {
             double size = getShapeSize(path);
             boolean good = size >= min && size <= max;
 
@@ -301,9 +289,9 @@ public class PathOptimizer {
 
         List<PdfMultiPath> newMPaths = new ArrayList<>(layer.multiPaths.size());
 
-        for (PdfMultiPath mp: layer.multiPaths){
+        for (PdfMultiPath mp: layer.multiPaths) {
             boolean good = true;
-            for(PdfPath path: mp.paths) {
+            for (PdfPath path: mp.paths) {
                 double size = getShapeSize(path);
                 good &= size >= min && size <= max;
             }
@@ -316,24 +304,20 @@ public class PathOptimizer {
         layer.multiPaths = newMPaths;
     }
 
-
     private double getShapeSize(PdfPath path) {
 
         Rectangle2D bounds = new Rectangle2D.Double();
-        bounds.setRect(path.points.get(0).getX(), path.points.get(0).getY(), 0,0);
+        bounds.setRect(path.points.get(0).getX(), path.points.get(0).getY(), 0, 0);
 
-        for(Point2D n: path.points) {
+        for (Point2D n: path.points) {
             bounds.add(n);
         }
 
         return Math.max(bounds.getWidth(), bounds.getHeight());
     }
 
-
-
     /***
      * This method finds parralel lines with similar distance and removes them.
-     * @param layer
      */
     private void removeParallelLines(LayerContents layer, double maxDistance) {
         double angleTolerance = 1.0 / 180.0 * Math.PI; // 1 degree
@@ -342,8 +326,8 @@ public class PathOptimizer {
         //filter paths by direction
         List<ParallelSegmentsFinder> angles = new ArrayList<>();
 
-        for(PdfPath path: layer.paths) {
-            if (path.points.size() != 2){
+        for (PdfPath path: layer.paths) {
+            if (path.points.size() != 2) {
                 continue;
             }
 
@@ -355,8 +339,8 @@ public class PathOptimizer {
             while (angle > Math.PI) angle -= Math.PI;
             boolean added = false;
 
-            for(ParallelSegmentsFinder pa: angles) {
-                if (Math.abs(pa.angle - angle) < angleTolerance){
+            for (ParallelSegmentsFinder pa: angles) {
+                if (Math.abs(pa.angle - angle) < angleTolerance) {
                     pa.addPath(path, angle);
                     added = true;
                     break;
@@ -373,15 +357,15 @@ public class PathOptimizer {
         Set<PdfPath> pathsToRemove = new HashSet<>();
 
         //process each direction
-        for (ParallelSegmentsFinder pa: angles){
-            if (pa.paths.size() < minSegments){
+        for (ParallelSegmentsFinder pa: angles) {
+            if (pa.paths.size() < minSegments) {
                 continue;
             }
 
             List<ParallelSegmentsFinder> parts = pa.splitByDistance(maxDistance);
 
-            for(ParallelSegmentsFinder part: parts) {
-                if (part.paths.size() >= minSegments){
+            for (ParallelSegmentsFinder part: parts) {
+                if (part.paths.size() >= minSegments) {
                     pathsToRemove.addAll(part.paths);
                 }
             }
@@ -390,7 +374,7 @@ public class PathOptimizer {
         //generate new path list
         List<PdfPath> result = new ArrayList<>(layer.paths.size() - pathsToRemove.size());
 
-        for(PdfPath path: layer.paths) {
+        for (PdfPath path: layer.paths) {
             if (!pathsToRemove.contains(path)) {
                 result.add(path);
             }
@@ -410,21 +394,21 @@ public class PathOptimizer {
         List<PdfPath> newPaths = new ArrayList<>();
 
         //fill pathEndpoints map
-        for(PdfPath pp: layer.paths){
+        for (PdfPath pp: layer.paths) {
             if (pp.isClosed()) {
                 newPaths.add(pp);
                 continue;
             }
 
             List<PdfPath> paths = pathEndpoints.get(pp.firstPoint());
-            if (paths == null){
+            if (paths == null) {
                 paths = new ArrayList<>(2);
                 pathEndpoints.put(pp.firstPoint(), paths);
             }
             paths.add(pp);
 
             paths = pathEndpoints.get(pp.lastPoint());
-            if (paths == null){
+            if (paths == null) {
                 paths = new ArrayList<>(2);
                 pathEndpoints.put(pp.lastPoint(), paths);
             }
@@ -435,7 +419,7 @@ public class PathOptimizer {
         Set<Point2D> pointsInPath = new HashSet<>();
 
         //join the paths
-        for(PdfPath pp: layer.paths) {
+        for (PdfPath pp: layer.paths) {
 
             if (pp.isClosed() || mergedPaths.contains(pp)) {
                 continue;
@@ -472,9 +456,7 @@ public class PathOptimizer {
                     if (!pointsInPath.contains(lastPoint)) {
                         pointsInPath.add(lastPoint);
                         changed = true;
-                    }
-                    else
-                    {
+                    } else {
                         //closed path found
                         //remove excess segments from start of chain
                         while (lastPoint != firstPoint) {
@@ -486,7 +468,6 @@ public class PathOptimizer {
                     }
                 }
             }
-
 
             //process first point
             changed = true;
@@ -506,9 +487,7 @@ public class PathOptimizer {
                     if (!pointsInPath.contains(firstPoint)) {
                         pointsInPath.add(firstPoint);
                         changed = true;
-                    }
-                    else
-                    {
+                    } else {
                         //closed path found
                         //remove excess segments from end of chain
                         while (lastPoint != firstPoint) {
@@ -528,11 +507,10 @@ public class PathOptimizer {
                 mergedPaths.add(path);
             }
 
-
             //construct path
             PdfPath path = pathChain.get(0);
 
-            for (int pos = 1; pos < pathChain.size(); pos ++) {
+            for (int pos = 1; pos < pathChain.size(); pos++) {
                 path.points = tryMergeNodeLists(path.points, pathChain.get(pos).points);
 
                 if (path.points == null) {
@@ -547,9 +525,9 @@ public class PathOptimizer {
     }
 
     private PdfPath findNextPath(List<PdfPath> adjacentPaths, PdfPath firstPath) {
-        for (int pos = 0; pos < adjacentPaths.size(); pos ++) {
+        for (int pos = 0; pos < adjacentPaths.size(); pos++) {
             PdfPath p = adjacentPaths.get(pos);
-            if (p != firstPath && !isSubpathOf(firstPath, p)){
+            if (p != firstPath && !isSubpathOf(firstPath, p)) {
                 return p;
             }
         }
@@ -557,19 +535,15 @@ public class PathOptimizer {
         return null;
     }
 
-
     /**
      * Tests if sub is subpath of main.
-     * @param main
-     * @param sub
-     * @return
      */
     private boolean isSubpathOf(PdfPath main, PdfPath sub) {
 
         Set<Point2D> points = new HashSet<>(main.points);
 
-        for(Point2D point: sub.points) {
-            if (!points.contains(point)){
+        for (Point2D point: sub.points) {
+            if (!points.contains(point)) {
                 return false;
             }
         }
@@ -577,8 +551,7 @@ public class PathOptimizer {
         return true;
     }
 
-    private List<LayerContents> splitBySegmentKind(LayerContents layer, boolean closed, boolean single, boolean orthogonal)
-    {
+    private List<LayerContents> splitBySegmentKind(LayerContents layer, boolean closed, boolean single, boolean orthogonal) {
         if (!closed && !single) {
             return Collections.singletonList(layer);
         }
@@ -591,32 +564,25 @@ public class PathOptimizer {
         List<PdfPath> orthogonalPaths = new ArrayList<>();
         List<PdfPath> orthogonalClosedPaths = new ArrayList<>();
 
-        for(PdfPath path: layer.paths) {
+        for (PdfPath path: layer.paths) {
             boolean pathOrthgonal = orthogonal && of.isOrthogonal(path);
             boolean pathUnclosed = !path.isClosed() && closed;
             boolean pathSingleSegment = path.points.size() <= 3 && single;
 
             if (pathSingleSegment) {
                 singleSegmentPaths.add(path);
-            }
-            else if (pathUnclosed) {
-
+            } else if (pathUnclosed) {
                 if (pathOrthgonal) {
                     orthogonalPaths.add(path);
-                }
-                else {
+                } else {
                     multiSegmentPaths.add(path);
                 }
-            }
-            else {
+            } else {
                 if (pathOrthgonal) {
                     orthogonalClosedPaths.add(path);
-                }
-                else
-                {
+                } else {
                     closedPaths.add(path);
                 }
-
             }
         }
 
@@ -636,7 +602,6 @@ public class PathOptimizer {
             l.info = layer.info.copy();
             layers.add(l);
         }
-
 
         if (orthogonalPaths.size() > 0) {
             LayerContents l = new LayerContents();
@@ -670,9 +635,8 @@ public class PathOptimizer {
         for (PdfPath path: layer.paths) {
             List<PdfPath> sublayer = null;
 
-            for(List<PdfPath> ll: subparts){
-                if (this.pathsSimilar(ll.get(0).points, path.points))
-                {
+            for (List<PdfPath> ll: subparts) {
+                if (this.pathsSimilar(ll.get(0).points, path.points)) {
                     sublayer = ll;
                     break;
                 }
@@ -692,7 +656,7 @@ public class PathOptimizer {
         List<PdfPath> independantPaths = new ArrayList<>();
         List<LayerContents> result = new ArrayList<>();
 
-        for(List<PdfPath> list: subparts){
+        for (List<PdfPath> list: subparts) {
             if (list.size() >= minGroupTreshold) {
                 LayerContents l = new LayerContents();
                 l.paths = list;
@@ -700,9 +664,7 @@ public class PathOptimizer {
                 l.info.isGroup = true;
                 l.multiPaths = Collections.emptyList();
                 result.add(l);
-            }
-            else
-            {
+            } else {
                 independantPaths.addAll(list);
             }
         }
@@ -716,11 +678,8 @@ public class PathOptimizer {
             result.add(l);
         }
 
-
         return result;
     }
-
-
 
     private List<Point2D> tryMergeNodeLists(List<Point2D> nodes1, List<Point2D> nodes2) {
 
@@ -735,23 +694,20 @@ public class PathOptimizer {
             nodes1.remove(nodes1.size() -1);
             nodes1.addAll(nodes2);
             return nodes1;
-        }
-        else if (nodes1.get(nodes1.size() - 1) == nodes2.get(nodes2.size() -1)) {
+        } else if (nodes1.get(nodes1.size() - 1) == nodes2.get(nodes2.size() -1)) {
             nodes1.remove(nodes1.size() -1);
-            for (int pos = nodes2.size() - 1; pos >= 0; pos --) {
+            for (int pos = nodes2.size() - 1; pos >= 0; pos--) {
                 nodes1.add(nodes2.get(pos));
             }
 
             return nodes1;
-        }
-        else if (nodes1.get(0) == nodes2.get(nodes2.size() - 1)) {
+        } else if (nodes1.get(0) == nodes2.get(nodes2.size() - 1)) {
             nodes1.remove(0);
             nodes1.addAll(0, nodes2);
             return nodes1;
-        }
-        else if (nodes1.get(0) == nodes2.get(0)) {
+        } else if (nodes1.get(0) == nodes2.get(0)) {
             nodes1.remove(0);
-            for (int pos = 0; pos < nodes2.size(); pos ++) {
+            for (int pos = 0; pos < nodes2.size(); pos++) {
                 nodes1.add(0, nodes2.get(pos));
             }
 
@@ -767,7 +723,6 @@ public class PathOptimizer {
 
     /**
      * Test if paths are different only by offset.
-     * @return
      */
     private boolean pathsSimilar(List<Point2D> path1, List<Point2D> path2) {
         if (path1.size() != path2.size()) {
@@ -786,21 +741,18 @@ public class PathOptimizer {
         double offsetY = p1.getY() - p2.getY();
         double tolerance = 1e-4;
 
-        for(int pos = 0; pos < path1.size(); pos ++) {
+        for (int pos = 0; pos < path1.size(); pos++) {
             p1 = path1.get(pos);
             p2 = path2.get(pos);
 
             double errorX = p1.getX() - p2.getX() - offsetX;
             double errorY = p1.getY() - p2.getY() - offsetY;
 
-            if (Math.abs(errorX) + Math.abs(errorY) > tolerance){
+            if (Math.abs(errorX) + Math.abs(errorY) > tolerance) {
                 return false;
             }
         }
 
         return true;
     }
-
-
-
 }

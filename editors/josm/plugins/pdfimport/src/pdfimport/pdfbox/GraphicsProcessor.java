@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport.pdfbox;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -18,10 +19,10 @@ import pdfimport.LayerInfo;
 import pdfimport.PathOptimizer;
 import pdfimport.PdfPath;
 
-public class GraphicsProcessor{
+public class GraphicsProcessor {
 
     public PathOptimizer target;
-    private Shape  clipShape;
+    private Shape clipShape;
     private List<PdfPath> clipPath;
     private final LayerInfo info = new LayerInfo();
     int pathNo = 0;
@@ -32,9 +33,7 @@ public class GraphicsProcessor{
     private final ProgressMonitor monitor;
     private final int maxPaths;
 
-
-    public GraphicsProcessor(PathOptimizer target, int rotation, int maxPaths, ProgressMonitor monitor)
-    {
+    public GraphicsProcessor(PathOptimizer target, int rotation, int maxPaths, ProgressMonitor monitor) {
         this.maxPaths = maxPaths;
         this.target = target;
         this.transform = new AffineTransform();
@@ -44,9 +43,8 @@ public class GraphicsProcessor{
         this.monitor = monitor;
     }
 
-
     private void addPath(Shape s, boolean closed) {
-        pathNo ++;
+        pathNo++;
 
         if (pathNo % 100 == 0) {
             this.monitor.setCustomText(tr(" {0} objects so far", pathNo));
@@ -58,7 +56,7 @@ public class GraphicsProcessor{
 
         List<PdfPath> paths = this.parsePath(s, closed);
 
-        for (PdfPath p: paths){
+        for (PdfPath p: paths) {
             p.nr = pathNo;
         }
 
@@ -66,13 +64,10 @@ public class GraphicsProcessor{
         if (paths.size() > 1) {
             this.target.addMultiPath(this.info, paths);
             this.parsePath(s, closed);
-        }
-        else if (paths.size() == 1) {
+        } else if (paths.size() == 1) {
             this.target.addPath(this.info, paths.get(0));
         }
-
     }
-
 
     private List<PdfPath> parsePath(Shape s, boolean closed) {
         List<PdfPath> result = new ArrayList<>(2);
@@ -94,37 +89,28 @@ public class GraphicsProcessor{
             } else if (type == PathIterator.SEG_CUBICTO) {
                 //cubic curve
                 this.addPoint(points, this.parsePoint(coords, 4));
-            }
-            else if (type == PathIterator.SEG_LINETO) {
+            } else if (type == PathIterator.SEG_LINETO) {
                 this.addPoint(points, this.parsePoint(coords, 0));
-            }
-            else if (type == PathIterator.SEG_MOVETO) {
+            } else if (type == PathIterator.SEG_MOVETO) {
                 //new path
-                if (points.size() > 1){
+                if (points.size() > 1) {
                     result.add(new PdfPath(points));
                 }
                 points = new ArrayList<>(2);
                 this.addPoint(points, this.parsePoint(coords, 0));
-            }
-            else if (type == PathIterator.SEG_QUADTO) {
+            } else if (type == PathIterator.SEG_QUADTO) {
                 //quadratic curve
                 this.addPoint(points, this.parsePoint(coords, 2));
-            }
-            else if (type == PathIterator.WIND_EVEN_ODD) {
+            } else if (type == PathIterator.WIND_EVEN_ODD) {
                 //fill even odd
-            }
-            else if (type == PathIterator.WIND_NON_ZERO) {
+            } else if (type == PathIterator.WIND_NON_ZERO) {
                 //fill all
-            }
-            else {
-                //Unexpected operation
             }
 
             iter.next();
         }
 
-        if (points.size() > 1 )
-        {
+        if (points.size() > 1) {
             if (closed) {
                 this.addPoint(points, points.get(0));
             }
@@ -174,7 +160,6 @@ public class GraphicsProcessor{
         }
     }
 
-
     public void drawImage() {
 
         if (!this.clipAreaDrawn) {
@@ -185,21 +170,17 @@ public class GraphicsProcessor{
         }
     }
 
-
-    public void setClip(Shape  clip) {
-        if (this.shapesEqual(this.clipShape,clip))
+    public void setClip(Shape clip) {
+        if (this.shapesEqual(this.clipShape, clip))
             return;
 
         this.clipPath = this.parsePath(clip, true);
 
         boolean complexClipPath = false;
 
-        if (clipPath.size() > 1)
-        {
+        if (clipPath.size() > 1) {
             complexClipPath = true;
-        }
-        else if (clipPath.size() == 1 && clipPath.get(0).points.size() > 5)
-        {
+        } else if (clipPath.size() == 1 && clipPath.get(0).points.size() > 5) {
             //more than 4 points.
             complexClipPath = true;
         }
@@ -209,16 +190,14 @@ public class GraphicsProcessor{
         this.clipShape = clip;
     }
 
-
     private boolean shapesEqual(Shape shape1, Shape shape2) {
 
-        if (shape1== null || shape2 == null){
+        if (shape1 == null || shape2 == null) {
             return false;
         }
 
         return shape1.getBounds2D().equals(shape2.getBounds2D());
     }
-
 
     public void setStroke(Stroke s) {
         BasicStroke stroke = (BasicStroke) s;

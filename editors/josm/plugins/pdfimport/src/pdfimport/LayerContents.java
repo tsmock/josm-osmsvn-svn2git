@@ -1,13 +1,11 @@
-/**
- *
- */
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LayerContents{
+public class LayerContents {
 
     List<Point2D> points = new ArrayList<>();
     List<PdfPath> paths = new ArrayList<>();

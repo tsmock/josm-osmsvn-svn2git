@@ -1,4 +1,4 @@
-// License: GPL.
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -17,10 +17,9 @@ public class PdfImportAction extends JosmAction {
 
     public PdfImportAction() {
         super(tr("Import PDF file"), "pdf_import",
-            tr("Import PDF file."), 
-            Shortcut.registerShortcut("tools:pdfimport", tr("Tool: {0}",tr("Import PDF file")),
-            KeyEvent.VK_F, Shortcut.ALT_CTRL_SHIFT)
-            , true);
+            tr("Import PDF file."),
+            Shortcut.registerShortcut("tools:pdfimport", tr("Tool: {0}", tr("Import PDF file")),
+            KeyEvent.VK_F, Shortcut.ALT_CTRL_SHIFT), true);
     }
 
     /**
@@ -29,6 +28,7 @@ public class PdfImportAction extends JosmAction {
      * @param e
      *            Action Event
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
 
         //show dialog asking to select coordinate axes and input coordinates and projection.

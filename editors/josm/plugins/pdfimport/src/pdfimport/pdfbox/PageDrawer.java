@@ -46,8 +46,7 @@ import org.apache.pdfbox.util.TextPosition;
  * @author <a href="mailto:ben@benlitchfield.com">Ben Litchfield</a>
  * @version $Revision: 1.22 $
  */
-public class PageDrawer extends PDFStreamEngine
-{
+public class PageDrawer extends PDFStreamEngine {
 
     private GraphicsProcessor graphics;
     private BasicStroke stroke;
@@ -60,10 +59,9 @@ public class PageDrawer extends PDFStreamEngine
      *
      * @throws IOException If there is an error loading properties from the file.
      */
-    public PageDrawer() throws IOException
-    {
-        super( ResourceLoader.loadProperties(
-                "resources/pdfimport/pdfbox/PageDrawer.properties", true ) );
+    public PageDrawer() throws IOException {
+        super(ResourceLoader.loadProperties(
+                "resources/pdfimport/pdfbox/PageDrawer.properties", true));
     }
 
     /**
@@ -75,37 +73,31 @@ public class PageDrawer extends PDFStreamEngine
      *
      * @throws IOException If there is an IO error while drawing the page.
      */
-    public void drawPage( GraphicsProcessor g, PDPage p) throws IOException
-    {
+    public void drawPage(GraphicsProcessor g, PDPage p) throws IOException {
         graphics = g;
         page = p;
         // Only if there is some content, we have to process it.
         // Otherwise we are done here and we will produce an empty page
-        if ( page.getContents() != null)
-        {
+        if (page.getContents() != null) {
             PDResources resources = page.findResources();
-            processStream( page, resources, page.getContents().getStream() );
+            processStream(page, resources, page.getContents().getStream());
         }
 
         List<?> annotations = page.getAnnotations();
-        for( int i=0; i<annotations.size(); i++ )
-        {
-            PDAnnotation annot = (PDAnnotation)annotations.get( i );
+        for (int i = 0; i < annotations.size(); i++) {
+            PDAnnotation annot = (PDAnnotation) annotations.get(i);
             String appearanceName = annot.getAppearanceStream();
             PDAppearanceDictionary appearDictionary = annot.getAppearance();
-            if( appearDictionary != null )
-            {
-                if( appearanceName == null )
-                {
+            if (appearDictionary != null) {
+                if (appearanceName == null) {
                     appearanceName = "default";
                 }
                 Map<?, ?> appearanceMap = appearDictionary.getNormalAppearance();
                 if (appearanceMap != null) {
                     PDAppearanceStream appearance =
-                        (PDAppearanceStream)appearanceMap.get( appearanceName );
-                    if( appearance != null )
-                    {
-                        processSubStream( page, appearance.getResources(), appearance.getStream() );
+                        (PDAppearanceStream) appearanceMap.get(appearanceName);
+                    if (appearance != null) {
+                        processSubStream(page, appearance.getResources(), appearance.getStream());
                     }
                 }
             }
@@ -120,13 +112,11 @@ public class PageDrawer extends PDFStreamEngine
      * @param text The text to process
      */
     @Override
-    protected void processTextPosition( TextPosition text )
-    {
+    protected void processTextPosition(TextPosition text) {
 
         Color color = null;
 
-        try
-        {
+        try {
             switch(this.getGraphicsState().getTextState().getRenderingMode()) {
             case PDTextState.RENDERING_MODE_FILL_TEXT:
                 color = this.getGraphicsState().getNonStrokingColor().getJavaColor();
@@ -137,8 +127,8 @@ public class PageDrawer extends PDFStreamEngine
             case PDTextState.RENDERING_MODE_NEITHER_FILL_NOR_STROKE_TEXT:
                 //basic support for text rendering mode "invisible"
                 Color nsc = this.getGraphicsState().getStrokingColor().getJavaColor();
-                float[] components = {Color.black.getRed(),Color.black.getGreen(),Color.black.getBlue()};
-                color =  new Color(nsc.getColorSpace(),components,0f);
+                float[] components = {Color.black.getRed(), Color.black.getGreen(), Color.black.getBlue()};
+                color = new Color(nsc.getColorSpace(), components, 0f);
                 break;
             default:
                 color = this.getGraphicsState().getNonStrokingColor().getJavaColor();
@@ -148,36 +138,29 @@ public class PageDrawer extends PDFStreamEngine
             float x = textPos.getXPosition();
             float y = textPos.getYPosition();
             graphics.setClip(getGraphicsState().getCurrentClippingPath());
-            graphics.drawString(x,y,text.getCharacter(), color);
-        }
-        catch( IOException io )
-        {
+            graphics.drawString(x, y, text.getCharacter(), color);
+        } catch (IOException io) {
             io.printStackTrace();
         }
     }
-
 
     /**
      * Get the page that is currently being drawn.
      *
      * @return The page that is being drawn.
      */
-    public PDPage getPage()
-    {
+    public PDPage getPage() {
         return page;
     }
-
 
     /**
      * Get the current line path to be drawn.
      *
      * @return The current line path to be drawn.
      */
-    public GeneralPath getLinePath()
-    {
+    public GeneralPath getLinePath() {
         return linePath;
     }
-
 
     /**
      * This will set the current stroke.
@@ -185,8 +168,7 @@ public class PageDrawer extends PDFStreamEngine
      * @param newStroke The current stroke.
      *
      */
-    public void setStroke(BasicStroke newStroke)
-    {
+    public void setStroke(BasicStroke newStroke) {
         this.stroke = newStroke;
     }
 
@@ -194,9 +176,7 @@ public class PageDrawer extends PDFStreamEngine
         return this.stroke;
     }
 
-
-    public void drawPath(boolean stroke, boolean fill, int windingRule) throws IOException
-    {
+    public void drawPath(boolean stroke, boolean fill, int windingRule) throws IOException {
         graphics.setClip(getGraphicsState().getCurrentClippingPath());
         GeneralPath path = getLinePath();
 
@@ -216,9 +196,9 @@ public class PageDrawer extends PDFStreamEngine
      * @param at The transformation to use when drawing.
      *
      */
-    public void drawImage(){
+    public void drawImage() {
         graphics.setClip(getGraphicsState().getCurrentClippingPath());
-        graphics.drawImage( );
+        graphics.drawImage();
     }
 
     /**
@@ -228,12 +208,9 @@ public class PageDrawer extends PDFStreamEngine
      *
      * @throws IOException If there is an IO error while shade-filling the path/clipping area.
      */
-    public void SHFill(COSName ShadingName) throws IOException
-    {
+    public void SHFill(COSName ShadingName) throws IOException {
         this.drawPath(false, true, Path2D.WIND_NON_ZERO);
     }
-
-
 
     //This code generalizes the code Jim Lynch wrote for AppendRectangleToPath
     /**
@@ -242,12 +219,11 @@ public class PageDrawer extends PDFStreamEngine
      * @param y y-coordinate of the point to be transform
      * @return the transformed coordinates as Point2D.Double
      */
-    public java.awt.geom.Point2D.Double transformedPoint(double x, double y)
-    {
-        double[] position = {x,y};
+    public java.awt.geom.Point2D.Double transformedPoint(double x, double y) {
+        double[] position = {x, y};
         getGraphicsState().getCurrentTransformationMatrix().createAffineTransform().transform(
                 position, 0, position, 0, 1);
-        return new Point2D.Double(position[0],position[1]);
+        return new Point2D.Double(position[0], position[1]);
     }
 
     /**
@@ -256,21 +232,17 @@ public class PageDrawer extends PDFStreamEngine
      * @param windingRule The winding rule this path will use.
      *
      */
-    public void setClippingPath(int windingRule)
-    {
+    public void setClippingPath(int windingRule) {
         PDGraphicsState graphicsState = getGraphicsState();
-        GeneralPath clippingPath = (GeneralPath)getLinePath().clone();
+        GeneralPath clippingPath = (GeneralPath) getLinePath().clone();
         clippingPath.setWindingRule(windingRule);
         // If there is already set a clipping path, we have to intersect the new with the existing one
-        if (graphicsState.getCurrentClippingPath() != null)
-        {
+        if (graphicsState.getCurrentClippingPath() != null) {
             Area currentArea = new Area(getGraphicsState().getCurrentClippingPath());
             Area newArea = new Area(clippingPath);
             currentArea.intersect(newArea);
             graphicsState.setCurrentClippingPath(currentArea);
-        }
-        else
-        {
+        } else {
             graphicsState.setCurrentClippingPath(clippingPath);
         }
         getLinePath().reset();

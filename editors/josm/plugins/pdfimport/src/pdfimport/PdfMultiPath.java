@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import java.util.List;
@@ -9,5 +10,4 @@ public class PdfMultiPath {
     public PdfMultiPath(List<PdfPath> paths2) {
         paths = paths2;
     }
-
 }
