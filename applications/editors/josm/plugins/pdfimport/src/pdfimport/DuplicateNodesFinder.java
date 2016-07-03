@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import java.awt.geom.Point2D;
@@ -10,7 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class DuplicateNodesFinder {
+public final class DuplicateNodesFinder {
+
+    private DuplicateNodesFinder() {
+        // Hide default constructor for utilities classes
+    }
 
     /***
      * This method finds very close nodes and constructs a mapping from node to suggested representative node.
@@ -18,9 +23,10 @@ public class DuplicateNodesFinder {
      * @param nodes the nodes to process
      * @return map from nodes that need replacement to a representative node.
      */
-    public static Map<Point2D, Point2D> findDuplicateNodes(Collection<Point2D> nodes, final double tolerance){
+    public static Map<Point2D, Point2D> findDuplicateNodes(Collection<Point2D> nodes, final double tolerance) {
         List<Point2D> points = new ArrayList<>(nodes);
-        Collections.sort(points, new Comparator<Point2D>(){
+        Collections.sort(points, new Comparator<Point2D>() {
+            @Override
             public int compare(Point2D o1, Point2D o2) {
                 double diff = o1.getY() - o2.getY();
                 return diff > 0 ? 1 : (diff < 0 ? -1 : 0);
@@ -28,11 +34,12 @@ public class DuplicateNodesFinder {
         });
 
         Map<Point2D, Point2D> result = new HashMap<>();
-        TreeMap<Point2D, Point2D> sweepLine = new TreeMap<>(new Comparator<Point2D>(){
+        TreeMap<Point2D, Point2D> sweepLine = new TreeMap<>(new Comparator<Point2D>() {
+            @Override
             public int compare(Point2D o1, Point2D o2) {
                 double diff = o1.getX() - o2.getX();
 
-                if (Math.abs(diff) <= tolerance){
+                if (Math.abs(diff) <= tolerance) {
                     return 0;
                 }
 
@@ -43,10 +50,10 @@ public class DuplicateNodesFinder {
         //sweep from top to bottom.
         double prevY = Double.NEGATIVE_INFINITY;
 
-        for(Point2D point: points) {
+        for (Point2D point: points) {
             boolean mappedToOtherPoint = false;
 
-            if (point.getY() - prevY > tolerance){
+            if (point.getY() - prevY > tolerance) {
                 sweepLine.clear();
                 //big offset, clear old points
             } else {
@@ -60,9 +67,7 @@ public class DuplicateNodesFinder {
                         //mark them as close
                         result.put(point, closePoint);
                         mappedToOtherPoint = true;
-                    }
-                    else
-                    {
+                    } else {
                         sweepLine.remove(point);
 
                     }
