@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -18,7 +19,7 @@ import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 
 public class OsmBuilder {
 
-    enum Mode {Draft, Final, Debug};
+    enum Mode { Draft, Final, Debug }
 
     private final FilePlacement placement;
 
@@ -31,8 +32,7 @@ public class OsmBuilder {
     private int monitorPos;
     private int monitorTotal;
 
-    public OsmBuilder(FilePlacement placement)
-    {
+    public OsmBuilder(FilePlacement placement) {
         this.placement = placement;
     }
 
@@ -47,7 +47,7 @@ public class OsmBuilder {
         this.monitorTotal = 0;
         for (LayerContents layer: data) {
             this.monitorTotal += layer.paths.size();
-            for(PdfMultiPath mp: layer.multiPaths){
+            for (PdfMultiPath mp: layer.multiPaths) {
                 this.monitorTotal += mp.paths.size();
             }
         }
@@ -63,7 +63,6 @@ public class OsmBuilder {
         return result;
     }
 
-
     private void addLayer(DataSet target, LayerContents layer) {
         Map<Point2D, Node> point2Node = new HashMap<>();
 
@@ -72,7 +71,7 @@ public class OsmBuilder {
         this.layerName = "" + layer.info.nr;
 
         //insert nodes
-        for(Point2D pt: layer.points) {
+        for (Point2D pt: layer.points) {
             Node node = new Node();
             node.setCoor(this.placement.tranformCoords(pt));
 
@@ -83,7 +82,7 @@ public class OsmBuilder {
         //insert ways
         Map<PdfPath, Way> path2Way = new HashMap<>();
 
-        for (PdfPath path: layer.paths){
+        for (PdfPath path: layer.paths) {
             Way w = this.insertWay(path, point2Node, -1, false);
             target.addPrimitive(w);
             path2Way.put(path, w);
@@ -91,12 +90,12 @@ public class OsmBuilder {
 
         int pathId = 0;
         for (PdfMultiPath mpath: layer.multiPaths) {
-            for (PdfPath path: mpath.paths){
+            for (PdfPath path: mpath.paths) {
                 Way w = this.insertWay(path, point2Node, pathId, true);
                 target.addPrimitive(w);
                 path2Way.put(path, w);
             }
-            pathId ++;
+            pathId++;
         }
 
         if (this.mode != Mode.Draft) {
@@ -109,7 +108,7 @@ public class OsmBuilder {
                 keys.put("area", "yes");
                 rel.setKeys(keys);
 
-                for (PdfPath path: mpath.paths){
+                for (PdfPath path: mpath.paths) {
                     Way w = path2Way.get(path);
                     rel.addMember(new RelationMember("", w));
                 }
@@ -125,7 +124,7 @@ public class OsmBuilder {
             monitor.setExtraText(tr(" "+this.monitorPos+"/"+this.monitorTotal));
             monitor.setTicks(this.monitorPos);
         }
-        this.monitorPos ++;
+        this.monitorPos++;
 
         List<Node> nodes = new ArrayList<>(path.points.size());
 
@@ -144,11 +143,11 @@ public class OsmBuilder {
             keys.put("PDF_nr", "" + path.nr);
             keys.put("PDF_layer", this.layerName);
 
-            if (path.isClosed()){
+            if (path.isClosed()) {
                 keys.put("PDF_closed", "yes");
             }
 
-            if (this.fillName != null){
+            if (this.fillName != null) {
                 keys.put("PDF_fillColor", this.fillName);
             }
 
@@ -156,10 +155,9 @@ public class OsmBuilder {
                 keys.put("PDF_lineColor", this.lineName);
             }
 
-            if (multipathId != -1){
+            if (multipathId != -1) {
                 keys.put("PDF_multipath", ""+ multipathId);
-            }
-            else if (path.layer.info.fill != null && !multipolygon) {
+            } else if (path.layer.info.fill != null && !multipolygon) {
                 keys.put("area", "yes");
             }
         }
@@ -179,10 +177,8 @@ public class OsmBuilder {
         return newWay;
     }
 
-
-
-    private String printColor(Color col){
-        if (col == null){
+    private String printColor(Color col) {
+        if (col == null) {
             return null;
         }
 

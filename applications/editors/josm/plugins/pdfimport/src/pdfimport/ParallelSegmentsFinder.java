@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package pdfimport;
 
 import java.awt.geom.AffineTransform;
@@ -23,8 +24,7 @@ public class ParallelSegmentsFinder {
         angle = angleSum /paths.size();
     }
 
-    public List<ParallelSegmentsFinder> splitByDistance(double maxDistance)
-    {
+    public List<ParallelSegmentsFinder> splitByDistance(double maxDistance) {
         //sort perpendicular to angle
         AffineTransform tr = new AffineTransform();
         tr.rotate(-angle);
@@ -32,8 +32,7 @@ public class ParallelSegmentsFinder {
         final Map<PdfPath, Point2D> positions = new HashMap<>();
         Point2D src = new Point2D.Double();
 
-        for(PdfPath path: paths)
-        {
+        for (PdfPath path: paths) {
             src.setLocation((path.firstPoint().getX() + path.lastPoint().getX()) / 2, (path.firstPoint().getY() + path.lastPoint().getY()) / 2);
             Point2D dest = new Point2D.Double();
             Point2D destA = new Point2D.Double();
@@ -46,10 +45,11 @@ public class ParallelSegmentsFinder {
         //point.y = Perpendicular lines, point.x = parallel lines
 
         Collections.sort(paths, new Comparator<PdfPath>() {
+            @Override
             public int compare(PdfPath o1, PdfPath o2) {
                 double y1 = positions.get(o1).getY();
                 double y2 = positions.get(o2).getY();
-                return y1 > y2 ? 1: y1 < y2 ? -1 : 0;
+                return y1 > y2 ? 1 : y1 < y2 ? -1 : 0;
             }
         });
 
@@ -62,7 +62,7 @@ public class ParallelSegmentsFinder {
         List<ParallelSegmentsFinder> adjacentClusters = new ArrayList<>();
         List<PdfPath> pathsToRemove = new ArrayList<>();
 
-        for (PdfPath path: paths){
+        for (PdfPath path: paths) {
             adjacentClusters.clear();
             adjacentClustersSet.clear();
             pathsToRemove.clear();
@@ -79,8 +79,7 @@ public class ParallelSegmentsFinder {
                     double distance = distanceLineLine(path, p);
 
                     if (distance <= maxDistance) {
-                        if (adjacentClustersSet.add(sweepLine.get(p)))
-                        {
+                        if (adjacentClustersSet.add(sweepLine.get(p))) {
                             adjacentClusters.add(sweepLine.get(p));
                         }
                     }
@@ -88,31 +87,29 @@ public class ParallelSegmentsFinder {
             }
 
             //remove segments too far apart
-            for(PdfPath p: pathsToRemove){
+            for (PdfPath p: pathsToRemove) {
                 ParallelSegmentsFinder finder = sweepLine.remove(p);
-                finder.refCount --;
-                if (finder.refCount == 0){
+                finder.refCount--;
+                if (finder.refCount == 0) {
                     result.add(finder);
                 }
             }
 
             //join together joinable parts
-            if (adjacentClusters.size() > 0){
+            if (adjacentClusters.size() > 0) {
                 ParallelSegmentsFinder finder = adjacentClusters.remove(0);
                 finder.paths.add(path);
                 sweepLine.put(path, finder);
-                finder.refCount ++;
+                finder.refCount++;
 
-                for(ParallelSegmentsFinder finder1: adjacentClusters){
-                    for(PdfPath path1: finder1.paths){
+                for (ParallelSegmentsFinder finder1: adjacentClusters) {
+                    for (PdfPath path1: finder1.paths) {
                         finder.paths.add(path1);
                         sweepLine.put(path1, finder);
-                        finder.refCount ++;
+                        finder.refCount++;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 ParallelSegmentsFinder finder = new ParallelSegmentsFinder();
                 finder.addPath(path, angle);
                 sweepLine.put(path, finder);
@@ -123,8 +120,8 @@ public class ParallelSegmentsFinder {
         //process remaining paths in sweep line
         for (PdfPath p: sweepLine.keySet()) {
             ParallelSegmentsFinder finder = sweepLine.get(p);
-            finder.refCount --;
-            if (finder.refCount == 0){
+            finder.refCount--;
+            if (finder.refCount == 0) {
                 result.add(finder);
             }
         }
@@ -141,14 +138,11 @@ public class ParallelSegmentsFinder {
         double dist2 = closestPointToSegment(p1, p2, p4).distance(p4);
         double dist3 = closestPointToSegment(p3, p4, p1).distance(p1);
         double dist4 = closestPointToSegment(p3, p4, p2).distance(p2);
-        return Math.min(Math.min(dist1, dist2),Math.min(dist3, dist4));
+        return Math.min(Math.min(dist1, dist2), Math.min(dist3, dist4));
     }
 
     /**
      * Calculates closest point to a line segment.
-     * @param segmentP1
-     * @param segmentP2
-     * @param point
      * @return segmentP1 if it is the closest point, segmentP2 if it is the closest point,
      * a new point if closest point is between segmentP1 and segmentP2.
      */
@@ -171,6 +165,5 @@ public class ParallelSegmentsFinder {
             return segmentP2;
         else
             return new Point2D.Double(segmentP1.getX() + ldx * offset, segmentP1.getY() + ldy * offset);
-
     }
 }
