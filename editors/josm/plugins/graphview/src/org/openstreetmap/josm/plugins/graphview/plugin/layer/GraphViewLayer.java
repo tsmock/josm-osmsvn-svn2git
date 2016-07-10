@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.graphview.plugin.layer;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -244,8 +245,8 @@ public class GraphViewLayer extends Layer implements  WayGraphObserver {
             Color casingColor, Color fillColor) {
 
         Point pTip = new Point(
-                (int)(p1.x + arrowheadPlacement2 * (p2.x - p1.x)),
-                (int)(p1.y + arrowheadPlacement2 * (p2.y - p1.y)));
+                (int) (p1.x + arrowheadPlacement2 * (p2.x - p1.x)),
+                (int) (p1.y + arrowheadPlacement2 * (p2.y - p1.y)));
 
         double angle = angleFromXAxis(p1, p2); // angle between x-axis and [p1,p2]
 
@@ -272,7 +273,6 @@ public class GraphViewLayer extends Layer implements  WayGraphObserver {
             headCore = AffineTransform.getTranslateInstance(pTip.x, pTip.y).createTransformedShape(headCore);
             g2D.fill(headCore);
         }
-
     }
 
     private Point getNodePoint(GraphNode node, MapView mv) {
@@ -310,10 +310,12 @@ public class GraphViewLayer extends Layer implements  WayGraphObserver {
 
         return nodePoint;
     }
+
     private static Point getNodePoint(SegmentNode node, MapView mv) {
         LatLonCoords coords = new LatLonCoords(node.getLat(), node.getLon());
         return getNodePoint(coords, mv);
     }
+
     private static Point getNodePoint(LatLonCoords coords, MapView mv) {
         LatLon latLon = new LatLon(coords.getLat(), coords.getLon());
         EastNorth eastNorth = Main.getProjection().latlon2eastNorth(latLon);
@@ -332,11 +334,11 @@ public class GraphViewLayer extends Layer implements  WayGraphObserver {
         final float vecX = p2.x - p1.x;
         final float vecY = p2.y - p1.y;
 
-        final float vecLength = (float)Math.sqrt(vecX*vecX + vecY*vecY);
+        final float vecLength = (float) Math.sqrt(vecX*vecX + vecY*vecY);
 
         final float dotProductVecAxis = vecX;
 
-        float angle = (float)Math.acos(dotProductVecAxis / vecLength);
+        float angle = (float) Math.acos(dotProductVecAxis / vecLength);
 
         if (p2.y < p1.y) {
             angle = -angle;
@@ -403,6 +405,7 @@ public class GraphViewLayer extends Layer implements  WayGraphObserver {
                 new LayerListPopup.InfoAction(this)};
     }
 
+    @Override
     public void update(WayGraph wayGraph) {
         assert wayGraph == this.wayGraph;
         invalidate();
