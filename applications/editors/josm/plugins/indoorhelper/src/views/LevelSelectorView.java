@@ -20,24 +20,32 @@ package views;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
-import javax.swing.border.*;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Class for the pop-up window which provides an level selector to get a user input.
  * In this window the user declares the lowest and the highest level of the building he wants to map.
- * 
+ *
  * @author egru
  *
  */
 
 @SuppressWarnings("serial")
 public class LevelSelectorView extends JFrame {
-    
+
     private JPanel dialogPane;
     private JPanel contentPanel;
     private JLabel minLabel;
@@ -47,7 +55,7 @@ public class LevelSelectorView extends JFrame {
     private JPanel buttonBar;
     private JButton okButton;
     private JButton cancelButton;
-    
+
     public LevelSelectorView() {
         initComponents();
     }
@@ -76,10 +84,10 @@ public class LevelSelectorView extends JFrame {
             //======== contentPanel ========
             {
                 contentPanel.setLayout(new GridBagLayout());
-                ((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
-                ((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0};
-                ((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
-                ((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+                ((GridBagLayout) contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
+                ((GridBagLayout) contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0};
+                ((GridBagLayout) contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
+                ((GridBagLayout) contentPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
                 //---- minLabel ----
                 minLabel.setText(tr("Lowest Level"));
@@ -111,8 +119,8 @@ public class LevelSelectorView extends JFrame {
             {
                 buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
                 buttonBar.setLayout(new GridBagLayout());
-                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
-                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
+                ((GridBagLayout) buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
+                ((GridBagLayout) buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
 
                 //---- okButton ----
                 okButton.setText(tr("OK"));
@@ -132,8 +140,8 @@ public class LevelSelectorView extends JFrame {
             {
                 buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
                 buttonBar.setLayout(new GridBagLayout());
-                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
-                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
+                ((GridBagLayout) buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
+                ((GridBagLayout) buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
 
                 //---- okButton ----
                 okButton.setText(tr("OK"));
@@ -154,40 +162,40 @@ public class LevelSelectorView extends JFrame {
         setLocationRelativeTo(getOwner());
 
     }
-    
+
     /**
      * Set the listener for the OK button.
-     * 
+     *
      * @param l the listener to set
      */
-    public void setOkButtonListener(ActionListener l){
+    public void setOkButtonListener(ActionListener l) {
         this.okButton.addActionListener(l);
     }
-    
+
     /**
      * Set the listener for the cancel button.
-     * 
+     *
      * @param l the listener to set
      */
-    public void setCancelButtonListener(ActionListener l){
+    public void setCancelButtonListener(ActionListener l) {
         this.cancelButton.addActionListener(l);
     }
-    
+
     /**
      * Getter for the lowest level.
-     * 
+     *
      * @return Integer which represents the lowest level of the building.
      */
-    public int getMin(){
+    public int getMin() {
         return (int) this.minSpinner.getValue();
     }
-    
+
     /**
      * Getter for the highest level.
-     * 
+     *
      * @return Integer which represents the highest level of the building.
      */
-    public int getMax(){
+    public int getMax() {
         return (int) this.maxSpinner.getValue();
     }
 }

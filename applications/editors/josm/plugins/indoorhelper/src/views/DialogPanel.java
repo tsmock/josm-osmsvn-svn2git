@@ -94,10 +94,12 @@ public class DialogPanel extends JPanel {
             //======== contentPanel ========
             {
                 contentPanel.setLayout(new GridBagLayout());
-                ((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-                ((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
-                ((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
-                ((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+                ((GridBagLayout) contentPanel.getLayout()).columnWidths = new int[] {
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                ((GridBagLayout) contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
+                ((GridBagLayout) contentPanel.getLayout()).columnWeights = new double[] {
+                        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+                ((GridBagLayout) contentPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
                 //---- powerButton ----
                 powerButton.setText(tr("POWER"));
@@ -163,13 +165,13 @@ public class DialogPanel extends JPanel {
                 //---- nameField ----
                 nameField.setEnabled(false);
                 nameField.addFocusListener(new FocusListener() {
-                    
+
                     @Override
                     public void focusLost(FocusEvent e) {}
-                    
+
                     @Override
                     public void focusGained(FocusEvent e) {
-                        nameField.selectAll();						
+                        nameField.selectAll();
                     }
                 });
                 nameField.setToolTipText(tr("Sets the name tag when the room-object is selected."));
@@ -186,10 +188,10 @@ public class DialogPanel extends JPanel {
                 //---- refField ----
                 refField.setEnabled(false);
                 refField.addFocusListener(new FocusListener() {
-                    
+
                     @Override
                     public void focusLost(FocusEvent e) {}
-                    
+
                     @Override
                     public void focusGained(FocusEvent e) {
                         refField.selectAll();
@@ -206,8 +208,8 @@ public class DialogPanel extends JPanel {
             {
                 buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
                 buttonBar.setLayout(new GridBagLayout());
-                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 80};
-                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0};
+                ((GridBagLayout) buttonBar.getLayout()).columnWidths = new int[] {0, 80};
+                ((GridBagLayout) buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0};
 
                 //---- applyButton ----
                 applyButton.setText(tr("Apply Tags"));

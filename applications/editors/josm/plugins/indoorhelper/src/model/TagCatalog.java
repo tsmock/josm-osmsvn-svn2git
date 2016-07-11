@@ -37,12 +37,12 @@ public final class TagCatalog {
      * 
      * @param o the object for which you want the tag-set
      * @return a list of tags for the specified object
-     */	
-    public List<Tag> getTags(IndoorObject o){
+     */    
+    public List<Tag> getTags(IndoorObject o) {
         
         List<Tag> tagList = new ArrayList<Tag>();
         
-        switch(o){
+        switch(o) {
         case CONCRETE_WALL:
             tagList.add(new Tag("indoor:area", "wall"));
             tagList.add(new Tag("indoor:wall:material", "concrete"));
@@ -94,7 +94,7 @@ public final class TagCatalog {
      * @author egru
      *
      */
-    public enum IndoorObject{
+    public enum IndoorObject {
         SHELL, CONCRETE_WALL, GLASS_WALL, ROOM, TOILET_MALE, TOILET_FEMALE, ELEVATOR, STAIRWAYS, STEPS, DOOR, ENTRANCE;
     }
 
