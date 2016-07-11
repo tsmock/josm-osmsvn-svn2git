@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class PresetCounterTest {
         expectedList.add(IndoorObject.ROOM);
         expectedList.add(IndoorObject.TOILET_MALE);
         expectedList.add(IndoorObject.STEPS);
-        
+
 
         //assertion
         assertEquals(expectedList.get(0), actualList.get(0));

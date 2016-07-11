@@ -20,28 +20,36 @@ package views;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 
 /**
  * The view for the pop-up hint that tells the user, that he has to start the fitting
  * of his indoor building plans.
- * 
+ *
  * @author egru
  */
 @SuppressWarnings("serial")
 public class FittingView extends JFrame {
-    
+
     private JPanel dialogPane;
     private JPanel contentPanel;
     private JLabel label1;
     private JPanel buttonBar;
     private JButton okButton;
-    
+
     public FittingView() {
         initComponents();
     }
@@ -79,8 +87,8 @@ public class FittingView extends JFrame {
             {
                 buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
                 buttonBar.setLayout(new GridBagLayout());
-                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 80};
-                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0};
+                ((GridBagLayout) buttonBar.getLayout()).columnWidths = new int[] {0, 80};
+                ((GridBagLayout) buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0};
 
                 //---- okButton ----
                 okButton.setText(tr("OK"));
@@ -94,13 +102,13 @@ public class FittingView extends JFrame {
         pack();
         setLocationRelativeTo(getOwner());
     }
-    
+
     /**
      * Set the given {@link ActionListener} to the OK-Button of the {@link FittingView}.
-     * 
+     *
      * @param l the listener which should be set
      */
-    public void setOkButtonListener(ActionListener l){
+    public void setOkButtonListener(ActionListener l) {
         this.okButton.addActionListener(l);
     }
 }
