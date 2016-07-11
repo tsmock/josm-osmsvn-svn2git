@@ -40,11 +40,11 @@ public class PresetCounter {
      * Initiates the counterList with the available IndoorObjects.
      */
     
-    public PresetCounter(){
+    public PresetCounter() {
         this.init();
     }
     
-    private void init(){
+    private void init() {
         counterList = new ArrayList<>();
         
         counterList.add(new ObjectCounter(IndoorObject.CONCRETE_WALL, 0));
@@ -64,14 +64,14 @@ public class PresetCounter {
      * Increments the counter of a specific IndoorObject in the list.
      * @param object the IndoorObject, which counter should be incremented
      */
-    public void count(IndoorObject object){
+    public void count(IndoorObject object) {
         ListIterator<ObjectCounter> iterator = this.counterList.listIterator();
         
         // Go through the list and increment the corresponding objects counter value.
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             ObjectCounter counterTemp = iterator.next();
-            if(counterTemp.getObject().equals(object)){
-                    counterList.get(iterator.nextIndex()-1).increment();	
+            if (counterTemp.getObject().equals(object)) {
+                    counterList.get(iterator.nextIndex()-1).increment();    
             }
         }
         
@@ -79,12 +79,12 @@ public class PresetCounter {
         this.sort();
     }
     
-    private void sort(){
+    private void sort() {
         Collections.sort(counterList);
         Collections.reverse(counterList);
     }
     
-    public List<IndoorObject> getRanking(){
+    public List<IndoorObject> getRanking() {
         rankingList = new ArrayList<IndoorObject>();
         
         rankingList.add(counterList.get(0).getObject());
@@ -95,36 +95,36 @@ public class PresetCounter {
         return rankingList;
     }
     
-    private class ObjectCounter implements Comparable<ObjectCounter>{
+    private class ObjectCounter implements Comparable<ObjectCounter> {
         private IndoorObject object;
         private int count;
         
-        public ObjectCounter(IndoorObject o, int c) {
+        ObjectCounter(IndoorObject o, int c) {
             this.object = o;
             this.count = c;
         }
         
-        public int getCount(){
+        public int getCount() {
             return this.count;
         }
         
-        public IndoorObject getObject(){
+        public IndoorObject getObject() {
             return this.object;
         }
         
-        public void increment(){
+        public void increment() {
             this.count += 1;
         }
         
         @Override
         public int compareTo(ObjectCounter o) {
-            if(this.getCount()<o.getCount()){
+            if (this.getCount() < o.getCount()) {
                 return -1;
             }
-            if(this.getCount()==o.getCount()){
+            if (this.getCount() == o.getCount()) {
                 return 0;
             }
-            if(this.getCount()>o.getCount()){
+            if (this.getCount() > o.getCount()) {
                 return 1;
             }
             
