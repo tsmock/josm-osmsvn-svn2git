@@ -314,10 +314,6 @@
   path = applications/editors/josm/plugins/print
   url = ../print
   branch = master
-[submodule "applications/editors/josm/plugins/proj4j"]
-  path = applications/editors/josm/plugins/proj4j
-  url = ../proj4j
-  branch = master
 [submodule "applications/editors/josm/plugins/pt_assistant"]
   path = applications/editors/josm/plugins/pt_assistant
   url = ../pt_assistant
