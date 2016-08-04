@@ -9,19 +9,22 @@
 
 package smed;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-
-import javax.swing.*;
-
 import static org.openstreetmap.josm.tools.I18n.tr;
+
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.util.Collection;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.SelectionChangedListener;
-import org.openstreetmap.josm.data.osm.*;
+import org.openstreetmap.josm.data.osm.DataSet;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
 
 import messages.Messages;
-
 import panels.PanelMain;
 
 public class SmedAction extends JosmAction implements SelectionChangedListener {

@@ -1,14 +1,22 @@
 package panels;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EnumMap;
 
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import messages.Messages;
+import seamarks.SeaMark.Col;
+import seamarks.SeaMark.Obj;
+import seamarks.SeaMark.Pat;
+import seamarks.SeaMark.Shp;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelSaw extends JPanel {
 
@@ -22,15 +30,17 @@ public class PanelSaw extends JPanel {
     public EnumMap<Shp, JRadioButton> shapes = new EnumMap<>(Shp.class);
     public EnumMap<Shp, Obj> objects = new EnumMap<>(Shp.class);
     public ActionListener alShape = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Shp shp : shapes.keySet()) {
                 JRadioButton button = shapes.get(shp);
                 if (button.isSelected()) {
                     SmedAction.panelMain.mark.setShape(shp);
                     SmedAction.panelMain.mark.setObject(objects.get(shp));
                     button.setBorderPainted(true);
-                } else
+                } else {
                     button.setBorderPainted(false);
+                }
             }
             if (SmedAction.panelMain.mark.testValid()) {
                 SmedAction.panelMain.panelChan.topmarkButton.setVisible(true);
@@ -59,12 +69,13 @@ public class PanelSaw extends JPanel {
             JRadioButton button = shapes.get(shp);
             if (SmedAction.panelMain.mark.getShape() == shp) {
                 button.setBorderPainted(true);
-            } else
+            } else {
                 button.setBorderPainted(false);
+            }
         }
         SmedAction.panelMain.mark.testValid();
     }
-    
+
     private JRadioButton getShapeButton(JRadioButton button, int x, int y, int w, int h, String tip, Shp shp, Obj obj) {
         button.setBounds(new Rectangle(x, y, w, h));
         button.setBorder(BorderFactory.createLoweredBevelBorder());

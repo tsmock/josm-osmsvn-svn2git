@@ -1,15 +1,29 @@
 package panels;
 
-import java.awt.event.*;
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.EnumMap;
 
-import javax.swing.*;
-
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import messages.Messages;
+import seamarks.SeaMark.Cat;
+import seamarks.SeaMark.Fnc;
+import seamarks.SeaMark.Obj;
+import seamarks.SeaMark.Shp;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelLights extends JPanel {
 
@@ -20,7 +34,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> landCatBox;
     public EnumMap<Cat, Integer> landCats = new EnumMap<>(Cat.class);
     private ActionListener alLandCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : landCats.keySet()) {
                 int idx = landCats.get(cat);
                 if (dlg.node != null && (idx == landCatBox.getSelectedIndex())) {
@@ -33,7 +48,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> trafficCatBox;
     public EnumMap<Cat, Integer> trafficCats = new EnumMap<>(Cat.class);
     private ActionListener alTrafficCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : trafficCats.keySet()) {
                 int idx = trafficCats.get(cat);
                 if (dlg.node != null && (idx == trafficCatBox.getSelectedIndex())) {
@@ -46,7 +62,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> warningCatBox;
     public EnumMap<Cat, Integer> warningCats = new EnumMap<>(Cat.class);
     private ActionListener alWarningCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : warningCats.keySet()) {
                 int idx = warningCats.get(cat);
                 if (dlg.node != null && (idx == warningCatBox.getSelectedIndex())) {
@@ -59,7 +76,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> platformCatBox;
     public EnumMap<Cat, Integer> platformCats = new EnumMap<>(Cat.class);
     private ActionListener alPlatformCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : platformCats.keySet()) {
                 int idx = platformCats.get(cat);
                 if (dlg.node != null && (idx == platformCatBox.getSelectedIndex())) {
@@ -72,7 +90,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> pilotCatBox;
     public EnumMap<Cat, Integer> pilotCats = new EnumMap<>(Cat.class);
     private ActionListener alPilotCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : pilotCats.keySet()) {
                 int idx = pilotCats.get(cat);
                 if (dlg.node != null && (idx == pilotCatBox.getSelectedIndex())) {
@@ -85,7 +104,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> rescueCatBox;
     public EnumMap<Cat, Integer> rescueCats = new EnumMap<>(Cat.class);
     private ActionListener alRescueCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : rescueCats.keySet()) {
                 int idx = rescueCats.get(cat);
                 if (dlg.node != null && (idx == rescueCatBox.getSelectedIndex())) {
@@ -98,7 +118,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> radioCatBox;
     public EnumMap<Cat, Integer> radioCats = new EnumMap<>(Cat.class);
     private ActionListener alRadioCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : radioCats.keySet()) {
                 int idx = radioCats.get(cat);
                 if (dlg.node != null && (idx == radioCatBox.getSelectedIndex())) {
@@ -111,7 +132,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> radarCatBox;
     public EnumMap<Cat, Integer> radarCats = new EnumMap<>(Cat.class);
     private ActionListener alRadarCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : radarCats.keySet()) {
                 int idx = radarCats.get(cat);
                 if (dlg.node != null && (idx == radarCatBox.getSelectedIndex())) {
@@ -125,7 +147,8 @@ public class PanelLights extends JPanel {
     public JComboBox<String> functionBox;
     public EnumMap<Fnc, Integer> functions = new EnumMap<>(Fnc.class);
     private ActionListener alfunctionBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Fnc fnc : functions.keySet()) {
                 int idx = functions.get(fnc);
                 if (dlg.node != null && (idx == functionBox.getSelectedIndex())) {
@@ -152,20 +175,24 @@ public class PanelLights extends JPanel {
     public JRadioButton radarButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/RadarStationButton.png")));
     public EnumMap<Obj, JRadioButton> objects = new EnumMap<>(Obj.class);
     private ActionListener alObj = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Obj obj : objects.keySet()) {
                 JRadioButton button = objects.get(obj);
                 if (button.isSelected()) {
                     SmedAction.panelMain.mark.setObject(obj);
                     button.setBorderPainted(true);
-                } else
+                } else {
                     button.setBorderPainted(false);
+                }
             }
-            if (SmedAction.panelMain.mark.getObject() == Obj.LITVES)
+            if (SmedAction.panelMain.mark.getObject() == Obj.LITVES) {
                 SmedAction.panelMain.mark.setShape(Shp.SUPER);
-            else if (SmedAction.panelMain.mark.getObject() == Obj.LITFLT)
+            } else if (SmedAction.panelMain.mark.getObject() == Obj.LITFLT) {
                 SmedAction.panelMain.mark.setShape(Shp.FLOAT);
-            else SmedAction.panelMain.mark.setShape(Shp.UNKSHP);
+            } else {
+                SmedAction.panelMain.mark.setShape(Shp.UNKSHP);
+            }
             functionLabel.setVisible(false);
             categoryLabel.setVisible(false);
             functionLabel.setVisible(false);
@@ -232,7 +259,8 @@ public class PanelLights extends JPanel {
     public JLabel chLabel;
     public JTextField chBox;
     private FocusListener flCh = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setChannel(chBox.getText());
         }
     };
@@ -469,31 +497,35 @@ public class PanelLights extends JPanel {
             landCatBox.setVisible(true);
             for (Fnc fnc : functions.keySet()) {
                 int item = functions.get(fnc);
-                if (SmedAction.panelMain.mark.getFunc() == fnc)
+                if (SmedAction.panelMain.mark.getFunc() == fnc) {
                     functionBox.setSelectedIndex(item);
+                }
             }
             for (Cat cat : landCats.keySet()) {
                 int item = landCats.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     landCatBox.setSelectedIndex(item);
+                }
             }
         } else if (SmedAction.panelMain.mark.getObject() == Obj.SISTAT) {
-                categoryLabel.setVisible(true);
-                trafficCatBox.setVisible(true);
-                for (Cat cat : trafficCats.keySet()) {
-                    int item = trafficCats.get(cat);
-                    if (SmedAction.panelMain.mark.getCategory() == cat)
-                        trafficCatBox.setSelectedIndex(item);
+            categoryLabel.setVisible(true);
+            trafficCatBox.setVisible(true);
+            for (Cat cat : trafficCats.keySet()) {
+                int item = trafficCats.get(cat);
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
+                    trafficCatBox.setSelectedIndex(item);
                 }
-                chLabel.setVisible(true);
-                chBox.setVisible(true);
+            }
+            chLabel.setVisible(true);
+            chBox.setVisible(true);
         } else if (SmedAction.panelMain.mark.getObject() == Obj.SISTAW) {
             categoryLabel.setVisible(true);
             warningCatBox.setVisible(true);
             for (Cat cat : warningCats.keySet()) {
                 int item = warningCats.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     warningCatBox.setSelectedIndex(item);
+                }
             }
             chLabel.setVisible(true);
             chBox.setVisible(true);
@@ -502,16 +534,18 @@ public class PanelLights extends JPanel {
             platformCatBox.setVisible(true);
             for (Cat cat : platformCats.keySet()) {
                 int item = platformCats.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     platformCatBox.setSelectedIndex(item);
+                }
             }
         } else if (SmedAction.panelMain.mark.getObject() == Obj.PILBOP) {
             categoryLabel.setVisible(true);
             pilotCatBox.setVisible(true);
             for (Cat cat : pilotCats.keySet()) {
                 int item = pilotCats.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     pilotCatBox.setSelectedIndex(item);
+                }
             }
             chLabel.setVisible(true);
             chBox.setVisible(true);
@@ -520,16 +554,18 @@ public class PanelLights extends JPanel {
             rescueCatBox.setVisible(true);
             for (Cat cat : rescueCats.keySet()) {
                 int item = rescueCats.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     rescueCatBox.setSelectedIndex(item);
+                }
             }
         } else if (SmedAction.panelMain.mark.getObject() == Obj.RDOSTA) {
             categoryLabel.setVisible(true);
             radioCatBox.setVisible(true);
             for (Cat cat : radioCats.keySet()) {
                 int item = radioCats.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     radioCatBox.setSelectedIndex(item);
+                }
             }
             chLabel.setVisible(true);
             chBox.setVisible(true);
@@ -538,8 +574,9 @@ public class PanelLights extends JPanel {
             radarCatBox.setVisible(true);
             for (Cat cat : radarCats.keySet()) {
                 int item = radarCats.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     radarCatBox.setSelectedIndex(item);
+                }
             }
             chLabel.setVisible(true);
             chBox.setVisible(true);
@@ -550,7 +587,7 @@ public class PanelLights extends JPanel {
         }
         SmedAction.panelMain.mark.testValid();
     }
-    
+
     private void addLCItem(String str, Cat cat) {
         landCats.put(cat, landCatBox.getItemCount());
         landCatBox.addItem(str);
