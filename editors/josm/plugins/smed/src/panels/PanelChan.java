@@ -1,14 +1,26 @@
 package panels;
 
-import javax.swing.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
 
 import messages.Messages;
-import smed.SmedAction;
 import seamarks.SeaMark;
-import seamarks.SeaMark.*;
+import seamarks.SeaMark.Att;
+import seamarks.SeaMark.Cat;
+import seamarks.SeaMark.Col;
+import seamarks.SeaMark.Grp;
+import seamarks.SeaMark.Pat;
+import seamarks.SeaMark.Shp;
+import seamarks.SeaMark.Top;
+import smed.SmedAction;
 
 public class PanelChan extends JPanel {
 
@@ -23,7 +35,8 @@ public class PanelChan extends JPanel {
     public JRadioButton prefPortButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/PrefPortButton.png")));
     public JRadioButton safeWaterButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/SafeWaterButton.png")));
     private ActionListener alCat = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             panelPort.setVisible(false);
             panelStbd.setVisible(false);
             panelSaw.setVisible(false);
@@ -110,7 +123,8 @@ public class PanelChan extends JPanel {
     };
     public JToggleButton topmarkButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/ChanTopButton.png")));
     private ActionListener alTop = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (topmarkButton.isSelected()) {
                 if (SeaMark.GrpMAP.get(SmedAction.panelMain.mark.getObject()) == Grp.SAW) {
                     SmedAction.panelMain.mark.setTopmark(Top.SPHERE);
@@ -180,7 +194,8 @@ public class PanelChan extends JPanel {
     };
     public JToggleButton lightButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/DefLitButton.png")));
     private ActionListener alLit = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (lightButton.isSelected()) {
                 if (SeaMark.GrpMAP.get(dlg.panelMain.mark.getObject()) == Grp.SAW) {
                     dlg.panelMain.mark.setLightAtt(Att.CHR, 0, "LFl");

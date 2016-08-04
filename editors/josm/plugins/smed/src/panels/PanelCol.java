@@ -2,16 +2,25 @@ package panels;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.EnumMap;
 
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import messages.Messages;
-import smed.SmedAction;
 import seamarks.SeaMark;
-import seamarks.SeaMark.*;
+import seamarks.SeaMark.Att;
+import seamarks.SeaMark.Col;
+import seamarks.SeaMark.Ent;
+import smed.SmedAction;
 
 public class PanelCol extends JPanel {
 
@@ -35,7 +44,8 @@ public class PanelCol extends JPanel {
     public JRadioButton pinkButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/PinkButton.png")));
     public EnumMap<Col, JRadioButton> colours = new EnumMap<>(Col.class);
     private ActionListener alColour = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Col col : colours.keySet()) {
                 JRadioButton button = colours.get(col);
                 if (button.isSelected()) {
@@ -59,27 +69,31 @@ public class PanelCol extends JPanel {
                         if (button == delButton) {
                             SmedAction.panelMain.mark.subColour(ent, stackIdx);
                         } else if (button == addButton) {
-                            if (stackCol.size() != 0)
+                            if (stackCol.size() != 0) {
                                 stackIdx++;
-                            if (stackCol.size() == 0)
+                            }
+                            if (stackCol.size() == 0) {
                                 SmedAction.panelMain.mark.setColour(ent, col);
-                            else
+                            } else {
                                 switch (SmedAction.panelMain.mark.getPattern(ent)) {
                                 case NOPAT:
                                     break;
                                 case BORDER:
                                 case CROSS:
-                                    if (stackCol.size() < 2)
+                                    if (stackCol.size() < 2) {
                                         SmedAction.panelMain.mark.addColour(ent, stackIdx, col);
+                                    }
                                     break;
                                 case SQUARED:
-                                    if (stackCol.size() < 4)
+                                    if (stackCol.size() < 4) {
                                         SmedAction.panelMain.mark.addColour(ent, stackIdx, col);
+                                    }
                                     break;
                                 default:
                                     SmedAction.panelMain.mark.addColour(ent, stackIdx, col);
                                     break;
                                 }
+                            }
                         } else {
                             SmedAction.panelMain.mark.setColour(ent, stackIdx, col);
                         }
@@ -96,7 +110,8 @@ public class PanelCol extends JPanel {
     private ArrayList<JRadioButton> stackCol = new ArrayList<>();
     private int stackIdx = 0;
     private ActionListener alStack = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (int i = 0; stackCol.size() > i; i++) {
                 JRadioButton button = stackCol.get(i);
                 if (button.isSelected()) {
@@ -151,8 +166,9 @@ public class PanelCol extends JPanel {
                 JRadioButton button = colours.get(col);
                 if (SmedAction.panelMain.mark.getLightAtt(Att.COL, 0) == col) {
                     button.setBorderPainted(true);
-                } else
+                } else {
                     button.setBorderPainted(false);
+                }
             }
         } else {
             int idx;
@@ -173,10 +189,12 @@ public class PanelCol extends JPanel {
                 stack.remove(btnI);
                 stackCol.remove(idx);
             }
-            if (stackIdx >= stackCol.size())
+            if (stackIdx >= stackCol.size()) {
                 stackIdx = stackCol.size() - 1;
-            if (stackIdx < 0)
+            }
+            if (stackIdx < 0) {
                 stackIdx = 0;
+            }
             if (stackCol.size() == 0) {
                 stack.repaint();
             } else {
