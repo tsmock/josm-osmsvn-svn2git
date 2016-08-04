@@ -1,16 +1,36 @@
 package panels;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EnumMap;
 
-import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import messages.Messages;
-import smed.SmedAction;
 import seamarks.SeaMark;
-import seamarks.SeaMark.*;
+import seamarks.SeaMark.Att;
+import seamarks.SeaMark.Col;
+import seamarks.SeaMark.Exh;
+import seamarks.SeaMark.Lit;
+import seamarks.SeaMark.Vis;
+import smed.SmedAction;
 
 public class PanelSectors extends JFrame {
 
@@ -21,18 +41,22 @@ public class PanelSectors extends JFrame {
 
     public JButton minusButton;
     private ActionListener alMinusButton = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-            if ((getSectorCount() > 1) && (table.getSelectedRow() != 0))
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if ((getSectorCount() > 1) && (table.getSelectedRow() != 0)) {
                 deleteSector(table.getSelectedRow());
+            }
         }
     };
     public JButton plusButton;
     private ActionListener alPlusButton = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-            if (table.getSelectedRow() < 0)
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (table.getSelectedRow() < 0) {
                 addSector(table.getRowCount());
-            else
+            } else {
                 addSector(table.getSelectedRow()+1);
+            }
         }
     };
     public JComboBox<ImageIcon> colourBox;
@@ -68,7 +92,7 @@ public class PanelSectors extends JFrame {
         getContentPane().add(panel);
 
         table.setSize(860, ((table.getRowCount() * 16) + 28));
-        
+
         table.setDefaultRenderer(String.class, new CentreRenderer());
         table.getColumnModel().getColumn(1).setCellRenderer(new ColourCellRenderer());
 
@@ -84,7 +108,7 @@ public class PanelSectors extends JFrame {
         addColItem(new ImageIcon(getClass().getResource("/images/BlueButton.png")), Col.BLUE);
         addColItem(new ImageIcon(getClass().getResource("/images/VioletButton.png")), Col.VIOLET);
         colColumn.setCellEditor(new DefaultCellEditor(colourBox));
-        
+
         TableColumn visColumn = table.getColumnModel().getColumn(12);
         visibilityBox = new JComboBox<>();
         addVisibItem("", Vis.UNKVIS);
@@ -92,7 +116,7 @@ public class PanelSectors extends JFrame {
         addVisibItem(Messages.getString("Unintensified"), Vis.UNINTEN);
         addVisibItem(Messages.getString("PartiallyObscured"), Vis.PARTOBS);
         visColumn.setCellEditor(new DefaultCellEditor(visibilityBox));
-        
+
         TableColumn exhColumn = table.getColumnModel().getColumn(13);
         exhibitionBox = new JComboBox<>();
         addExhibItem("", Exh.UNKEXH);
@@ -113,14 +137,17 @@ public class PanelSectors extends JFrame {
         public SectorTable() {
         }
 
+        @Override
         public String getColumnName(int col) {
             return headings[col];
         }
 
+        @Override
         public int getColumnCount() {
             return headings.length;
         }
 
+        @Override
         public int getRowCount() {
             if (SmedAction.panelMain == null)
                 return 1;
@@ -128,10 +155,12 @@ public class PanelSectors extends JFrame {
                 return SmedAction.panelMain.mark.getSectorCount();
         }
 
+        @Override
         public boolean isCellEditable(int row, int col) {
             return ((col > 0) && (row > 0));
         }
 
+        @Override
         public Class getColumnClass(int col) {
             switch (col) {
             case 1:
@@ -143,6 +172,7 @@ public class PanelSectors extends JFrame {
             }
         }
 
+        @Override
         public Object getValueAt(int row, int col) {
             switch (col) {
             case 0:
@@ -152,14 +182,12 @@ public class PanelSectors extends JFrame {
                     return row;
             case 1:
                 if (((String)SmedAction.panelMain.mark.getLightAtt(Att.CHR, row)).contains("Al")) {
-                    if (SmedAction.panelMain.mark.getLightAtt(Att.COL, row) == Col.UNKCOL) {
+                    if (SmedAction.panelMain.mark.getLightAtt(Att.COL, row) == Col.UNKCOL)
                         return Col.UNKCOL;
-                    } else {
+                    else
                         return SmedAction.panelMain.mark.getLightAtt(Att.ALT, row);
-                    }
-                } else {
+                } else
                     return SmedAction.panelMain.mark.getLightAtt(Att.COL, row);
-                }
             case 6:
                 return (SmedAction.panelMain.mark.getLightAtt(Att.LIT, row) == Lit.DIR);
             case 7:
@@ -177,6 +205,7 @@ public class PanelSectors extends JFrame {
             }
         }
 
+        @Override
         public void setValueAt(Object value, int row, int col) {
             switch (col) {
             case 1:
@@ -222,15 +251,17 @@ public class PanelSectors extends JFrame {
             case 12:
                 for (Vis vis : visibilities.keySet()) {
                     String str = visibilities.get(vis);
-                    if (str.equals(value))
+                    if (str.equals(value)) {
                         SmedAction.panelMain.mark.setLightAtt(Att.VIS, row, vis);
+                    }
                 }
                 break;
             case 13:
                 for (Exh exh : exhibitions.keySet()) {
                     String str = exhibitions.get(exh);
-                    if (str.equals(value))
+                    if (str.equals(value)) {
                         SmedAction.panelMain.mark.setLightAtt(Att.EXH, row, exh);
+                    }
                 }
                 break;
             default:
@@ -259,6 +290,7 @@ public class PanelSectors extends JFrame {
             col2Label.setOpaque(true);
             add(col2Label);
         }
+        @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int rowIndex, int vColIndex) {
             if (!((String)SmedAction.panelMain.mark.getLightAtt(Att.CHR, rowIndex)).contains("Al")) {
                 col2Label.setBackground(SeaMark.ColMAP.get(SmedAction.panelMain.mark.getLightAtt(Att.COL, rowIndex)));
@@ -295,7 +327,7 @@ public class PanelSectors extends JFrame {
             }
         }
     }
-    
+
     public void syncPanel() {
         table.updateUI();
         table.setSize(860, ((table.getRowCount() * 16) + 28));

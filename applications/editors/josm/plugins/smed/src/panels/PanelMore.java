@@ -1,15 +1,32 @@
 package panels;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.EnumMap;
 
-import javax.swing.*;
-
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import messages.Messages;
+import seamarks.SeaMark.Cns;
+import seamarks.SeaMark.Col;
+import seamarks.SeaMark.Con;
+import seamarks.SeaMark.Ent;
+import seamarks.SeaMark.Pat;
+import seamarks.SeaMark.Reg;
+import seamarks.SeaMark.Sts;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelMore extends JPanel {
 
@@ -17,28 +34,32 @@ public class PanelMore extends JPanel {
     public JLabel infoLabel;
     public JTextField infoBox;
     private FocusListener flInfo = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setInfo(infoBox.getText());
         }
     };
     public JLabel sourceLabel;
     public JTextField sourceBox;
     private FocusListener flSource = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setSource(sourceBox.getText());
         }
     };
     public JLabel elevLabel;
     public JTextField elevBox;
     private FocusListener flElev = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setElevation(elevBox.getText());
         }
     };
     public JLabel heightLabel;
     public JTextField heightBox;
     private FocusListener flHeight = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setObjectHeight(heightBox.getText());
         }
     };
@@ -46,11 +67,13 @@ public class PanelMore extends JPanel {
     public JComboBox<String> statusBox;
     public EnumMap<Sts, Integer> statuses = new EnumMap<>(Sts.class);
     private ActionListener alStatus = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Sts sts : statuses.keySet()) {
                 int idx = statuses.get(sts);
-                if (SmedAction.panelMain.mark != null && (idx == statusBox.getSelectedIndex()))
+                if (SmedAction.panelMain.mark != null && (idx == statusBox.getSelectedIndex())) {
                     SmedAction.panelMain.mark.setStatus(sts);
+                }
             }
         }
     };
@@ -58,11 +81,13 @@ public class PanelMore extends JPanel {
     public JComboBox<String> constrBox;
     public EnumMap<Cns, Integer> constructions = new EnumMap<>(Cns.class);
     private ActionListener alConstr = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cns cns : constructions.keySet()) {
                 int idx = constructions.get(cns);
-                if (SmedAction.panelMain.mark != null && (idx == constrBox.getSelectedIndex()))
+                if (SmedAction.panelMain.mark != null && (idx == constrBox.getSelectedIndex())) {
                     SmedAction.panelMain.mark.setConstr(cns);
+                }
             }
         }
     };
@@ -70,11 +95,13 @@ public class PanelMore extends JPanel {
     public JComboBox<String> conBox;
     public EnumMap<Con, Integer> conspicuities = new EnumMap<>(Con.class);
     private ActionListener alCon = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Con con : conspicuities.keySet()) {
                 int idx = conspicuities.get(con);
-                if (SmedAction.panelMain.mark != null && (idx == conBox.getSelectedIndex()))
+                if (SmedAction.panelMain.mark != null && (idx == conBox.getSelectedIndex())) {
                     SmedAction.panelMain.mark.setConsp(con);
+                }
             }
         }
     };
@@ -82,11 +109,13 @@ public class PanelMore extends JPanel {
     public JComboBox<String> reflBox;
     public EnumMap<Con, Integer> reflectivities = new EnumMap<>(Con.class);
     private ActionListener alRefl = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Con con : reflectivities.keySet()) {
                 int idx = reflectivities.get(con);
-                if (SmedAction.panelMain.mark != null && (idx == reflBox.getSelectedIndex()))
+                if (SmedAction.panelMain.mark != null && (idx == reflBox.getSelectedIndex())) {
                     SmedAction.panelMain.mark.setRefl(con);
+                }
             }
         }
     };
@@ -96,7 +125,8 @@ public class PanelMore extends JPanel {
     public JRadioButton regionBButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/RegionBButton.png")));
     public JRadioButton regionCButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/RegionCButton.png")));
     private ActionListener alRegion = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (regionAButton.isSelected()) {
                 SmedAction.panelMain.mark.setRegion(Reg.A);
                 switch (dlg.panelMain.mark.getCategory()) {
@@ -312,23 +342,27 @@ public class PanelMore extends JPanel {
         infoBox.setText(dlg.panelMain.mark.getInfo());
         for (Sts sts : statuses.keySet()) {
             int item = statuses.get(sts);
-            if (dlg.panelMain.mark.getStatus() == sts)
+            if (dlg.panelMain.mark.getStatus() == sts) {
                 statusBox.setSelectedIndex(item);
+            }
         }
         for (Cns cns : constructions.keySet()) {
             int item = constructions.get(cns);
-            if (dlg.panelMain.mark.getConstr() == cns)
+            if (dlg.panelMain.mark.getConstr() == cns) {
                 constrBox.setSelectedIndex(item);
+            }
         }
         for (Con con : conspicuities.keySet()) {
             int item = conspicuities.get(con);
-            if (dlg.panelMain.mark.getConsp() == con)
+            if (dlg.panelMain.mark.getConsp() == con) {
                 conBox.setSelectedIndex(item);
+            }
         }
         for (Con con : reflectivities.keySet()) {
             int item = reflectivities.get(con);
-            if (dlg.panelMain.mark.getRefl() == con)
+            if (dlg.panelMain.mark.getRefl() == con) {
                 reflBox.setSelectedIndex(item);
+            }
         }
     }
 

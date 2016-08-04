@@ -1,14 +1,20 @@
 package panels;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EnumMap;
 
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import messages.Messages;
+import seamarks.SeaMark.Ent;
+import seamarks.SeaMark.Top;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelTop extends JPanel {
 
@@ -33,14 +39,16 @@ public class PanelTop extends JPanel {
     public JRadioButton circleDayButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/CircleDayButton.png")));
     private EnumMap<Top, JRadioButton> tops = new EnumMap<>(Top.class);
     private ActionListener alTop = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Top top : tops.keySet()) {
                 JRadioButton button = tops.get(top);
                 if (button.isSelected()) {
                     SmedAction.panelMain.mark.setTopmark(top);
                     button.setBorderPainted(true);
-                } else
+                } else {
                     button.setBorderPainted(false);
+                }
             }
         }
     };
@@ -80,8 +88,9 @@ public class PanelTop extends JPanel {
             JRadioButton button = tops.get(top);
             if (SmedAction.panelMain.mark.getTopmark() == top) {
                 button.setBorderPainted(true);
-            } else
+            } else {
                 button.setBorderPainted(false);
+            }
         }
         panelPat.syncPanel();
     }

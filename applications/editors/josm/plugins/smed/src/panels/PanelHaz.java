@@ -1,16 +1,28 @@
 package panels;
 
-import java.awt.event.*;
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EnumMap;
 
-import javax.swing.*;
-
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
 
 import messages.Messages;
-import smed.SmedAction;
 import seamarks.SeaMark;
-import seamarks.SeaMark.*;
+import seamarks.SeaMark.Att;
+import seamarks.SeaMark.Cat;
+import seamarks.SeaMark.Col;
+import seamarks.SeaMark.Grp;
+import seamarks.SeaMark.Obj;
+import seamarks.SeaMark.Pat;
+import seamarks.SeaMark.Shp;
+import seamarks.SeaMark.Top;
+import smed.SmedAction;
 
 public class PanelHaz extends JPanel {
 
@@ -22,7 +34,8 @@ public class PanelHaz extends JPanel {
     public JRadioButton westButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/CardWButton.png")));
     public JRadioButton isolButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/IsolButton.png")));
     private ActionListener alCat = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             SmedAction.panelMain.mark.setObjPattern(Pat.HSTRP);
             if (northButton.isSelected()) {
                 SmedAction.panelMain.mark.setCategory(Cat.CAM_NORTH);
@@ -85,18 +98,21 @@ public class PanelHaz extends JPanel {
     public EnumMap<Shp, Obj> carObjects = new EnumMap<>(Shp.class);
     public EnumMap<Shp, Obj> isdObjects = new EnumMap<>(Shp.class);
     private ActionListener alShape = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Shp shp : shapes.keySet()) {
                 JRadioButton button = shapes.get(shp);
                 if (button.isSelected()) {
                     SmedAction.panelMain.mark.setShape(shp);
-                    if (isolButton.isSelected())
+                    if (isolButton.isSelected()) {
                         SmedAction.panelMain.mark.setObject(isdObjects.get(shp));
-                    else
+                    } else {
                         SmedAction.panelMain.mark.setObject(carObjects.get(shp));
+                    }
                     button.setBorderPainted(true);
-                } else
+                } else {
                     button.setBorderPainted(false);
+                }
             }
             topmarkButton.setVisible(SmedAction.panelMain.mark.testValid());
             lightButton.setVisible(SmedAction.panelMain.mark.testValid());
@@ -104,7 +120,8 @@ public class PanelHaz extends JPanel {
     };
     public JToggleButton topmarkButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/HazTopButton.png")));
     private ActionListener alTop = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (topmarkButton.isSelected()) {
                 SmedAction.panelMain.mark.setTopPattern(Pat.NOPAT);
                 SmedAction.panelMain.mark.setTopColour(Col.BLACK);
@@ -137,7 +154,8 @@ public class PanelHaz extends JPanel {
     };
     public JToggleButton lightButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/DefLitButton.png")));
     private ActionListener alLit = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (lightButton.isSelected()) {
                 SmedAction.panelMain.mark.setLightAtt(Att.COL, 0, Col.WHITE);
                 switch (SmedAction.panelMain.mark.getCategory()) {

@@ -1,14 +1,30 @@
 package panels;
 
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.EnumMap;
 
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import messages.Messages;
+import seamarks.SeaMark.Att;
+import seamarks.SeaMark.Ent;
+import seamarks.SeaMark.Exh;
+import seamarks.SeaMark.Lit;
+import seamarks.SeaMark.Vis;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelLit extends JPanel {
 
@@ -19,21 +35,24 @@ public class PanelLit extends JPanel {
     public JLabel groupLabel;
     public JTextField groupBox;
     private FocusListener flGroup = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setLightAtt(Att.GRP, 0, groupBox.getText());
         }
     };
     public JLabel periodLabel;
     public JTextField periodBox;
     private FocusListener flPeriod = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setLightAtt(Att.PER, 0, periodBox.getText());
         }
     };
     public JLabel sequenceLabel;
     public JTextField sequenceBox;
     private FocusListener flSequence = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setLightAtt(Att.SEQ, 0, sequenceBox.getText());
         }
     };
@@ -41,39 +60,45 @@ public class PanelLit extends JPanel {
     public JComboBox<String> visibilityBox;
     public EnumMap<Vis, Integer> visibilities = new EnumMap<>(Vis.class);
     private ActionListener alVisibility = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Vis vis : visibilities.keySet()) {
                 int idx = visibilities.get(vis);
-                if (idx == visibilityBox.getSelectedIndex())
+                if (idx == visibilityBox.getSelectedIndex()) {
                     SmedAction.panelMain.mark.setLightAtt(Att.VIS, 0, vis);
+                }
             }
         }
     };
     public JLabel heightLabel;
     public JTextField heightBox;
     private FocusListener flHeight = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setLightAtt(Att.HGT, 0, heightBox.getText());
         }
     };
     public JLabel rangeLabel;
     public JTextField rangeBox;
     private FocusListener flRange = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setLightAtt(Att.RNG, 0, rangeBox.getText());
         }
     };
     public JLabel orientationLabel;
     public JTextField orientationBox;
     private FocusListener flOrientation = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setLightAtt(Att.ORT, 0, orientationBox.getText());
         }
     };
     public JLabel multipleLabel;
     public JTextField multipleBox;
     private FocusListener flMultiple = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setLightAtt(Att.MLT, 0, multipleBox.getText());
         }
     };
@@ -81,11 +106,13 @@ public class PanelLit extends JPanel {
     public JComboBox<String> categoryBox;
     public EnumMap<Lit, Integer> categories = new EnumMap<>(Lit.class);
     private ActionListener alCategory = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Lit lit : categories.keySet()) {
                 int idx = categories.get(lit);
-                if (idx == categoryBox.getSelectedIndex())
+                if (idx == categoryBox.getSelectedIndex()) {
                     SmedAction.panelMain.mark.setLightAtt(Att.LIT, 0, lit);
+                }
             }
             if (SmedAction.panelMain.mark.getLightAtt(Att.LIT, 0) == Lit.DIR) {
                 SmedAction.panelMain.mark.setLightAtt(Att.MLT, 0, "");
@@ -117,11 +144,13 @@ public class PanelLit extends JPanel {
     public JComboBox<String> exhibitionBox;
     public EnumMap<Exh, Integer> exhibitions = new EnumMap<>(Exh.class);
     private ActionListener alExhibition = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Exh exh : exhibitions.keySet()) {
                 int idx = exhibitions.get(exh);
-                if (idx == exhibitionBox.getSelectedIndex())
+                if (idx == exhibitionBox.getSelectedIndex()) {
                     SmedAction.panelMain.mark.setLightAtt(Att.EXH, 0, exh);
+                }
             }
         }
     };
@@ -129,15 +158,17 @@ public class PanelLit extends JPanel {
     public JRadioButton singleButton;
     public JRadioButton sectorButton;
     private ActionListener alType = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             singleButton.setBorderPainted(singleButton.isSelected());
             sectorButton.setBorderPainted(sectorButton.isSelected());
             if (sectorButton.isSelected()) {
                 panelSector.setVisible(true);
             } else {
                 panelSector.setVisible(false);
-                while (SmedAction.panelMain.mark.getSectorCount() > 1)
+                while (SmedAction.panelMain.mark.getSectorCount() > 1) {
                     SmedAction.panelMain.mark.delLight(1);
+                }
             }
         }
     };
@@ -295,29 +326,35 @@ public class PanelLit extends JPanel {
         multipleBox.setVisible((SmedAction.panelMain.mark.getLightAtt(Att.LIT, 0) == Lit.VERT) || (SmedAction.panelMain.mark.getLightAtt(Att.LIT, 0) == Lit.HORIZ));
         for (Vis vis : visibilities.keySet()) {
             int item = visibilities.get(vis);
-            if (SmedAction.panelMain.mark.getLightAtt(Att.VIS, 0) == vis)
+            if (SmedAction.panelMain.mark.getLightAtt(Att.VIS, 0) == vis) {
                 visibilityBox.setSelectedIndex(item);
+            }
         }
         for (Lit lit : categories.keySet()) {
             int item = categories.get(lit);
-            if (SmedAction.panelMain.mark.getLightAtt(Att.LIT, 0) == lit)
+            if (SmedAction.panelMain.mark.getLightAtt(Att.LIT, 0) == lit) {
                 categoryBox.setSelectedIndex(item);
+            }
         }
         for (Exh exh : exhibitions.keySet()) {
             int item = exhibitions.get(exh);
-            if (SmedAction.panelMain.mark.getLightAtt(Att.EXH, 0) == exh)
+            if (SmedAction.panelMain.mark.getLightAtt(Att.EXH, 0) == exh) {
                 exhibitionBox.setSelectedIndex(item);
+            }
         }
         if (SmedAction.panelMain.mark.isSectored()) {
             singleButton.setBorderPainted(false);
             sectorButton.setBorderPainted(true);
-            if (isVisible()) panelSector.setVisible(true);
+            if (isVisible()) {
+                panelSector.setVisible(true);
+            }
         } else {
             singleButton.setBorderPainted(true);
             sectorButton.setBorderPainted(false);
             panelSector.setVisible(false);
-            while (SmedAction.panelMain.mark.getSectorCount() > 1)
+            while (SmedAction.panelMain.mark.getSectorCount() > 1) {
                 SmedAction.panelMain.mark.delLight(SmedAction.panelMain.mark.getSectorCount() - 1);
+            }
         }
         panelCol.syncPanel();
         panelChr.syncPanel();

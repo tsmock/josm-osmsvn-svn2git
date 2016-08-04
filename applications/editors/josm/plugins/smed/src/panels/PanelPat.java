@@ -1,15 +1,20 @@
 package panels;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EnumMap;
 
-import javax.swing.*;
-
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import messages.Messages;
+import seamarks.SeaMark.Ent;
+import seamarks.SeaMark.Pat;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelPat extends JPanel {
 
@@ -26,14 +31,16 @@ public class PanelPat extends JPanel {
     public JRadioButton borderButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/BorderButton.png")));
     public EnumMap<Pat, JRadioButton> patterns = new EnumMap<>(Pat.class);
     private ActionListener alPat = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Pat pat : patterns.keySet()) {
                 JRadioButton button = patterns.get(pat);
                 if (button.isSelected()) {
                     SmedAction.panelMain.mark.setPattern(ent, pat);
                     button.setBorderPainted(true);
-                } else
+                } else {
                     button.setBorderPainted(false);
+                }
             }
             switch (SmedAction.panelMain.mark.getPattern(ent)) {
             case NOPAT:
@@ -75,8 +82,9 @@ public class PanelPat extends JPanel {
             JRadioButton button = patterns.get(pat);
             if (SmedAction.panelMain.mark.getPattern(ent) == pat) {
                 button.setBorderPainted(true);
-            } else
+            } else {
                 button.setBorderPainted(false);
+            }
         }
         panelCol.syncPanel();
     }

@@ -2,17 +2,28 @@ package panels;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.EnumMap;
+import java.util.EnumSet;
 
-import javax.swing.*;
-
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 
 import messages.Messages;
-import smed.SmedAction;
 import seamarks.SeaMark;
-import seamarks.SeaMark.*;
+import seamarks.SeaMark.Att;
+import seamarks.SeaMark.Chr;
+import seamarks.SeaMark.Col;
+import smed.SmedAction;
 
 public class PanelChr extends JPanel {
 
@@ -37,7 +48,8 @@ public class PanelChr extends JPanel {
     public JToggleButton alternatingButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/AlternatingButton.png")));
     private EnumMap<Chr, JToggleButton> buttons = new EnumMap<>(Chr.class);
     private ActionListener alCharButton = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             JToggleButton source = (JToggleButton) e.getSource();
             EnumSet<Chr> combo = EnumSet.noneOf(Chr.class);
             for (Chr chr : buttons.keySet()) {
@@ -76,8 +88,10 @@ public class PanelChr extends JPanel {
         }
     };
     private FocusListener flCharBox = new FocusListener() {
-        public void focusGained(java.awt.event.FocusEvent e) {}
-            public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusGained(FocusEvent e) {}
+        @Override
+        public void focusLost(FocusEvent e) {
             String str = charBox.getText();
             SmedAction.panelMain.mark.setLightAtt(Att.CHR, 0, str);
             EnumSet<Chr> set = EnumSet.noneOf(Chr.class);

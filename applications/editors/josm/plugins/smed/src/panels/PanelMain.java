@@ -2,13 +2,27 @@ package panels;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import messages.Messages;
-import smed.SmedAction;
 import seamarks.SeaMark;
+import smed.SmedAction;
 
 public class PanelMain extends JPanel {
 
@@ -27,21 +41,25 @@ public class PanelMain extends JPanel {
     public JTextField nameBox = null;
     public static JTextField messageBar = null;
     private FocusListener flName = new FocusListener() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             mark.setName(nameBox.getText());
         }
-        public void focusGained(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusGained(FocusEvent e) {
         }
     };
     public JButton saveButton = null;
     private ActionListener alSave = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             mark.saveSign(dlg.node);
         }
     };
     public JButton moreButton = null;
     private ActionListener alMore = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (panelMore.isVisible()) {
                 moreButton.setText(">>");
                 panelMore.setVisible(false);
@@ -74,7 +92,8 @@ public class PanelMain extends JPanel {
     public JRadioButton specButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/SpecButton.png")));
     public JRadioButton lightsButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/LightsButton.png")));
     private ActionListener alType = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (chanButton.isSelected()) {
                 chanButton.setBorderPainted(true);
                 panelChan.syncPanel();
@@ -115,7 +134,8 @@ public class PanelMain extends JPanel {
     public JRadioButton radButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/RadarButton.png")));
     public JRadioButton litButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/LitButton.png")));
     private ActionListener alMisc = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (topButton.isSelected()) {
                 moreButton.setText(">>");
                 panelMore.setVisible(false);
@@ -158,7 +178,7 @@ public class PanelMain extends JPanel {
             }
         }
     };
-    
+
     public PanelMain(SmedAction dia) {
 
         dlg = dia;

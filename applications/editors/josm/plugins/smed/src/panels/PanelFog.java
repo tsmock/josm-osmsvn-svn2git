@@ -1,14 +1,25 @@
 package panels;
 
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.EnumMap;
 
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import messages.Messages;
+import seamarks.SeaMark.Fog;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelFog extends JPanel {
 
@@ -25,42 +36,48 @@ public class PanelFog extends JPanel {
     public JRadioButton explosButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/FogExplosButton.png")));
     private EnumMap<Fog, JRadioButton> fogs = new EnumMap<>(Fog.class);
     private ActionListener alFog = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Fog fog : fogs.keySet()) {
                 JRadioButton button = fogs.get(fog);
                 if (button.isSelected()) {
                     SmedAction.panelMain.mark.setFogSound(fog);
                     button.setBorderPainted(true);
-                } else
+                } else {
                     button.setBorderPainted(false);
+                }
             }
         }
     };
     public JLabel groupLabel;
     public JTextField groupBox;
     private FocusListener flGroup = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setFogGroup(groupBox.getText());
         }
     };
     public JLabel periodLabel;
     public JTextField periodBox;
     private FocusListener flPeriod = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setFogPeriod(periodBox.getText());
         }
     };
     public JLabel seqLabel;
     public JTextField seqBox;
     private FocusListener flSeq = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setFogSequence(seqBox.getText());
         }
     };
     public JLabel rangeLabel;
     public JTextField rangeBox;
     private FocusListener flRange = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setFogRange(rangeBox.getText());
         }
     };

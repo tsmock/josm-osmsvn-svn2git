@@ -1,16 +1,30 @@
 package panels;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EnumMap;
 
-import javax.swing.*;
-
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 
 import messages.Messages;
-import smed.SmedAction;
 import seamarks.SeaMark;
-import seamarks.SeaMark.*;
+import seamarks.SeaMark.Cat;
+import seamarks.SeaMark.Col;
+import seamarks.SeaMark.Ent;
+import seamarks.SeaMark.Obj;
+import seamarks.SeaMark.Pat;
+import seamarks.SeaMark.Shp;
+import seamarks.SeaMark.Top;
+import smed.SmedAction;
 
 public class PanelSpec extends JPanel {
 
@@ -19,18 +33,21 @@ public class PanelSpec extends JPanel {
     public JComboBox<String> categoryBox;
     public EnumMap<Cat, Integer> categories = new EnumMap<>(Cat.class);
     private ActionListener alCategoryBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : categories.keySet()) {
                 int idx = categories.get(cat);
-                if (dlg.node != null && (idx == categoryBox.getSelectedIndex()))
+                if (dlg.node != null && (idx == categoryBox.getSelectedIndex())) {
                     SmedAction.panelMain.mark.setCategory(cat);
+                }
             }
         }
     };
     public JComboBox<String> mooringBox;
     public EnumMap<Cat, Integer> moorings = new EnumMap<>(Cat.class);
     private ActionListener alMooringBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : moorings.keySet()) {
                 int idx = moorings.get(cat);
                 if (dlg.node != null && (idx == mooringBox.getSelectedIndex())) {
@@ -40,12 +57,15 @@ public class PanelSpec extends JPanel {
                         SmedAction.panelMain.mark.setShape(Shp.UNKSHP);
                     } else {
                         SmedAction.panelMain.mark.setObject(Obj.MORFAC);
-                        if (cat != Cat.MOR_BUOY)
+                        if (cat != Cat.MOR_BUOY) {
                             SmedAction.panelMain.mark.setShape(Shp.UNKSHP);
+                        }
                     }
                 }
             }
-            if (dlg.node != null) syncPanel();
+            if (dlg.node != null) {
+                syncPanel();
+            }
         }
     };
     public ButtonGroup shapeButtons = new ButtonGroup();
@@ -64,7 +84,8 @@ public class PanelSpec extends JPanel {
     public EnumMap<Shp, JRadioButton> shapes = new EnumMap<>(Shp.class);
     public EnumMap<Shp, Obj> objects = new EnumMap<>(Shp.class);
     public ActionListener alShape = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if ((SmedAction.panelMain.mark.getObject() != Obj.MORFAC) || (SmedAction.panelMain.mark.getCategory() == Cat.MOR_BUOY)) {
                 for (Shp shp : shapes.keySet()) {
                     JRadioButton button = shapes.get(shp);
@@ -83,8 +104,9 @@ public class PanelSpec extends JPanel {
                             topmarkButton.setVisible(SmedAction.panelMain.mark.testValid());
                         }
                         button.setBorderPainted(true);
-                    } else
+                    } else {
                         button.setBorderPainted(false);
+                    }
                 }
                 SmedAction.panelMain.panelMore.syncPanel();
             }
@@ -92,7 +114,8 @@ public class PanelSpec extends JPanel {
     };
     public JToggleButton topmarkButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/SpecTopButton.png")));
     private ActionListener alTop = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (topmarkButton.isSelected()) {
                 SmedAction.panelMain.mark.setTopmark(Top.X_SHAPE);
                 SmedAction.panelMain.mark.setTopPattern(Pat.NOPAT);
@@ -109,7 +132,8 @@ public class PanelSpec extends JPanel {
     };
     public JToggleButton noticeButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/NoticeButton.png")));
     private ActionListener alNotice = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             SmedAction.panelMain.mark.clrMark();
             if (noticeButton.isSelected()) {
                 SmedAction.panelMain.mark.setObject(Obj.NOTMRK);
@@ -123,7 +147,8 @@ public class PanelSpec extends JPanel {
     };
     public JToggleButton mooringButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/MooringButton.png")));
     private ActionListener alMooring = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             SmedAction.panelMain.mark.setObject(Obj.UNKOBJ);
             SmedAction.panelMain.mark.setCategory(Cat.NOCAT);
             SmedAction.panelMain.mark.setTopmark(Top.NOTOP);
@@ -219,11 +244,11 @@ public class PanelSpec extends JPanel {
         topmarkButton.addActionListener(alTop);
         add(topmarkButton);
 
-//		noticeButton.setBounds(new Rectangle(136, 32, 34, 32));
-//		noticeButton.setToolTipText(Messages.getString("Notice"));
-//		noticeButton.setBorder(BorderFactory.createLoweredBevelBorder());
-//		noticeButton.addActionListener(alNotice);
-//		add(noticeButton);
+        //        noticeButton.setBounds(new Rectangle(136, 32, 34, 32));
+        //        noticeButton.setToolTipText(Messages.getString("Notice"));
+        //        noticeButton.setBorder(BorderFactory.createLoweredBevelBorder());
+        //        noticeButton.addActionListener(alNotice);
+        //        add(noticeButton);
 
         mooringButton.setBounds(new Rectangle(136, 64, 34, 32));
         mooringButton.setToolTipText(Messages.getString("Mooring"));
@@ -247,8 +272,9 @@ public class PanelSpec extends JPanel {
             topmarkButton.setVisible(false);
             for (Cat cat : moorings.keySet()) {
                 int item = moorings.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     mooringBox.setSelectedIndex(item);
+                }
             }
         } else {
             mooringButton.setBorderPainted(false);
@@ -266,16 +292,18 @@ public class PanelSpec extends JPanel {
             topmarkButton.setVisible(SmedAction.panelMain.mark.testValid());
             for (Cat cat : categories.keySet()) {
                 int item = categories.get(cat);
-                if (SmedAction.panelMain.mark.getCategory() == cat)
+                if (SmedAction.panelMain.mark.getCategory() == cat) {
                     categoryBox.setSelectedIndex(item);
+                }
             }
         }
         for (Shp shp : shapes.keySet()) {
             JRadioButton button = shapes.get(shp);
             if (SmedAction.panelMain.mark.getShape() == shp) {
                 button.setBorderPainted(true);
-            } else
+            } else {
                 button.setBorderPainted(false);
+            }
         }
         noticeButton.setBorderPainted(false);
         SmedAction.panelMain.mark.testValid();

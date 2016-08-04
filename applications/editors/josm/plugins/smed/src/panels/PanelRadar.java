@@ -1,22 +1,36 @@
 package panels;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.EnumMap;
 
-import javax.swing.*;
-
-import java.util.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 
 import messages.Messages;
+import seamarks.SeaMark.Cat;
+import seamarks.SeaMark.Rtb;
 import smed.SmedAction;
-import seamarks.SeaMark.*;
 
 public class PanelRadar extends JPanel {
 
     private SmedAction dlg;
     private JToggleButton aisButton = new JToggleButton(new ImageIcon(getClass().getResource("/images/AISButton.png")));
     private ActionListener alAis = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             if (aisButton.isSelected()) {
                 radioCatBox.setVisible(true);
                 aisButton.setBorderPainted(true);
@@ -30,7 +44,8 @@ public class PanelRadar extends JPanel {
     private JComboBox<String> radioCatBox;
     private EnumMap<Cat, Integer> radioCats = new EnumMap<>(Cat.class);
     private ActionListener alRadioCatBox = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Cat cat : radioCats.keySet()) {
                 int idx = radioCats.get(cat);
                 if (dlg.node != null && (idx == radioCatBox.getSelectedIndex())) {
@@ -47,7 +62,8 @@ public class PanelRadar extends JPanel {
     public JRadioButton leadingButton = new JRadioButton(new ImageIcon(getClass().getResource("/images/LeadingRaconButton.png")));
     private EnumMap<Rtb, JRadioButton> rads = new EnumMap<>(Rtb.class);
     private ActionListener alRad = new ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             for (Rtb rtb : rads.keySet()) {
                 JRadioButton button = rads.get(rtb);
                 if (button.isSelected()) {
@@ -60,42 +76,48 @@ public class PanelRadar extends JPanel {
     public JLabel groupLabel;
     public JTextField groupBox;
     private FocusListener flGroup = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setRaconGroup(groupBox.getText());
         }
     };
     public JLabel periodLabel;
     public JTextField periodBox;
     private FocusListener flPeriod = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setRaconPeriod(periodBox.getText());
         }
     };
     public JLabel seqLabel;
     public JTextField seqBox;
     private FocusListener flSeq = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setRaconSequence(seqBox.getText());
         }
     };
     public JLabel rangeLabel;
     public JTextField rangeBox;
     private FocusListener flRange = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setRaconRange(rangeBox.getText());
         }
     };
     public JLabel sector1Label;
     public JTextField sector1Box;
     private FocusListener flSector1 = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setRaconSector1(sector1Box.getText());
         }
     };
     public JLabel sector2Label;
     public JTextField sector2Box;
     private FocusListener flSector2 = new FocusAdapter() {
-        public void focusLost(java.awt.event.FocusEvent e) {
+        @Override
+        public void focusLost(FocusEvent e) {
             SmedAction.panelMain.mark.setRaconSector2(sector2Box.getText());
         }
     };
@@ -109,7 +131,7 @@ public class PanelRadar extends JPanel {
         add(getRadButton(ramarkButton, 0, 63, 27, 27, "Ramark", Rtb.RAMARK));
         add(getRadButton(raconButton, 0, 93, 27, 27, "Racon", Rtb.RACON));
         add(getRadButton(leadingButton, 0, 123, 27, 27, "LeadingRacon", Rtb.LEADING));
-        
+
         groupLabel = new JLabel(Messages.getString("Group"), SwingConstants.CENTER);
         groupLabel.setBounds(new Rectangle(30, 0, 100, 20));
         add(groupLabel);
@@ -145,7 +167,7 @@ public class PanelRadar extends JPanel {
         rangeBox.setHorizontalAlignment(SwingConstants.CENTER);
         add(rangeBox);
         rangeBox.addFocusListener(flRange);
-        
+
         sectorsLabel = new JLabel(Messages.getString("VisibleSector"), SwingConstants.CENTER);
         sectorsLabel.setBounds(new Rectangle(75, 85, 100, 20));
         add(sectorsLabel);

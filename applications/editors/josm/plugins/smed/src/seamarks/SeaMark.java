@@ -1,19 +1,26 @@
 package seamarks;
 
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Arc2D;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.*;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.data.osm.*;
 import org.openstreetmap.josm.command.ChangePropertyCommand;
-
-import panels.PanelMain;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
 
 import messages.Messages;
+import panels.PanelMain;
 import smed.SmedAction;
 
 public class SeaMark extends JPanel {
@@ -1349,7 +1356,7 @@ public class SeaMark extends JPanel {
         case RSCSTA:
         case RDOSTA:
         case RADSTA:
-            tmp = true;
+             tmp = true;
             break;
         case NOTMRK:
             if (getCategory() != Cat.NOCAT) 
