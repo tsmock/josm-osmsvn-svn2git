@@ -1,21 +1,4 @@
-/**
- *  Tracer2 - plug-in for JOSM to capture contours
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
-
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.tracer2.preferences;
 
 import java.io.BufferedReader;
@@ -61,9 +44,9 @@ public class ServerParamList {
 
     public void loadDefault() {
         try (
-            InputStream oIP = getClass().getResourceAsStream("/resources/serverParam.cfg");
-            BufferedReader oReader = new BufferedReader(new InputStreamReader(oIP));
-        ) {
+                InputStream oIP = getClass().getResourceAsStream("/resources/serverParam.cfg");
+                BufferedReader oReader = new BufferedReader(new InputStreamReader(oIP));
+                ) {
             StringBuilder oBuilder = new StringBuilder();
             String strLine;
             while ((strLine = oReader.readLine()) != null) {
@@ -95,15 +78,16 @@ public class ServerParamList {
     public ServerParam getActivParam() {
         return m_oActivParam;
     }
+
     public void setActivParam(ServerParam param) {
-        if ( m_listServerParam.contains(param)) {
+        if (m_listServerParam.contains(param)) {
             m_oActivParam = param;
         }
     }
 
     public List<ServerParam> getEnableParamList() {
         List<ServerParam> listParam = new ArrayList<>();
-        for ( ServerParam param: m_listServerParam) {
+        for (ServerParam param: m_listServerParam) {
             if (param.isEnabled()) {
                 listParam.add(param);
             }
