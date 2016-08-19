@@ -266,6 +266,10 @@
   path = applications/editors/josm/plugins/no_more_mapping
   url = ../no_more_mapping
   branch = master
+[submodule "applications/editors/josm/plugins/o5m"]
+  path = applications/editors/josm/plugins/o5m
+  url = ../o5m
+  branch = master
 [submodule "applications/editors/josm/plugins/opendata"]
   path = applications/editors/josm/plugins/opendata
   url = ../opendata
