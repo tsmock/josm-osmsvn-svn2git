@@ -1,11 +1,5 @@
 package org.openstreetmap.josm.plugins.rasterfilters;
 
-import java.awt.Container;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.JPanel;
-
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.gui.SideButton;
@@ -24,6 +18,11 @@ import org.openstreetmap.josm.plugins.rasterfilters.actions.ShowLayerFiltersDial
 import org.openstreetmap.josm.plugins.rasterfilters.gui.FiltersDialog;
 import org.openstreetmap.josm.plugins.rasterfilters.preferences.FiltersDownloader;
 import org.openstreetmap.josm.plugins.rasterfilters.preferences.RasterFiltersPreferences;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Main Plugin class. This class embed new plugin button for adding filter and
@@ -121,15 +120,16 @@ public class RasterFiltersPlugin extends Plugin implements LayerChangeListener, 
         }
 
         if (Main.getLayerManager().getLayers().isEmpty()) {
-
             Container container = filterButton.getParent();
             if (container != null)
                 container.remove(filterButton);
-            
+
             FiltersDownloader.destroyFilters();
             filterButton = null;
-
         }
+
+        Main.getLayerManager().removeLayerChangeListener(this);
+        Main.getLayerManager().removeActiveLayerChangeListener(this);
     }
 
     @Override

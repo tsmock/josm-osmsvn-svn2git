@@ -1,20 +1,5 @@
 package org.openstreetmap.josm.plugins.rasterfilters.preferences;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.List;
-
-import javax.json.JsonObject;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
-
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.preferences.PreferenceTabbedPane;
 import org.openstreetmap.josm.gui.preferences.SubPreferenceSetting;
@@ -22,11 +7,20 @@ import org.openstreetmap.josm.gui.preferences.TabPreferenceSetting;
 import org.openstreetmap.josm.gui.preferences.map.MapPreference;
 import org.openstreetmap.josm.tools.GBC;
 
+import javax.json.JsonObject;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
+import java.util.List;
+
 /**
  * This class draws subtab 'Image Filters' in the Preferences menu.
  *
  * @author Nipel-Crumple
- *
  */
 public class RasterFiltersPreferences implements SubPreferenceSetting {
 
@@ -109,8 +103,8 @@ public class RasterFiltersPreferences implements SubPreferenceSetting {
 
     static class FiltersTableModel extends AbstractTableModel {
 
-        String[] columnNames = { "Filter Name", "Author", "Description", "" };
-        Class<?>[] columnClasses = { String.class, String.class, String.class, Boolean.class };
+        String[] columnNames = {"Filter Name", "Author", "Description", ""};
+        Class<?>[] columnClasses = {String.class, String.class, String.class, Boolean.class};
         List<FilterInfo> filtersInfoList;
         Object[][] data;
 
@@ -141,16 +135,16 @@ public class RasterFiltersPreferences implements SubPreferenceSetting {
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             switch (columnIndex) {
-            case 0:
-                return filtersInfoList.get(rowIndex).getName();
-            case 1:
-                return filtersInfoList.get(rowIndex).getOwner();
-            case 2:
-                return filtersInfoList.get(rowIndex).getDescription();
-            case 3:
-                return filtersInfoList.get(rowIndex).isNeedToDownload();
-            default:
-                return null;
+                case 0:
+                    return filtersInfoList.get(rowIndex).getName();
+                case 1:
+                    return filtersInfoList.get(rowIndex).getOwner();
+                case 2:
+                    return filtersInfoList.get(rowIndex).getDescription();
+                case 3:
+                    return filtersInfoList.get(rowIndex).isNeedToDownload();
+                default:
+                    return null;
             }
         }
 
@@ -200,7 +194,7 @@ class FilterInfo {
     }
 
     public FilterInfo(String name, String description, JsonObject meta,
-            boolean needToDownload) {
+                      boolean needToDownload) {
         this.setName(name);
         this.setDescription(description);
         this.meta = meta;
