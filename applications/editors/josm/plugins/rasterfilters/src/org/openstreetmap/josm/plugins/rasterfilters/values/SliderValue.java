@@ -4,12 +4,12 @@ public class SliderValue<Number> implements Value<Number> {
 
     private String parameterName;
     private Number value;
-    
+
     public SliderValue(String parameterName, Number value) {
         this.value = value;
         this.parameterName = parameterName;
     }
-    
+
     @Override
     public Number getValue() {
         return value;
@@ -24,14 +24,15 @@ public class SliderValue<Number> implements Value<Number> {
     public String getParameterName() {
         return parameterName;
     }
-    
+
     @Override
     public void setParameterName(String name) {
-        this.parameterName = name;;
+        this.parameterName = name;
+        ;
     }
-    
+
     public boolean isDouble() {
-        if (value instanceof Double) 
+        if (value instanceof Double)
             return true;
         return false;
     }
