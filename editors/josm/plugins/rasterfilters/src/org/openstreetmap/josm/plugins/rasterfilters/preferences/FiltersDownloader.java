@@ -1,25 +1,47 @@
 package org.openstreetmap.josm.plugins.rasterfilters.preferences;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.openstreetmap.josm.Main;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.openstreetmap.josm.Main;
 /**
  * This class is responsible for downloading jars which contains
  * filters implementations, for loading meta from the
@@ -265,21 +287,21 @@ public class FiltersDownloader implements ActionListener {
 
         try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
             for (JsonObject temp : metaList) {
-                JsonArray binaries = temp.getJsonArray("binaries");
+            JsonArray binaries = temp.getJsonArray("binaries");
 
-                for (int i = 0; i < binaries.size(); i++) {
+            for (int i = 0; i < binaries.size(); i++) {
 
-                    String localFile = loadBinaryToFile(binaries.getString(i));
+                String localFile = loadBinaryToFile(binaries.getString(i));
 
-                    try {
-                        writer.append(binaries.getString(i));
-                        writer.append("\t");
-                        writer.append(localFile);
-                        writer.append("\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    writer.append(binaries.getString(i));
+                    writer.append("\t");
+                    writer.append(localFile);
+                    writer.append("\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+            }
             }
         } catch (IOException e) {
             e.printStackTrace();
