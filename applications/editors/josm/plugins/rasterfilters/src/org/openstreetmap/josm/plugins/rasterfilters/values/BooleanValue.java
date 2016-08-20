@@ -9,7 +9,7 @@ public class BooleanValue implements Value<Boolean> {
         this.value = value;
         this.parameterName = parameterName;
     }
-
+    
     @Override
     public Boolean getValue() {
         return value;

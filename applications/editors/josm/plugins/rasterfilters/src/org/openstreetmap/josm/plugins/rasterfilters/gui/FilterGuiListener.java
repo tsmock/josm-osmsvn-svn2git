@@ -1,17 +1,6 @@
 package org.openstreetmap.josm.plugins.rasterfilters.gui;
 
-import com.bric.swing.ColorPicker;
-import org.openstreetmap.josm.plugins.rasterfilters.model.FilterStateModel;
-import org.openstreetmap.josm.plugins.rasterfilters.model.StateChangeListener;
-import org.openstreetmap.josm.plugins.rasterfilters.values.BooleanValue;
-import org.openstreetmap.josm.plugins.rasterfilters.values.ColorValue;
-import org.openstreetmap.josm.plugins.rasterfilters.values.SelectValue;
-import org.openstreetmap.josm.plugins.rasterfilters.values.SliderValue;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -22,11 +11,27 @@ import java.rmi.server.UID;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.openstreetmap.josm.plugins.rasterfilters.model.FilterStateModel;
+import org.openstreetmap.josm.plugins.rasterfilters.model.StateChangeListener;
+import org.openstreetmap.josm.plugins.rasterfilters.values.BooleanValue;
+import org.openstreetmap.josm.plugins.rasterfilters.values.ColorValue;
+import org.openstreetmap.josm.plugins.rasterfilters.values.SelectValue;
+import org.openstreetmap.josm.plugins.rasterfilters.values.SliderValue;
+
+import com.bric.swing.ColorPicker;
+
 /**
  * This class is GUI listener which tracks all changes of GUI controls
  * elements: sliders, checkboxes, color pickers and select lists.
- *
  * @author Nipel-Crumple
+ *
  */
 public class FilterGuiListener implements ChangeListener, ItemListener,
         ActionListener, PropertyChangeListener, FilterStateOwner {
