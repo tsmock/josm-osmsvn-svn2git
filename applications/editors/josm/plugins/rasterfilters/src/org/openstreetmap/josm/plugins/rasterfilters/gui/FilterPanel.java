@@ -1,21 +1,38 @@
 package org.openstreetmap.josm.plugins.rasterfilters.gui;
 
-import com.bric.swing.ColorPicker;
-import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.plugins.rasterfilters.model.FiltersManager;
+import static org.openstreetmap.josm.tools.I18n.tr;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.rmi.server.UID;
 import java.util.Hashtable;
 
-import static org.openstreetmap.josm.tools.I18n.tr;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+
+import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.plugins.rasterfilters.model.FiltersManager;
+
+import com.bric.swing.ColorPicker;
 
 /**
  * FilterPanel is usual JPanel with its
@@ -23,6 +40,7 @@ import static org.openstreetmap.josm.tools.I18n.tr;
  * meta-information of filter.
  *
  * @author Nipel-Crumple
+ *
  */
 public class FilterPanel extends JPanel {
 
@@ -41,6 +59,7 @@ public class FilterPanel extends JPanel {
      * automatically resizes the given filter's panel.
      *
      * @param json filter's meta-information
+     *
      * @return added GUI element
      */
     public JComponent addGuiElement(JsonObject json) {
@@ -119,7 +138,7 @@ public class FilterPanel extends JPanel {
     public JComponent createColorPicker(JsonObject json) {
 
         ColorPicker picker = new ColorPicker(false, false);
-        picker.setPreferredSize(new Dimension(200, 180));
+        picker.setPreferredSize(new Dimension(200,180));
         picker.setMode(ColorPicker.HUE);
         picker.setName(json.getString("name"));
 
@@ -237,13 +256,13 @@ public class FilterPanel extends JPanel {
                 slider.setName(json.getString("name"));
                 slider.setToolTipText(String.valueOf(slider.getValue()));
                 slider.setMinorTickSpacing(maxValue / 4);
-            } catch (IllegalArgumentException e) {
+            } catch(IllegalArgumentException e) {
 
-                JOptionPane.showMessageDialog(
-                        Main.parent,
-                        tr("JSlider initialization error. Make sure your meta-inf is correct."),
-                        tr("Error"),
-                        JOptionPane.ERROR_MESSAGE);
+                 JOptionPane.showMessageDialog(
+                         Main.parent,
+                         tr("JSlider initialization error. Make sure your meta-inf is correct."),
+                         tr("Error"),
+                         JOptionPane.ERROR_MESSAGE);
             }
 
         } else if (valueType.equals("float")) {
@@ -282,11 +301,11 @@ public class FilterPanel extends JPanel {
 
             } catch (IllegalArgumentException e) {
 
-                JOptionPane.showMessageDialog(
-                        Main.parent,
-                        tr("JSlider initialization error. Make sure your meta-inf is correct."),
-                        tr("Error"),
-                        JOptionPane.ERROR_MESSAGE);
+                 JOptionPane.showMessageDialog(
+                         Main.parent,
+                         tr("JSlider initialization error. Make sure your meta-inf is correct."),
+                         tr("Error"),
+                         JOptionPane.ERROR_MESSAGE);
             }
         }
 

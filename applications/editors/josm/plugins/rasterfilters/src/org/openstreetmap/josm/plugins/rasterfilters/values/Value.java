@@ -5,8 +5,9 @@ import org.openstreetmap.josm.plugins.rasterfilters.model.FilterStateModel;
 /**
  * Generic values which are used by {@link FilterStateModel}.
  *
- * @param <T> generic class of the value
  * @author Nipel-Crumple
+ *
+ * @param <T> generic class of the value
  */
 public interface Value<T extends Object> {
 

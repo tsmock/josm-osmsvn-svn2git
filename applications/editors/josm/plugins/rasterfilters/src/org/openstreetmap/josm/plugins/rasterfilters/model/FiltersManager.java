@@ -1,6 +1,28 @@
 package org.openstreetmap.josm.plugins.rasterfilters.model;
 
-import com.bric.swing.ColorPicker;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
+import java.rmi.server.UID;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.layer.ImageProcessor;
 import org.openstreetmap.josm.plugins.rasterfilters.filters.Filter;
@@ -9,26 +31,16 @@ import org.openstreetmap.josm.plugins.rasterfilters.gui.FilterPanel;
 import org.openstreetmap.josm.plugins.rasterfilters.gui.FiltersDialog;
 import org.openstreetmap.josm.plugins.rasterfilters.preferences.FiltersDownloader;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
-import java.rmi.server.UID;
-import java.util.*;
-
+import com.bric.swing.ColorPicker;
 /**
  * This class adds filter to the dialog and can also remove
  * or disable it from the filters chain.
  *
  * @author Nipel-Crumple
+ *
  */
 public class FiltersManager implements StateChangeListener, ImageProcessor,
-        ActionListener, ItemListener {
+ActionListener, ItemListener {
 
     public Map<UID, Filter> filtersMap = new LinkedHashMap<>();
     public Set<Filter> disabledFilters = new HashSet<>();
@@ -133,7 +145,8 @@ public class FiltersManager implements StateChangeListener, ImageProcessor,
     /**
      * The method notifies about changes in the filter's status.
      *
-     * @param filterState - model that contains info about filter which was changed
+     * @param filterState
+     *            - model that contains info about filter which was changed
      */
     @Override
     public void filterStateChanged(UID filterId, FilterStateModel filterState) {
