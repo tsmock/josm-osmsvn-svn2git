@@ -1,36 +1,24 @@
 package org.openstreetmap.josm.plugins.rasterfilters.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import org.openstreetmap.josm.gui.layer.ImageryLayer;
+import org.openstreetmap.josm.gui.layer.Layer;
+import org.openstreetmap.josm.plugins.rasterfilters.model.FiltersManager;
+import org.openstreetmap.josm.plugins.rasterfilters.preferences.FiltersDownloader;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-
-import org.openstreetmap.josm.gui.layer.ImageryLayer;
-import org.openstreetmap.josm.gui.layer.Layer;
-import org.openstreetmap.josm.plugins.rasterfilters.model.FiltersManager;
-import org.openstreetmap.josm.plugins.rasterfilters.preferences.FiltersDownloader;
-
 /**
  * This filters is responsible for creating filter's dialog where user can
  * choose and add new filter at this dialog.
  *
  * @author Nipel-Crumple
- *
  */
 public class FiltersDialog {
 
