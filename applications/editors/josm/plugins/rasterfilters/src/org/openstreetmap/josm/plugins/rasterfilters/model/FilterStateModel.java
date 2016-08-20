@@ -1,19 +1,15 @@
 package org.openstreetmap.josm.plugins.rasterfilters.model;
 
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import org.openstreetmap.josm.plugins.rasterfilters.values.*;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import org.openstreetmap.josm.plugins.rasterfilters.values.BooleanValue;
-import org.openstreetmap.josm.plugins.rasterfilters.values.ColorValue;
-import org.openstreetmap.josm.plugins.rasterfilters.values.SelectValue;
-import org.openstreetmap.josm.plugins.rasterfilters.values.SliderValue;
-import org.openstreetmap.josm.plugins.rasterfilters.values.Value;
 /**
  * Filter state's model which stores all parameters of
  * the filter according to its meta-information.
@@ -21,7 +17,6 @@ import org.openstreetmap.josm.plugins.rasterfilters.values.Value;
  * into subtypes of the generic interface {@link Value}
  *
  * @author Nipel-Crumple
- *
  */
 public class FilterStateModel {
 
@@ -148,12 +143,12 @@ public class FilterStateModel {
             if (value instanceof Color) {
 
                 jsonBuilder.add(entry.getKey(),
-                            Json.createObjectBuilder()
+                        Json.createObjectBuilder()
                                 .add("value", Json.createObjectBuilder()
-                                                  .add("red", ((Color) value).getRed())
-                                                  .add("green", ((Color) value).getGreen())
-                                                  .add("blue", ((Color) value).getBlue())
-                                                  .build())
+                                        .add("red", ((Color) value).getRed())
+                                        .add("green", ((Color) value).getGreen())
+                                        .add("blue", ((Color) value).getBlue())
+                                        .build())
                                 .build());
 
             }
