@@ -1,18 +1,17 @@
 package org.openstreetmap.josm.plugins.rasterfilters.filters;
 
+import javax.json.JsonObject;
 import java.awt.image.BufferedImage;
 import java.rmi.server.UID;
 
-import javax.json.JsonObject;
 /**
  * The Filter interface is inherited by all filters which are implemented.
- *
+ * <p>
  * This interface has four methods that should be overrided in
- *
+ * <p>
  * implementation.
  *
  * @author Nipel-Crumple
- *
  */
 public interface Filter {
 
@@ -25,7 +24,6 @@ public interface Filter {
      * store given parameters' values in class.
      *
      * @param filterState json that has information about current filter state
-     *
      * @return json object 'filterState'
      */
     public JsonObject changeFilterState(JsonObject filterState);
@@ -36,7 +34,6 @@ public interface Filter {
      * this method depends on your needs and wishes.
      *
      * @param img image to process
-     *
      * @return processed image
      */
     public BufferedImage applyFilter(BufferedImage img);

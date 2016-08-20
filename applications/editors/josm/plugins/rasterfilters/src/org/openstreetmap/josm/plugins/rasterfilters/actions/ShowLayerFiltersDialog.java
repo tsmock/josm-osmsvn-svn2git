@@ -1,16 +1,5 @@
 package org.openstreetmap.josm.plugins.rasterfilters.actions;
 
-import static org.openstreetmap.josm.tools.I18n.tr;
-
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.AbstractAction;
-import javax.swing.JMenuItem;
-
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.layer.ImageryLayer;
 import org.openstreetmap.josm.gui.layer.Layer;
@@ -18,13 +7,21 @@ import org.openstreetmap.josm.gui.layer.Layer.LayerAction;
 import org.openstreetmap.josm.plugins.rasterfilters.gui.FiltersDialog;
 import org.openstreetmap.josm.tools.ImageProvider;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.openstreetmap.josm.tools.I18n.tr;
+
 /**
  * The action that is called when user click on 'Choose filters' button
- *
+ * <p>
  * and sets image on that button
  *
  * @author Nipel-Crumple
- *
  */
 public final class ShowLayerFiltersDialog extends AbstractAction implements LayerAction {
 
