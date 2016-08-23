@@ -6,6 +6,10 @@
   path = applications/editors/josm/plugins/areaselector
   url = ../areaselector.git
   branch = master
+[submodule "applications/editors/josm/plugins/building_generalization"]
+  path = applications/editors/josm/plugins/building_generalization
+  url = ../Building-Generalization.git
+  branch = master
 [submodule "applications/editors/josm/plugins/conflation"]
   path = applications/editors/josm/plugins/conflation
   url = ../conflation.git
@@ -17,6 +21,10 @@
 [submodule "applications/editors/josm/plugins/geojson"]
   path = applications/editors/josm/plugins/geojson
   url = ../geojson.git
+  branch = master
+[submodule "applications/editors/josm/plugins/shapetools"]
+  path = applications/editors/josm/plugins/shapetools
+  url = ../ShapeTools.git
   branch = master
 [submodule "applications/editors/josm/plugins/tofix"]
   path = applications/editors/josm/plugins/tofix
