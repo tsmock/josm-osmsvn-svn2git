@@ -90,6 +90,10 @@
   path = applications/editors/josm/plugins/areaselector
   url = ../areaselector.git
   branch = master
+[submodule "applications/editors/josm/plugins/building_generalization"]
+  path = applications/editors/josm/plugins/building_generalization
+  url = ../Building-Generalization.git
+  branch = master
 [submodule "applications/editors/josm/plugins/buildings_tools"]
   path = applications/editors/josm/plugins/buildings_tools
   url = ../buildings_tools
@@ -366,6 +370,10 @@
   path = applications/editors/josm/plugins/seachartedit
   url = ../seachartedit
   branch = master
+[submodule "applications/editors/josm/plugins/shapetools"]
+  path = applications/editors/josm/plugins/shapetools
+  url = ../ShapeTools.git
+  branch = master
 [submodule "applications/editors/josm/plugins/simplifyarea"]
   path = applications/editors/josm/plugins/simplifyarea
   url = ../simplifyarea
@@ -404,7 +412,8 @@
   branch = master
 [submodule "applications/editors/josm/plugins/tofix"]
   path = applications/editors/josm/plugins/tofix
-  url = ../tofix.git
+  url = ../tofix
+  branch = master
 [submodule "applications/editors/josm/plugins/touchscreenhelper"]
   path = applications/editors/josm/plugins/touchscreenhelper
   url = ../touchscreenhelper
