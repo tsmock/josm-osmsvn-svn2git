@@ -349,7 +349,7 @@ public class TagSpecifications {
         }
     }
 
-    class ResourceEntityResolver implements EntityResolver {
+    static class ResourceEntityResolver implements EntityResolver {
 
         @Override
         public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
@@ -365,7 +365,7 @@ public class TagSpecifications {
         }
     }
 
-    static public void main(String args[]) throws Exception{
+    public static void main(String args[]) throws Exception{
         TagSpecifications.loadFromResources();
     }
 }
