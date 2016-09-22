@@ -22,6 +22,10 @@
   path = editors/josm/plugins/geojson
   url = ../geojson.git
   branch = master
+[submodule "editors/josm/plugins/Mapillary"]
+  path = editors/josm/plugins/Mapillary
+  url = ../mapillary.git
+  branch = master
 [submodule "editors/josm/plugins/shapetools"]
   path = editors/josm/plugins/shapetools
   url = ../ShapeTools.git
