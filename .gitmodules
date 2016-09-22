@@ -54,6 +54,10 @@
   path = applications/editors/josm/plugins/ImportImagePlugin
   url = ../ImportImagePlugin
   branch = master
+[submodule "applications/editors/josm/plugins/Mapillary"]
+  path = applications/editors/josm/plugins/Mapillary
+  url = ../Mapillary
+  branch = master
 [submodule "applications/editors/josm/plugins/NanoLog"]
   path = applications/editors/josm/plugins/NanoLog
   url = ../NanoLog
@@ -241,10 +245,6 @@
 [submodule "applications/editors/josm/plugins/mapdust"]
   path = applications/editors/josm/plugins/mapdust
   url = ../mapdust
-  branch = master
-[submodule "applications/editors/josm/plugins/mapillary"]
-  path = applications/editors/josm/plugins/mapillary
-  url = ../Mapillary
   branch = master
 [submodule "applications/editors/josm/plugins/measurement"]
   path = applications/editors/josm/plugins/measurement
