@@ -1,7 +1,4 @@
-/**
- * Copyright by Christof Dallermassl
- * This program is free software and licensed under GPL.
- */
+// License: GPL. For details, see LICENSE file.
 package at.dallermassl.josm.plugin.surveyor;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -51,7 +48,7 @@ public class SurveyorShowAction extends JosmAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(surveyorFrame == null) {
+        if (surveyorFrame == null) {
             surveyorFrame = new JFrame();
 
             SurveyorComponent comp = createComponent();
@@ -66,7 +63,7 @@ public class SurveyorShowAction extends JosmAction {
             actionMap.put("zoomout", new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(Main.map != null && Main.map.mapView != null) {
+                    if (Main.map != null && Main.map.mapView != null) {
                         Main.map.mapView.zoomToFactor(2);
                     }
                 }
@@ -76,7 +73,7 @@ public class SurveyorShowAction extends JosmAction {
             actionMap.put("zoomin", new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(Main.map != null && Main.map.mapView != null) {
+                    if (Main.map != null && Main.map.mapView != null) {
                         Main.map.mapView.zoomToFactor(1/2);
                     }
                 }
@@ -109,7 +106,7 @@ public class SurveyorShowAction extends JosmAction {
 
     public SurveyorComponent createComponent() {
         String source = Main.pref.get("surveyor.source");
-        if(source == null || source.length() == 0) {
+        if (source == null || source.length() == 0) {
             source = DEFAULT_SOURCE;
             Main.pref.put("surveyor.source", DEFAULT_SOURCE);
             // <FIXXME date="04.05.2007" author="cdaller">
@@ -120,7 +117,7 @@ public class SurveyorShowAction extends JosmAction {
             return createComponent(in);
         } catch (IOException e) {
             Main.error(e);
-            JOptionPane.showMessageDialog(Main.parent, tr("Could not read surveyor definition: {0}",source));
+            JOptionPane.showMessageDialog(Main.parent, tr("Could not read surveyor definition: {0}", source));
         } catch (SAXException e) {
             Main.error(e);
             JOptionPane.showMessageDialog(Main.parent, tr("Error parsing {0}: {1}", source, e.getMessage()));
@@ -143,19 +140,19 @@ public class SurveyorShowAction extends JosmAction {
         SurveyorComponent surveyorComponent = null;
         parser.start(new BufferedReader(new InputStreamReader(in)));
         List<SurveyorActionDescription> actions = new ArrayList<>();
-        while(parser.hasNext()) {
+        while (parser.hasNext()) {
             Object object = parser.next();
             if (object instanceof SurveyorComponent) {
                 //System.out.println("SurveyorComponent " + object);
                 surveyorComponent = (SurveyorComponent) object;
             } else if (object instanceof ButtonDescription) {
                 //System.out.println("ButtonDescription " + object);
-                ((ButtonDescription)object).setActions(actions);
-                surveyorComponent.addButton(((ButtonDescription)object));
+                ((ButtonDescription) object).setActions(actions);
+                surveyorComponent.addButton(((ButtonDescription) object));
                 actions = new ArrayList<>();
             } else if (object instanceof SurveyorActionDescription) {
                 //System.out.println("SurveyorActionDescription " + object);
-                actions.add((SurveyorActionDescription)object);
+                actions.add((SurveyorActionDescription) object);
             } else {
                 Main.error("surveyor: unknown xml element: " + object);
             }
