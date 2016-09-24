@@ -1,7 +1,4 @@
-/**
- * Copyright by Christof Dallermassl
- * This program is free software and licensed under GPL.
- */
+// License: GPL. For details, see LICENSE file.
 package at.dallermassl.josm.plugin.surveyor.util;
 
 import java.io.FileInputStream;
@@ -13,7 +10,7 @@ import java.net.URL;
  * @author cdaller
  *
  */
-public class ResourceLoader {
+public final class ResourceLoader {
 
     private ResourceLoader() {
 
