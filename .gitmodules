@@ -34,6 +34,10 @@
   path = applications/editors/josm/plugins/DirectUpload
   url = ../DirectUpload
   branch = master
+[submodule "applications/editors/josm/plugins/Dxf-Import"]
+  path = applications/editors/josm/plugins/Dxf-Import
+  url = ../Dxf-Import
+  branch = master
 [submodule "applications/editors/josm/plugins/ElevationProfile"]
   path = applications/editors/josm/plugins/ElevationProfile
   url = ../ElevationProfile
@@ -230,6 +234,10 @@
   path = applications/editors/josm/plugins/junctionchecking
   url = ../junctionchecking
   branch = master
+[submodule "applications/editors/josm/plugins/kartverketimport"]
+  path = applications/editors/josm/plugins/kartverketimport
+  url = ../kartverketimport
+  branch = master
 [submodule "applications/editors/josm/plugins/lakewalker"]
   path = applications/editors/josm/plugins/lakewalker
   url = ../lakewalker
@@ -410,6 +418,10 @@
   path = applications/editors/josm/plugins/terracer
   url = ../terracer
   branch = master
+[submodule "applications/editors/josm/plugins/todo"]
+  path = applications/editors/josm/plugins/todo
+  url = ../todo
+  branch = master
 [submodule "applications/editors/josm/plugins/tofix"]
   path = applications/editors/josm/plugins/tofix
   url = ../tofix
@@ -429,6 +441,10 @@
 [submodule "applications/editors/josm/plugins/trustosm"]
   path = applications/editors/josm/plugins/trustosm
   url = ../trustosm
+  branch = master
+[submodule "applications/editors/josm/plugins/turnlanes-tagging"]
+  path = applications/editors/josm/plugins/turnlanes-tagging
+  url = ../turnlanes-tagging
   branch = master
 [submodule "applications/editors/josm/plugins/turnlanes"]
   path = applications/editors/josm/plugins/turnlanes
