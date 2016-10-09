@@ -112,6 +112,7 @@ public class SCeditAction extends JosmAction implements ActiveLayerChangeListene
     @Override
     public void actionPerformed(ActionEvent arg0) {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (!isOpen)
                     createFrame();
@@ -126,6 +127,7 @@ public class SCeditAction extends JosmAction implements ActiveLayerChangeListene
         editFrame = new JFrame(title);
         editFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         editFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
                 closeDialog();
             }

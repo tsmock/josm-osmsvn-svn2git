@@ -11,7 +11,9 @@ package panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,25 +25,38 @@ import javax.swing.JPanel;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
-import org.openstreetmap.josm.data.osm.*;
+import org.openstreetmap.josm.data.osm.DataSet;
+import org.openstreetmap.josm.data.osm.Node;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.OsmPrimitiveType;
+import org.openstreetmap.josm.data.osm.Relation;
+import org.openstreetmap.josm.data.osm.RelationMember;
+import org.openstreetmap.josm.data.osm.Way;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 
 import s57.S57att;
-import s57.S57dec;
-import s57.S57obj;
-import s57.S57map;
-import s57.S57val;
 import s57.S57att.Att;
-import s57.S57map.*;
-import s57.S57obj.*;
+import s57.S57dec;
+import s57.S57map;
+import s57.S57map.AttMap;
+import s57.S57map.Feature;
+import s57.S57map.GeomIterator;
+import s57.S57map.ObjTab;
+import s57.S57map.Pflag;
+import s57.S57map.Prim;
+import s57.S57map.Rflag;
+import s57.S57map.Snode;
+import s57.S57obj;
+import s57.S57obj.Obj;
+import s57.S57val;
 import s57.S57val.AttVal;
 
 public class PanelS57 extends JPanel {
 
-    ArrayList<Obj> types = new ArrayList<Obj>();
+    ArrayList<Obj> types = new ArrayList<>();
     S57map map;
-    HashMap<Long, Long> uids = new HashMap<Long, Long>();
-    
+    HashMap<Long, Long> uids = new HashMap<>();
+
     public PanelS57() {
         setLayout(null);
         setSize(new Dimension(480, 480));
@@ -68,10 +83,10 @@ public class PanelS57 extends JPanel {
         S57dec.decodeChart(in, map);
 
         in.close();
-        
+
         DataSet data = new DataSet();
         data.setUploadDiscouraged(true);
-        
+
         for (long id : map.index.keySet()) {
             Feature feature = map.index.get(id);
             String type = S57obj.stringType(feature.type);
@@ -101,7 +116,8 @@ public class PanelS57 extends JPanel {
             String type = S57obj.stringType(feature.type);
             if (!type.isEmpty() && (types.isEmpty() || types.contains(feature.type))) {
                 if (feature.reln == Rflag.MASTER) {
-                    if ((feature.geom.prim == Pflag.LINE) || ((feature.geom.prim == Pflag.AREA) && (feature.geom.outers == 1) && (feature.geom.inners == 0))) {
+                    if ((feature.geom.prim == Pflag.LINE) || ((feature.geom.prim == Pflag.AREA)
+                            && (feature.geom.outers == 1) && (feature.geom.inners == 0))) {
                         GeomIterator git = map.new GeomIterator(feature.geom);
                         while (git.hasComp()) {
                             git.nextComp();
@@ -128,7 +144,7 @@ public class PanelS57 extends JPanel {
                                 git.nextEdge();
                                 while (git.hasNode()) {
                                     long ref = git.nextRef();
-                                    way.addNode((Node)data.getPrimitiveById(uids.get(ref), OsmPrimitiveType.NODE));
+                                    way.addNode((Node) data.getPrimitiveById(uids.get(ref), OsmPrimitiveType.NODE));
                                 }
                             }
                             addKeys(way, feature, type);
@@ -172,9 +188,9 @@ public class PanelS57 extends JPanel {
                         while (git.hasComp()) {
                             long ref = git.nextComp();
                             if (outers-- > 0) {
-                                rel.addMember(new RelationMember("outer", (Way) data.getPrimitiveById(uids.get(ref), OsmPrimitiveType.WAY)));
+                                rel.addMember(new RelationMember("outer", data.getPrimitiveById(uids.get(ref), OsmPrimitiveType.WAY)));
                             } else {
-                                rel.addMember(new RelationMember("inner", (Way) data.getPrimitiveById(uids.get(ref), OsmPrimitiveType.WAY)));
+                                rel.addMember(new RelationMember("inner", data.getPrimitiveById(uids.get(ref), OsmPrimitiveType.WAY)));
                             }
                         }
                         addKeys(rel, feature, type);
@@ -185,12 +201,13 @@ public class PanelS57 extends JPanel {
 
         OsmDataLayer layer = new OsmDataLayer(data, "S-57 Import", null);
         Main.getLayerManager().addLayer(layer);
-        Main.map.mapView.zoomTo(new Bounds(Math.toDegrees(map.bounds.minlat), Math.toDegrees(map.bounds.minlon), Math.toDegrees(map.bounds.maxlat), Math.toDegrees(map.bounds.maxlon)));
+        Main.map.mapView.zoomTo(new Bounds(Math.toDegrees(map.bounds.minlat), Math.toDegrees(map.bounds.minlon),
+                                           Math.toDegrees(map.bounds.maxlat), Math.toDegrees(map.bounds.maxlon)));
         PanelMain.setStatus("Import done", Color.green);
     }
 
     void addKeys(OsmPrimitive prim, Feature feature, String type) {
-        HashMap<String,String> keys = new HashMap<String,String>();
+        HashMap<String, String> keys = new HashMap<>();
         if (prim instanceof Relation) {
             keys.put("type", "multipolygon");
         }
@@ -198,7 +215,7 @@ public class PanelS57 extends JPanel {
         if (feature.type == Obj.SOUNDG) {
             Snode snode = map.nodes.get(feature.geom.elems.get(0).id);
             if (snode.flg == S57map.Nflag.DPTH) {
-                keys.put("seamark:sounding:depth", ((Double)((Snode)snode).val).toString());
+                keys.put("seamark:sounding:depth", ((Double) snode.val).toString());
             }
         }
         for (Map.Entry<Att, AttVal<?>> item : feature.atts.entrySet()) {
@@ -229,8 +246,7 @@ public class PanelS57 extends JPanel {
         prim.setKeys(keys);
     }
 
-    
     public void startExport(File outf) throws IOException {
-        
+
     }
 }

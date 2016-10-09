@@ -17,19 +17,24 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.*;
-
-import messages.Messages;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import org.openstreetmap.josm.Main;
 
+import messages.Messages;
+import s57.S57att.Att;
+import s57.S57map.AttMap;
+import s57.S57map.Feature;
+import s57.S57obj.Obj;
 import s57.S57val.AttVal;
-import s57.S57att.*;
-import s57.S57obj.*;
-import s57.S57map.*;
 import scedit.SCeditAction;
 
 public class PanelMain extends JPanel {
@@ -41,12 +46,14 @@ public class PanelMain extends JPanel {
     public static JTextField messageBar = null;
     public JButton saveButton = null;
     private ActionListener alSave = new ActionListener() {
+        @Override
         public void actionPerformed(java.awt.event.ActionEvent e) {
         }
     };
     private JButton importButton = null;
     JFileChooser ifc = new JFileChooser(Main.pref.get("nceditplugin.encinpfile"));
     private ActionListener alImport = new ActionListener() {
+        @Override
         public void actionPerformed(java.awt.event.ActionEvent e) {
             if (e.getSource() == importButton) {
                 SCeditAction.panelS57.setVisible(true);
@@ -71,6 +78,7 @@ public class PanelMain extends JPanel {
     private JButton exportButton = null;
     final JFileChooser efc = new JFileChooser();
     private ActionListener alExport = new ActionListener() {
+        @Override
         public void actionPerformed(java.awt.event.ActionEvent e) {
             if (e.getSource() == exportButton) {
                 SCeditAction.panelS57.setVisible(true);
@@ -84,7 +92,7 @@ public class PanelMain extends JPanel {
                         setStatus("IO Exception", Color.red);
                     }
          } else {
-                    SCeditAction.panelS57.setVisible(false);
+                     SCeditAction.panelS57.setVisible(false);
                     clrStatus();
          }
       }
@@ -94,7 +102,7 @@ public class PanelMain extends JPanel {
     public PanelMain() {
         setLayout(null);
         setSize(new Dimension(480, 480));
-        
+
         w = h = z = f = 0;
         wt = new JTextField("0");
         wt.setBounds(10, 400, 40, 20);
@@ -133,25 +141,26 @@ public class PanelMain extends JPanel {
         decode.setTabSize(1);
         add(decode);
     }
-    
-    public void paintComponent(Graphics g){
+
+    @Override
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setBackground(new Color(0xb5d0d0));
         if (img != null) g2.clearRect(0, 0, img.getWidth(), img.getHeight());
         g2.drawImage(img, 0, 0, null);
     }
-    
+
     public static void setStatus(String text, Color bg) {
         messageBar.setBackground(bg);
         messageBar.setText(text);
     }
-    
+
     public static void clrStatus() {
         messageBar.setBackground(Color.white);
         messageBar.setText("");
     }
-    
+
     public void parseMark(Feature feature) {
         decode.setText("Selected object:\n");
         decode.append("\t" + tr("Type") + ": " + Messages.getString(feature.type.name()) + "\n");
@@ -167,18 +176,19 @@ public class PanelMain extends JPanel {
                         AttVal<?> item = atts.get(att);
                         switch (item.conv) {
                         case E:
-                            decode.append("\t\t\t" + Messages.getString(att.name()) + ": " + Messages.getString(((Enum<?>)((ArrayList<?>)item.val).get(0)).name()) + "\n");
+                            decode.append("\t\t\t" + Messages.getString(att.name()) + ": " +
+                                    Messages.getString(((Enum<?>) ((ArrayList<?>) item.val).get(0)).name()) + "\n");
                             break;
                         case L:
                             decode.append("\t\t\t" + Messages.getString(att.name()) + ": ");
                             boolean first = true;
-                            for (Object val : (ArrayList<?>)item.val) {
+                            for (Object val : (ArrayList<?>) item.val) {
                                 if (!first) {
                                     decode.append(", ");
                                 } else {
                                     first = false;
                                 }
-                                decode.append(Messages.getString(((Enum<?>)val).name()));
+                                decode.append(Messages.getString(((Enum<?>) val).name()));
                             }
                             decode.append("\n");
                             break;
@@ -190,9 +200,8 @@ public class PanelMain extends JPanel {
             }
         }
     }
-    
+
     public void clearMark() {
         decode.setText(tr("No object selected"));
     }
-    
 }
