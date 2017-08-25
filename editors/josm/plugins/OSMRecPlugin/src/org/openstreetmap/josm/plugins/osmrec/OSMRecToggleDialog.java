@@ -41,6 +41,7 @@ import org.openstreetmap.josm.data.osm.RelationMember;
 import org.openstreetmap.josm.data.osm.Tag;
 import org.openstreetmap.josm.data.osm.event.AbstractDatasetChangedEvent;
 import org.openstreetmap.josm.data.osm.event.DataSetListenerAdapter;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.dialogs.relation.RelationEditor;
@@ -155,7 +156,7 @@ implements SelectionChangedListener, DataSetListenerAdapter.Listener {
      */
     private void editMembership(int row) {
         Relation relation = (Relation) membershipData.getValueAt(row, 0);
-        Main.map.relationListDialog.selectRelation(relation);
+        MainApplication.getMap().relationListDialog.selectRelation(relation);
     }
 
     private int findRow(TableModel model, Object value) {

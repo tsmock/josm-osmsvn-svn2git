@@ -9,10 +9,10 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMNode;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMRelation;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMWay;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Utils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -52,11 +52,11 @@ public class FrequenceExtractor extends DefaultHandler {
     }
 
     public void parseDocument() {
-        Main.info("extracting frequencies...");
+        Logging.info("extracting frequencies...");
         try {
             Utils.newSafeSAXParser().parse(osmXmlFileName, this);
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            Main.error(e);
+            Logging.error(e);
         }
     }
 
