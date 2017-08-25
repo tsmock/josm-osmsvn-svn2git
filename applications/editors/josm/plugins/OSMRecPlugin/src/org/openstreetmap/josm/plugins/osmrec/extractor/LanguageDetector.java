@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Utils;
 
 import com.cybozu.labs.langdetect.Detector;
@@ -79,7 +79,7 @@ public final class LanguageDetector {
             languageProfilesOutputFileHi.createNewFile();
         } catch (IOException ex) {
             Logger.getLogger(LanguageDetector.class.getName()).log(Level.SEVERE, null, ex);
-            Main.error(ex);
+            Logging.error(ex);
         }
 
         try {
@@ -94,14 +94,14 @@ public final class LanguageDetector {
             Files.copy(languageProfilesInputStreamHi, languageProfilesOutputFileHi.toPath());
         } catch (IOException ex) {
             Logger.getLogger(LanguageDetector.class.getName()).log(Level.SEVERE, null, ex);
-            Main.error(ex);
+            Logging.error(ex);
         }
 
         try {
             DetectorFactory.loadProfile(languageProfilesPath);
         } catch (LangDetectException ex) {
             Logger.getLogger(LanguageDetector.class.getName()).log(Level.SEVERE, null, ex);
-            Main.error(ex);
+            Logging.error(ex);
         }
     }
 
@@ -112,7 +112,7 @@ public final class LanguageDetector {
             return detector.detect();
         } catch (LangDetectException ex) {
             Logger.getLogger(LanguageDetector.class.getName()).log(Level.SEVERE, null, ex);
-            Main.error(ex);
+            Logging.error(ex);
             return "en"; //default lang to return if anything goes wrong at detection
         }
     }

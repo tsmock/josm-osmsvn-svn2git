@@ -1,7 +1,7 @@
 // License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.osmrec;
 
-import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
@@ -19,7 +19,7 @@ public class OSMRecPlugin extends Plugin {
     public OSMRecPlugin(PluginInformation info) { // NO_UCD (unused code)
         super(info);
         menuExportAction = new MenuExportAction();
-        Main.main.menu.toolsMenu.add(menuExportAction);
+        MainApplication.getMenu().toolsMenu.add(menuExportAction);
     }
 
     @Override
