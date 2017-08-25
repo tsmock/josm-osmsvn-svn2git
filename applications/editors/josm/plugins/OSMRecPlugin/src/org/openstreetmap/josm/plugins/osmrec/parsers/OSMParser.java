@@ -20,10 +20,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMNode;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMRelation;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMWay;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Utils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -80,7 +80,7 @@ public class OSMParser extends DefaultHandler {
         try {
             Utils.newSafeSAXParser().parse(osmXmlFileName, this);
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            Main.error(e);
+            Logging.error(e);
         }
     }
 

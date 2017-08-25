@@ -23,11 +23,11 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.io.OsmApi;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMNode;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMWay;
 import org.openstreetmap.josm.tools.HttpClient;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Utils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -86,11 +86,11 @@ public class HistoryParser {
             InputStream xml = HttpClient.create(new URL(osmUrl)).connect().getContent();
             NodeList nodes = Utils.parseSafeDOM(xml).getElementsByTagName("changeset");
 
-            Main.debug("changeset size "+ nodes.getLength());
+            Logging.debug("changeset size "+ nodes.getLength());
             for (int i = 0; i < nodes.getLength(); i++) {
-                Main.debug("attributes of " + i + "th changeset");
+                Logging.debug("attributes of " + i + "th changeset");
                 String id = nodes.item(i).getAttributes().item(3).toString();
-                Main.debug("id:" + nodes.item(i).getAttributes().item(3));
+                Logging.debug("id:" + nodes.item(i).getAttributes().item(3));
                 id = stripQuotes(id);
                 changesetIDsList.add(id);
             }
@@ -156,7 +156,7 @@ public class HistoryParser {
                         wayTmp = new OSMWay();
                         wayTmp.setID(osmObject.getAttributes().getNamedItem("id").getNodeValue());
                         // extract tags, then set tags to osm object
-                        Main.debug("\n\nWAY: " + wayTmp.getID());
+                        Logging.debug("\n\nWAY: " + wayTmp.getID());
                         for (int l = 0; l < osmObject.getChildNodes().getLength(); l++) {
                             String wayChild = osmObject.getChildNodes().item(l).getNodeName();
 
@@ -178,7 +178,7 @@ public class HistoryParser {
                                 Geometry geometry = nodesWithIDs.get(entry).getGeometry(); //get the geometry of the node with ID=entry
                                 wayTmp.addNodeGeometry(geometry); //add the node geometry in this way
                             } else {
-                                Main.debug("nodes with ids, no entry " + entry);
+                                Logging.debug("nodes with ids, no entry " + entry);
                                 getNodeFromAPI(entry);
                             }
                         }

@@ -99,6 +99,7 @@ import org.openstreetmap.josm.data.osm.Way;
 import org.openstreetmap.josm.data.preferences.BooleanProperty;
 import org.openstreetmap.josm.data.preferences.IntegerProperty;
 import org.openstreetmap.josm.gui.ExtendedDialog;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.mappaint.MapPaintStyles;
 import org.openstreetmap.josm.gui.tagging.ac.AutoCompletingComboBox;
 import org.openstreetmap.josm.gui.tagging.ac.AutoCompletionListItem;
@@ -121,6 +122,7 @@ import org.openstreetmap.josm.plugins.osmrec.parsers.Ontology;
 import org.openstreetmap.josm.plugins.osmrec.parsers.TextualStatistics;
 import org.openstreetmap.josm.plugins.osmrec.personalization.UserDataExtractAndTrainWorker;
 import org.openstreetmap.josm.tools.GBC;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Shortcut;
 import org.openstreetmap.josm.tools.WindowGeometry;
 
@@ -620,7 +622,7 @@ class OSMRecPluginHelper {
             mainPanel.add(startTrainingButton, BorderLayout.CENTER);
             mainPanel.add(trainingProgressBar, BorderLayout.SOUTH);
 
-            AutoCompletionManager autocomplete = Main.getLayerManager().getEditLayer().data.getAutoCompletionManager();
+            AutoCompletionManager autocomplete = MainApplication.getLayerManager().getEditLayer().data.getAutoCompletionManager();
             List<AutoCompletionListItem> keyList = autocomplete.getKeys();
             Collections.sort(keyList, defaultACItemComparator);
 
@@ -709,7 +711,7 @@ class OSMRecPluginHelper {
                     inputFileField.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             } catch (RuntimeException ex) {
-                Main.warn(ex);
+                Logging.warn(ex);
             }
         }
 
@@ -768,7 +770,7 @@ class OSMRecPluginHelper {
                         daysValue = Integer.parseInt(daysField.getText());
                     } catch (NumberFormatException ex) {
                         daysField.setText("Integer!");
-                        Main.warn(ex);
+                        Logging.warn(ex);
                     }
                 }
 
@@ -1244,7 +1246,7 @@ class OSMRecPluginHelper {
                     //add additional textbox
                 }
             } catch (RuntimeException ex) {
-                Main.warn(ex);
+                Logging.warn(ex);
             }
         }
 
@@ -1297,7 +1299,7 @@ class OSMRecPluginHelper {
                     weightValue = Math.abs(weightValue);
                     weightSum += weightValue;
                 } catch (NumberFormatException ex) {
-                    Main.warn(ex);
+                    Logging.warn(ex);
                 }
                 weightsCount++;
             }
@@ -1323,7 +1325,7 @@ class OSMRecPluginHelper {
                     weightField.setEnabled(false);
 
                 } catch (NumberFormatException ex) {
-                    Main.warn(ex);
+                    Logging.warn(ex);
                 }
             }
 
@@ -1545,7 +1547,7 @@ class OSMRecPluginHelper {
                     "This will change up to {0} objects.", sel.size(), sel.size())
             +"<br><br>"+tr("Please select a key")), GBC.eol().fill(GBC.HORIZONTAL));
 
-            AutoCompletionManager autocomplete = Main.getLayerManager().getEditLayer().data.getAutoCompletionManager();
+            AutoCompletionManager autocomplete = MainApplication.getLayerManager().getEditLayer().data.getAutoCompletionManager();
             List<AutoCompletionListItem> keyList = autocomplete.getKeys();
 
             AutoCompletionListItem itemToSelect = null;
@@ -1701,7 +1703,7 @@ class OSMRecPluginHelper {
                     return;
                 }
             } catch (NumberFormatException ex) {
-                Main.warn(ex);
+                Logging.warn(ex);
             }
             JOptionPane.showMessageDialog(this, tr("Please enter integer number between 0 and {0}", MAX_LRU_TAGS_NUMBER));
         }
@@ -1828,12 +1830,12 @@ class OSMRecPluginHelper {
             recentTags.put(new Tag(key, value), null);
             AutoCompletionManager.rememberUserInput(key, value, false);
             commandCount++;
-            Main.main.undoRedo.add(new ChangePropertyCommand(sel, key, value));
+            MainApplication.undoRedo.add(new ChangePropertyCommand(sel, key, value));
             changedKey = key;
         }
 
         public void undoAllTagsAdding() {
-            Main.main.undoRedo.undo(commandCount);
+            MainApplication.undoRedo.undo(commandCount);
         }
 
         private void disableTagIfNeeded(final Tag t, final JosmAction action) {
@@ -2362,7 +2364,7 @@ class OSMRecPluginHelper {
             try {
                 input = new Scanner(textualListFile);
             } catch (FileNotFoundException ex) {
-                Main.warn(ex);
+                Logging.warn(ex);
             }
             while (input.hasNext()) {
                 String nextLine = input.nextLine();
