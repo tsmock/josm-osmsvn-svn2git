@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
-import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.layer.Layer;
 import org.openstreetmap.josm.gui.layer.LayerManager.LayerAddEvent;
 import org.openstreetmap.josm.gui.layer.LayerManager.LayerChangeListener;
@@ -24,6 +24,7 @@ import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 import org.openstreetmap.josm.plugins.routes.xml.Routes;
 import org.openstreetmap.josm.plugins.routes.xml.RoutesXMLLayer;
+import org.openstreetmap.josm.tools.Logging;
 
 public class RoutesPlugin extends Plugin implements LayerChangeListener {
 
@@ -31,11 +32,11 @@ public class RoutesPlugin extends Plugin implements LayerChangeListener {
 
     public RoutesPlugin(PluginInformation info) {
         super(info);
-        Main.getLayerManager().addLayerChangeListener(this);
+        MainApplication.getLayerManager().addLayerChangeListener(this);
 
         File routesFile = new File(getPluginDir() + File.separator + "routes.xml");
         if (!routesFile.exists()) {
-            Main.info("File with route definitions doesn't exist, using default");
+            Logging.info("File with route definitions doesn't exist, using default");
 
             try {
                 routesFile.getParentFile().mkdir();
@@ -50,7 +51,7 @@ public class RoutesPlugin extends Plugin implements LayerChangeListener {
                     }
                 }
             } catch (IOException e) {
-                Main.error(e);
+                Logging.error(e);
             }
         }
 

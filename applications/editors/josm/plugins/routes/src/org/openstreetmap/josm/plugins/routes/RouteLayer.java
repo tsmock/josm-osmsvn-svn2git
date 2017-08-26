@@ -20,6 +20,7 @@ import org.openstreetmap.josm.data.osm.event.DataSetListenerAdapter;
 import org.openstreetmap.josm.data.osm.event.DatasetEventManager;
 import org.openstreetmap.josm.data.osm.event.DatasetEventManager.FireMode;
 import org.openstreetmap.josm.data.osm.visitor.BoundingXYVisitor;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MapView;
 import org.openstreetmap.josm.gui.layer.Layer;
 import org.openstreetmap.josm.plugins.routes.paint.NarrowLinePainter;
@@ -103,7 +104,7 @@ public class RouteLayer extends Layer implements DataSetListenerAdapter.Listener
     @Override
     public void paint(Graphics2D g, MapView mv, Bounds bounds) {
 
-        DataSet dataset = Main.getLayerManager().getEditDataSet();
+        DataSet dataset = MainApplication.getLayerManager().getEditDataSet();
 
         if (dataset == null) {
             return;
@@ -149,6 +150,7 @@ public class RouteLayer extends Layer implements DataSetListenerAdapter.Listener
         return routes;
     }
 
+    @Override
     public void processDatasetEvent(AbstractDatasetChangedEvent event) {
         datasetChanged = true;
     }
