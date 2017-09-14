@@ -130,10 +130,6 @@
   path = applications/editors/josm/plugins/continuosDownload
   url = ../continuos-download.git
   branch = master
-[submodule "applications/editors/josm/plugins/czechaddress"]
-  path = applications/editors/josm/plugins/czechaddress
-  url = ../czechaddress
-  branch = master
 [submodule "applications/editors/josm/plugins/dataimport"]
   path = applications/editors/josm/plugins/dataimport
   url = ../dataimport
