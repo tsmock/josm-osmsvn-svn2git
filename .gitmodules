@@ -478,10 +478,6 @@
   path = applications/editors/josm/plugins/videomapping
   url = ../videomapping
   branch = master
-[submodule "applications/editors/josm/plugins/walkingpapers"]
-  path = applications/editors/josm/plugins/walkingpapers
-  url = ../walkingpapers
-  branch = master
 [submodule "applications/editors/josm/plugins/waydownloader"]
   path = applications/editors/josm/plugins/waydownloader
   url = ../waydownloader
