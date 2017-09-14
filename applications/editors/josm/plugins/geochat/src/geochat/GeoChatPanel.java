@@ -35,8 +35,11 @@ import javax.swing.SwingConstants;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.Bounds;
+import org.openstreetmap.josm.data.UserIdentityManager;
 import org.openstreetmap.josm.data.coor.LatLon;
-import org.openstreetmap.josm.gui.*;
+import org.openstreetmap.josm.gui.MainApplication;
+import org.openstreetmap.josm.gui.MapView;
+import org.openstreetmap.josm.gui.Notification;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.gui.layer.MapViewPaintable;
 import org.openstreetmap.josm.gui.util.GuiHelper;
@@ -100,7 +103,7 @@ public class GeoChatPanel extends ToggleDialog implements ChatServerConnectionLi
     private String constructUserName() {
         String userName = Main.pref.get("geochat.username", null); // so the default is null
         if (userName == null)
-            userName = JosmUserIdentityManager.getInstance().getUserName();
+            userName = UserIdentityManager.getInstance().getUserName();
         if (userName == null)
             userName = "";
         if (userName.contains("@"))

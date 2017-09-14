@@ -257,7 +257,7 @@ class ChatPaneManager {
         }
     }
 
-    class ChatPane {
+    static class ChatPane {
         public String userName;
         public boolean isPublic;
         public JTextPane pane;
