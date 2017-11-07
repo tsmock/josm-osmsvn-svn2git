@@ -134,7 +134,7 @@ public class GeoChatPanel extends ToggleDialog implements ChatServerConnectionLi
         autoLoginBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.pref.put("geochat.autologin", autoLoginBox.isSelected());
+                Main.pref.putBoolean("geochat.autologin", autoLoginBox.isSelected());
             }
         });
 

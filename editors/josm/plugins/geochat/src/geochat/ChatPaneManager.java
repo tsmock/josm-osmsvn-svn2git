@@ -154,7 +154,7 @@ class ChatPaneManager {
         JTextPane chatPane = new JTextPane();
         chatPane.setEditable(false);
         Font font = chatPane.getFont();
-        float size = Main.pref.getInteger("geochat.fontsize", -1);
+        float size = Main.pref.getInt("geochat.fontsize", -1);
         if (size < 6)
             size += font.getSize2D();
         chatPane.setFont(font.deriveFont(size));
