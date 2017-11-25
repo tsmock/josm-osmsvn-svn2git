@@ -35,7 +35,7 @@ public class RoutesPlugin extends Plugin implements LayerChangeListener {
         super(info);
         MainApplication.getLayerManager().addLayerChangeListener(this);
 
-        File routesFile = new File(getPluginDir() + File.separator + "routes.xml");
+        File routesFile = new File(getPluginDirs().getUserDataDirectory(false), "routes.xml");
         if (!routesFile.exists()) {
             Logging.info("File with route definitions doesn't exist, using default");
 
@@ -61,7 +61,7 @@ public class RoutesPlugin extends Plugin implements LayerChangeListener {
                     Routes.class.getPackage().getName(), Routes.class.getClassLoader());
             Unmarshaller unmarshaller = context.createUnmarshaller();
             Routes routes = (Routes)unmarshaller.unmarshal(
-                    new FileInputStream(getPluginDir() + File.separator + "routes.xml"));
+                    new FileInputStream(getPluginDirs().getUserDataDirectory(false) + File.separator + "routes.xml"));
             for (RoutesXMLLayer layer:routes.getLayer()) {
                 if (layer.isEnabled()) {
                     routeLayers.add(new RouteLayer(layer));
