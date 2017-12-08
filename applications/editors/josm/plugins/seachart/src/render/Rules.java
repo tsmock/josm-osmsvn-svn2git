@@ -254,100 +254,100 @@ public class Rules {
 
     public static boolean rules() {
         try {
-        if ((Renderer.context.ruleset() == RuleSet.ALL) || (Renderer.context.ruleset() == RuleSet.BASE)) {
-            if (testObject(Obj.LNDARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.BUAARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.HRBFAC)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.HRBBSN)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.LOKBSN)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.LKBSPT)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.LAKARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.RIVERS)) for (Feature f : objects) if (testFeature(f)) waterways();
-            if (testObject(Obj.CANALS)) for (Feature f : objects) if (testFeature(f)) waterways();
-            if (testObject(Obj.DEPARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.COALNE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.ROADWY)) for (Feature f : objects) if (testFeature(f)) highways();
-            if (testObject(Obj.RAILWY)) for (Feature f : objects) if (testFeature(f)) highways();
-        }
-        if (Renderer.context.ruleset() == RuleSet.ALL) {
-            if (testObject(Obj.SOUNDG)) for (Feature f : objects) if (testFeature(f)) depths();
-            if (testObject(Obj.DEPCNT)) for (Feature f : objects) if (testFeature(f)) depths();
-        }
-        if (testObject(Obj.SLCONS)) for (Feature f : objects) if (testFeature(f)) shoreline();
-        if ((Renderer.context.ruleset() == RuleSet.ALL) || (Renderer.context.ruleset() == RuleSet.SEAMARK)) {
-            if (testObject(Obj.PIPSOL)) for (Feature f : objects) if (testFeature(f)) pipelines();
-            if (testObject(Obj.CBLSUB)) for (Feature f : objects) if (testFeature(f)) cables();
-            if (testObject(Obj.PIPOHD)) for (Feature f : objects) if (testFeature(f)) pipelines();
-            if (testObject(Obj.CBLOHD)) for (Feature f : objects) if (testFeature(f)) cables();
-            if (testObject(Obj.TSEZNE)) for (Feature f : objects) if (testFeature(f)) separation();
-            if (testObject(Obj.TSSCRS)) for (Feature f : objects) if (testFeature(f)) separation();
-            if (testObject(Obj.TSSRON)) for (Feature f : objects) if (testFeature(f)) separation();
-            if (testObject(Obj.TSELNE)) for (Feature f : objects) if (testFeature(f)) separation();
-            if (testObject(Obj.TSSLPT)) for (Feature f : objects) if (testFeature(f)) separation();
-            if (testObject(Obj.TSSBND)) for (Feature f : objects) if (testFeature(f)) separation();
-            if (testObject(Obj.ISTZNE)) for (Feature f : objects) if (testFeature(f)) separation();
-            if (testObject(Obj.SNDWAV)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.WEDKLP)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.OSPARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.FAIRWY)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.DRGARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.RESARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.PRCARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.SPLARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.SEAARE)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.OBSTRN)) for (Feature f : objects) if (testFeature(f)) obstructions();
-            if (testObject(Obj.UWTROC)) for (Feature f : objects) if (testFeature(f)) obstructions();
-            if (testObject(Obj.MARCUL)) for (Feature f : objects) if (testFeature(f)) areas();
-            if (testObject(Obj.RECTRC)) for (Feature f : objects) if (testFeature(f)) transits();
-            if (testObject(Obj.NAVLNE)) for (Feature f : objects) if (testFeature(f)) transits();
-            if (testObject(Obj.HRBFAC)) for (Feature f : objects) if (testFeature(f)) harbours();
-            if (testObject(Obj.ACHARE)) for (Feature f : objects) if (testFeature(f)) harbours();
-            if (testObject(Obj.ACHBRT)) for (Feature f : objects) if (testFeature(f)) harbours();
-            if (testObject(Obj.BERTHS)) for (Feature f : objects) if (testFeature(f)) harbours();
-            if (testObject(Obj.DISMAR)) for (Feature f : objects) if (testFeature(f)) distances();
-            if (testObject(Obj.HULKES)) for (Feature f : objects) if (testFeature(f)) ports();
-            if (testObject(Obj.CRANES)) for (Feature f : objects) if (testFeature(f)) ports();
-            if (testObject(Obj.LNDMRK)) for (Feature f : objects) if (testFeature(f)) landmarks();
-            if (testObject(Obj.SILTNK)) for (Feature f : objects) if (testFeature(f)) landmarks();
-            if (testObject(Obj.BUISGL)) for (Feature f : objects) if (testFeature(f)) harbours();
-            if (testObject(Obj.MORFAC)) for (Feature f : objects) if (testFeature(f)) moorings();
-            if (testObject(Obj.NOTMRK)) for (Feature f : objects) if (testFeature(f)) notices();
-            if (testObject(Obj.SMCFAC)) for (Feature f : objects) if (testFeature(f)) marinas();
-            if (testObject(Obj.BRIDGE)) for (Feature f : objects) if (testFeature(f)) bridges();
-            if (testObject(Obj.PILPNT)) for (Feature f : objects) if (testFeature(f)) points();
-            if (testObject(Obj.TOPMAR)) for (Feature f : objects) if (testFeature(f)) points();
-            if (testObject(Obj.DAYMAR)) for (Feature f : objects) if (testFeature(f)) points();
-            if (testObject(Obj.FOGSIG)) for (Feature f : objects) if (testFeature(f)) points();
-            if (testObject(Obj.RDOCAL)) for (Feature f : objects) if (testFeature(f)) callpoint();
-            if (testObject(Obj.LITMIN)) for (Feature f : objects) if (testFeature(f)) lights();
-            if (testObject(Obj.LITMAJ)) for (Feature f : objects) if (testFeature(f)) lights();
-            if (testObject(Obj.LIGHTS)) for (Feature f : objects) if (testFeature(f)) lights();
-            if (testObject(Obj.SISTAT)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.SISTAW)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.CGUSTA)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.RDOSTA)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.RADRFL)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.RADSTA)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.RTPBCN)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.RSCSTA)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.PILBOP)) for (Feature f : objects) if (testFeature(f)) stations();
-            if (testObject(Obj.WTWGAG)) for (Feature f : objects) if (testFeature(f)) gauges();
-            if (testObject(Obj.OFSPLF)) for (Feature f : objects) if (testFeature(f)) platforms();
-            if (testObject(Obj.WRECKS)) for (Feature f : objects) if (testFeature(f)) wrecks();
-            if (testObject(Obj.LITVES)) for (Feature f : objects) if (testFeature(f)) floats();
-            if (testObject(Obj.LITFLT)) for (Feature f : objects) if (testFeature(f)) floats();
-            if (testObject(Obj.BOYINB)) for (Feature f : objects) if (testFeature(f)) floats();
-            if (testObject(Obj.BOYLAT)) for (Feature f : objects) if (testFeature(f)) buoys();
-            if (testObject(Obj.BOYCAR)) for (Feature f : objects) if (testFeature(f)) buoys();
-            if (testObject(Obj.BOYISD)) for (Feature f : objects) if (testFeature(f)) buoys();
-            if (testObject(Obj.BOYSAW)) for (Feature f : objects) if (testFeature(f)) buoys();
-            if (testObject(Obj.BOYSPP)) for (Feature f : objects) if (testFeature(f)) buoys();
-            if (testObject(Obj.BCNLAT)) for (Feature f : objects) if (testFeature(f)) beacons();
-            if (testObject(Obj.BCNCAR)) for (Feature f : objects) if (testFeature(f)) beacons();
-            if (testObject(Obj.BCNISD)) for (Feature f : objects) if (testFeature(f)) beacons();
-            if (testObject(Obj.BCNSAW)) for (Feature f : objects) if (testFeature(f)) beacons();
-            if (testObject(Obj.BCNSPP)) for (Feature f : objects) if (testFeature(f)) beacons();
-        }
+            if ((Renderer.context.ruleset() == RuleSet.ALL) || (Renderer.context.ruleset() == RuleSet.BASE)) {
+                if (testObject(Obj.LNDARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.BUAARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.HRBFAC)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.HRBBSN)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.LOKBSN)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.LKBSPT)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.LAKARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.RIVERS)) for (Feature f : objects) if (testFeature(f)) waterways();
+                if (testObject(Obj.CANALS)) for (Feature f : objects) if (testFeature(f)) waterways();
+                if (testObject(Obj.DEPARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.COALNE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.ROADWY)) for (Feature f : objects) if (testFeature(f)) highways();
+                if (testObject(Obj.RAILWY)) for (Feature f : objects) if (testFeature(f)) highways();
+            }
+            if (Renderer.context.ruleset() == RuleSet.ALL) {
+                if (testObject(Obj.SOUNDG)) for (Feature f : objects) if (testFeature(f)) depths();
+                if (testObject(Obj.DEPCNT)) for (Feature f : objects) if (testFeature(f)) depths();
+            }
+            if (testObject(Obj.SLCONS)) for (Feature f : objects) if (testFeature(f)) shoreline();
+            if ((Renderer.context.ruleset() == RuleSet.ALL) || (Renderer.context.ruleset() == RuleSet.SEAMARK)) {
+                if (testObject(Obj.PIPSOL)) for (Feature f : objects) if (testFeature(f)) pipelines();
+                if (testObject(Obj.CBLSUB)) for (Feature f : objects) if (testFeature(f)) cables();
+                if (testObject(Obj.PIPOHD)) for (Feature f : objects) if (testFeature(f)) pipelines();
+                if (testObject(Obj.CBLOHD)) for (Feature f : objects) if (testFeature(f)) cables();
+                if (testObject(Obj.TSEZNE)) for (Feature f : objects) if (testFeature(f)) separation();
+                if (testObject(Obj.TSSCRS)) for (Feature f : objects) if (testFeature(f)) separation();
+                if (testObject(Obj.TSSRON)) for (Feature f : objects) if (testFeature(f)) separation();
+                if (testObject(Obj.TSELNE)) for (Feature f : objects) if (testFeature(f)) separation();
+                if (testObject(Obj.TSSLPT)) for (Feature f : objects) if (testFeature(f)) separation();
+                if (testObject(Obj.TSSBND)) for (Feature f : objects) if (testFeature(f)) separation();
+                if (testObject(Obj.ISTZNE)) for (Feature f : objects) if (testFeature(f)) separation();
+                if (testObject(Obj.SNDWAV)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.WEDKLP)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.OSPARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.FAIRWY)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.DRGARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.RESARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.PRCARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.SPLARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.SEAARE)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.OBSTRN)) for (Feature f : objects) if (testFeature(f)) obstructions();
+                if (testObject(Obj.UWTROC)) for (Feature f : objects) if (testFeature(f)) obstructions();
+                if (testObject(Obj.MARCUL)) for (Feature f : objects) if (testFeature(f)) areas();
+                if (testObject(Obj.RECTRC)) for (Feature f : objects) if (testFeature(f)) transits();
+                if (testObject(Obj.NAVLNE)) for (Feature f : objects) if (testFeature(f)) transits();
+                if (testObject(Obj.HRBFAC)) for (Feature f : objects) if (testFeature(f)) harbours();
+                if (testObject(Obj.ACHARE)) for (Feature f : objects) if (testFeature(f)) harbours();
+                if (testObject(Obj.ACHBRT)) for (Feature f : objects) if (testFeature(f)) harbours();
+                if (testObject(Obj.BERTHS)) for (Feature f : objects) if (testFeature(f)) harbours();
+                if (testObject(Obj.DISMAR)) for (Feature f : objects) if (testFeature(f)) distances();
+                if (testObject(Obj.HULKES)) for (Feature f : objects) if (testFeature(f)) ports();
+                if (testObject(Obj.CRANES)) for (Feature f : objects) if (testFeature(f)) ports();
+                if (testObject(Obj.LNDMRK)) for (Feature f : objects) if (testFeature(f)) landmarks();
+                if (testObject(Obj.SILTNK)) for (Feature f : objects) if (testFeature(f)) landmarks();
+                if (testObject(Obj.BUISGL)) for (Feature f : objects) if (testFeature(f)) harbours();
+                if (testObject(Obj.MORFAC)) for (Feature f : objects) if (testFeature(f)) moorings();
+                if (testObject(Obj.NOTMRK)) for (Feature f : objects) if (testFeature(f)) notices();
+                if (testObject(Obj.SMCFAC)) for (Feature f : objects) if (testFeature(f)) marinas();
+                if (testObject(Obj.BRIDGE)) for (Feature f : objects) if (testFeature(f)) bridges();
+                if (testObject(Obj.PILPNT)) for (Feature f : objects) if (testFeature(f)) points();
+                if (testObject(Obj.TOPMAR)) for (Feature f : objects) if (testFeature(f)) points();
+                if (testObject(Obj.DAYMAR)) for (Feature f : objects) if (testFeature(f)) points();
+                if (testObject(Obj.FOGSIG)) for (Feature f : objects) if (testFeature(f)) points();
+                if (testObject(Obj.RDOCAL)) for (Feature f : objects) if (testFeature(f)) callpoint();
+                if (testObject(Obj.LITMIN)) for (Feature f : objects) if (testFeature(f)) lights();
+                if (testObject(Obj.LITMAJ)) for (Feature f : objects) if (testFeature(f)) lights();
+                if (testObject(Obj.LIGHTS)) for (Feature f : objects) if (testFeature(f)) lights();
+                if (testObject(Obj.SISTAT)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.SISTAW)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.CGUSTA)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.RDOSTA)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.RADRFL)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.RADSTA)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.RTPBCN)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.RSCSTA)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.PILBOP)) for (Feature f : objects) if (testFeature(f)) stations();
+                if (testObject(Obj.WTWGAG)) for (Feature f : objects) if (testFeature(f)) gauges();
+                if (testObject(Obj.OFSPLF)) for (Feature f : objects) if (testFeature(f)) platforms();
+                if (testObject(Obj.WRECKS)) for (Feature f : objects) if (testFeature(f)) wrecks();
+                if (testObject(Obj.LITVES)) for (Feature f : objects) if (testFeature(f)) floats();
+                if (testObject(Obj.LITFLT)) for (Feature f : objects) if (testFeature(f)) floats();
+                if (testObject(Obj.BOYINB)) for (Feature f : objects) if (testFeature(f)) floats();
+                if (testObject(Obj.BOYLAT)) for (Feature f : objects) if (testFeature(f)) buoys();
+                if (testObject(Obj.BOYCAR)) for (Feature f : objects) if (testFeature(f)) buoys();
+                if (testObject(Obj.BOYISD)) for (Feature f : objects) if (testFeature(f)) buoys();
+                if (testObject(Obj.BOYSAW)) for (Feature f : objects) if (testFeature(f)) buoys();
+                if (testObject(Obj.BOYSPP)) for (Feature f : objects) if (testFeature(f)) buoys();
+                if (testObject(Obj.BCNLAT)) for (Feature f : objects) if (testFeature(f)) beacons();
+                if (testObject(Obj.BCNCAR)) for (Feature f : objects) if (testFeature(f)) beacons();
+                if (testObject(Obj.BCNISD)) for (Feature f : objects) if (testFeature(f)) beacons();
+                if (testObject(Obj.BCNSAW)) for (Feature f : objects) if (testFeature(f)) beacons();
+                if (testObject(Obj.BCNSPP)) for (Feature f : objects) if (testFeature(f)) beacons();
+            }
         } catch (ConcurrentModificationException e) {
             return false;
         } catch (Exception e) {
@@ -378,17 +378,17 @@ public class Rules {
             break;
         case DRGARE:
             if (Renderer.zoom < 16)
-                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] {25, 25 }, new Color(0x40ffffff, true)));
+                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] { 25, 25 }, new Color(0x40ffffff, true)));
             else
-                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] {25, 25 }));
+                Renderer.lineVector(new LineStyle(Color.black, 8, new float[] { 25, 25 }));
             addName(12, new Font("Arial", Font.PLAIN, 100), new Delta(Handle.CC, new AffineTransform()));
             break;
         case FAIRWY:
             if (feature.geom.area > 2.0) {
                 if (Renderer.zoom < 16)
-                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] {50, 50 }, new Color(0x40ffffff, true)));
+                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] { 50, 50 }, new Color(0x40ffffff, true)));
                 else
-                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] {50, 50 }));
+                    Renderer.lineVector(new LineStyle(Symbols.Mline, 8, new float[] { 50, 50 }));
             } else {
                 if (Renderer.zoom >= 14)
                     Renderer.lineVector(new LineStyle(new Color(0x40ffffff, true)));
@@ -420,16 +420,15 @@ public class Rules {
                 if (Renderer.zoom >= 14) {
                     Renderer.symbol(Areas.MarineFarm);
                 }
-                if ((feature.geom.area > 0.2) || ((feature.geom.area > 0.05) && (Renderer.zoom >= 14)) ||
-                   ((feature.geom.area > 0.005) && (Renderer.zoom >= 16))) {
-                    Renderer.lineVector(new LineStyle(Color.black, 4, new float[] {10, 10}));
+                if ((feature.geom.area > 0.2) || ((feature.geom.area > 0.05) && (Renderer.zoom >= 14)) || ((feature.geom.area > 0.005) && (Renderer.zoom >= 16))) {
+                    Renderer.lineVector(new LineStyle(Color.black, 4, new float[] { 10, 10 }));
                 }
             }
             break;
         case OSPARE:
             if (testAttribute(feature.type, Att.CATPRA, CatPRA.PRA_WFRM)) {
                 Renderer.symbol(Areas.WindFarm);
-                Renderer.lineVector(new LineStyle(Color.black, 20, new float[] {40, 40}));
+                Renderer.lineVector(new LineStyle(Color.black, 20, new float[] { 40, 40 }));
                 addName(15, new Font("Arial", Font.BOLD, 80), new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 10)));
             }
             break;
@@ -444,7 +443,7 @@ public class Rules {
             break;
         case PRCARE:
             if (Renderer.zoom >= 12) {
-                Renderer.lineVector(new LineStyle(Symbols.Mline, 10, new float[] {40, 40}));
+                Renderer.lineVector(new LineStyle(Symbols.Mline, 10, new float[] { 40, 40 }));
             }
             break;
         case SEAARE:
@@ -454,8 +453,7 @@ public class Rules {
                     if (feature.geom.prim == Pflag.LINE) {
                         Renderer.lineText(name, new Font("Arial", Font.PLAIN, 150), Color.black, -40);
                     } else {
-                        Renderer.labelText(name, new Font("Arial", Font.PLAIN, 150), Color.black,
-                                new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
+                        Renderer.labelText(name, new Font("Arial", Font.PLAIN, 150), Color.black, new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
                     }
                 break;
             case SEA_BAY:
@@ -463,17 +461,15 @@ public class Rules {
                     if (feature.geom.prim == Pflag.LINE) {
                         Renderer.lineText(name, new Font("Arial", Font.PLAIN, 150), Color.black, -40);
                     } else {
-                        Renderer.labelText(name, new Font("Arial", Font.PLAIN, 150), Color.black,
-                                new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
+                        Renderer.labelText(name, new Font("Arial", Font.PLAIN, 150), Color.black, new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
                     }
                 break;
             case SEA_SHOL:
                 if (Renderer.zoom >= 14) {
                     if (feature.geom.prim == Pflag.AREA) {
-                        Renderer.lineVector(new LineStyle(new Color(0xc480ff), 4, new float[] {25, 25}));
+                        Renderer.lineVector(new LineStyle(new Color(0xc480ff), 4, new float[] { 25, 25 }));
                         if (name != null) {
-                            Renderer.labelText(name, new Font("Arial", Font.ITALIC, 75), Color.black,
-                                    new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
+                            Renderer.labelText(name, new Font("Arial", Font.ITALIC, 75), Color.black, new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
                             Renderer.labelText("(Shoal)", new Font("Arial", Font.PLAIN, 60), Color.black, new Delta(Handle.BC));
                         }
                     } else if (feature.geom.prim == Pflag.LINE) {
@@ -483,8 +479,7 @@ public class Rules {
                         }
                     } else {
                         if (name != null) {
-                            Renderer.labelText(name, new Font("Arial", Font.ITALIC, 75), Color.black,
-                                    new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
+                            Renderer.labelText(name, new Font("Arial", Font.ITALIC, 75), Color.black, new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, -40)));
                             Renderer.labelText("(Shoal)", new Font("Arial", Font.PLAIN, 60), Color.black, new Delta(Handle.BC));
                         }
                     }
@@ -499,7 +494,8 @@ public class Rules {
             }
             break;
         case SNDWAV:
-            if (Renderer.zoom >= 12) Renderer.fillPattern(Areas.Sandwaves);
+            if (Renderer.zoom >= 12)
+                Renderer.fillPattern(Areas.Sandwaves);
             break;
         case WEDKLP:
             if (Renderer.zoom >= 12) {
@@ -530,8 +526,7 @@ public class Rules {
 
     @SuppressWarnings("unchecked")
     private static void beacons() {
-        if ((Renderer.zoom >= 14) || ((Renderer.zoom >= 12) && ((feature.type == Obj.BCNLAT) || (feature.type == Obj.BCNCAR)))
-                || ((Renderer.zoom >= 11) && ((feature.type == Obj.BCNSAW) || hasObject(Obj.RTPBCN)))) {
+        if ((Renderer.zoom >= 14) || ((Renderer.zoom >= 12) && ((feature.type == Obj.BCNLAT) || (feature.type == Obj.BCNCAR))) || ((Renderer.zoom >= 11) && ((feature.type == Obj.BCNSAW) || hasObject(Obj.RTPBCN)))) {
             BcnSHP shape = (BcnSHP) getAttEnum(feature.type, Att.BCNSHP);
             if (shape == BcnSHP.BCN_UNKN)
                 shape = BcnSHP.BCN_PILE;
@@ -562,14 +557,12 @@ public class Rules {
                 if (feature.objs.containsKey(Obj.TOPMAR)) {
                     AttMap topmap = feature.objs.get(Obj.TOPMAR).get(0);
                     if (topmap.containsKey(Att.TOPSHP)) {
-                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                                getScheme(Obj.TOPMAR), Topmarks.BeaconDelta);
+                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.BeaconDelta);
                     }
                 } else if (feature.objs.containsKey(Obj.DAYMAR)) {
                     AttMap topmap = feature.objs.get(Obj.DAYMAR).get(0);
                     if (topmap.containsKey(Att.TOPSHP)) {
-                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                                getScheme(Obj.DAYMAR), Topmarks.BeaconDelta);
+                        Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.BeaconDelta);
                     }
                 }
             }
@@ -582,22 +575,20 @@ public class Rules {
 
     @SuppressWarnings("unchecked")
     private static void buoys() {
-        if ((Renderer.zoom >= 14) || ((Renderer.zoom >= 12) && ((feature.type == Obj.BOYLAT) || (feature.type == Obj.BOYCAR)))
-                || ((Renderer.zoom >= 11) && ((feature.type == Obj.BOYSAW) || hasObject(Obj.RTPBCN)))) {
+        if ((Renderer.zoom >= 14) || ((Renderer.zoom >= 12) && ((feature.type == Obj.BOYLAT) || (feature.type == Obj.BOYCAR))) || ((Renderer.zoom >= 11) && ((feature.type == Obj.BOYSAW) || hasObject(Obj.RTPBCN)))) {
             BoySHP shape = (BoySHP) getAttEnum(feature.type, Att.BOYSHP);
-            if (shape == BoySHP.BOY_UNKN) shape = BoySHP.BOY_PILR;
+            if (shape == BoySHP.BOY_UNKN)
+                shape = BoySHP.BOY_PILR;
             Renderer.symbol(Buoys.Shapes.get(shape), getScheme(feature.type));
             if (feature.objs.containsKey(Obj.TOPMAR)) {
                 AttMap topmap = feature.objs.get(Obj.TOPMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                            getScheme(Obj.TOPMAR), Topmarks.BuoyDeltas.get(shape));
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.BuoyDeltas.get(shape));
                 }
             } else if (feature.objs.containsKey(Obj.DAYMAR)) {
                 AttMap topmap = feature.objs.get(Obj.DAYMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                            getScheme(Obj.DAYMAR), Topmarks.BuoyDeltas.get(shape));
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.BuoyDeltas.get(shape));
                 }
             }
             addName(15, new Font("Arial", Font.BOLD, 40), new Delta(Handle.BL, AffineTransform.getTranslateInstance(60, -50)));
@@ -633,16 +624,12 @@ public class Rules {
                     }
                 }
                 if (hstr.isEmpty() && !vstr.isEmpty()) {
-                    Renderer.labelText(vstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.VCLR, Color.black, Color.white,
-                            new Delta(Handle.CC));
+                    Renderer.labelText(vstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.VCLR, Color.black, Color.white, new Delta(Handle.CC));
                 } else if (!hstr.isEmpty() && !vstr.isEmpty()) {
-                    Renderer.labelText(vstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.VCLR, Color.black, Color.white,
-                            new Delta(Handle.BC));
-                    Renderer.labelText(hstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.HCLR, Color.black, Color.white,
-                            new Delta(Handle.TC));
+                    Renderer.labelText(vstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.VCLR, Color.black, Color.white, new Delta(Handle.BC));
+                    Renderer.labelText(hstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.HCLR, Color.black, Color.white, new Delta(Handle.TC));
                 } else if (!hstr.isEmpty() && vstr.isEmpty()) {
-                    Renderer.labelText(hstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.HCLR, Color.black, Color.white,
-                            new Delta(Handle.CC));
+                    Renderer.labelText(hstr, new Font("Arial", Font.PLAIN, 30), Color.black, LabelStyle.HCLR, Color.black, Color.white, new Delta(Handle.CC));
                 }
             }
         }
@@ -661,11 +648,9 @@ public class Rules {
                 }
                 if (atts != null) {
                     if (atts.containsKey(Att.VERCLR)) {
-                        Renderer.labelText(String.valueOf(atts.get(Att.VERCLR).val), new Font("Arial", Font.PLAIN, 50),
-                                Color.black, LabelStyle.VCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
+                        Renderer.labelText(String.valueOf(atts.get(Att.VERCLR).val), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.VCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
                     } else if (atts.containsKey(Att.VERCSA)) {
-                        Renderer.labelText(String.valueOf(atts.get(Att.VERCSA).val), new Font("Arial", Font.PLAIN, 50),
-                                Color.black, LabelStyle.PCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
+                        Renderer.labelText(String.valueOf(atts.get(Att.VERCSA).val), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.PCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
                     }
                 }
             }
@@ -686,8 +671,7 @@ public class Rules {
             Renderer.symbol(symb, new Delta(Handle.CC, AffineTransform.getRotateInstance(Math.toRadians(orient))));
             String chn;
             if (!(chn = getAttStr(feature.type, Att.COMCHA)).isEmpty()) {
-                Renderer.labelText(("Ch." + chn), new Font("Arial", Font.PLAIN, 50), Color.black,
-                        new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 50)));
+                Renderer.labelText(("Ch." + chn), new Font("Arial", Font.PLAIN, 50), Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 50)));
             }
         }
     }
@@ -711,12 +695,9 @@ public class Rules {
                 } else {
                     dd = (tok.length == 2) ? tok[1] : "";
                 }
-                Renderer.labelText(ul, new Font("Arial", Font.PLAIN, 30), Color.black,
-                        new Delta(Handle.RC, AffineTransform.getTranslateInstance(10, 15)));
-                Renderer.labelText(id, new Font("Arial", Font.PLAIN, 30), Color.black,
-                        new Delta(Handle.RC, AffineTransform.getTranslateInstance(10, 0)));
-                Renderer.labelText(dd, new Font("Arial", Font.PLAIN, 20), Color.black,
-                        new Delta(Handle.LC, AffineTransform.getTranslateInstance(15, 10)));
+                Renderer.labelText(ul, new Font("Arial", Font.PLAIN, 30), Color.black, new Delta(Handle.RC, AffineTransform.getTranslateInstance(10, 15)));
+                Renderer.labelText(id, new Font("Arial", Font.PLAIN, 30), Color.black, new Delta(Handle.RC, AffineTransform.getTranslateInstance(10, 0)));
+                Renderer.labelText(dd, new Font("Arial", Font.PLAIN, 20), Color.black, new Delta(Handle.LC, AffineTransform.getTranslateInstance(15, 10)));
             }
             break;
         case DEPCNT:
@@ -763,8 +744,7 @@ public class Rules {
                         }
                     }
                     str += String.format("%1.0f", dist);
-                    Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black,
-                            new Delta(Handle.CC, AffineTransform.getTranslateInstance(0, 45)));
+                    Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black, new Delta(Handle.CC, AffineTransform.getTranslateInstance(0, 45)));
                 }
             }
         }
@@ -772,8 +752,7 @@ public class Rules {
 
     @SuppressWarnings("unchecked")
     private static void floats() {
-        if ((Renderer.zoom >= 12) || ((Renderer.zoom >= 11) && ((feature.type == Obj.LITVES) ||
-                (feature.type == Obj.BOYINB) || hasObject(Obj.RTPBCN)))) {
+        if ((Renderer.zoom >= 12) || ((Renderer.zoom >= 11) && ((feature.type == Obj.LITVES) || (feature.type == Obj.BOYINB) || hasObject(Obj.RTPBCN)))) {
             switch (feature.type) {
             case LITVES:
                 Renderer.symbol(Buoys.Super, getScheme(feature.type));
@@ -790,14 +769,12 @@ public class Rules {
             if (feature.objs.containsKey(Obj.TOPMAR)) {
                 AttMap topmap = feature.objs.get(Obj.TOPMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                            getScheme(Obj.TOPMAR), Topmarks.FloatDelta);
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), Topmarks.FloatDelta);
                 }
             } else if (feature.objs.containsKey(Obj.DAYMAR)) {
                 AttMap topmap = feature.objs.get(Obj.DAYMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                            getScheme(Obj.DAYMAR), Topmarks.FloatDelta);
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), Topmarks.FloatDelta);
                 }
             }
             addName(15, new Font("Arial", Font.BOLD, 40), new Delta(Handle.BL, AffineTransform.getTranslateInstance(20, -50)));
@@ -821,8 +798,7 @@ public class Rules {
             if (Renderer.zoom >= 14) {
                 Renderer.symbol(Harbours.Anchor, new Scheme(Symbols.Msymb));
                 if (Renderer.zoom >= 15) {
-                    Renderer.labelText(name == null ? "" : name,
-                            new Font("Arial", Font.PLAIN, 30), Symbols.Msymb, LabelStyle.RRCT, Symbols.Msymb, Color.white, new Delta(Handle.BC));
+                    Renderer.labelText(name == null ? "" : name, new Font("Arial", Font.PLAIN, 30), Symbols.Msymb, LabelStyle.RRCT, Symbols.Msymb, Color.white, new Delta(Handle.BC));
                 }
             }
             if (getAttVal(Obj.ACHBRT, Att.RADIUS) != null) {
@@ -832,7 +808,7 @@ public class Rules {
                     if (units == UniHLU.HLU_UNKN) {
                         units = UniHLU.HLU_METR;
                     }
-                    Renderer.lineCircle(new LineStyle(Symbols.Mline, 4, new float[] {10, 10}, null), radius, units);
+                    Renderer.lineCircle(new LineStyle(Symbols.Mline, 4, new float[] { 10, 10 }, null), radius, units);
                 }
             }
             break;
@@ -847,41 +823,34 @@ public class Rules {
                 addName(15, new Font("Arial", Font.BOLD, 60), Symbols.Mline, new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, 0)));
                 ArrayList<StsSTS> sts = (ArrayList<StsSTS>) getAttList(Obj.ACHARE, Att.STATUS);
                 if ((Renderer.zoom >= 15) && (sts.contains(StsSTS.STS_RESV))) {
-                    Renderer.labelText("Reserved",
-                            new Font("Arial", Font.PLAIN, 50), Symbols.Mline, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 60)));
+                    Renderer.labelText("Reserved", new Font("Arial", Font.PLAIN, 50), Symbols.Mline, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 60)));
                 }
                 ArrayList<CatACH> cats = (ArrayList<CatACH>) getAttList(Obj.ACHARE, Att.CATACH);
                 int dy = (cats.size() - 1) * -30;
                 for (CatACH cat : cats) {
                     switch (cat) {
                     case ACH_DEEP:
-                        Renderer.labelText("DW", new Font("Arial", Font.BOLD, 50), Symbols.Msymb,
-                                new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
+                        Renderer.labelText("DW", new Font("Arial", Font.BOLD, 50), Symbols.Msymb, new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
                         dy += 60;
                         break;
                     case ACH_TANK:
-                        Renderer.labelText("Tanker", new Font("Arial", Font.BOLD, 50), Symbols.Msymb,
-                                new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
+                        Renderer.labelText("Tanker", new Font("Arial", Font.BOLD, 50), Symbols.Msymb, new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
                         dy += 60;
                         break;
                     case ACH_H24P:
-                        Renderer.labelText("24h", new Font("Arial", Font.BOLD, 50), Symbols.Msymb,
-                                new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
+                        Renderer.labelText("24h", new Font("Arial", Font.BOLD, 50), Symbols.Msymb, new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
                         dy += 60;
                         break;
                     case ACH_EXPL:
-                        Renderer.symbol(Harbours.Explosives, new Scheme(Symbols.Msymb),
-                                new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
+                        Renderer.symbol(Harbours.Explosives, new Scheme(Symbols.Msymb), new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
                         dy += 60;
                         break;
                     case ACH_QUAR:
-                        Renderer.symbol(Harbours.Hospital, new Scheme(Symbols.Msymb),
-                                new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
+                        Renderer.symbol(Harbours.Hospital, new Scheme(Symbols.Msymb), new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
                         dy += 60;
                         break;
                     case ACH_SEAP:
-                        Renderer.symbol(Areas.Seaplane, new Scheme(Symbols.Msymb),
-                                new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
+                        Renderer.symbol(Areas.Seaplane, new Scheme(Symbols.Msymb), new Delta(Handle.RC, AffineTransform.getTranslateInstance(-60, dy)));
                         dy += 60;
                         break;
                     default:
@@ -891,16 +860,15 @@ public class Rules {
             break;
         case BERTHS:
             if (Renderer.zoom >= 14) {
-                Renderer.lineVector(new LineStyle(Symbols.Mline, 6, new float[] {20, 20}));
-                Renderer.labelText(name == null ? " " : name,
-                        new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, LabelStyle.RRCT, Symbols.Mline, Color.white);
+                Renderer.lineVector(new LineStyle(Symbols.Mline, 6, new float[] { 20, 20 }));
+                Renderer.labelText(name == null ? " " : name, new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, LabelStyle.RRCT, Symbols.Mline, Color.white);
             }
             break;
         case BUISGL:
             if (Renderer.zoom >= 16) {
-                    if (hasAttribute(Obj.BUISGL, Att.STATUS) && (testAttribute(Obj.BUISGL, Att.STATUS, StsSTS.STS_ILLD))) {
-                        Renderer.symbol(Beacons.Floodlight);
-                    }
+                if (hasAttribute(Obj.BUISGL, Att.STATUS) && (testAttribute(Obj.BUISGL, Att.STATUS, StsSTS.STS_ILLD))) {
+                    Renderer.symbol(Beacons.Floodlight);
+                }
                 ArrayList<Symbol> symbols = new ArrayList<>();
                 ArrayList<FncFNC> fncs = (ArrayList<FncFNC>) getAttList(Obj.BUISGL, Att.FUNCTN);
                 for (FncFNC fnc : fncs) {
@@ -968,7 +936,7 @@ public class Rules {
             break;
         case RAILWY:
             Renderer.lineVector(new LineStyle(Color.gray, 10));
-            Renderer.lineVector(new LineStyle(Color.black, 10, new float[] {30, 30}));
+            Renderer.lineVector(new LineStyle(Color.black, 10, new float[] { 30, 30 }));
             break;
         default:
         }
@@ -976,16 +944,14 @@ public class Rules {
 
     @SuppressWarnings("unchecked")
     private static void landmarks() {
-        if (!hasAttribute(Obj.LNDMRK, Att.CATLMK)
-                && (!hasAttribute(Obj.LNDMRK, Att.FUNCTN) || testAttribute(Obj.LNDMRK, Att.FUNCTN, FncFNC.FNC_LGHT))
-                && hasObject(Obj.LIGHTS))
+        if (!hasAttribute(Obj.LNDMRK, Att.CATLMK) && (!hasAttribute(Obj.LNDMRK, Att.FUNCTN) || testAttribute(Obj.LNDMRK, Att.FUNCTN, FncFNC.FNC_LGHT)) && hasObject(Obj.LIGHTS))
             lights();
         else if (Renderer.zoom >= 12) {
             switch (feature.type) {
             case LNDMRK:
-                    if (hasAttribute(Obj.LNDMRK, Att.STATUS) && (testAttribute(Obj.LNDMRK, Att.STATUS, StsSTS.STS_ILLD))) {
-                        Renderer.symbol(Beacons.Floodlight);
-                    }
+                if (hasAttribute(Obj.LNDMRK, Att.STATUS) && (testAttribute(Obj.LNDMRK, Att.STATUS, StsSTS.STS_ILLD))) {
+                    Renderer.symbol(Beacons.Floodlight);
+                }
                 ArrayList<CatLMK> cats = (ArrayList<CatLMK>) getAttList(feature.type, Att.CATLMK);
                 Symbol catSym = Landmarks.Shapes.get(cats.get(0));
                 ArrayList<FncFNC> fncs = (ArrayList<FncFNC>) getAttList(feature.type, Att.FUNCTN);
@@ -1085,11 +1051,10 @@ public class Rules {
                 AttMap topmap = feature.objs.get(Obj.TOPMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
                     if (hasAttribute(Obj.TOPMAR, Att.ORIENT)) {
-                        tr.rotate(Math.toRadians((Double)getAttVal(Obj.TOPMAR, Att.ORIENT)));
+                        tr.rotate(Math.toRadians((Double) getAttVal(Obj.TOPMAR, Att.ORIENT)));
                     }
                     tr.translate(0, -20);
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                            getScheme(Obj.TOPMAR), new Delta(Handle.BC, tr));
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.TOPMAR), new Delta(Handle.BC, tr));
                 }
             } else if (feature.objs.containsKey(Obj.DAYMAR)) {
                 if (hasAttribute(Obj.DAYMAR, Att.STATUS) && (testAttribute(Obj.DAYMAR, Att.STATUS, StsSTS.STS_ILLD))) {
@@ -1098,11 +1063,10 @@ public class Rules {
                 AttMap topmap = feature.objs.get(Obj.DAYMAR).get(0);
                 if (topmap.containsKey(Att.TOPSHP)) {
                     if (hasAttribute(Obj.DAYMAR, Att.ORIENT)) {
-                        tr.rotate(Math.toRadians((Double)getAttVal(Obj.DAYMAR, Att.ORIENT)));
+                        tr.rotate(Math.toRadians((Double) getAttVal(Obj.DAYMAR, Att.ORIENT)));
                     }
                     tr.translate(0, -20);
-                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)),
-                            getScheme(Obj.DAYMAR), new Delta(Handle.BC, tr));
+                    Renderer.symbol(Topmarks.Shapes.get(((ArrayList<TopSHP>) (topmap.get(Att.TOPSHP).val)).get(0)), getScheme(Obj.DAYMAR), new Delta(Handle.BC, tr));
                 }
             }
             Signals.addSignals();
@@ -1174,9 +1138,11 @@ public class Rules {
             MarSYS sys = MarSYS.SYS_CEVN;
             BnkWTW bnk = BnkWTW.BWW_UNKN;
             AttVal<?> att = feature.atts.get(Att.MARSYS);
-            if (att != null) sys = (MarSYS) att.val;
+            if (att != null)
+                sys = (MarSYS) att.val;
             att = feature.atts.get(Att.BNKWTW);
-            if (att != null) bnk = (BnkWTW) att.val;
+            if (att != null)
+                bnk = (BnkWTW) att.val;
             ObjTab objs = feature.objs.get(Obj.NOTMRK);
             int n = objs.size();
             if (n > 5) {
@@ -1184,20 +1150,25 @@ public class Rules {
             } else {
                 int i = 0;
                 for (AttMap atts : objs.values()) {
-                    if (atts.get(Att.MARSYS) != null) sys = ((ArrayList<MarSYS>) (atts.get(Att.MARSYS).val)).get(0);
-                    if (atts.get(Att.BNKWTW) != null) bnk = ((ArrayList<BnkWTW>) (atts.get(Att.BNKWTW).val)).get(0);
+                    if (atts.get(Att.MARSYS) != null)
+                        sys = ((ArrayList<MarSYS>) (atts.get(Att.MARSYS).val)).get(0);
+                    if (atts.get(Att.BNKWTW) != null)
+                        bnk = ((ArrayList<BnkWTW>) (atts.get(Att.BNKWTW).val)).get(0);
                     CatNMK cat = CatNMK.NMK_UNKN;
-                    if (atts.get(Att.CATNMK) != null) cat = ((ArrayList<CatNMK>) (atts.get(Att.CATNMK).val)).get(0);
+                    if (atts.get(Att.CATNMK) != null)
+                        cat = ((ArrayList<CatNMK>) (atts.get(Att.CATNMK).val)).get(0);
                     Symbol sym = Notices.getNotice(cat, sys, bnk);
                     Scheme sch = Notices.getScheme(sys, bnk);
                     ArrayList<AddMRK> add = new ArrayList<>();
-                    if (atts.get(Att.ADDMRK) != null) add = (ArrayList<AddMRK>) (atts.get(Att.ADDMRK).val);
+                    if (atts.get(Att.ADDMRK) != null)
+                        add = (ArrayList<AddMRK>) (atts.get(Att.ADDMRK).val);
                     Handle h = Handle.CC;
                     double ax = 0.0;
                     double ay = 0.0;
                     switch (i) {
                     case 0:
-                        if (n != 1) h = null;
+                        if (n != 1)
+                            h = null;
                         break;
                     case 1:
                         if (n <= 3) {
@@ -1238,7 +1209,7 @@ public class Rules {
     private static void obstructions() {
         if ((Renderer.zoom >= 12) && (feature.type == Obj.OBSTRN)) {
             if (getAttEnum(feature.type, Att.CATOBS) == CatOBS.OBS_BOOM) {
-                Renderer.lineVector(new LineStyle(Color.black, 5, new float[] {20, 20}, null));
+                Renderer.lineVector(new LineStyle(Color.black, 5, new float[] { 20, 20 }, null));
                 if (Renderer.zoom >= 15) {
                     Renderer.lineText("Boom", new Font("Arial", Font.PLAIN, 80), Color.black, -20);
                 }
@@ -1275,8 +1246,7 @@ public class Rules {
                         verclr = atts.containsKey(Att.VERCSA) ? (Double) atts.get(Att.VERCSA).val : 0;
                     }
                     if (verclr > 0) {
-                        Renderer.labelText(String.valueOf(verclr), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.VCLR,
-                                Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
+                        Renderer.labelText(String.valueOf(verclr), new Font("Arial", Font.PLAIN, 50), Color.black, LabelStyle.VCLR, Color.black, new Delta(Handle.TC, AffineTransform.getTranslateInstance(0, 25)));
                     }
                 }
             }
@@ -1326,7 +1296,7 @@ public class Rules {
             Renderer.lineSymbols(Areas.LaneArrow, 0.5, null, null, 0, Symbols.Mtss);
             break;
         case TSSBND:
-            Renderer.lineVector(new LineStyle(Symbols.Mtss, 20, new float[] {40, 40}, null));
+            Renderer.lineVector(new LineStyle(Symbols.Mtss, 20, new float[] { 40, 40 }, null));
             break;
         case ISTZNE:
             Renderer.lineSymbols(Areas.Restricted, 1.0, null, null, 0, Symbols.Mtss);
@@ -1354,7 +1324,7 @@ public class Rules {
                 case SLC_TWAL:
                     WatLEV lev = (WatLEV) getAttEnum(feature.type, Att.WATLEV);
                     if (lev == WatLEV.LEV_CVRS) {
-                        Renderer.lineVector(new LineStyle(Color.black, 10, new float[] {40, 40}, null));
+                        Renderer.lineVector(new LineStyle(Color.black, 10, new float[] { 40, 40 }, null));
                         if (Renderer.zoom >= 15)
                             Renderer.lineText("(covers)", new Font("Arial", Font.PLAIN, 60), Color.black, 80);
                     } else {
@@ -1461,24 +1431,21 @@ public class Rules {
             case RADSTA:
                 Renderer.symbol(Harbours.SignalStation);
                 Renderer.symbol(Beacons.RadarStation);
-                Renderer.labelText("Ra", new Font("Arial", Font.PLAIN, 40), Symbols.Msymb,
-                        new Delta(Handle.TR, AffineTransform.getTranslateInstance(-30, -70)));
+                Renderer.labelText("Ra", new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, new Delta(Handle.TR, AffineTransform.getTranslateInstance(-30, -70)));
                 break;
             case PILBOP:
                 Renderer.symbol(Harbours.Pilot);
-                addName(15, new Font("Arial", Font.BOLD, 40), Symbols.Msymb,
-                        new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, -40)));
+                addName(15, new Font("Arial", Font.BOLD, 40), Symbols.Msymb, new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, -40)));
                 CatPIL cat = (CatPIL) getAttEnum(feature.type, Att.CATPIL);
                 if (cat == CatPIL.PIL_HELI) {
-                    Renderer.labelText("H", new Font("Arial", Font.PLAIN, 40), Symbols.Msymb,
-                            new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, 0)));
+                    Renderer.labelText("H", new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, new Delta(Handle.LC, AffineTransform.getTranslateInstance(70, 0)));
                 }
                 break;
             case CGUSTA:
                 Renderer.symbol(Harbours.SignalStation);
                 str = "CG";
-                if (feature.objs.containsKey(Obj.RSCSTA)) Renderer.symbol(Harbours.Rescue,
-                        new Delta(Handle.CC, AffineTransform.getTranslateInstance(130, 0)));
+                if (feature.objs.containsKey(Obj.RSCSTA))
+                    Renderer.symbol(Harbours.Rescue, new Delta(Handle.CC, AffineTransform.getTranslateInstance(130, 0)));
                 break;
             case RSCSTA:
                 Renderer.symbol(Harbours.Rescue);
@@ -1487,8 +1454,7 @@ public class Rules {
                 break;
             }
             if ((Renderer.zoom >= 15) && !str.isEmpty()) {
-                Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black,
-                        new Delta(Handle.LC, AffineTransform.getTranslateInstance(40, 0)));
+                Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black, new Delta(Handle.LC, AffineTransform.getTranslateInstance(40, 0)));
             }
             Signals.addSignals();
         }
@@ -1496,8 +1462,10 @@ public class Rules {
 
     private static void transits() {
         if (Renderer.zoom >= 14) {
-            if (feature.type == Obj.RECTRC) Renderer.lineVector(new LineStyle(Color.black, 10, null, null));
-            else if (feature.type == Obj.NAVLNE) Renderer.lineVector(new LineStyle(Color.black, 10, new float[] {25, 25}, null));
+            if (feature.type == Obj.RECTRC)
+                Renderer.lineVector(new LineStyle(Color.black, 10, null, null));
+            else if (feature.type == Obj.NAVLNE)
+                Renderer.lineVector(new LineStyle(Color.black, 10, new float[] { 25, 25 }, null));
         }
         if (Renderer.zoom >= 15) {
             String str = "";
