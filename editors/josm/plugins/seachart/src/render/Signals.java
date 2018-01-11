@@ -102,12 +102,18 @@ public class Signals extends Rules {
     static final DecimalFormat df = new DecimalFormat("#.#");
 
     public static void addSignals() {
-        if (feature.objs.containsKey(Obj.RADRFL)) reflectors();
-        if (feature.objs.containsKey(Obj.FOGSIG)) fogSignals();
-        if (feature.objs.containsKey(Obj.RTPBCN)) radarStations();
-        if (feature.objs.containsKey(Obj.RADSTA)) radarStations();
-        if (feature.objs.containsKey(Obj.RDOSTA)) radioStations();
-        if (feature.objs.containsKey(Obj.LIGHTS)) lights();
+        if (feature.objs.containsKey(Obj.RADRFL))
+            reflectors();
+        if (feature.objs.containsKey(Obj.FOGSIG))
+            fogSignals();
+        if (feature.objs.containsKey(Obj.RTPBCN))
+            radarStations();
+        if (feature.objs.containsKey(Obj.RADSTA))
+            radarStations();
+        if (feature.objs.containsKey(Obj.RDOSTA))
+            radioStations();
+        if (feature.objs.containsKey(Obj.LIGHTS))
+            lights();
     }
 
     public static void reflectors() {
@@ -188,8 +194,7 @@ public class Signals extends Rules {
                     str += df.format(atts.get(Att.VALMXR).val) + "M";
                 }
                 if (!str.isEmpty()) {
-                    Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black,
-                            new Delta(Handle.TR, AffineTransform.getTranslateInstance(-60, -30)));
+                    Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black, new Delta(Handle.TR, AffineTransform.getTranslateInstance(-60, -30)));
                 }
             }
         }
@@ -236,8 +241,7 @@ public class Signals extends Rules {
                 }
             }
             if (!bstr.isEmpty()) {
-                Renderer.labelText(bstr, new Font("Arial", Font.PLAIN, 40), Symbols.Msymb,
-                        new Delta(Handle.TR, AffineTransform.getTranslateInstance(-30, -70)));
+                Renderer.labelText(bstr, new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, new Delta(Handle.TR, AffineTransform.getTranslateInstance(-30, -70)));
             }
         }
     }
@@ -354,12 +358,10 @@ public class Signals extends Rules {
         }
         if (Renderer.zoom >= 15) {
             if (vais) {
-                Renderer.labelText("V-AIS", new Font("Arial", Font.PLAIN, 40), Symbols.Msymb,
-                        new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, 70)));
+                Renderer.labelText("V-AIS", new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, new Delta(Handle.BC, AffineTransform.getTranslateInstance(0, 70)));
             }
             if (!bstr.isEmpty()) {
-                Renderer.labelText(bstr, new Font("Arial", Font.PLAIN, 40), Symbols.Msymb,
-                        new Delta(Handle.TR, AffineTransform.getTranslateInstance(-30, -110)));
+                Renderer.labelText(bstr, new Font("Arial", Font.PLAIN, 40), Symbols.Msymb, new Delta(Handle.TR, AffineTransform.getTranslateInstance(-30, -110)));
             }
         }
     }
@@ -376,8 +378,6 @@ public class Signals extends Rules {
 
     @SuppressWarnings("unchecked")
     public static void lights() {
-      if ((hasAttribute(Obj.LIGHTS, Att.CATLIT) && (testAttribute(Obj.LIGHTS, Att.CATLIT, CatLIT.LIT_FLDL))))
-        return;
         Enum<ColCOL> col = null;
         Enum<ColCOL> tcol = null;
         ObjTab lights = feature.objs.get(Obj.LIGHTS);
@@ -385,12 +385,16 @@ public class Signals extends Rules {
             if (atts.containsKey(Att.COLOUR)) {
                 ArrayList<Enum<ColCOL>> cols = (ArrayList<Enum<ColCOL>>) atts.get(Att.COLOUR).val;
                 if (cols.size() == 1) {
-                    tcol = cols.get(0);
-                    if (col == null) {
-                        col = tcol;
-                    } else if (tcol != col) {
-                        col = ColCOL.COL_MAG;
-                        break;
+                    if (atts.containsKey(Att.CATLIT) && ((ArrayList<?>) atts.get(Att.CATLIT).val).contains(CatLIT.LIT_FLDL)) {
+                        Renderer.symbol(Beacons.Floodlight, new Delta(Handle.CC, AffineTransform.getRotateInstance(Math.toRadians(90))));
+                    } else {
+                        tcol = cols.get(0);
+                        if (col == null) {
+                            col = tcol;
+                        } else if (tcol != col) {
+                            col = ColCOL.COL_MAG;
+                            break;
+                        }
                     }
                 } else {
                     col = ColCOL.COL_MAG;
@@ -398,8 +402,9 @@ public class Signals extends Rules {
                 }
             }
         }
-        Renderer.symbol(Beacons.LightFlare, new Scheme(LightColours.get(col)),
-                new Delta(Handle.BC, AffineTransform.getRotateInstance(Math.toRadians(120))));
+        if (col != null) {
+            Renderer.symbol(Beacons.LightFlare, new Scheme(LightColours.get(col)), new Delta(Handle.BC, AffineTransform.getRotateInstance(Math.toRadians(120))));
+        }
         if (Renderer.zoom >= 12) {
             String str = "";
             if (lights.get(1) != null) {
@@ -433,8 +438,7 @@ public class Signals extends Rules {
                                     if (satts == atts)
                                         continue;
                                     if (srad == radius) {
-                                        ArrayList<CatLIT> scats = (ArrayList<CatLIT>) ((satts.containsKey(Att.CATLIT)) ?
-                                                (ArrayList<CatLIT>) satts.get(Att.CATLIT).val : new ArrayList<>());
+                                        ArrayList<CatLIT> scats = (ArrayList<CatLIT>) ((satts.containsKey(Att.CATLIT)) ? (ArrayList<CatLIT>) satts.get(Att.CATLIT).val : new ArrayList<>());
                                         if (scats.contains(CatLIT.LIT_DIR)) {
                                             if (satts.containsKey(Att.ORIENT)) {
                                                 sdir = (Double) satts.get(Att.ORIENT).val;
@@ -500,8 +504,7 @@ public class Signals extends Rules {
                         str += "." + df.format(atts.get(Att.SIGPER).val) + "s";
                     }
                     if ((s1 <= 360) && (s2 <= 360) && (s1 != s2))
-                        Renderer.lightSector(LightColours.get(col1), LightColours.get(col2), radius, s1, s2, dir,
-                                (Renderer.zoom >= 15) ? str : "");
+                        Renderer.lightSector(LightColours.get(col1), LightColours.get(col2), radius, s1, s2, dir, (Renderer.zoom >= 15) ? str : "");
                 }
                 if (Renderer.zoom >= 15) {
                     class LitSect {
@@ -542,8 +545,7 @@ public class Signals extends Rules {
                         sect.per = atts.containsKey(Att.SIGPER) ? (Double) atts.get(Att.SIGPER).val : 0.0;
                         sect.rng = atts.containsKey(Att.VALNMR) ? (Double) atts.get(Att.VALNMR).val : 0.0;
                         sect.hgt = atts.containsKey(Att.HEIGHT) ? (Double) atts.get(Att.HEIGHT).val : 0.0;
-                        ArrayList<ColCOL> cols = (ArrayList<ColCOL>)
-                                (atts.containsKey(Att.COLOUR) ? atts.get(Att.COLOUR).val : new ArrayList<>());
+                        ArrayList<ColCOL> cols = (ArrayList<ColCOL>) (atts.containsKey(Att.COLOUR) ? atts.get(Att.COLOUR).val : new ArrayList<>());
                         sect.col = cols.size() > 0 ? cols.get(0) : ColCOL.COL_UNK;
                         if ((sect.chr != LitCHR.CHR_UNKN) && (sect.col != null))
                             litatts.add(sect);
@@ -553,8 +555,7 @@ public class Signals extends Rules {
                         boolean found = false;
                         for (ArrayList<LitSect> group : groupings) {
                             LitSect mem = group.get(0);
-                            if ((lit.dir == mem.dir) && (lit.chr == mem.chr) && (lit.grp.equals(mem.grp)) &&
-                                (lit.per == mem.per) && (lit.hgt == mem.hgt)) {
+                            if ((lit.dir == mem.dir) && (lit.chr == mem.chr) && (lit.grp.equals(mem.grp)) && (lit.per == mem.per) && (lit.hgt == mem.hgt)) {
                                 group.add(lit);
                                 found = true;
                             }
@@ -629,10 +630,8 @@ public class Signals extends Rules {
                         if (tmp.hgt > 0)
                             str += df.format(tmp.hgt) + "m";
                         if (colrng.get(0).rng > 0)
-                            str += df.format(colrng.get(0).rng) + ((colrng.size() > 1) ? ((colrng.size() > 2) ?
-                                    ("-" + df.format(colrng.get(colrng.size() - 1).rng)) : ("/" + df.format(colrng.get(1).rng))) : "") + "M";
-                        Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black,
-                                new Delta(Handle.TL, AffineTransform.getTranslateInstance(60, y)));
+                            str += df.format(colrng.get(0).rng) + ((colrng.size() > 1) ? ((colrng.size() > 2) ? ("-" + df.format(colrng.get(colrng.size() - 1).rng)) : ("/" + df.format(colrng.get(1).rng))) : "") + "M";
+                        Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black, new Delta(Handle.TL, AffineTransform.getTranslateInstance(60, y)));
                         y += 40;
                         str = "";
                     }
@@ -681,8 +680,7 @@ public class Signals extends Rules {
                     }
                     str += (cats.contains(CatLIT.LIT_VERT)) ? "(vert)" : "";
                     str += (cats.contains(CatLIT.LIT_HORI)) ? "(hor)" : "";
-                    str += (!str.isEmpty() && (atts.containsKey(Att.SIGPER) || atts.containsKey(Att.HEIGHT) || atts.containsKey(Att.VALMXR))
-                            && !str.endsWith(")")) ? "." : "";
+                    str += (!str.isEmpty() && (atts.containsKey(Att.SIGPER) || atts.containsKey(Att.HEIGHT) || atts.containsKey(Att.VALMXR)) && !str.endsWith(")")) ? "." : "";
                     str += (atts.containsKey(Att.SIGPER)) ? df.format(atts.get(Att.SIGPER).val) + "s" : "";
                     str += (atts.containsKey(Att.HEIGHT)) ? df.format(atts.get(Att.HEIGHT).val) + "m" : "";
                     str += (atts.containsKey(Att.VALNMR)) ? df.format(atts.get(Att.VALNMR).val) + "M" : "";
@@ -690,8 +688,7 @@ public class Signals extends Rules {
                     str += (cats.contains(CatLIT.LIT_REAR)) ? "(Rear)" : "";
                     str += (cats.contains(CatLIT.LIT_UPPR)) ? "(Upper)" : "";
                     str += (cats.contains(CatLIT.LIT_LOWR)) ? "(Lower)" : "";
-                    Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black,
-                            new Delta(Handle.TL, AffineTransform.getTranslateInstance(60, -30)));
+                    Renderer.labelText(str, new Font("Arial", Font.PLAIN, 40), Color.black, new Delta(Handle.TL, AffineTransform.getTranslateInstance(60, -30)));
                 }
             }
         }
