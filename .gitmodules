@@ -150,6 +150,10 @@
   path = applications/editors/josm/plugins/epci-fr
   url = ../epci-fr
   branch = master
+[submodule "applications/editors/josm/plugins/eventbus"]
+  path = applications/editors/josm/plugins/eventbus
+  url = ../eventbus
+  branch = master
 [submodule "applications/editors/josm/plugins/ext_tools"]
   path = applications/editors/josm/plugins/ext_tools
   url = ../ext_tools
