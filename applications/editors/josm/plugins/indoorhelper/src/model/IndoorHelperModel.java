@@ -45,7 +45,7 @@ import model.TagCatalog.IndoorObject;
  * @author egru
  * @author rebsc
  */
-public class IndoorHelperModel{
+public class IndoorHelperModel {
 
     private TagCatalog tags;
     private PresetCounter counter;
@@ -73,9 +73,9 @@ public class IndoorHelperModel{
      * Method which adds the selected tag-set to the currently selected OSM data. If OSM data is a relation add tag-set
      * directly to the relation otherwise add it to nodes and/or ways.
      *
+     * @author rebsc
      * @param object the object which defines the tag-set you want to add
      * @param userTags the tags which are given by the user input
-     * @author rebsc
      */
     public void addTagsToOSM(IndoorObject object, List<Tag> userTags) {
         if (!MainApplication.getLayerManager().getEditDataSet().selectionEmpty() && !Main.main.getInProgressSelection().isEmpty()) {
@@ -91,14 +91,14 @@ public class IndoorHelperModel{
             this.counter.count(object);
 
             // Put value on {@link relationToAdd} if selected object is a relation.
-            relationToAdd = getRelationFromDataSet(ds,relations);
+            relationToAdd = getRelationFromDataSet(ds, relations);
 
-            if(relationToAdd != null) {
+            if (relationToAdd != null) {
                 //Add tags to relation
                 for (Tag t : tags) {
                         Main.main.undoRedo.add(new ChangePropertyCommand(relationToAdd, t.getKey(), t.getValue()));
                 }
-            }else{
+            } else {
                 //Add tags to ways or nodes
                 for (Tag t : tags) {
                     Main.main.undoRedo.add(new ChangePropertyCommand(Main.main.getInProgressSelection(), t.getKey(), t.getValue()));
@@ -137,8 +137,8 @@ public class IndoorHelperModel{
     /**
      * Method which adds a list of tag-sets to the currently selected OSM data. Tags directly to ways and/or nodes.
      *
-     * @param userTags the tags which are given by the user input
      * @author rebsc
+     * @param userTags the tags which are given by the user input
      */
     public void addTagsToOSM(List<Tag> userTags) {
 
@@ -148,8 +148,7 @@ public class IndoorHelperModel{
             for (Tag t : userTags) {
                 Main.main.undoRedo.add(new ChangePropertyCommand(Main.main.getInProgressSelection(), t.getKey(), t.getValue()));
             }
-        }
-        else if (MainApplication.getLayerManager().getEditDataSet().selectionEmpty()) {
+        } else if (MainApplication.getLayerManager().getEditDataSet().selectionEmpty()) {
             JOptionPane.showMessageDialog(null, tr("No data selected."), tr("Error"), JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -157,16 +156,16 @@ public class IndoorHelperModel{
     /**
      * Method which adds the relation to OSM data. Also adds the selected tag-set to relation object.
      *
-     * @param String the Multipolygon Role as String
      * @author rebsc
+     * @param String the Multipolygon Role as String
      */
-    public void addRelation(String role){
+    public void addRelation(String role) {
         Relation newRelation = new Relation();
         RelationMember newMember;
         DataSet ds = Main.main.getEditDataSet();
 
         // Create new relation and add a new member with specific role
-        if(!MainApplication.getLayerManager().getEditDataSet().selectionEmpty()) {
+        if (!MainApplication.getLayerManager().getEditDataSet().selectionEmpty()) {
             for (OsmPrimitive osm : ds.getSelected()) {
                  newMember = new RelationMember(role == null ? "" : role, osm);
                  newRelation.addMember(newMember);
@@ -179,19 +178,18 @@ public class IndoorHelperModel{
     /**
      * Method which edits the selected object to the currently selected OSM data (relations).
      *
-     * @param role The Multipolygon Role as String
-     * @param relation
      * @author rebsc
+     * @param role The Multipolygon Role as String
      */
-    public void editRelation(String role, Collection<OsmPrimitive> innerRelation){
+    public void editRelation(String role, Collection<OsmPrimitive> innerRelation) {
 
         RelationMember newMember;
         DataSet ds = Main.main.getEditDataSet();
         Collection<Relation> relations = ds.getRelations();
-        Relation relation = getRelationFromDataSet(ds,relations);
+        Relation relation = getRelationFromDataSet(ds, relations);
 
         if (!MainApplication.getLayerManager().getEditDataSet().selectionEmpty() && !Main.main.getInProgressSelection().isEmpty() &&
-                !innerRelation.isEmpty() && getRole(ds,relations).equals("outer")) {
+                !innerRelation.isEmpty() && getRole(ds, relations).equals("outer")) {
 
             //Add new relation member to selected relation
             for (OsmPrimitive osm : innerRelation) {
@@ -200,17 +198,17 @@ public class IndoorHelperModel{
             };
 
         //Check if dataset is not empty or if {@link innerRelation} has no value
-        }else if (MainApplication.getLayerManager().getEditDataSet().selectionEmpty() || innerRelation.isEmpty()) {
+        } else if (MainApplication.getLayerManager().getEditDataSet().selectionEmpty() || innerRelation.isEmpty()) {
             JOptionPane.showMessageDialog(null, tr("No data selected."), tr("Error"), JOptionPane.ERROR_MESSAGE);
 
         //If selected object is not a relation member or not a relation member with role "outer"
-        }else if(!getRole(ds,relations).equals("outer")) {
-            JOptionPane.showMessageDialog(null, tr("No relation or no relation member with role \"outer\" selected."), tr("Error"), JOptionPane.ERROR_MESSAGE);
+        } else if (!getRole(ds, relations).equals("outer")) {
+            JOptionPane.showMessageDialog(null,
+                    tr("No relation or no relation member with role \"outer\" selected."), tr("Error"), JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
-  /**
+    /**
      * Returns the current ranking of the preset counter, which includes the 4 most used items.
      *
      * @return a list of the 4 most used IndoorObjects
@@ -219,26 +217,19 @@ public class IndoorHelperModel{
         return counter.getRanking();
     }
 
-
-
-/*************************************************
-* HELPER METHODS
-*
-*/
-
     /**
      * Function which returns the the relation (if any) of the currently selected object.
      * If not returns null.
+     * @author rebsc
      * @param ds actual working dataset
      * @param relations collection of relations in the dataset
      * @return relation of currently selected dataset
-     * @author rebsc
      */
     private Relation getRelationFromDataSet(DataSet ds, Collection<Relation> relations) {
-        for(Relation r: relations) {
-            for(RelationMember rm: r.getMembers()) {
-                for(OsmPrimitive osm: ds.getSelected()) {
-                    if(rm.refersTo(osm)) {
+        for (Relation r: relations) {
+            for (RelationMember rm: r.getMembers()) {
+                for (OsmPrimitive osm: ds.getSelected()) {
+                    if (rm.refersTo(osm)) {
                         return r;
                     }
                 }
@@ -250,18 +241,18 @@ public class IndoorHelperModel{
     /**
      * Function which returns the relation role (if any) of the currently selected object.
      * If object is not a relation returns empty string.
+     * @author rebsc
      * @param ds active dataset
      * @param relations collection of relations in the dataset
      * @return role of currently selected relation member if any
-     * @author rebsc
      */
     private String getRole(DataSet ds, Collection<Relation> relations) {
 
-        if(isRelationMember(ds,relations)) {
-            for(Relation r: relations) {
-                for(RelationMember rm: r.getMembers()) {
-                    for(OsmPrimitive osm: ds.getSelected()) {
-                        if(rm.refersTo(osm)) {
+        if (isRelationMember(ds, relations)) {
+            for (Relation r: relations) {
+                for (RelationMember rm: r.getMembers()) {
+                    for (OsmPrimitive osm: ds.getSelected()) {
+                        if (rm.refersTo(osm)) {
                             return rm.getRole();
                         }
                     }
@@ -273,15 +264,15 @@ public class IndoorHelperModel{
 
     /**
      * Function which returns true if the currently selected object is a relation
+     * @author rebsc
      * @param ds active dataset
      * @return true if selected object is a relation
-     * @author rebsc
      */
     private boolean isRelationMember(DataSet ds, Collection<Relation> relations) {
-        for(Relation r: relations) {
-            for(RelationMember rm: r.getMembers()) {
-                for(OsmPrimitive osm: ds.getSelected()) {
-                    if(rm.refersTo(osm)) {
+        for (Relation r: relations) {
+            for (RelationMember rm: r.getMembers()) {
+                for (OsmPrimitive osm: ds.getSelected()) {
+                    if (rm.refersTo(osm)) {
                         return true;
                     }
                 }
@@ -289,17 +280,4 @@ public class IndoorHelperModel{
         }
         return false;
     }
-
-
-/**
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*/
 }
