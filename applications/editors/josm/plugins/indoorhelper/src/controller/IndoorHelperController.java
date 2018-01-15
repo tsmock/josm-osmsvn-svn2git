@@ -112,12 +112,12 @@ public class IndoorHelperController {
 
        // Shortcuts
        SpaceShortcut = Shortcut.registerShortcut("mapmode:space",
-               "", KeyEvent.VK_SPACE, Shortcut.DIRECT);
+               tr("ConfirmObjectDrawing"), KeyEvent.VK_SPACE, Shortcut.DIRECT);
        this.SpaceAction = new SpaceAction();
        MainApplication.registerActionShortcut(SpaceAction, SpaceShortcut);
 
-       EnterShortcut = Shortcut.registerShortcut("mapmode:ALT",
-               "", KeyEvent.VK_ENTER, Shortcut.DIRECT);
+       EnterShortcut = Shortcut.registerShortcut("mapmode:enter",
+               tr("ConfirmMultipolygonSelection"), KeyEvent.VK_ENTER, Shortcut.DIRECT);
        this.EnterAction = new EnterAction();
        MainApplication.registerActionShortcut(EnterAction, EnterShortcut);
 
@@ -265,7 +265,7 @@ public class IndoorHelperController {
 
        @Override
        public void actionPerformed(ActionEvent e) {
-           String topic = "indoorHelper";
+           String topic = "Plugin/indoorHelper";
            //Open HelpBrowser for short description about the plugin
            HelpBrowser.setUrlForHelpTopic(Optional.ofNullable(topic).orElse("/"));
        }
