@@ -6,9 +6,21 @@
   path = applications/editors/josm/plugins/areaselector
   url = ../areaselector.git
   branch = master
+[submodule "applications/editors/josm/plugins/austriaaddresshelper"]
+  path = applications/editors/josm/plugins/austriaaddresshelper
+  url = ../austriaaddresshelper.git
+  branch = master
+[submodule "applications/editors/josm/plugins/auto-tools"]
+  path = applications/editors/josm/plugins/auto-tools
+  url = ../auto-tools.git
+  branch = master
 [submodule "applications/editors/josm/plugins/building_generalization"]
   path = applications/editors/josm/plugins/building_generalization
   url = ../Building-Generalization.git
+  branch = master
+[submodule "applications/editors/josm/plugins/configuration"]
+  path = applications/editors/josm/plugins/configuration
+  url = ../configuration.git
   branch = master
 [submodule "applications/editors/josm/plugins/conflation"]
   path = applications/editors/josm/plugins/conflation
@@ -26,6 +38,10 @@
   path = applications/editors/josm/plugins/geojson
   url = ../geojson.git
   branch = master
+[submodule "applications/editors/josm/plugins/improve-way"]
+  path = applications/editors/josm/plugins/improve-way
+  url = ../improve-way.git
+  branch = master
 [submodule "applications/editors/josm/plugins/kartverketimport"]
   path = applications/editors/josm/plugins/kartverketimport
   url = ../kartverketimport.git
@@ -33,6 +49,14 @@
 [submodule "applications/editors/josm/plugins/Mapillary"]
   path = applications/editors/josm/plugins/Mapillary
   url = ../mapillary.git
+  branch = master
+[submodule "applications/editors/josm/plugins/osm-obj-info"]
+  path = applications/editors/josm/plugins/osm-obj-info
+  url = ../osm-obj-info.git
+  branch = master
+[submodule "applications/editors/josm/plugins/rex"]
+  path = applications/editors/josm/plugins/rex
+  url = ../rex.git
   branch = master
 [submodule "applications/editors/josm/plugins/shapetools"]
   path = applications/editors/josm/plugins/shapetools
