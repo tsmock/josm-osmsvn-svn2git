@@ -18,6 +18,10 @@
   path = editors/josm/plugins/building_generalization
   url = ../Building-Generalization.git
   branch = master
+[submodule "editors/josm/plugins/changeset-viewer"]
+  path = editors/josm/plugins/changeset-viewer
+  url = ../changeset-viewer.git
+  branch = master
 [submodule "editors/josm/plugins/configuration"]
   path = editors/josm/plugins/configuration
   url = ../configuration.git
