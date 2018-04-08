@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package ru.rodsoft.openstreetmap.josm.plugins.customizepublictransportstop;
 
 import java.util.ArrayList;
@@ -8,9 +9,9 @@ import org.openstreetmap.josm.data.osm.Relation;
 import org.openstreetmap.josm.data.osm.Way;
 
 /**
+ * Stop area settings
  * 
  * @author Rodion Scherbakov
- * Stop area settings
  */
 public class StopArea {
 
@@ -71,7 +72,7 @@ public class StopArea {
      */
     public Boolean isBench = false;
     /**
-     * Flag of covered platform 
+     * Flag of covered platform
      */
     public Boolean isCovered = false;
     /**
@@ -94,7 +95,7 @@ public class StopArea {
      * Separate node of bus stop or bus station
      */
     public Node separateBusStopNode = null;
-    
+
     /**
      * List of nodes of stop positions
      */
@@ -107,48 +108,46 @@ public class StopArea {
      * List of non stop positions or platform stop area members
      */
     public final ArrayList<OsmPrimitive> otherMembers = new ArrayList<OsmPrimitive>();
-    
+
     /**
      * Selected josm objects. Must be a platform
      */
     public OsmPrimitive selectedObject = null;
 
-    
     /**
      * Constructor of stop area object
      */
-    public StopArea()
-    { }
-    
+    public StopArea() {
+    }
+
     /**
      * Constructor of stop area object from selected object
+     * 
      * @param selectedObject Selected object
      */
-    public StopArea(OsmPrimitive selectedObject)
-    {
+    public StopArea(OsmPrimitive selectedObject) {
         this.selectedObject = selectedObject;
     }
-    
+
     /**
      * Get selected in editor node
+     * 
      * @return Selected node or null
      */
-    public Node getSelectedNode()
-    {
-        if(selectedObject instanceof Node)
-            return (Node)selectedObject;
+    public Node getSelectedNode() {
+        if (selectedObject instanceof Node)
+            return (Node) selectedObject;
         return null;
     }
-    
+
     /**
      * Get selected way
+     * 
      * @return Selected way or null
      */
-    public Way getSelectedWay()
-    {
-        if(selectedObject instanceof Way)
-            return (Way)selectedObject;
+    public Way getSelectedWay() {
+        if (selectedObject instanceof Way)
+            return (Way) selectedObject;
         return null;
     }
-    
 }
