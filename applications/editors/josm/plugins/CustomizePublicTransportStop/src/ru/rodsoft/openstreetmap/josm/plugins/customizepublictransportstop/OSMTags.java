@@ -1,12 +1,12 @@
+// License: GPL. For details, see LICENSE file.
 package ru.rodsoft.openstreetmap.josm.plugins.customizepublictransportstop;
 
 /**
+ * OSM object tags
  * 
  * @author Rodion Scherbakov
- * OSM object tags
  */
-public class OSMTags 
-{
+public final class OSMTags {
     public static final String TERTIARY_LINK_TAG_VALUE = "tertiary_link";
     public static final String SECONDARY_LINK_TAG_VALUE = "secondary_link";
     public static final String PRIMARY_LINK_TAG_VALUE = "primary_link";
@@ -47,7 +47,7 @@ public class OSMTags
     public static final String HIGHWAY_TAG = "highway";
     public static final String AMENITY_TAG = "amenity";
     public static final String BUS_STATION_TAG_VALUE = "bus_station";
-    
+
     public static final String BUS_STOP_TAG_VALUE = "bus_stop";
     public static final String TYPE_TAG = "type";
     public static final String PUBLIC_TRANSPORT_TAG = "public_transport";
@@ -64,4 +64,7 @@ public class OSMTags
     public static final String LONG_DISTANCE_NETWORK_TAG_VALUE = "long_distance";
     public static final String HIGH_SPEED_NETWORK_TAG_VALUE = "high_speed";
 
+    private OSMTags() {
+        // Hide default constructor
+    }
 }

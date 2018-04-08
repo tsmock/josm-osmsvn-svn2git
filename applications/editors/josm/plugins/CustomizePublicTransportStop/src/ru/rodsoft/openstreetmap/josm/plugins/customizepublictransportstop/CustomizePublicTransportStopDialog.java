@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package ru.rodsoft.openstreetmap.josm.plugins.customizepublictransportstop;
 
 import java.awt.Frame;
@@ -23,15 +24,12 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import org.openstreetmap.josm.Main;
 
-import ru.rodsoft.openstreetmap.josm.plugins.customizepublictransportstop.MessageBox;
-
 /**
+ * Dialog for setting stop area properties
  * 
  * @author Rodion Scherbakov
- * Dialog for setting stop area properties
  */
-public class CustomizePublicTransportStopDialog implements ActionListener, ItemListener
-{
+public class CustomizePublicTransportStopDialog implements ActionListener, ItemListener {
     private static final String CANCEL_COMMAND = "cancel";
     private static final String SAVE_COMMAND = "save";
     private static final String CANCEL_BUTTON_CAPTION = "Cancel";
@@ -59,10 +57,12 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
     public static final String COMMUTER_NETWORK_CAPTION = "Commuter";
     public static final String CITY_NETWORK_CAPTION = "City transport";
     public static final String HIGH_SPEED_NETWORK_CAPTION = "High speed";
-    
-    private String[] serviceCaptionStrings = { CITY_NETWORK_CAPTION, COMMUTER_NETWORK_CAPTION, REGIONAL_NETWORK_CAPTION, LONG_DISTANCE_NETWORK_CAPTION, HIGH_SPEED_NETWORK_CAPTION };
-    private String[] serviceStrings = { OSMTags.CITY_NETWORK_TAG_VALUE, OSMTags.COMMUTER_NETWORK_TAG_VALUE, 
-                                        OSMTags.REGIONAL_NETWORK_TAG_VALUE, OSMTags.LONG_DISTANCE_NETWORK_TAG_VALUE, OSMTags.HIGH_SPEED_NETWORK_TAG_VALUE };
+
+    private String[] serviceCaptionStrings = {CITY_NETWORK_CAPTION, COMMUTER_NETWORK_CAPTION, REGIONAL_NETWORK_CAPTION,
+            LONG_DISTANCE_NETWORK_CAPTION, HIGH_SPEED_NETWORK_CAPTION};
+    private String[] serviceStrings = {OSMTags.CITY_NETWORK_TAG_VALUE, OSMTags.COMMUTER_NETWORK_TAG_VALUE,
+            OSMTags.REGIONAL_NETWORK_TAG_VALUE, OSMTags.LONG_DISTANCE_NETWORK_TAG_VALUE,
+            OSMTags.HIGH_SPEED_NETWORK_TAG_VALUE};
 
     private JDialog jDialog = null;
     private JTextField textFieldName = null;
@@ -91,12 +91,12 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
      * Customize stop action object for callback
      */
     private CustomizeStopAction customizeStopAction;
-    
+
     /**
-     * Map of check boxes 
+     * Map of check boxes
      */
-    private HashMap<JCheckBox, Boolean> checkBoxValues = new HashMap<JCheckBox,Boolean>();
-    
+    private HashMap<JCheckBox, Boolean> checkBoxValues = new HashMap<JCheckBox, Boolean>();
+
     /**
      * Previous stop name
      */
@@ -104,7 +104,7 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
     /**
      * Previous english stop name
      */
-    private static String previousNameEn;	
+    private static String previousNameEn;
     /**
      * Network name at previous call
      */
@@ -113,40 +113,47 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
      * Operator name at previous call
      */
     private static String previousOperator = null;
-    
+
     /**
      * Reference to dialog object
      */
     private static CustomizePublicTransportStopDialog customizePublicTransportStopDialogInstance;
-    
+
     /**
      * Construct dialog and fill controls
+     * 
      * @param customizeStopAction Stop area customizing action
      * @param stopArea Stop area
      * @return Reference to dialog
      */
-    public static CustomizePublicTransportStopDialog showCustomizePublicTransportStopDialog(CustomizeStopAction customizeStopAction, StopArea stopArea) 
-    {
-        if(customizePublicTransportStopDialogInstance == null)
-        {
-            customizePublicTransportStopDialogInstance = new CustomizePublicTransportStopDialog(customizeStopAction, stopArea);
-        }
-        else
-        {
+    public static CustomizePublicTransportStopDialog showCustomizePublicTransportStopDialog(
+            CustomizeStopAction customizeStopAction, StopArea stopArea) {
+        if (customizePublicTransportStopDialogInstance == null) {
+            customizePublicTransportStopDialogInstance = new CustomizePublicTransportStopDialog(customizeStopAction,
+                    stopArea);
+        } else {
             customizePublicTransportStopDialogInstance.setCustomizeStopAction(customizeStopAction);
             customizePublicTransportStopDialogInstance.setStopArea(stopArea);
         }
         customizePublicTransportStopDialogInstance.setVisible(true);
         return customizePublicTransportStopDialogInstance;
     }
-    
+
     /**
      * Constructor of dialog
      */
-    public CustomizePublicTransportStopDialog()
-    {
+    public CustomizePublicTransportStopDialog() {
         Frame frame = JOptionPane.getFrameForComponent(Main.parent);
         jDialog = new JDialog(frame, tr(STOP_CUSTOMIZING_DIALOG_CAPTION), false);
+        JPanel contentPane = createContentPane();
+
+        jDialog.add(contentPane);
+
+        jDialog.pack();
+        jDialog.setLocationRelativeTo(frame);
+    }
+
+    private JPanel createContentPane() {
         JPanel contentPane = new JPanel();
         GridBagLayout gridbag = new GridBagLayout();
         contentPane.setLayout(gridbag);
@@ -158,7 +165,7 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         layoutCons.fill = GridBagConstraints.HORIZONTAL;
         gridbag.setConstraints(label, layoutCons);
         contentPane.add(label);
-        
+
         textFieldName = new JTextField("", 25);
         layoutCons.gridx = 1;
         layoutCons.gridy = 0;
@@ -166,7 +173,7 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         layoutCons.fill = GridBagConstraints.HORIZONTAL;
         gridbag.setConstraints(textFieldName, layoutCons);
         contentPane.add(textFieldName);
-    
+
         JLabel labelNameEn = new JLabel(tr(NAME_EN_CAPTION));
         layoutCons.gridx = 0;
         layoutCons.gridy = 1;
@@ -214,7 +221,7 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         layoutCons.fill = GridBagConstraints.HORIZONTAL;
         gridbag.setConstraints(textFieldOperator, layoutCons);
         contentPane.add(textFieldOperator);
-    
+
         JLabel labelService = new JLabel(tr(NETWORK_LEVEL_CAPTION));
         layoutCons.gridx = 0;
         layoutCons.gridy = 4;
@@ -222,10 +229,11 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         layoutCons.fill = GridBagConstraints.HORIZONTAL;
         gridbag.setConstraints(labelService, layoutCons);
         contentPane.add(labelService);
-        
-        String[] serviceTransStrings = new String[serviceCaptionStrings.length]; 
-        for(int i = 0; i < serviceCaptionStrings.length; i++)
-            serviceTransStrings[i]  = tr(serviceCaptionStrings[i]);
+
+        String[] serviceTransStrings = new String[serviceCaptionStrings.length];
+        for (int i = 0; i < serviceCaptionStrings.length; i++) {
+            serviceTransStrings[i] = tr(serviceCaptionStrings[i]);
+        }
         comboBoxService = new JComboBox<String>(serviceTransStrings);
         comboBoxService.setSelectedIndex(0);
         layoutCons.gridx = 1;
@@ -234,7 +242,7 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         layoutCons.fill = GridBagConstraints.HORIZONTAL;
         gridbag.setConstraints(comboBoxService, layoutCons);
         contentPane.add(comboBoxService);
-        
+
         checkBoxIsBus = new JCheckBox(tr(BUS_CAPTION));
         layoutCons.gridx = 0;
         layoutCons.gridy = 5;
@@ -261,7 +269,7 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         gridbag.setConstraints(checkBoxIsTrolleybus, layoutCons);
         checkBoxIsTrolleybus.addItemListener(this);
         contentPane.add(checkBoxIsTrolleybus);
-        
+
         checkBoxIsBusStation = new JCheckBox(tr(BUS_STATION_CAPTION));
         layoutCons.gridx = 1;
         layoutCons.gridy = 6;
@@ -333,7 +341,7 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         gridbag.setConstraints(checkBoxIsCover, layoutCons);
         checkBoxIsCover.addItemListener(this);
         contentPane.add(checkBoxIsCover);
-        
+
         checkBoxIsArea = new JCheckBox(tr(AREA_CAPTION));
         layoutCons.gridx = 1;
         layoutCons.gridy = 11;
@@ -348,224 +356,203 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
         layoutCons.gridy = 12;
         layoutCons.weightx = 0.5;
         layoutCons.fill = GridBagConstraints.HORIZONTAL;
-        layoutCons.insets = new Insets(10, 0 , 0, 0);
+        layoutCons.insets = new Insets(10, 0, 0, 0);
         gridbag.setConstraints(buttonSave, layoutCons);
         buttonSave.setActionCommand(SAVE_COMMAND);
         buttonSave.addActionListener(this);
         contentPane.add(buttonSave);
-        
+
         JButton buttonCancel = new JButton(tr(CANCEL_BUTTON_CAPTION));
         layoutCons.gridx = 1;
         layoutCons.gridy = 12;
         layoutCons.weightx = 0.5;
         layoutCons.fill = GridBagConstraints.LINE_START;
-        layoutCons.insets = new Insets(10, 0 , 0, 0);
+        layoutCons.insets = new Insets(10, 0, 0, 0);
         gridbag.setConstraints(buttonCancel, layoutCons);
         buttonCancel.setActionCommand(CANCEL_COMMAND);
         buttonCancel.addActionListener(this);
         contentPane.add(buttonCancel);
-
-        jDialog.add(contentPane);
-
-        jDialog.pack();
-        jDialog.setLocationRelativeTo(frame);
+        return contentPane;
     }
-    
+
     /**
      * Constructor of dialog with filling of controls
+     * 
      * @param customizeStopAction Stop area customizing action
      * @param stopArea Stop area
      */
-    public CustomizePublicTransportStopDialog(CustomizeStopAction customizeStopAction, StopArea stopArea)
-    {
+    public CustomizePublicTransportStopDialog(CustomizeStopAction customizeStopAction, StopArea stopArea) {
         this();
         setValues(stopArea);
         this.customizeStopAction = customizeStopAction;
         this.stopArea = stopArea;
     }
-    
+
     /**
      * Return stop area
+     * 
      * @return Stop area
      */
-    public StopArea getStopArea()
-    {
+    public StopArea getStopArea() {
         return stopArea;
     }
-    
+
     /**
      * Set stop area and fill controls
+     * 
      * @param newStopArea Stop area
      */
-    public void setStopArea(StopArea newStopArea)
-    {
+    public void setStopArea(StopArea newStopArea) {
         setValues(newStopArea);
         this.stopArea = newStopArea;
     }
-    
+
     /**
      * Returns stop area customizing action
+     * 
      * @return Stop area customizing action
      */
-    public CustomizeStopAction getCustomizeStopAction()
-    {
+    public CustomizeStopAction getCustomizeStopAction() {
         return customizeStopAction;
     }
-    
+
     /**
      * Set stop area customizing action
+     * 
      * @param newCustomizeStopAction Stop area customizing action
      */
-    public void setCustomizeStopAction(CustomizeStopAction newCustomizeStopAction)
-    {
+    public void setCustomizeStopAction(CustomizeStopAction newCustomizeStopAction) {
         customizeStopAction = newCustomizeStopAction;
     }
-    
+
     /**
      * Set value in check boxes map
+     * 
      * @param checkBox Check box
      * @param value Value of check box
      */
-    public void setCheckBoxValue(JCheckBox checkBox, Boolean value)
-    {
+    public void setCheckBoxValue(JCheckBox checkBox, Boolean value) {
         checkBoxValues.put(checkBox, value);
         checkBox.setSelected(value);
     }
-    
+
     /**
      * Returns value of check box
+     * 
      * @param checkBox Check box
      * @return Value of check box
      */
-    public Boolean getCheckBoxValue(JCheckBox checkBox)
-    {
-        try
-        {
-            if(checkBoxValues.containsKey(checkBox))
-            {
+    public Boolean getCheckBoxValue(JCheckBox checkBox) {
+        try {
+            if (checkBoxValues.containsKey(checkBox)) {
                 return checkBoxValues.get(checkBox);
             }
             return false;
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             MessageBox.ok(ex.getMessage());
         }
         return false;
     }
-    
+
     /**
-     * Callback method for check boxes
-     * Set values in check boxes map
+     * Callback method for check boxes Set values in check boxes map
      */
     @Override
-    public void itemStateChanged(ItemEvent event)
-    {
-        JCheckBox checkBox = (JCheckBox)event.getSource();
-        if(event.getStateChange() == ItemEvent.DESELECTED)
-        {
+    public void itemStateChanged(ItemEvent event) {
+        JCheckBox checkBox = (JCheckBox) event.getSource();
+        if (event.getStateChange() == ItemEvent.DESELECTED) {
             checkBoxValues.put(checkBox, false);
+        } else if (event.getStateChange() == ItemEvent.SELECTED) {
+            checkBoxValues.put(checkBox, true);
         }
-        else
-            if(event.getStateChange() == ItemEvent.SELECTED)
-            {
-                checkBoxValues.put(checkBox, true);
-            }
     }
-    
+
     /**
      * Show or hide dialog
+     * 
      * @param isVisible Flag of dialog visibility
      */
-    public void setVisible(Boolean isVisible)
-    {
-        if(jDialog != null)
+    public void setVisible(Boolean isVisible) {
+        if (jDialog != null)
             jDialog.setVisible(isVisible);
     }
-    
+
     /**
      * Get index of network level
+     * 
      * @param service Network level name
      * @return Index of network level
      */
-    private int getServiceIndex(String service)
-    {
-        for(int i = 0; i < serviceStrings.length; i++)
-        {
-            if(serviceStrings[i].equals(service))
-            {
+    private int getServiceIndex(String service) {
+        for (int i = 0; i < serviceStrings.length; i++) {
+            if (serviceStrings[i].equals(service)) {
                 return i;
             }
         }
         return 0;
     }
-    
+
     /**
      * Setting values of controls from stop area
+     * 
      * @param stopArea Stop area
      */
-    public void setValues(StopArea stopArea)
-    {
-        if(stopArea == null)
+    public void setValues(StopArea stopArea) {
+        if (stopArea == null)
             return;
-        if(stopArea.name != null)
+        if (stopArea.name != null)
             textFieldName.setText(stopArea.name);
-        else
-            if(previousName != null)
-                textFieldName.setText(previousName);
-        if(stopArea.nameEn != null)
+        else if (previousName != null)
+            textFieldName.setText(previousName);
+        if (stopArea.nameEn != null)
             textFieldNameEn.setText(stopArea.nameEn);
-        else
-            if(previousNameEn != null)
-                textFieldNameEn.setText(previousNameEn);
-        if(stopArea.network != null)			
+        else if (previousNameEn != null)
+            textFieldNameEn.setText(previousNameEn);
+        if (stopArea.network != null)
             textFieldNetwork.setText(stopArea.network);
-        else
-            if(previousNetwork != null)
-                textFieldNetwork.setText(previousNetwork);
-        if(stopArea.operator != null)
+        else if (previousNetwork != null)
+            textFieldNetwork.setText(previousNetwork);
+        if (stopArea.operator != null)
             textFieldOperator.setText(stopArea.operator);
-        else
-            if(previousOperator != null)
-                textFieldOperator.setText(previousOperator);
+        else if (previousOperator != null)
+            textFieldOperator.setText(previousOperator);
         comboBoxService.setSelectedIndex(getServiceIndex(stopArea.service));
         setCheckBoxValue(checkBoxIsBus, stopArea.isBus);
         setCheckBoxValue(checkBoxIsShareTaxi, stopArea.isShareTaxi);
         setCheckBoxValue(checkBoxIsTrolleybus, stopArea.isTrolleybus);
         setCheckBoxValue(checkBoxIsBusStation, stopArea.isBusStation);
-        setCheckBoxValue(checkBoxIsAssignTransportType, stopArea.isAssignTransportType);		
+        setCheckBoxValue(checkBoxIsAssignTransportType, stopArea.isAssignTransportType);
         setCheckBoxValue(checkBoxIsTram, stopArea.isTram);
         setCheckBoxValue(checkBoxIsTrainStation, stopArea.isTrainStation);
         setCheckBoxValue(checkBoxIsTrainStop, stopArea.isTrainStation);
         setCheckBoxValue(checkBoxIsTrainStop, stopArea.isTrainStop);
         setCheckBoxValue(checkBoxIsBench, stopArea.isBench);
         setCheckBoxValue(checkBoxIsShelder, stopArea.isShelter);
-        setCheckBoxValue(checkBoxIsCover, stopArea.isCovered);		
-        setCheckBoxValue(checkBoxIsArea, stopArea.isArea);		
+        setCheckBoxValue(checkBoxIsCover, stopArea.isCovered);
+        setCheckBoxValue(checkBoxIsArea, stopArea.isArea);
     }
-    
+
     /**
      * Returns text box value or null
+     * 
      * @param textField Text box
      * @return Text box value or null
      */
-    public String getTextFromControl(JTextField textField)
-    {
-        if(textField.getText().isEmpty())
+    public String getTextFromControl(JTextField textField) {
+        if (textField.getText().isEmpty())
             return null;
         return textField.getText();
     }
-    
+
     /**
      * Load values from controls and saving in stop area fields
+     * 
      * @return Stop area
      */
-    public StopArea saveValues()
-    {
+    public StopArea saveValues() {
         StopArea stopArea = this.stopArea;
-        try
-        {
-            if(stopArea == null)
+        try {
+            if (stopArea == null)
                 stopArea = new StopArea();
             stopArea.name = getTextFromControl(textFieldName);
             previousName = stopArea.name;
@@ -588,30 +575,23 @@ public class CustomizePublicTransportStopDialog implements ActionListener, ItemL
             stopArea.isShelter = getCheckBoxValue(checkBoxIsShelder);
             stopArea.isCovered = getCheckBoxValue(checkBoxIsCover);
             stopArea.isArea = getCheckBoxValue(checkBoxIsArea);
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             MessageBox.ok(ex.getMessage());
         }
         return stopArea;
     }
-    
+
     /**
      * Callback method for buttons event
      */
-    public void actionPerformed(ActionEvent event)
-    {
-        if(SAVE_COMMAND.equals(event.getActionCommand()))
-        {
+    public void actionPerformed(ActionEvent event) {
+        if (SAVE_COMMAND.equals(event.getActionCommand())) {
             setVisible(false);
-            if(customizeStopAction != null)
-            {
+            if (customizeStopAction != null) {
                 StopArea stopArea = saveValues();
                 customizeStopAction.performCustomizing(stopArea);
             }
-        }
-        else
-        {
+        } else {
             setVisible(false);
         }
     }
