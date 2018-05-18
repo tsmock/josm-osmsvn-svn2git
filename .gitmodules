@@ -78,3 +78,7 @@
   path = applications/editors/josm/plugins/turnlanes-tagging
   url = ../turnlanes-tagging.git
   branch = master
+[submodule "applications/editors/josm/plugins/wikipedia"]
+  path = applications/editors/josm/plugins/wikipedia
+  url = ../wikipedia.git
+  branch = master
