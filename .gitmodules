@@ -58,6 +58,10 @@
   path = editors/josm/plugins/osm-obj-info
   url = ../osm-obj-info.git
   branch = master
+[submodule "editors/josm/plugins/pt_assistant"]
+  path = editors/josm/plugins/pt_assistant
+  url = ../pt_assistant.git
+  branch = master
 [submodule "editors/josm/plugins/rex"]
   path = editors/josm/plugins/rex
   url = ../rex.git
