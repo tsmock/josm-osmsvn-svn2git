@@ -242,10 +242,6 @@
   path = applications/editors/josm/plugins/infomode
   url = ../infomode
   branch = master
-[submodule "applications/editors/josm/plugins/irsrectify"]
-  path = applications/editors/josm/plugins/irsrectify
-  url = ../irsrectify
-  branch = master
 [submodule "applications/editors/josm/plugins/jna"]
   path = applications/editors/josm/plugins/jna
   url = ../jna
