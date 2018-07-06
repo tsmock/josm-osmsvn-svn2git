@@ -3,7 +3,6 @@ package pdfimport;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -11,29 +10,18 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Properties;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,34 +29,205 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.filechooser.FileFilter;
 
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.data.coor.EastNorth;
-import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.data.osm.DataSet;
-import org.openstreetmap.josm.data.osm.Node;
-import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.UploadPolicy;
 import org.openstreetmap.josm.gui.MainApplication;
-import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.io.importexport.OsmExporter;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
-import org.openstreetmap.josm.gui.preferences.projection.ProjectionChoice;
-import org.openstreetmap.josm.gui.preferences.projection.ProjectionPreference;
 import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 import org.openstreetmap.josm.gui.progress.ProgressRenderer;
 import org.openstreetmap.josm.gui.progress.swing.SwingRenderingProgressMonitor;
-import org.openstreetmap.josm.gui.util.WindowGeometry;
-import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.Logging;
 
 import pdfimport.pdfbox.PdfBoxParser;
 
 public class LoadPdfDialog extends JFrame {
+
+    public static class MainButtons {
+        public JButton okButton;
+        public JButton cancelButton;
+        public JButton showButton;
+        public JButton saveButton;
+        public JPanel panel;
+
+        public MainButtons() {
+        }
+
+        void build(LoadPdfDialog loadPdfDialog) {
+            /*
+             * build the dialog Window from components
+             */
+            okButton = new JButton(tr("Import"));
+            okButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loadPdfDialog.importAction();
+                }
+            });
+            saveButton = new JButton(tr("Save"));
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loadPdfDialog.saveAction();
+                }
+            });
+
+            showButton = new JButton(tr("Show target"));
+            showButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loadPdfDialog.showAction();
+                }
+            });
+
+            cancelButton = new JButton(tr("Cancel"));
+            cancelButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loadPdfDialog.cancelAction();
+                }
+            });
+
+            panel = new JPanel(new FlowLayout());
+            panel.add(cancelButton);
+            panel.add(showButton);
+            panel.add(okButton);
+            panel.add(saveButton);
+            showButton.setVisible(Preferences.isLegacyActions());
+            saveButton.setVisible(Preferences.isLegacyActions());
+        }
+    }
+
+
+    private static class Config {
+        /*
+         * encapsulate options for Path optimizer
+         * provide GUI
+         */
+        public GuiFieldBool debugModeCheck;
+        public GuiFieldBool mergeCloseNodesCheck;
+        public GuiFieldDouble mergeCloseNodesTolerance;
+        public GuiFieldBool removeSmallObjectsCheck;
+        public GuiFieldDouble removeSmallObjectsSize;
+        public JTextField colorFilterColor;
+        public GuiFieldBool colorFilterCheck;
+        public GuiFieldBool removeParallelSegmentsCheck;
+        public GuiFieldDouble removeParallelSegmentsTolerance;
+        public GuiFieldBool removeLargeObjectsCheck;
+        public GuiFieldDouble removeLargeObjectsSize;
+        public GuiFieldBool limitPathCountCheck;
+        public GuiFieldInteger limitPathCount;
+        public GuiFieldBool splitOnColorChangeCheck;
+        public GuiFieldBool splitOnShapeClosedCheck;
+        public GuiFieldBool splitOnSingleSegmentCheck;
+        public GuiFieldBool splitOnOrthogonalCheck;
+        private JPanel panel;
+
+        public Config() {
+            build();
+        }
+
+        public JComponent getComponent() {
+            return panel;
+        }
+
+        private void build() {
+
+
+            debugModeCheck = new GuiFieldBool(tr("Debug info"), Preferences.isDebugTags());
+
+            mergeCloseNodesTolerance = new GuiFieldDouble(Preferences.getMergeNodesValue());
+            mergeCloseNodesCheck = new GuiFieldBool(tr("Merge close nodes"), Preferences.isMergeNodes());
+            mergeCloseNodesCheck.setCompanion(mergeCloseNodesTolerance);
+
+            removeSmallObjectsSize = new GuiFieldDouble(Preferences.getRemoveSmallValue());
+            removeSmallObjectsCheck = new GuiFieldBool(tr("Remove objects smaller than"),Preferences.isRemoveSmall());
+            removeSmallObjectsCheck.setCompanion(removeSmallObjectsSize);
+
+            removeLargeObjectsSize = new GuiFieldDouble((Preferences.getRemoveLargeValue()));
+            removeLargeObjectsCheck = new GuiFieldBool(tr("Remove objects larger than"),Preferences.isRemoveLarge());
+            removeLargeObjectsCheck.setCompanion(removeLargeObjectsSize);
+
+            colorFilterColor = new GuiFieldHex(Preferences.getLimitColorValue());
+            colorFilterCheck = new GuiFieldBool(tr("Only this color"), Preferences.isLimitColor());
+            colorFilterCheck.setCompanion(colorFilterColor);
+
+            removeParallelSegmentsTolerance = new GuiFieldDouble((Preferences.getRemoveParallelValue()));
+            removeParallelSegmentsCheck = new GuiFieldBool(tr("Remove parallel lines"),Preferences.isRemoveParallel());
+            removeParallelSegmentsCheck.setCompanion(removeParallelSegmentsTolerance);
+
+            limitPathCount = new GuiFieldInteger((Preferences.getLimitPathValue()));
+            limitPathCountCheck = new GuiFieldBool(tr("Take only first X paths"),Preferences.isLimitPath());
+            limitPathCountCheck.setCompanion(limitPathCount);
+
+            splitOnColorChangeCheck = new GuiFieldBool(tr("Color/width change"),Preferences.isLayerAttribChange());
+            splitOnShapeClosedCheck = new GuiFieldBool(tr("Shape closed"), Preferences.isLayerClosed());
+
+            splitOnSingleSegmentCheck = new GuiFieldBool(tr("Single segments", Preferences.isLayerSegment()));
+            splitOnOrthogonalCheck = new GuiFieldBool(tr("Orthogonal shapes", Preferences.isLayerOrtho()));
+
+            panel = new JPanel(new GridBagLayout());
+            panel.setBorder(BorderFactory.createTitledBorder(tr("Import settings")));
+
+            GridBagConstraints cBasic = new GridBagConstraints();
+            cBasic.gridx = GridBagConstraints.RELATIVE;
+            cBasic.gridy = GridBagConstraints.RELATIVE;
+            cBasic.insets = new Insets(0, 0, 0, 4);
+            cBasic.anchor = GridBagConstraints.LINE_START;
+            cBasic.fill = GridBagConstraints.HORIZONTAL;
+            cBasic.gridheight = 1;
+            cBasic.gridwidth = 1;
+            cBasic.ipadx = 0;
+            cBasic.ipady = 0;
+            cBasic.weightx = 0.0;
+            cBasic.weighty = 0.0;
+
+            GridBagConstraints cLeft = (GridBagConstraints) cBasic.clone();
+            cLeft.gridx = 0;
+
+            GridBagConstraints cMiddle = (GridBagConstraints) cBasic.clone();
+            cMiddle.gridx = 1;
+            cMiddle.anchor = GridBagConstraints.LINE_END;
+
+            GridBagConstraints cRight = (GridBagConstraints) cBasic.clone();
+            cRight.gridx = 2;
+
+            panel.add(mergeCloseNodesCheck, cLeft);
+            panel.add(new JLabel(tr("Tolerance:"),SwingConstants.RIGHT), cMiddle);
+            panel.add(mergeCloseNodesTolerance, cRight);
+
+            panel.add(removeSmallObjectsCheck, cLeft);
+            panel.add(new JLabel(tr("Tolerance:"),SwingConstants.RIGHT), cMiddle);
+            panel.add(removeSmallObjectsSize, cRight);
+
+            panel.add(removeLargeObjectsCheck, cLeft);
+            panel.add(new JLabel(tr("Tolerance:"),SwingConstants.RIGHT), cMiddle);
+            panel.add(removeLargeObjectsSize, cRight);
+
+            panel.add(removeParallelSegmentsCheck, cLeft);
+            panel.add(new JLabel(tr("Max distance:"),SwingConstants.RIGHT), cMiddle);
+            panel.add(removeParallelSegmentsTolerance, cRight);
+
+            panel.add(limitPathCountCheck, cLeft);
+            panel.add(limitPathCount, cRight);
+
+            panel.add(colorFilterCheck, cLeft);
+            panel.add(colorFilterColor, cRight);
+
+            panel.add(debugModeCheck, cLeft);
+
+            cLeft.gridy = 8; panel.add(new JLabel(tr("Introduce separate layers for:")), cLeft);
+            cMiddle.gridy = 8; panel.add(splitOnShapeClosedCheck, cMiddle);
+            cRight.gridy = 8; panel.add(splitOnSingleSegmentCheck, cRight);
+            cMiddle.gridy = 9; panel.add(splitOnColorChangeCheck, cMiddle);
+            cRight.gridy = 9;panel.add(splitOnOrthogonalCheck, cRight);
+        }
+    }
 
     static class LoadProgressRenderer implements ProgressRenderer {
         private final JProgressBar pBar;
@@ -118,539 +277,92 @@ public class LoadPdfDialog extends JFrame {
     }
 
     private File pdfFile;
-    private PathOptimizer data;
-    private OsmDataLayer layer;
+    private final FilePlacement18 placement = new FilePlacement18();
 
-    /**
-     * Combobox with all projections available
-     */
-    private JComboBox<ProjectionChoice> projectionCombo;
-    private JButton projectionPreferencesButton;
-    private JTextField minXField;
-    private JTextField minYField;
-    private JTextField minEastField;
-    private JTextField minNorthField;
-    private JButton getMinButton;
-    private JButton okButton;
-    private JButton cancelButton;
-    private JButton getMaxButton;
-    private JTextField maxNorthField;
-    private JTextField maxEastField;
-    private JTextField maxYField;
-    private JTextField maxXField;
-    private JButton loadFileButton;
-    private JButton showButton;
-    private JButton saveButton;
-    private JCheckBox debugModeCheck;
-    private JCheckBox mergeCloseNodesCheck;
-    private JTextField mergeCloseNodesTolerance;
-    private JCheckBox removeSmallObjectsCheck;
-    private JTextField removeSmallObjectsSize;
-    private JTextField colorFilterColor;
-    private JCheckBox colorFilterCheck;
-    private JCheckBox removeParallelSegmentsCheck;
-    private JTextField removeParallelSegmentsTolerance;
-    private JCheckBox removeLargeObjectsCheck;
-    private JTextField removeLargeObjectsSize;
-    private JProgressBar loadProgress;
-    protected OsmDataLayer newLayer;
+    private PathOptimizer pdfData;
+    private OsmDataLayer dataLayer;
+
+    private final JButton loadFileButton = new JButton(tr("Load preview ..."));
+
+    private final JProgressBar loadProgress = new JProgressBar();
+;
+    private OsmDataLayer newLayer;
 
     private LoadProgressRenderer progressRenderer;
-    private JCheckBox limitPathCountCheck;
-    private JTextField limitPathCount;
-    private JCheckBox splitOnColorChangeCheck;
-    private JCheckBox splitOnShapeClosedCheck;
-    private JCheckBox splitOnSingleSegmentCheck;
-    private JCheckBox splitOnOrthogonalCheck;
-    private Border  defaulfBorder = (new JTextField()).getBorder();
 
     public LoadPdfDialog() {
-        Logging.debug("PdfImport:LoadPdfDialog");
-        this.buildGUI();
-        FilePlacement pl = new FilePlacement();
-        this.setPlacement(pl);
-        this.addListeners();
-        this.removeLayer();
-        if (PdfImportPlugin.Preferences.guiMode == PdfImportPlugin.GuiMode.Simple) this.loadFilePressed();;
-    }
-
-    private class CheckDouble implements FocusListener {
-
-        @Override
-        public void focusGained(FocusEvent e) {
-        }
-
-        @Override
-        public void focusLost(FocusEvent event) {
-            check((JTextField) event.getSource());
-        }
-
-        public void check(JTextField t) {
-            try {
-                Double.valueOf(t.getText());
-                t.setBorder((LoadPdfDialog.this.defaulfBorder));
-            } catch (NumberFormatException e) {
-                t.setBorder(BorderFactory.createLineBorder(Color.red));
-            }
+        buildGUI();
+        removeLayer();
+        if (Preferences.getGuiMode() == Preferences.GuiMode.Simple) {
+            loadFileButton.setVisible(false);
+            configPanel.panel.setVisible(false);
+            actionPanel.saveButton.setVisible(false);
+            actionPanel.showButton.setVisible(false);
+            setSize(new Dimension(380, 350));
+            loadAction();
+        } else {
+            setSize(new Dimension(450, 600));
+//			setSize(450, 600);
         }
     }
 
-private CheckDouble doublelistener = new CheckDouble();
-
-    private void addListeners() {
-
-        this.maxEastField.addFocusListener(doublelistener);
-        this.maxEastField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                checkCoords(LoadPdfDialog.this.maxEastField, LoadPdfDialog.this.maxNorthField);
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-            }
-        });
-        this.maxNorthField.addFocusListener(doublelistener);
-
-        this.minEastField.addFocusListener(doublelistener);
-        this.minEastField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                checkCoords(LoadPdfDialog.this.minEastField, LoadPdfDialog.this.minNorthField);
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-            }
-        });
-
-        this.minNorthField.addFocusListener(doublelistener);
-
-        this.minXField.addFocusListener(doublelistener);
-        this.minXField.addFocusListener(doublelistener);
-        this.minXField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                checkCoords(LoadPdfDialog.this.minXField, LoadPdfDialog.this.minYField);
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-            }
-        });
-
-        this.minYField.addFocusListener(doublelistener);
-
-        this.maxXField.addFocusListener(doublelistener);
-        this.maxXField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                checkCoords(LoadPdfDialog.this.maxXField, LoadPdfDialog.this.maxYField);
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-            }
-        });
-
-        this.maxYField.addFocusListener(doublelistener);
-
-        this.projectionCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateProjectionPrefButton();
-            }
-
-        });
-        this.projectionPreferencesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showProjectionPreferences();
-            }
-        });
-
-        this.loadFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadFilePressed();
-            }
-        });
-
-        this.okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                okPressed();
-            }
-        });
-
-        this.saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                savePressed();
-            }
-        });
-
-        this.showButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showPressed();
-            }
-        });
-
-        this.cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelPressed();
-            }
-        });
-
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                cancelPressed();
-            }
-        });
-
-        this.getMinButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getMinPressed();
-            }
-        });
-
-        this.getMaxButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getMaxPressed();
-            }
-        });
-    }
-
-    JPanel projectionPanel = null;
-    JPanel okCancelPanel = null;
+    Component placementPanel = placement.getGui();
+    MainButtons actionPanel = new MainButtons();
+    Config configPanel = new Config();
 
     private void buildGUI() {
+        /*
+         * build the GUI from Components
+         */
         GridBagConstraints c = new GridBagConstraints();
-        c.gridheight = 1; c.gridwidth = 1; c.weightx = 1; c.weighty = 1; c.fill = GridBagConstraints.BOTH;
-        c.insets = new java.awt.Insets(0,0,0,0);
-//        c.ipadx = 1; c.ipady = 1;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = GridBagConstraints.RELATIVE;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new java.awt.Insets(0, 0, 0, 0);
 
-        this.projectionCombo = new JComboBox<>();
-        for (ProjectionChoice p: ProjectionPreference.getProjectionChoices()) {
-            this.projectionCombo.addItem(p);
-        }
+        actionPanel.build(this);
 
-        this.projectionPreferencesButton = new JButton(tr("Prefs"));
-        updateProjectionPrefButton();
+        loadFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadAction();
+            }
+        });
 
-        this.loadFileButton = new JButton(tr("Load preview ..."));
-        this.okButton = new JButton(tr("Import"));
-        this.saveButton = new JButton(tr("Save"));
-        this.showButton = new JButton(tr("Show target"));
-        this.cancelButton = new JButton(tr("Cancel"));
-        this.loadProgress = new JProgressBar();
-        this.progressRenderer = new LoadProgressRenderer(this.loadProgress);
-
-        this.minXField = new JTextField("");
-        this.minYField = new JTextField("");
-        this.minEastField = new JTextField("");
-        this.minNorthField = new JTextField("");
-        this.getMinButton = new JButton(tr("Take X and Y from selected node"));
-
-        this.maxXField = new JTextField("");
-        this.maxYField = new JTextField("");
-        this.maxEastField = new JTextField("");
-        this.maxNorthField = new JTextField("");
-        this.getMaxButton = new JButton(tr("Take X and Y from selected node"));
-
-        this.debugModeCheck = new JCheckBox(tr("Debug info"),PdfImportPlugin.Preferences.DebugTags);
-        this.mergeCloseNodesCheck = new JCheckBox(tr("Merge close nodes"),PdfImportPlugin.Preferences.MergeNodes);
-        this.mergeCloseNodesTolerance = new JTextField(Double.toString(PdfImportPlugin.Preferences.MergeNodesValue));
-
-        this.removeSmallObjectsCheck = new JCheckBox(tr("Remove objects smaller than"),PdfImportPlugin.Preferences.RemoveSmall);
-        this.removeSmallObjectsSize = new JTextField(Double.toString(PdfImportPlugin.Preferences.RemoveSmallValue));
-
-        this.removeLargeObjectsCheck = new JCheckBox(tr("Remove objects larger than"),PdfImportPlugin.Preferences.RemoveLarge);
-        this.removeLargeObjectsSize = new JTextField(Double.toString(PdfImportPlugin.Preferences.RemoveLargeValue));
-
-
-        this.colorFilterCheck = new JCheckBox(tr("Only this color"),PdfImportPlugin.Preferences.LimitColor);
-        this.colorFilterColor = new JTextField(PdfImportPlugin.Preferences.LimitColorValue);
-
-        this.removeParallelSegmentsCheck = new JCheckBox(tr("Remove parallel lines"),PdfImportPlugin.Preferences.RemoveParallel);
-        this.removeParallelSegmentsTolerance = new JTextField(Double.toString(PdfImportPlugin.Preferences.RemoveParallelValue));
-
-        this.limitPathCountCheck = new JCheckBox(tr("Take only first X paths"),PdfImportPlugin.Preferences.LimitPath);
-        this.limitPathCount = new JTextField(Integer.toString(PdfImportPlugin.Preferences.LimitPathValue));
-
-        this.splitOnColorChangeCheck = new JCheckBox(tr("Color/width change"),PdfImportPlugin.Preferences.LayerAttribChange);
-        this.splitOnShapeClosedCheck = new JCheckBox(tr("Shape closed"),PdfImportPlugin.Preferences.LayerClosed);
-        this.splitOnSingleSegmentCheck = new JCheckBox(tr("Single segments",PdfImportPlugin.Preferences.LayerSegment));
-        this.splitOnOrthogonalCheck = new JCheckBox(tr("Orthogonal shapes",PdfImportPlugin.Preferences.LayerOrtho));
-
-        JPanel configPanel = new JPanel(new GridBagLayout());
-        configPanel.setBorder(BorderFactory.createTitledBorder(tr("Import settings")));
-        c.gridx = 0; c.gridy = 0; c.gridwidth = 1;
-        configPanel.add(this.mergeCloseNodesCheck, c);
-        c.gridx = 1; c.gridy = 0; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHEAST;
-        configPanel.add(new JLabel("Tolerance :"), c);
-        c.gridx = 2; c.gridy = 0; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHWEST;
-        configPanel.add(this.mergeCloseNodesTolerance, c);
-
-        c.gridx = 0; c.gridy = 1; c.gridwidth = 1;
-        configPanel.add(this.removeSmallObjectsCheck, c);
-        c.gridx = 1; c.gridy = 1; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHEAST;
-        configPanel.add(new JLabel("Tolerance :"), c);
-        c.gridx = 2; c.gridy = 1; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHWEST;
-        configPanel.add(this.removeSmallObjectsSize, c);
-
-        c.gridx = 0; c.gridy = 2; c.gridwidth = 1;
-        configPanel.add(this.removeLargeObjectsCheck, c);
-        c.gridx = 1; c.gridy = 2; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHEAST;
-        configPanel.add(new JLabel("Tolerance :"), c);
-        c.gridx = 2; c.gridy = 2; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHWEST;
-        configPanel.add(this.removeLargeObjectsSize, c);
-
-        c.gridx = 0; c.gridy = 3; c.gridwidth = 1;
-        configPanel.add(this.removeParallelSegmentsCheck, c);
-        c.gridx = 1; c.gridy = 3; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHEAST;
-        configPanel.add(new JLabel("Max distance :"), c);
-        c.gridx = 2; c.gridy = 3; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTHWEST;
-        configPanel.add(this.removeParallelSegmentsTolerance, c);
-
-
-        c.gridx = 0; c.gridy = 4; c.gridwidth = 2;
-        configPanel.add(this.limitPathCountCheck, c);
-        c.gridx = 2; c.gridy = 4; c.gridwidth = 1;
-        configPanel.add(this.limitPathCount, c);
-
-        c.gridx = 0; c.gridy = 5; c.gridwidth = 1;
-        configPanel.add(this.colorFilterCheck, c);
-        c.gridx = 2; c.gridy = 5; c.gridwidth = 1;
-        configPanel.add(this.colorFilterColor, c);
-
-        c.gridx = 0; c.gridy = 6; c.gridwidth = 2;
-        configPanel.add(this.debugModeCheck, c);
-
-
-        c.gridx = 0; c.gridy = 7; c.gridwidth = 1;
-        configPanel.add(new JLabel(tr("Introduce separate layers for:")), c);
-        c.gridx = 1; c.gridy = 7; c.gridwidth = 1;
-        configPanel.add(this.splitOnShapeClosedCheck, c);
-        c.gridx = 2; c.gridy = 7; c.gridwidth = 1;
-        configPanel.add(this.splitOnSingleSegmentCheck, c);
-        c.gridx = 1; c.gridy = 8; c.gridwidth = 1;
-        configPanel.add(this.splitOnColorChangeCheck, c);
-        c.gridx = 2; c.gridy = 8; c.gridwidth = 1;
-        configPanel.add(this.splitOnOrthogonalCheck, c);
-        if (PdfImportPlugin.Preferences.guiMode == PdfImportPlugin.GuiMode.Simple) configPanel.setVisible(false);
-
-        projectionPanel = new JPanel(new GridBagLayout());
-        projectionPanel.setBorder(BorderFactory.createTitledBorder(tr("Bind to coordinates")));
-//        projectionPanel.setVisible(false);
-
-        JPanel projectionSubPanel = new JPanel();
-        projectionSubPanel.setLayout(new BoxLayout(projectionSubPanel, BoxLayout.X_AXIS));
-
-        projectionSubPanel.add(new JLabel(tr("Projection:")));
-        projectionSubPanel.add(this.projectionCombo);
-        projectionSubPanel.add(this.projectionPreferencesButton);
-        this.projectionPreferencesButton.setEnabled(false); // ToDo: disabled do avoid bugs
-
-        c.gridx = 0; c.gridy = 0; c.gridwidth = 3;
-        projectionPanel.add(projectionSubPanel, c);
-
-        c.gridx = 0; c.gridy = 1; c.gridwidth = 2;
-        projectionPanel.add(new JLabel(tr("Bottom left (min) corner:")), c);
-        c.gridx = 0; c.gridy = 2; c.gridwidth = 1;
-        projectionPanel.add(new JLabel(tr("PDF X and Y")), c);
-        c.gridx = 1; c.gridy = 2; c.gridwidth = 1;
-        projectionPanel.add(new JLabel(tr("East and North")), c);
-        c.gridx = 0; c.gridy = 3; c.gridwidth = 1;
-        projectionPanel.add(this.minXField, c);
-        c.gridx = 0; c.gridy = 4; c.gridwidth = 1;
-        projectionPanel.add(this.minYField, c);
-        c.gridx = 1; c.gridy = 3; c.gridwidth = 1;
-        projectionPanel.add(this.minEastField, c);
-        c.gridx = 1; c.gridy = 4; c.gridwidth = 1;
-        projectionPanel.add(this.minNorthField, c);
-        c.gridx = 0; c.gridy = 5; c.gridwidth = 1;
-        projectionPanel.add(this.getMinButton, c);
-
-
-        c.gridx = 0; c.gridy = 6; c.gridwidth = 2;
-        projectionPanel.add(new JLabel(tr("Top right (max) corner:")), c);
-        c.gridx = 0; c.gridy = 7; c.gridwidth = 1;
-        projectionPanel.add(new JLabel(tr("PDF X and Y")), c);
-        c.gridx = 1; c.gridy = 7; c.gridwidth = 1;
-        projectionPanel.add(new JLabel(tr("East and North")), c);
-        c.gridx = 0; c.gridy = 8; c.gridwidth = 1;
-        projectionPanel.add(this.maxXField, c);
-        c.gridx = 0; c.gridy = 9; c.gridwidth = 1;
-        projectionPanel.add(this.maxYField, c);
-        c.gridx = 1; c.gridy = 8; c.gridwidth = 1;
-        projectionPanel.add(this.maxEastField, c);
-        c.gridx = 1; c.gridy = 9; c.gridwidth = 1;
-        projectionPanel.add(this.maxNorthField, c);
-        c.gridx = 0; c.gridy = 10; c.gridwidth = 1;
-        projectionPanel.add(this.getMaxButton, c);
-
-        okCancelPanel = new JPanel(new FlowLayout());
-//        okCancelPanel.setVisible(false);
-        okCancelPanel.add(this.cancelButton);
-        okCancelPanel.add(this.showButton);
-        okCancelPanel.add(this.okButton);
-        okCancelPanel.add(this.saveButton);
+        progressRenderer = new LoadProgressRenderer(loadProgress);
 
         JPanel panel = new JPanel(new GridBagLayout());
-        c.gridx = 0; c.gridy = 0; c.gridwidth = 1;
-        panel.add(configPanel, c);
-        c.gridx = 0; c.gridy = 1; c.gridwidth = 1; c.fill = GridBagConstraints.HORIZONTAL;
+
+        panel.add(configPanel.getComponent(), c);
+        c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(loadFileButton, c);
-        c.gridx = 0; c.gridy = 2; c.gridwidth = 1;
-        panel.add(projectionPanel, c);
-        c.gridx = 0; c.gridy = 3; c.gridwidth = 1;
-        panel.add(okCancelPanel, c);
-        c.gridx = 0; c.gridy = 4; c.gridwidth = 1; c.anchor = GridBagConstraints.NORTH; c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
+        panel.add(placementPanel, c);
+        panel.add(actionPanel.panel, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(this.loadProgress, c);
 
-        this.setSize(450, 550);
-        this.setContentPane(panel);
-        if (PdfImportPlugin.Preferences.guiMode == PdfImportPlugin.GuiMode.Simple) {
-            loadFileButton.setVisible(false);
-            configPanel.setVisible(false);
-            saveButton.setVisible(false);
-            showButton.setVisible(false);
-        }
-    }
-
-    private class ProjectionSubPrefsDialog extends JDialog {
-        private final ProjectionChoice projPref;
-        private OKAction actOK;
-        private CancelAction actCancel;
-        private JPanel projPrefPanel;
-
-        ProjectionSubPrefsDialog(Component parent, ProjectionChoice pr) {
-            super(JOptionPane.getFrameForComponent(parent), ModalityType.DOCUMENT_MODAL);
-
-            projPref = pr;
-
-            setTitle(tr("Projection Preferences"));
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-            build();
-        }
-
-        protected void makeButtonRespondToEnter(SideButton btn) {
-            btn.setFocusable(true);
-            btn.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
-            btn.getActionMap().put("enter", btn.getAction());
-        }
-
-        protected JPanel buildInputForm() {
-            return projPref.getPreferencePanel(null);
-        }
-
-        protected JPanel buildButtonRow() {
-            JPanel pnl = new JPanel(new FlowLayout());
-
-            actOK = new OKAction();
-            actCancel = new CancelAction();
-
-            SideButton btn;
-            pnl.add(btn = new SideButton(actOK));
-            makeButtonRespondToEnter(btn);
-            pnl.add(btn = new SideButton(actCancel));
-            makeButtonRespondToEnter(btn);
-            return pnl;
-        }
-
-        protected void build() {
-            projPrefPanel = buildInputForm();
-            getContentPane().setLayout(new BorderLayout());
-            getContentPane().add(projPrefPanel, BorderLayout.CENTER);
-            getContentPane().add(buildButtonRow(), BorderLayout.SOUTH);
-            pack();
-
-            // make dialog respond to ESCAPE
-            getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
-            getRootPane().getActionMap().put("escape", actCancel);
-        }
-
-        class OKAction extends AbstractAction {
-            OKAction() {
-                putValue(NAME, tr("OK"));
-                putValue(SHORT_DESCRIPTION, tr("Close the dialog and apply projection preferences"));
-                putValue(SMALL_ICON, ImageProvider.get("ok"));
-            }
-
+        setContentPane(panel);
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                projPref.setPreferences(projPref.getPreferences(projPrefPanel));
-                setVisible(false);
+            public void windowClosing(WindowEvent e) {
+                cancelAction();
             }
-        }
+        });
+        placement.setDependsOnValid(actionPanel.okButton);
 
-        class CancelAction extends AbstractAction {
-            CancelAction() {
-                putValue(NAME, tr("Cancel"));
-                putValue(SHORT_DESCRIPTION, tr("Close the dialog, discard projection preference changes"));
-                putValue(SMALL_ICON, ImageProvider.get("cancel"));
-            }
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        }
-
-        @Override
-        public void setVisible(boolean visible) {
-            if (visible) {
-                new WindowGeometry(
-                    getClass().getName() + ".geometry",
-                    WindowGeometry.centerOnScreen(new Dimension(400, 300))).applySafe(this);
-            } else if (isShowing()) { // Avoid IllegalComponentStateException like in #8775
-                new WindowGeometry(this).remember(getClass().getName() + ".geometry");
-            }
-            super.setVisible(visible);
-        }
+        /*
+         * TODO: Make okButton to default Button of Dialog, make cancelButton to react on ESC-Key
+         */
+//		SwingUtilities.getRootPane(panel).setDefaultButton(actionPanel.okButton);
     }
 
-    private void updateProjectionPrefButton() {
-//        ProjectionChoice proj = (ProjectionChoice) projectionCombo.getSelectedItem();
-
-        //TODO
-        // Enable/disable pref button
-//        if(!(proj instanceof ProjectionSubPrefs)) {
-//            projectionPreferencesButton.setEnabled(false);
-//        } else {
-            projectionPreferencesButton.setEnabled(true);
-//        }
-    }
-
-    private void checkCoords(JTextField x, JTextField y) {
-        int splitpos = 0;
-        String eastVal = x.getText().trim();
-        if ((splitpos = eastVal.indexOf(';')) >= 0) {
-            // Split a coordinate into its parts for easy of data entry
-            y.setText(eastVal.substring(splitpos + 1).trim());
-            x.setText(eastVal.substring(0, splitpos).trim());
-        }
-        doublelistener.check(x);
-        doublelistener.check(y);
-    }
-
-    private void showProjectionPreferences() {
-        ProjectionChoice proj = (ProjectionChoice) projectionCombo.getSelectedItem();
-
-        ProjectionSubPrefsDialog dlg = new ProjectionSubPrefsDialog(this, proj);
-        dlg.setVisible(true);
-
-    }
-
-    private void loadFilePressed() {
+     private void loadAction() {
+         /*
+          * perform load PDF file to preview
+          */
         final File newFileName = this.chooseFile();
 
         if (newFileName == null) {
@@ -660,103 +372,92 @@ private CheckDouble doublelistener = new CheckDouble();
         this.removeLayer();
 
         this.loadFileButton.setEnabled(false);
-        this.loadFileButton.setText(tr("Loading..."));
 
-        this.runAsBackgroundTask(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        //async part
-                        LoadPdfDialog.this.loadProgress.setVisible(true);
-                        SwingRenderingProgressMonitor monitor = new SwingRenderingProgressMonitor(progressRenderer);
-                        monitor.beginTask("Loading file", 1000);
-                        data = loadPDF(newFileName, monitor.createSubTaskMonitor(500, false));
-                        OsmBuilder.Mode mode = LoadPdfDialog.this.debugModeCheck.isSelected() ? OsmBuilder.Mode.Debug : OsmBuilder.Mode.Draft;
-//                        OsmBuilder.Mode mode = Logging.isDebugEnabled() ? OsmBuilder.Mode.Debug : OsmBuilder.Mode.Draft;
+        this.runAsBackgroundTask(new Runnable() {
+            @Override
+            public void run() {
+                // async part
+                LoadPdfDialog.this.loadProgress.setVisible(true);
+                SwingRenderingProgressMonitor monitor = new SwingRenderingProgressMonitor(progressRenderer);
+                monitor.beginTask("Loading file", 1000);
+                pdfData = loadPDF(newFileName, monitor.createSubTaskMonitor(500, false));
+                OsmBuilder.Mode mode = LoadPdfDialog.this.configPanel.debugModeCheck.getValue()
+                        ? OsmBuilder.Mode.Debug
+                        : OsmBuilder.Mode.Draft;
 
-                        if (data != null) {
-                            LoadPdfDialog.this.newLayer = LoadPdfDialog.this.makeLayer(
-                                    tr("PDF preview: ") + newFileName.getName(), new FilePlacement(), mode, monitor.createSubTaskMonitor(500, false));
-                        }
+                if (pdfData != null) {
+                    LoadPdfDialog.this.newLayer = LoadPdfDialog.this.makeLayer(
+                            tr("PDF preview: ") + newFileName.getName(), new FilePlacement(), mode,
+                            monitor.createSubTaskMonitor(500, false));
+                }
 
-                        monitor.finishTask();
-                        progressRenderer.finish();
+                monitor.finishTask();
+                progressRenderer.finish();
+            }
+        }, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                // sync part
+                LoadPdfDialog.this.pdfFile = newFileName;
+                if (pdfData != null) {
+                    LoadPdfDialog.this.placeLayer(newLayer, new FilePlacement());
+                    try {
+                        LoadPdfDialog.this.placement.load(newFileName);
+                    } catch (IOException e) {
+                        // Dont care
+                    } finally {
+                        LoadPdfDialog.this.placement.verify();
                     }
-                },
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        //sync part
-                        if (data != null) {
-                            LoadPdfDialog.this.placeLayer(newLayer, new FilePlacement());
-                            pdfFile = newFileName;
-                            newLayer = null;
-                            LoadPdfDialog.this.loadFileButton.setText(tr("Preview") + ": " + LoadPdfDialog.this.pdfFile.getName());
-                            LoadPdfDialog.this.loadFileButton.setEnabled(true);
-                            FilePlacement placement = LoadPdfDialog.this.loadPlacement(pdfFile);
-                            LoadPdfDialog.this.setPlacement(placement);
-                        }
-                    }
-                });
+                    LoadPdfDialog.this.newLayer = null;
+                    LoadPdfDialog.this.loadFileButton.setEnabled(true);
+                    LoadPdfDialog.this.placementPanel.setEnabled(true);
+                    LoadPdfDialog.this.actionPanel.panel.setEnabled(true);
+                    LoadPdfDialog.this.actionPanel.showButton.setEnabled(true);
+                    LoadPdfDialog.this.actionPanel.saveButton.setEnabled(true);
+                    LoadPdfDialog.this.actionPanel.okButton.setEnabled(true);
+                    LoadPdfDialog.this.loadProgress.setVisible(false);
+                }
+            }
+        });
     }
 
-    private FilePlacement preparePlacement() {
-        FilePlacement placement = this.parsePlacement();
-        if (placement == null) {
-            return null;
-        }
+    private void importAction() {
 
-        String transformError = placement.prepareTransform();
-        if (transformError != null) {
-            JOptionPane.showMessageDialog(Main.parent, transformError);
-            return null;
-        }
+        if (!placement.isValid()) return;
 
-        this.savePlacement(placement);
-
-        return placement;
-    }
-
-    private void okPressed() {
-
-        final FilePlacement placement = preparePlacement();
-        if (placement == null) {
-            return;
-        }
         Logging.debug("PdfImport: Import");
         this.removeLayer();
 
-        this.runAsBackgroundTask(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        //async part
-                        LoadPdfDialog.this.loadProgress.setVisible(true);
-                        SwingRenderingProgressMonitor monitor = new SwingRenderingProgressMonitor(progressRenderer);
-                        LoadPdfDialog.this.newLayer = LoadPdfDialog.this.makeLayer(
-                                tr("PDF: ") + pdfFile.getName(), placement, OsmBuilder.Mode.Final, monitor);
-                        progressRenderer.finish();
-                    }
-                },
-                new ActionListener() {
+        this.runAsBackgroundTask(new Runnable() {
+            @Override
+            public void run() {
+                // async part
+                LoadPdfDialog.this.loadProgress.setVisible(true);
+                SwingRenderingProgressMonitor monitor = new SwingRenderingProgressMonitor(progressRenderer);
+                LoadPdfDialog.this.newLayer = LoadPdfDialog.this.makeLayer(tr("PDF: ") + pdfFile.getName(), placement,
+                        OsmBuilder.Mode.Final, monitor);
+                progressRenderer.finish();
+            }
+        }, new ActionListener() {
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        //sync part
-                        //rebuild layer with latest projection
-                        LoadPdfDialog.this.placeLayer(newLayer, placement);
-                        LoadPdfDialog.this.setVisible(false);
-                    }
-                });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // sync part
+                // rebuild layer with latest projection
+                LoadPdfDialog.this.placeLayer(newLayer, placement);
+                LoadPdfDialog.this.setVisible(false);
+            }
+        });
     }
 
-    private void savePressed() {
+    private void saveAction() {
+        /*
+         * perform save preview layer to file
+         * TODO: is this action valueable? Can be easily performed from main menu
+         */
 
-        final FilePlacement placement = preparePlacement();
-        if (placement == null) {
-            return;
-        }
+        if (!placement.isValid()) return;
 
         final java.io.File file = this.chooseSaveFile();
 
@@ -766,82 +467,52 @@ private CheckDouble doublelistener = new CheckDouble();
 
         this.removeLayer();
 
-        this.runAsBackgroundTask(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        //async part
-                        SwingRenderingProgressMonitor monitor = new SwingRenderingProgressMonitor(progressRenderer);
-                        LoadPdfDialog.this.saveLayer(file, placement, monitor);
-                        progressRenderer.finish();
-                    }
-                },
-                new ActionListener() {
+        this.runAsBackgroundTask(new Runnable() {
+            @Override
+            public void run() {
+                // async part
+                SwingRenderingProgressMonitor monitor = new SwingRenderingProgressMonitor(progressRenderer);
+                LoadPdfDialog.this.saveLayer(file, placement, monitor);
+                progressRenderer.finish();
+            }
+        }, new ActionListener() {
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        //sync part
-                        LoadPdfDialog.this.setVisible(false);
-                    }
-                });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // sync part
+                LoadPdfDialog.this.setVisible(false);
+            }
+        });
     }
 
-    private void showPressed() {
+    private void showAction() {
+        /*
+         * perform show action
+         * TODO: is this action valuable? User can do it easy from OSM Main Menu
+         */
+        if (!placement.isValid()) return;
 
-        FilePlacement placement = preparePlacement();
-        if (placement == null) {
-            return;
-        }
-
-        //zoom to new location
-        MainApplication.getMap().mapView.zoomTo(placement.getWorldBounds(this.data));
+        // zoom to new location
+        MainApplication.getMap().mapView.zoomTo(placement.getWorldBounds(pdfData));
         MainApplication.getMap().repaint();
     }
 
-    private void cancelPressed() {
-        this.removeLayer();
-        this.setVisible(false);
-    }
-
-    private void getMinPressed() {
-        EastNorth en = this.getSelectedCoor();
-
-        if (en != null) {
-            this.minXField.setText(Double.toString(en.east()));
-            this.minYField.setText(Double.toString(en.north()));
-        }
-    }
-
-    private void getMaxPressed() {
-        EastNorth en = this.getSelectedCoor();
-
-        if (en != null) {
-            this.maxXField.setText(Double.toString(en.east()));
-            this.maxYField.setText(Double.toString(en.north()));
-        }
+    private void cancelAction() {
+        /*
+         * perform cancel action
+         */
+        removeLayer();
+        setVisible(false);
     }
 
     // Implementation methods
 
-    private EastNorth getSelectedCoor() {
-        Collection<OsmPrimitive> selected = MainApplication.getLayerManager().getEditDataSet().getSelected();
-
-        if (selected.size() != 1 || !(selected.iterator().next() instanceof Node)) {
-            JOptionPane.showMessageDialog(Main.parent, tr("Please select exactly one node."));
-            return null;
-        }
-
-        LatLon ll = ((Node) selected.iterator().next()).getCoor();
-        FilePlacement pl = new FilePlacement();
-        return pl.reverseTransform(ll);
-    }
-
     private static JFileChooser loadChooser = null;
 
     private java.io.File chooseFile() {
-        //get PDF file to load
+        // get PDF file to load
         if (loadChooser == null) {
-            loadChooser = new JFileChooser(PdfImportPlugin.Preferences.LoadDir);
+            loadChooser = new JFileChooser(Preferences.getLoadDir());
             loadChooser.setAcceptAllFileFilterUsed(false);
             loadChooser.setMultiSelectionEnabled(false);
             loadChooser.setFileFilter(new FileFilter() {
@@ -858,16 +529,17 @@ private CheckDouble doublelistener = new CheckDouble();
         } else {
             loadChooser.rescanCurrentDirectory();
         }
-        int result = loadChooser.showDialog(this, tr("Preview"));
+        int result = loadChooser.showDialog(this, tr("Import PDF"));
         if (result != JFileChooser.APPROVE_OPTION) {
             return null;
         } else {
+            Preferences.setLoadDir(loadChooser.getSelectedFile().getParentFile().getAbsolutePath());
             return loadChooser.getSelectedFile();
         }
     }
 
     private java.io.File chooseSaveFile() {
-        //get file name
+        // get file name
         JFileChooser fc = new JFileChooser();
         fc.setAcceptAllFileFilterUsed(true);
         fc.setMultiSelectionEnabled(false);
@@ -892,6 +564,9 @@ private CheckDouble doublelistener = new CheckDouble();
     }
 
     private void runAsBackgroundTask(final Runnable task, final ActionListener after) {
+        /*
+         * run @task in background (asychronosly , run @after when @task has finished
+         */
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Thread t = new Thread(new Runnable() {
             @Override
@@ -911,6 +586,9 @@ private CheckDouble doublelistener = new CheckDouble();
     }
 
     private PathOptimizer loadPDF(File fileName, ProgressMonitor monitor) {
+        /*
+         * postprocess load PDF-file according to options
+         */
 
         monitor.beginTask("", 100);
         monitor.setTicks(0);
@@ -920,82 +598,47 @@ private CheckDouble doublelistener = new CheckDouble();
         Color color = null;
         int maxPaths = Integer.MAX_VALUE;
 
-        if (this.mergeCloseNodesCheck.isSelected()) {
-            try {
-                nodesTolerance = Double.parseDouble(this.mergeCloseNodesTolerance.getText());
-            } catch (Exception e) {
-                JOptionPane
-                .showMessageDialog(
-                        Main.parent,
-                        tr("Tolerance is not a number"));
-                return null;
-            }
+        if (configPanel.mergeCloseNodesCheck.getValue() && configPanel.mergeCloseNodesTolerance.isDataValid()) {
+                nodesTolerance = configPanel.mergeCloseNodesTolerance.getValue();
         }
 
-        if (this.colorFilterCheck.isSelected()) {
+        if (configPanel.colorFilterCheck.getValue()) {
             try {
-                String colString = this.colorFilterColor.getText().replace("#", "");
+                String colString = this.configPanel.colorFilterColor.getText().replace("#", "");
                 color = new Color(Integer.parseInt(colString, 16));
             } catch (Exception e) {
-                JOptionPane
-                .showMessageDialog(
-                        Main.parent,
-                        tr("Could not parse color"));
+                JOptionPane.showMessageDialog(Main.parent, tr("Could not parse color"));
                 return null;
             }
         }
 
-        if (this.limitPathCountCheck.isSelected()) {
-            try {
-                maxPaths = Integer.parseInt(this.limitPathCount.getText());
-            } catch (Exception e) {
-                JOptionPane
-                .showMessageDialog(
-                        Main.parent,
-                        tr("Could not parse max path count"));
-                return null;
-            }
+        if (configPanel.limitPathCountCheck.getValue() && configPanel.limitPathCount.isDataValid()) {
+                maxPaths = configPanel.limitPathCount.getValue();
         }
-
 
         monitor.setTicks(10);
         monitor.setCustomText(tr("Parsing file"));
 
-        PathOptimizer data = new PathOptimizer(nodesTolerance, color, this.splitOnColorChangeCheck.isSelected());
+        PathOptimizer data = new PathOptimizer(nodesTolerance, color, configPanel.splitOnColorChangeCheck.getValue());
 
         try {
             PdfBoxParser parser = new PdfBoxParser(data);
             parser.parse(fileName, maxPaths, monitor.createSubTaskMonitor(80, false));
 
         } catch (FileNotFoundException e1) {
-            JOptionPane
-            .showMessageDialog(
-                    Main.parent,
-                    tr("File not found."));
+            JOptionPane.showMessageDialog(Main.parent, tr("File not found."));
             return null;
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane
-            .showMessageDialog(
-                    Main.parent,
-                    tr("Error while parsing: {0}", e.getMessage()));
+            JOptionPane.showMessageDialog(Main.parent, tr("Error while parsing: {0}", e.getMessage()));
             return null;
         }
 
         monitor.setTicks(80);
 
-        if (this.removeParallelSegmentsCheck.isSelected()) {
-            try {
-                double tolerance = Double.parseDouble(this.removeParallelSegmentsTolerance.getText());
+        if (configPanel.removeParallelSegmentsCheck.getValue() && configPanel.removeParallelSegmentsTolerance.isDataValid()) {
+                double tolerance = configPanel.removeParallelSegmentsTolerance.getValue();
                 monitor.setCustomText(tr("Removing parallel segments"));
-                data.removeParallelLines(tolerance);
-            } catch (Exception e) {
-                JOptionPane
-                .showMessageDialog(
-                        Main.parent,
-                        tr("Max distance is not a number"));
-                return null;
-            }
         }
 
         if (nodesTolerance > 0.0) {
@@ -1008,157 +651,45 @@ private CheckDouble doublelistener = new CheckDouble();
         monitor.setCustomText(tr("Joining adjacent segments"));
         data.mergeSegments();
 
-        if (this.removeSmallObjectsCheck.isSelected()) {
-            try {
-                double tolerance = Double.parseDouble(this.removeSmallObjectsSize.getText());
+        if (configPanel.removeSmallObjectsCheck.getValue() && configPanel.removeSmallObjectsSize.isDataValid()) {
+                double tolerance = configPanel.removeSmallObjectsSize.getValue();
                 monitor.setTicks(90);
                 monitor.setCustomText(tr("Removing small objects"));
 
                 data.removeSmallObjects(tolerance);
-            } catch (Exception e) {
-                JOptionPane
-                .showMessageDialog(
-                        Main.parent,
-                        tr("Tolerance is not a number"));
-                return null;
-            }
+
         }
 
-        if (this.removeLargeObjectsCheck.isSelected()) {
-            try {
-                double tolerance = Double.parseDouble(this.removeLargeObjectsSize.getText());
+        if (configPanel.removeLargeObjectsCheck.getValue() && configPanel.removeLargeObjectsSize.isDataValid()) {
+                double tolerance = configPanel.removeLargeObjectsSize.getValue();
                 monitor.setTicks(90);
                 monitor.setCustomText(tr("Removing large objects"));
                 data.removeLargeObjects(tolerance);
-            } catch (Exception e) {
-                JOptionPane
-                .showMessageDialog(
-                        Main.parent,
-                        tr("Tolerance is not a number"));
-                return null;
-            }
         }
 
         monitor.setTicks(95);
         monitor.setCustomText(tr("Finalizing layers"));
-        data.splitLayersByPathKind(
-                this.splitOnShapeClosedCheck.isSelected(),
-                this.splitOnSingleSegmentCheck.isSelected(),
-                this.splitOnOrthogonalCheck.isSelected());
+        data.splitLayersByPathKind(configPanel.splitOnShapeClosedCheck.getValue(),
+                configPanel.splitOnSingleSegmentCheck.getValue(),
+                configPanel.splitOnOrthogonalCheck.getValue());
         data.finish();
 
         monitor.finishTask();
         return data;
     }
 
-    private FilePlacement parsePlacement() {
-        ProjectionChoice selectedProjection = (ProjectionChoice) this.projectionCombo.getSelectedItem();
-
-        if (selectedProjection == null) {
-            JOptionPane.showMessageDialog(Main.parent, tr("Please set a projection."));
-            return null;
-        }
-
-        FilePlacement placement = new FilePlacement();
-
-        placement.projection = selectedProjection.getProjection();
-
-        try {
-            placement.setPdfBounds(
-                    Double.parseDouble(this.minXField.getText()),
-                    Double.parseDouble(this.minYField.getText()),
-                    Double.parseDouble(this.maxXField.getText()),
-                    Double.parseDouble(this.maxYField.getText()));
-            placement.setEastNorthBounds(
-                    Double.parseDouble(this.minEastField.getText()),
-                    Double.parseDouble(this.minNorthField.getText()),
-                    Double.parseDouble(this.maxEastField.getText()),
-                    Double.parseDouble(this.maxNorthField.getText()));
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(Main.parent, tr("Could not parse numbers. Please check."));
-            return null;
-        }
-
-        return placement;
-    }
-
-    private void setPlacement(FilePlacement placement) {
-
-        if (placement == null) {
-            //use default values.
-            placement = new FilePlacement();
-        }
-
-        if (placement.projection != null) {
-            String projectionCode = placement.projection.toCode();
-            BIG_LOOP:
-            for (ProjectionChoice projectionChoice: ProjectionPreference.getProjectionChoices()) {
-                for (String code: projectionChoice.allCodes()) {
-                    if (code.equals(projectionCode)) {
-                        projectionChoice.getPreferencesFromCode(projectionCode);
-                        this.projectionCombo.setSelectedItem(projectionChoice);
-                        break BIG_LOOP;
-                    }
-                }
-            }
-        }
-
-        this.minXField.setText(Double.toString(placement.minX));
-        this.maxXField.setText(Double.toString(placement.maxX));
-        this.minYField.setText(Double.toString(placement.minY));
-        this.maxYField.setText(Double.toString(placement.maxY));
-        this.minEastField.setText(Double.toString(placement.minEast));
-        this.maxEastField.setText(Double.toString(placement.maxEast));
-        this.minNorthField.setText(Double.toString(placement.minNorth));
-        this.maxNorthField.setText(Double.toString(placement.maxNorth));
-        projectionPanel.setEnabled(true);
-        okCancelPanel.setEnabled(true);;
-        this.showButton.setEnabled(true);
-        this.saveButton.setEnabled(true);
-        this.okButton.setEnabled(true);
-        this.getMaxButton.setEnabled(true);
-        this.getMinButton.setEnabled(true);
-    }
-
-    private FilePlacement loadPlacement(File BaseFile) {
-        FilePlacement pl = null;
-        //load saved transformation
-        File propertiesFile = new File(BaseFile.getAbsoluteFile() + ".placement");
-        try {
-
-            if (propertiesFile.exists()) {
-                pl = new FilePlacement();
-                Properties p = new Properties();
-                p.load(new FileInputStream(propertiesFile));
-                pl.fromProperties(p);
-            }
-        } catch (Exception e) {
-            pl = null;
-            e.printStackTrace();
-        }
-
-        return pl;
-    }
-
-    private void savePlacement(FilePlacement pl) {
-        //load saved transformation
-        File propertiesFile = new File(pdfFile.getAbsoluteFile()+ ".placement");
-        try {
-            Properties p = pl.toProperties();
-            p.store(new FileOutputStream(propertiesFile), "PDF file placement on OSM");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private OsmDataLayer makeLayer(String name, FilePlacement placement, OsmBuilder.Mode mode, ProgressMonitor monitor) {
+    private OsmDataLayer makeLayer(String name, FilePlacement placement, OsmBuilder.Mode mode,
+            ProgressMonitor monitor) {
+        /*
+         * create a layer from data
+         */
         monitor.beginTask(tr("Building JOSM layer"), 100);
         OsmBuilder builder = new OsmBuilder(placement);
-        DataSet data = builder.build(this.data.getLayers(), mode, monitor.createSubTaskMonitor(50, false));
+        DataSet data = builder.build(pdfData.getLayers(), mode, monitor.createSubTaskMonitor(50, false));
+        data.setUploadPolicy(UploadPolicy.BLOCKED);
         monitor.setTicks(50);
         monitor.setCustomText(tr("Postprocessing layer"));
         OsmDataLayer result = new OsmDataLayer(data, name, null);
-        data.setUploadPolicy(UploadPolicy.BLOCKED);
         result.setUploadDiscouraged(true);
         result.setBackgroundLayer(true);
         result.onPostLoadFromFile();
@@ -1168,34 +699,42 @@ private CheckDouble doublelistener = new CheckDouble();
     }
 
     private void placeLayer(OsmDataLayer _layer, FilePlacement placement) {
-        this.removeLayer();
-        this.layer = _layer;
-        MainApplication.getLayerManager().addLayer(this.layer);
-        MainApplication.getMap().mapView.zoomTo(placement.getWorldBounds(this.data));
+        /*
+         *
+         */
+        removeLayer();
+        dataLayer = _layer;
+        MainApplication.getLayerManager().addLayer(dataLayer);
+        MainApplication.getMap().mapView.zoomTo(placement.getWorldBounds(pdfData));
     }
 
     private void removeLayer() {
-        if (this.layer != null) {
-            MainApplication.getLayerManager().removeLayer(this.layer);
-            this.layer.data.clear(); //saves memory
-            this.layer = null;
+        /*
+         * remove preview layer
+         */
+        if (dataLayer != null) {
+            MainApplication.getLayerManager().removeLayer(dataLayer);
+            dataLayer.data.clear(); // saves memory
+            dataLayer = null;
         }
-//        projectionPanel.setVisible(false);
-//        okCancelPanel.setVisible(false);
-//        loadProgress.setVisible(false);
-        this.showButton.setEnabled(false);
-        this.saveButton.setEnabled(false);
-        this.okButton.setEnabled(false);
-        this.getMaxButton.setEnabled(false);
-        this.getMinButton.setEnabled(false);
+        // No layer ==> no actions
+        actionPanel.showButton.setEnabled(false);
+        actionPanel.saveButton.setEnabled(false);
+        actionPanel.okButton.setEnabled(false);
+        placementPanel.setEnabled(false);
 
     }
 
     private void saveLayer(java.io.File file, FilePlacement placement, ProgressMonitor monitor) {
+        /*
+         * save layer to file
+         * TODO: is this methode valuable? Functionality can easily performed from Main-Menu
+         */
         monitor.beginTask(tr("Saving to file."), 1000);
 
         OsmBuilder builder = new OsmBuilder(placement);
-        DataSet data = builder.build(this.data.getLayers(), OsmBuilder.Mode.Final, monitor.createSubTaskMonitor(500, false));
+        DataSet data = builder.build(this.pdfData.getLayers(), OsmBuilder.Mode.Final,
+                monitor.createSubTaskMonitor(500, false));
         OsmDataLayer layer = new OsmDataLayer(data, file.getName(), file);
 
         monitor.setCustomText(tr(" Writing to file"));
