@@ -26,7 +26,13 @@ public final class ProjectionInfo {
     }
 
     public static Projection getProjectionByCode(String code) {
-        return new SingleProjectionChoice(code.toString(), code.toString(), code).getProjection() ;
+        try {
+            ProjectionChoice pc = new SingleProjectionChoice(code.toString(), code.toString(), code);
+            Projection p = pc.getProjection();
+            return p;
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
+        }
 
 //        Projection p = allCodes.get(code);
 //        if (p != null) return p;
