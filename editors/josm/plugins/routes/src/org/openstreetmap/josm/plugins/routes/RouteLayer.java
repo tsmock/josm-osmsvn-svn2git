@@ -1,3 +1,4 @@
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.routes;
 
 import java.awt.Color;
@@ -9,7 +10,6 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.Icon;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.Relation;
@@ -28,6 +28,7 @@ import org.openstreetmap.josm.plugins.routes.paint.PathPainter;
 import org.openstreetmap.josm.plugins.routes.paint.WideLinePainter;
 import org.openstreetmap.josm.plugins.routes.xml.RoutesXMLLayer;
 import org.openstreetmap.josm.plugins.routes.xml.RoutesXMLRoute;
+import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.ColorHelper;
 import org.openstreetmap.josm.tools.ImageProvider;
 
@@ -53,7 +54,7 @@ public class RouteLayer extends Layer implements DataSetListenerAdapter.Listener
             }
         }
 
-        if ("wide".equals(Main.pref.get("routes.painter"))) {
+        if ("wide".equals(Config.getPref().get("routes.painter"))) {
             pathPainter = new WideLinePainter(this);
         } else {
             pathPainter = new NarrowLinePainter(this);
@@ -95,7 +96,7 @@ public class RouteLayer extends Layer implements DataSetListenerAdapter.Listener
     private void addRelation(Relation relation, RouteDefinition route) {
         for (RelationMember member:relation.getMembers()) {
             if (member.getMember() instanceof Way) {
-                Way way = (Way)member.getMember();
+                Way way = (Way) member.getMember();
                 pathBuilder.addWay(way, route);
             }
         }
@@ -132,7 +133,7 @@ public class RouteLayer extends Layer implements DataSetListenerAdapter.Listener
         }
 
         Stroke stroke = g.getStroke();
-        Color color   = g.getColor();
+        Color color = g.getColor();
         for (ConvertedWay way:pathBuilder.getConvertedWays()) {
             pathPainter.drawWay(way, mv, g);
         }
