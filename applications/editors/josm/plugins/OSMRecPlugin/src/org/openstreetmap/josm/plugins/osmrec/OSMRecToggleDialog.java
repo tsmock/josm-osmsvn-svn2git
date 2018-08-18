@@ -30,11 +30,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
-import org.openstreetmap.josm.data.SelectionChangedListener;
+import org.openstreetmap.josm.data.osm.DataSelectionListener;
 import org.openstreetmap.josm.data.osm.DefaultNameFormatter;
 import org.openstreetmap.josm.data.osm.IRelation;
+import org.openstreetmap.josm.data.osm.OsmDataManager;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.Relation;
 import org.openstreetmap.josm.data.osm.RelationMember;
@@ -69,7 +69,7 @@ import org.openstreetmap.josm.tools.Shortcut;
  * @author nkaragiannakis
  */
 public class OSMRecToggleDialog extends ToggleDialog
-implements SelectionChangedListener, DataSetListenerAdapter.Listener {
+implements DataSelectionListener, DataSetListenerAdapter.Listener {
 
     /**
      * The tag data of selected objects.
@@ -180,7 +180,7 @@ implements SelectionChangedListener, DataSetListenerAdapter.Listener {
     // <editor-fold defaultstate="collapsed" desc="Event listeners methods">
 
     @Override
-    public void selectionChanged(Collection<? extends OsmPrimitive> newSelection) {
+    public void selectionChanged(SelectionChangeEvent event) {
         if (tagTable == null)
             return; // selection changed may be received in base class constructor before init
         if (tagTable.getCellEditor() != null) {
@@ -188,7 +188,7 @@ implements SelectionChangedListener, DataSetListenerAdapter.Listener {
         }
 
         // Ignore parameter as we do not want to operate always on real selection here, especially in draw mode
-        Collection<OsmPrimitive> newSel = Main.main.getInProgressSelection();
+        Collection<OsmPrimitive> newSel = OsmDataManager.getInstance().getInProgressSelection();
         if (newSel == null) {
             newSel = Collections.<OsmPrimitive>emptyList();
         }
@@ -230,7 +230,7 @@ implements SelectionChangedListener, DataSetListenerAdapter.Listener {
                     Relation r = (Relation) ref;
                     MemberInfo mi = roles.get(r);
                     if (mi == null) {
-                        mi = new MemberInfo(newSel);
+                        mi = new MemberInfo();
                     }
                     roles.put(r, mi);
                     int i = 1;
@@ -309,9 +309,9 @@ implements SelectionChangedListener, DataSetListenerAdapter.Listener {
      * Returns the selected relation membership.
      * @return The current selected relation membership
      */
-    public IRelation getSelectedMembershipRelation() {
+    public IRelation<?> getSelectedMembershipRelation() {
         int row = membershipTable.getSelectedRow();
-        return row > -1 ? (IRelation) membershipData.getValueAt(row, 0) : null;
+        return row > -1 ? (IRelation<?>) membershipData.getValueAt(row, 0) : null;
     }
 
     // </editor-fold>
@@ -363,12 +363,10 @@ implements SelectionChangedListener, DataSetListenerAdapter.Listener {
         private List<RelationMember> role = new ArrayList<>();
         private Set<OsmPrimitive> members = new HashSet<>();
         private List<Integer> position = new ArrayList<>();
-        private Iterable<OsmPrimitive> selection;
         private String positionString;
         private String roleString;
 
-        MemberInfo(Iterable<OsmPrimitive> selection) {
-            this.selection = selection;
+        MemberInfo() {
         }
 
         void add(RelationMember r, Integer p) {
