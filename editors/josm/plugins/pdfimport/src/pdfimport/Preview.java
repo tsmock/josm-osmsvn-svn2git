@@ -3,8 +3,6 @@
  */
 package pdfimport;
 
-import java.io.File;
-
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 
@@ -36,7 +34,7 @@ public class Preview {
     }
     
     public void save() {
-//		TODO: implement
+//        TODO: implement
     }
 
 

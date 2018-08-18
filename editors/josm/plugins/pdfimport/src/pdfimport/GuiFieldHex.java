@@ -67,7 +67,7 @@ public class GuiFieldHex extends GuiFieldString {
         public void check(GuiFieldHex field) {
             try {
                 value = Integer.decode(field.getText());
-//				value = Integer.parseUnsignedInt(field.getText().replace("#", ""), 16);
+//                value = Integer.parseUnsignedInt(field.getText().replace("#", ""), 16);
                 dataValid = true;
                 field.setBorder(defaultBorder);
             } catch (NumberFormatException e) {

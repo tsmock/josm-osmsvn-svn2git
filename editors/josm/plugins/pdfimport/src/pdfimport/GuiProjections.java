@@ -15,9 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.ProjectionBounds;
 import org.openstreetmap.josm.data.projection.Projection;
+import org.openstreetmap.josm.data.projection.ProjectionRegistry;
 import org.openstreetmap.josm.gui.preferences.projection.CodeProjectionChoice;
 import org.openstreetmap.josm.gui.preferences.projection.CustomProjectionChoice;
 import org.openstreetmap.josm.gui.preferences.projection.ProjectionChoice;
@@ -49,12 +49,12 @@ public class GuiProjections {
             setToolTipText(tr("Projection of the PDF-Document"));
              Monitor monitor = new Monitor();
              for (ProjectionChoice p : ProjectionPreference.getProjectionChoices()) {
-                 if ((p instanceof CodeProjectionChoice)) continue;	// can not handle this projection for now
-                 if ((p instanceof CustomProjectionChoice)) continue;	// can not handle this projection for now
+                 if ((p instanceof CodeProjectionChoice)) continue;    // can not handle this projection for now
+                 if ((p instanceof CustomProjectionChoice)) continue;    // can not handle this projection for now
                  addItem(p);
             }
             addActionListener(monitor);
-            setProjection (Main.getProjection());
+            setProjection (ProjectionRegistry.getProjection());
         }
 
         public void setProjection (Projection p) {
@@ -62,7 +62,7 @@ public class GuiProjections {
              * set current Projection to @p
              * update internal variables
              */
-            if (p==null) return;	// better keep the old one
+            if (p==null) return;    // better keep the old one
             projection = p;
             pName.setText(p.toString());
             pCode.setText(p.toCode());
@@ -75,7 +75,7 @@ public class GuiProjections {
                 for (String code : projectionChoice.allCodes()) {
                     if (code.equals(projectionCode)) {
                         setSelectedItem(projectionChoice);
-                        return;	// stop searching
+                        return;    // stop searching
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class GuiProjections {
                 if (!(projectionChoice instanceof SingleProjectionChoice)) continue;
                 if (localId.equals(projectionChoice.getId())) {
                     setSelectedItem(projectionChoice);
-                    return;	// stop searching
+                    return;    // stop searching
                 }
             }
             /*
@@ -158,7 +158,7 @@ public class GuiProjections {
     }
 
     private void build() {
-//		JButton specBtn = new JButton(tr("Specifiy"));
+//        JButton specBtn = new JButton(tr("Specifiy"));
         pCode = new JLabel("code",SwingConstants.RIGHT);
         pName = new JLabel("Name",SwingConstants.RIGHT);
         pInfo = new JLabel("Info",SwingConstants.RIGHT);
@@ -188,89 +188,89 @@ public class GuiProjections {
 //private JPanel projPrefPanel;
 //
 //ProjectionSubPrefsDialog(Component parent, ProjectionChoice pr) {
-//	super(JOptionPane.getFrameForComponent(parent), ModalityType.DOCUMENT_MODAL);
+//    super(JOptionPane.getFrameForComponent(parent), ModalityType.DOCUMENT_MODAL);
 //
-//	projPref = pr;
+//    projPref = pr;
 //
-//	setTitle(tr("Projection Preferences"));
-//	setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//    setTitle(tr("Projection Preferences"));
+//    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 //
-//	build();
+//    build();
 //}
 //
 //protected void makeButtonRespondToEnter(SideButton btn) {
-//	btn.setFocusable(true);
-//	btn.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
-//	btn.getActionMap().put("enter", btn.getAction());
+//    btn.setFocusable(true);
+//    btn.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
+//    btn.getActionMap().put("enter", btn.getAction());
 //}
 //
 //protected JPanel buildInputForm() {
-//	return projPref.getPreferencePanel(null);
+//    return projPref.getPreferencePanel(null);
 //}
 //
 //protected JPanel buildButtonRow() {
-//	JPanel pnl = new JPanel(new FlowLayout());
+//    JPanel pnl = new JPanel(new FlowLayout());
 //
-//	actOK = new OKAction();
-//	actCancel = new CancelAction();
+//    actOK = new OKAction();
+//    actCancel = new CancelAction();
 //
-//	SideButton btn;
-//	pnl.add(btn = new SideButton(actOK));
-//	// makeButtonRespondToEnter(btn);
-//	// pnl.add(btn = new SideButton(actCancel));
-//	// makeButtonRespondToEnter(btn);
-//	return pnl;
+//    SideButton btn;
+//    pnl.add(btn = new SideButton(actOK));
+//    // makeButtonRespondToEnter(btn);
+//    // pnl.add(btn = new SideButton(actCancel));
+//    // makeButtonRespondToEnter(btn);
+//    return pnl;
 //}
 //
 //protected void build() {
-//	projPrefPanel = buildInputForm();
-//	getContentPane().setLayout(new BorderLayout());
-//	getContentPane().add(projPrefPanel, BorderLayout.CENTER);
-//	getContentPane().add(buildButtonRow(), BorderLayout.SOUTH);
-//	pack();
+//    projPrefPanel = buildInputForm();
+//    getContentPane().setLayout(new BorderLayout());
+//    getContentPane().add(projPrefPanel, BorderLayout.CENTER);
+//    getContentPane().add(buildButtonRow(), BorderLayout.SOUTH);
+//    pack();
 //
-//	// make dialog respond to ESCAPE
-//	getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
-//			.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
-//	getRootPane().getActionMap().put("escape", actCancel);
+//    // make dialog respond to ESCAPE
+//    getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+//            .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+//    getRootPane().getActionMap().put("escape", actCancel);
 //}
 //
 //class OKAction extends AbstractAction {
-//	OKAction() {
-//		putValue(NAME, tr("OK"));
-//		putValue(SHORT_DESCRIPTION, tr("Close the dialog and apply projection preferences"));
-//		putValue(SMALL_ICON, ImageProvider.get("ok"));
-//	}
+//    OKAction() {
+//        putValue(NAME, tr("OK"));
+//        putValue(SHORT_DESCRIPTION, tr("Close the dialog and apply projection preferences"));
+//        putValue(SMALL_ICON, ImageProvider.get("ok"));
+//    }
 //
-//	@Override
-//	public void actionPerformed(ActionEvent e) {
-//		projPref.setPreferences(projPref.getPreferences(projPrefPanel));
-//		setVisible(false);
-//	}
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        projPref.setPreferences(projPref.getPreferences(projPrefPanel));
+//        setVisible(false);
+//    }
 //}
 //
 //class CancelAction extends AbstractAction {
-//	CancelAction() {
-//		putValue(NAME, tr("Cancel"));
-//		putValue(SHORT_DESCRIPTION, tr("Close the dialog, discard projection preference changes"));
-//		putValue(SMALL_ICON, ImageProvider.get("cancel"));
-//	}
+//    CancelAction() {
+//        putValue(NAME, tr("Cancel"));
+//        putValue(SHORT_DESCRIPTION, tr("Close the dialog, discard projection preference changes"));
+//        putValue(SMALL_ICON, ImageProvider.get("cancel"));
+//    }
 //
-//	@Override
-//	public void actionPerformed(ActionEvent e) {
-//		setVisible(false);
-//	}
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        setVisible(false);
+//    }
 //}
 //
 //@Override
 //public void setVisible(boolean visible) {
-//	if (visible) {
-//		new WindowGeometry(getClass().getName() + ".geometry",
-//				WindowGeometry.centerOnScreen(new Dimension(400, 300))).applySafe(this);
-//	} else if (isShowing()) { // Avoid IllegalComponentStateException like in #8775
-//		new WindowGeometry(this).remember(getClass().getName() + ".geometry");
-//	}
-//	super.setVisible(visible);
+//    if (visible) {
+//        new WindowGeometry(getClass().getName() + ".geometry",
+//                WindowGeometry.centerOnScreen(new Dimension(400, 300))).applySafe(this);
+//    } else if (isShowing()) { // Avoid IllegalComponentStateException like in #8775
+//        new WindowGeometry(this).remember(getClass().getName() + ".geometry");
+//    }
+//    super.setVisible(visible);
 //}
 //}
 
