@@ -1,5 +1,5 @@
 // License: GPL. For details, see LICENSE file.
-package CommandLine;
+package org.openstreetmap.josm.plugins.commandline;
 
 import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
@@ -10,18 +10,18 @@ import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.tools.ImageProvider;
 
-public class RelationAction extends MapMode implements AWTEventListener {
+public class DummyAction extends MapMode implements AWTEventListener {
     private final CommandLine parentPlugin;
 
-    public RelationAction(CommandLine parentPlugin) {
-        super(null, "addsegment.png", null, ImageProvider.getCursor("normal", null));
-        this.parentPlugin = parentPlugin;
+    public DummyAction(CommandLine parentPlugin) {
+            super(null, "addsegment.png", null, ImageProvider.getCursor("normal", null));
+            this.parentPlugin = parentPlugin;
     }
 
-        @Override
+    @Override
     public void eventDispatched(AWTEvent arg0) {
         if (!(arg0 instanceof KeyEvent))
-            return;
+                return;
         KeyEvent ev = (KeyEvent) arg0;
         if (ev.getKeyCode() == KeyEvent.VK_ESCAPE && ev.getID() == KeyEvent.KEY_PRESSED) {
             ev.consume();
