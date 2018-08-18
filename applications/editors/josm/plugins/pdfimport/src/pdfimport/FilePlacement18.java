@@ -50,7 +50,7 @@ public class FilePlacement18 extends FilePlacement {
             private GuiFieldDouble x;
             private GuiFieldDouble y;
 
-            private void checkCoords( GuiFieldDouble x, GuiFieldDouble y) {
+            private void checkCoords(GuiFieldDouble x, GuiFieldDouble y) {
                 int splitpos = 0;
                 String val2 = x.getText().trim();
                 if ((splitpos = val2.indexOf(';')) >= 0) {
@@ -66,9 +66,9 @@ public class FilePlacement18 extends FilePlacement {
             private CoorFields() {
             }
 
-            public CoorFields(GuiFieldDouble X, GuiFieldDouble Y) {
-                x = X;
-                y = Y;
+            CoorFields(GuiFieldDouble x, GuiFieldDouble y) {
+                this.x = x;
+                this.y = y;
                 x.addFocusListener(new FocusListener() {
                     @Override
                     public void focusLost(FocusEvent e) {
@@ -81,7 +81,7 @@ public class FilePlacement18 extends FilePlacement {
                 });
             }
             public void SetCoor(EastNorth en) {
-                x.requestFocusInWindow();		// make shure focus-lost events will be triggered later
+                x.requestFocusInWindow();        // make shure focus-lost events will be triggered later
                 x.setValue(en.getX());
                 y.requestFocusInWindow();
                 y.setValue(en.getY());
@@ -108,7 +108,7 @@ public class FilePlacement18 extends FilePlacement {
         private CoorFields worldMin;
         private CoorFields worldMax;
         private GuiProjections projectionChooser;
-        private FilePlacement18 fc = null;		// reference to enclosing FilePlacement
+        private FilePlacement18 fc = null;        // reference to enclosing FilePlacement
         private JComponent dependsOnValid = null;
 
         public PlacementPanel(FilePlacement18 parrent) {
@@ -196,7 +196,7 @@ public class FilePlacement18 extends FilePlacement {
             maxYField.setToolTipText(tr("Y-value of top right  reference point"));
             maxYField.addFocusListener(monitor);
 //
-            worldMax = new CoorFields(maxEastField = new GuiFieldDouble(1),	maxNorthField = new GuiFieldDouble(1));
+            worldMax = new CoorFields(maxEastField = new GuiFieldDouble(1),    maxNorthField = new GuiFieldDouble(1));
             maxEastField.setToolTipText(tr("East-value of top right reference point"));
             maxEastField.addFocusListener(monitor);
             maxNorthField.setToolTipText(tr("North-value of top right reference point"));
@@ -305,8 +305,8 @@ public class FilePlacement18 extends FilePlacement {
             }
 
             LatLon ll = ((Node) selected.iterator().next()).getCoor();
-//			FilePlacement pl = new FilePlacement();
-//			return pl.reverseTransform(ll);
+//            FilePlacement pl = new FilePlacement();
+//            return pl.reverseTransform(ll);
             return new EastNorth(ll.lon() * 1000, ll.lat() * 1000);
         }
 
@@ -356,7 +356,7 @@ public class FilePlacement18 extends FilePlacement {
     }
 
     private PlacementPanel panel=null;
-    private boolean valid=false;	// the data is consistent and the object ready to use for transformation
+    private boolean valid=false;    // the data is consistent and the object ready to use for transformation
 
     public boolean isValid() {
         /*
