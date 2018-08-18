@@ -24,7 +24,7 @@ import org.openstreetmap.josm.plugins.osmrec.container.OSMNode;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMRelation;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMWay;
 import org.openstreetmap.josm.tools.Logging;
-import org.openstreetmap.josm.tools.Utils;
+import org.openstreetmap.josm.tools.XmlUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -78,7 +78,7 @@ public class OSMParser extends DefaultHandler {
 
     public void parseDocument() {
         try {
-            Utils.newSafeSAXParser().parse(osmXmlFileName, this);
+            XmlUtils.newSafeSAXParser().parse(osmXmlFileName, this);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             Logging.error(e);
         }

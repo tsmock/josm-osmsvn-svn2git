@@ -7,7 +7,7 @@ import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
 /**
- *
+ * OSM rec plugin
  * @author imis-nkarag
  */
 public class OSMRecPlugin extends Plugin {
