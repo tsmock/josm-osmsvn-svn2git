@@ -28,7 +28,7 @@ import org.openstreetmap.josm.plugins.osmrec.container.OSMNode;
 import org.openstreetmap.josm.plugins.osmrec.container.OSMWay;
 import org.openstreetmap.josm.tools.HttpClient;
 import org.openstreetmap.josm.tools.Logging;
-import org.openstreetmap.josm.tools.Utils;
+import org.openstreetmap.josm.tools.XmlUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -84,7 +84,7 @@ public class HistoryParser {
         try {
             String osmUrl = OSM_API + "changesets?display_name=" + username + "&time=" + timeInterval;
             InputStream xml = HttpClient.create(new URL(osmUrl)).connect().getContent();
-            NodeList nodes = Utils.parseSafeDOM(xml).getElementsByTagName("changeset");
+            NodeList nodes = XmlUtils.parseSafeDOM(xml).getElementsByTagName("changeset");
 
             Logging.debug("changeset size "+ nodes.getLength());
             for (int i = 0; i < nodes.getLength(); i++) {
@@ -107,7 +107,7 @@ public class HistoryParser {
         try {
             String changesetByIDURL = OSM_API+ "changeset/" + id + "/download";
             InputStream xml = HttpClient.create(new URL(changesetByIDURL)).connect().getContent();
-            Node osmChange = Utils.parseSafeDOM(xml).getFirstChild();
+            Node osmChange = XmlUtils.parseSafeDOM(xml).getFirstChild();
 
             //get all nodes first, in order to be able to call all nodes references and create the geometries
             for (int i = 0; i < osmChange.getChildNodes().getLength(); i++) {
@@ -228,7 +228,7 @@ public class HistoryParser {
         try {
             String osmUrl = OSM_API + "node/" + nodeID;
             InputStream xml = HttpClient.create(new URL(osmUrl)).connect().getContent();
-            NodeList nodes = Utils.parseSafeDOM(xml).getElementsByTagName("node");
+            NodeList nodes = XmlUtils.parseSafeDOM(xml).getElementsByTagName("node");
             String lat = nodes.item(0).getAttributes().getNamedItem("lat").getNodeValue();
             String lon = nodes.item(0).getAttributes().getNamedItem("lon").getNodeValue();
 
