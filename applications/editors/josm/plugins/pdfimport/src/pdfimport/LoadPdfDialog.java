@@ -33,7 +33,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.data.osm.DataSet;
 import org.openstreetmap.josm.data.osm.UploadPolicy;
 import org.openstreetmap.josm.gui.MainApplication;
@@ -280,7 +279,7 @@ public class LoadPdfDialog extends JFrame {
     private final FilePlacement18 placement = new FilePlacement18();
 
     private PathOptimizer pdfData;
-//	private OsmDataLayer dataLayer;
+//    private OsmDataLayer dataLayer;
 
     private final JButton loadFileButton = new JButton(tr("Load preview ..."));
 
@@ -360,7 +359,7 @@ public class LoadPdfDialog extends JFrame {
         /*
          * TODO: Make okButton to default Button of Dialog, make cancelButton to react on ESC-Key
          */
-//		SwingUtilities.getRootPane(panel).setDefaultButton(actionPanel.okButton);
+//        SwingUtilities.getRootPane(panel).setDefaultButton(actionPanel.okButton);
     }
 
      private boolean loadAction() {
@@ -565,7 +564,7 @@ public class LoadPdfDialog extends JFrame {
                 return tr("OSM files");
             }
         });
-        int result = fc.showOpenDialog(Main.parent);
+        int result = fc.showOpenDialog(MainApplication.getMainFrame());
 
         if (result != JFileChooser.APPROVE_OPTION) {
             return null;
@@ -618,7 +617,7 @@ public class LoadPdfDialog extends JFrame {
                 String colString = this.configPanel.colorFilterColor.getText().replace("#", "");
                 color = new Color(Integer.parseInt(colString, 16));
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(Main.parent, tr("Could not parse color"));
+                JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Could not parse color"));
                 return null;
             }
         }
@@ -637,11 +636,11 @@ public class LoadPdfDialog extends JFrame {
             parser.parse(fileName, maxPaths, monitor.createSubTaskMonitor(80, false));
 
         } catch (FileNotFoundException e1) {
-            JOptionPane.showMessageDialog(Main.parent, tr("File not found."));
+            JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("File not found."));
             return null;
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(Main.parent, tr("Error while parsing: {0}", e.getMessage()));
+            JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Error while parsing: {0}", e.getMessage()));
             return null;
         }
 
@@ -713,11 +712,11 @@ public class LoadPdfDialog extends JFrame {
         /*
          * remove preview layer
          */
-//		if (dataLayer != null) {
-//			MainApplication.getLayerManager().removeLayer(dataLayer);
-//			dataLayer.data.clear(); // saves memory
-//			dataLayer = null;
-//		}
+//        if (dataLayer != null) {
+//            MainApplication.getLayerManager().removeLayer(dataLayer);
+//            dataLayer.data.clear(); // saves memory
+//            dataLayer = null;
+//        }
         Preview.clear();
         // No layer ==> no actions
         actionPanel.showButton.setEnabled(false);

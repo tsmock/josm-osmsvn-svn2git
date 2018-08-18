@@ -13,9 +13,7 @@ import org.openstreetmap.josm.plugins.PluginInformation;
 /**
  * A plugin to import a PDF file.
  */
-
 public class PdfImportPlugin extends Plugin {
-
 
     public PdfImportPlugin(PluginInformation info) {
         super(info);
@@ -23,11 +21,9 @@ public class PdfImportPlugin extends Plugin {
         new Preferences(getPluginInformation().name);
     }
 
-    public class pdfimportPrefs implements SubPreferenceSetting
-    {
+    public static class pdfimportPrefs implements SubPreferenceSetting {
         @Override
-        public TabPreferenceSetting getTabPreferenceSetting(PreferenceTabbedPane gui)
-        {
+        public TabPreferenceSetting getTabPreferenceSetting(PreferenceTabbedPane gui) {
             return null;
         }
 
