@@ -1,5 +1,5 @@
 // License: GPL. For details, see LICENSE file.
-package smed;
+package org.openstreetmap.josm.plugins.seamapeditor;
 
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
@@ -7,11 +7,11 @@ import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
-public class Smed extends Plugin {
+public class SmedPlugin extends Plugin {
 
     SmedAction dialog = new SmedAction();
 
-    public Smed(PluginInformation info) {
+    public SmedPlugin(PluginInformation info) {
         super(info);
         MainMenu.add(MainApplication.getMenu().toolsMenu, dialog);
     }

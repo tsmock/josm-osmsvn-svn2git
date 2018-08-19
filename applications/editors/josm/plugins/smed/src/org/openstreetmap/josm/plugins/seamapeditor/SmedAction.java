@@ -1,5 +1,5 @@
 // License: GPL. For details, see LICENSE file.
-package smed;
+package org.openstreetmap.josm.plugins.seamapeditor;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
@@ -17,9 +17,8 @@ import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.DataSelectionListener;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.event.SelectionEventManager;
-
-import messages.Messages;
-import panels.PanelMain;
+import org.openstreetmap.josm.plugins.seamapeditor.messages.Messages;
+import org.openstreetmap.josm.plugins.seamapeditor.panels.PanelMain;
 
 public class SmedAction extends JosmAction implements DataSelectionListener {
 
