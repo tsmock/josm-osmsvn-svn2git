@@ -458,10 +458,6 @@
   path = applications/editors/josm/plugins/todo
   url = ../todo
   branch = master
-[submodule "applications/editors/josm/plugins/tofix"]
-  path = applications/editors/josm/plugins/tofix
-  url = ../tofix
-  branch = master
 [submodule "applications/editors/josm/plugins/touchscreenhelper"]
   path = applications/editors/josm/plugins/touchscreenhelper
   url = ../touchscreenhelper
