@@ -73,10 +73,6 @@
   path = editors/josm/plugins/todo
   url = ../todo.git
   branch = master
-[submodule "editors/josm/plugins/tofix"]
-  path = editors/josm/plugins/tofix
-  url = ../tofix.git
-  branch = master
 [submodule "editors/josm/plugins/turnlanes-tagging"]
   path = editors/josm/plugins/turnlanes-tagging
   url = ../turnlanes-tagging.git
