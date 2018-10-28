@@ -242,6 +242,10 @@
   path = applications/editors/josm/plugins/infomode
   url = ../infomode
   branch = master
+[submodule "applications/editors/josm/plugins/javafx"]
+  path = applications/editors/josm/plugins/javafx
+  url = ../javafx
+  branch = master
 [submodule "applications/editors/josm/plugins/jaxb"]
   path = applications/editors/josm/plugins/jaxb
   url = ../jaxb
@@ -309,10 +313,6 @@
 [submodule "applications/editors/josm/plugins/opendata"]
   path = applications/editors/josm/plugins/opendata
   url = ../opendata
-  branch = master
-[submodule "applications/editors/josm/plugins/openjfx"]
-  path = applications/editors/josm/plugins/openjfx
-  url = ../javafx
   branch = master
 [submodule "applications/editors/josm/plugins/openvisible"]
   path = applications/editors/josm/plugins/openvisible
