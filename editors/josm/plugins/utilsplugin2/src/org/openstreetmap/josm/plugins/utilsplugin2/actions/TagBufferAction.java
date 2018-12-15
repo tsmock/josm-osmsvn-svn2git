@@ -81,7 +81,7 @@ public class TagBufferAction extends JosmAction {
     protected void updateEnabledState(Collection<? extends OsmPrimitive> selection) {
         TagCollection oldTags = getCommonTags(selectionBuf);
         if (!oldTags.isEmpty()) {
-            tagsToPaste = new TagCollection(oldTags);
+                tagsToPaste = new TagCollection(oldTags);
         }
         selectionBuf.clear();
         selectionBuf.addAll(selection);
@@ -96,7 +96,7 @@ public class TagBufferAction extends JosmAction {
     private static TagCollection getCommonTags(Set<OsmPrimitive> selection) {
         if (selection.isEmpty())
             return EmptyTags;
-//		// Fix #8350 - only care about tagged objects
+        // Fix #8350 - only care about tagged objects
         return TagCollection.commonToAllPrimitives(SubclassFilteredCollection.filter(selection, p -> p.isTagged()));
     }
 }
