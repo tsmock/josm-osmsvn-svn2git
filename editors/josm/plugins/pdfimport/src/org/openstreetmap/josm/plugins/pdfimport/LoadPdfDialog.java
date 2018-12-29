@@ -10,7 +10,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -19,17 +18,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
@@ -101,132 +95,6 @@ public class LoadPdfDialog extends JFrame {
         }
     }
 
-
-    private static class Config {
-        /*
-         * encapsulate options for Path optimizer
-         * provide GUI
-         */
-        public GuiFieldBool debugModeCheck;
-        public GuiFieldBool mergeCloseNodesCheck;
-        public GuiFieldDouble mergeCloseNodesTolerance;
-        public GuiFieldBool removeSmallObjectsCheck;
-        public GuiFieldDouble removeSmallObjectsSize;
-        public JTextField colorFilterColor;
-        public GuiFieldBool colorFilterCheck;
-        public GuiFieldBool removeParallelSegmentsCheck;
-        public GuiFieldDouble removeParallelSegmentsTolerance;
-        public GuiFieldBool removeLargeObjectsCheck;
-        public GuiFieldDouble removeLargeObjectsSize;
-        public GuiFieldBool limitPathCountCheck;
-        public GuiFieldInteger limitPathCount;
-        public GuiFieldBool splitOnColorChangeCheck;
-        public GuiFieldBool splitOnShapeClosedCheck;
-        public GuiFieldBool splitOnSingleSegmentCheck;
-        public GuiFieldBool splitOnOrthogonalCheck;
-        private JPanel panel;
-
-        public Config() {
-            build();
-        }
-
-        public JComponent getComponent() {
-            return panel;
-        }
-
-        private void build() {
-
-
-            debugModeCheck = new GuiFieldBool(tr("Debug info"), Preferences.isDebugTags());
-
-            mergeCloseNodesTolerance = new GuiFieldDouble(Preferences.getMergeNodesValue());
-            mergeCloseNodesCheck = new GuiFieldBool(tr("Merge close nodes"), Preferences.isMergeNodes());
-            mergeCloseNodesCheck.setCompanion(mergeCloseNodesTolerance);
-
-            removeSmallObjectsSize = new GuiFieldDouble(Preferences.getRemoveSmallValue());
-            removeSmallObjectsCheck = new GuiFieldBool(tr("Remove objects smaller than"), Preferences.isRemoveSmall());
-            removeSmallObjectsCheck.setCompanion(removeSmallObjectsSize);
-
-            removeLargeObjectsSize = new GuiFieldDouble(Preferences.getRemoveLargeValue());
-            removeLargeObjectsCheck = new GuiFieldBool(tr("Remove objects larger than"), Preferences.isRemoveLarge());
-            removeLargeObjectsCheck.setCompanion(removeLargeObjectsSize);
-
-            colorFilterColor = new GuiFieldHex(Preferences.getLimitColorValue());
-            colorFilterCheck = new GuiFieldBool(tr("Only this color"), Preferences.isLimitColor());
-            colorFilterCheck.setCompanion(colorFilterColor);
-
-            removeParallelSegmentsTolerance = new GuiFieldDouble(Preferences.getRemoveParallelValue());
-            removeParallelSegmentsCheck = new GuiFieldBool(tr("Remove parallel lines"), Preferences.isRemoveParallel());
-            removeParallelSegmentsCheck.setCompanion(removeParallelSegmentsTolerance);
-
-            limitPathCount = new GuiFieldInteger(Preferences.getLimitPathValue());
-            limitPathCountCheck = new GuiFieldBool(tr("Take only first X paths"), Preferences.isLimitPath());
-            limitPathCountCheck.setCompanion(limitPathCount);
-
-            splitOnColorChangeCheck = new GuiFieldBool(tr("Color/width change"), Preferences.isLayerAttribChange());
-            splitOnShapeClosedCheck = new GuiFieldBool(tr("Shape closed"), Preferences.isLayerClosed());
-
-            splitOnSingleSegmentCheck = new GuiFieldBool(tr("Single segments", Preferences.isLayerSegment()));
-            splitOnOrthogonalCheck = new GuiFieldBool(tr("Orthogonal shapes", Preferences.isLayerOrtho()));
-
-            panel = new JPanel(new GridBagLayout());
-            panel.setBorder(BorderFactory.createTitledBorder(tr("Import settings")));
-
-            GridBagConstraints cBasic = new GridBagConstraints();
-            cBasic.gridx = GridBagConstraints.RELATIVE;
-            cBasic.gridy = GridBagConstraints.RELATIVE;
-            cBasic.insets = new Insets(0, 0, 0, 4);
-            cBasic.anchor = GridBagConstraints.LINE_START;
-            cBasic.fill = GridBagConstraints.HORIZONTAL;
-            cBasic.gridheight = 1;
-            cBasic.gridwidth = 1;
-            cBasic.ipadx = 0;
-            cBasic.ipady = 0;
-            cBasic.weightx = 0.0;
-            cBasic.weighty = 0.0;
-
-            GridBagConstraints cLeft = (GridBagConstraints) cBasic.clone();
-            cLeft.gridx = 0;
-
-            GridBagConstraints cMiddle = (GridBagConstraints) cBasic.clone();
-            cMiddle.gridx = 1;
-            cMiddle.anchor = GridBagConstraints.LINE_END;
-
-            GridBagConstraints cRight = (GridBagConstraints) cBasic.clone();
-            cRight.gridx = 2;
-
-            panel.add(mergeCloseNodesCheck, cLeft);
-            panel.add(new JLabel(tr("Tolerance:"),SwingConstants.RIGHT), cMiddle);
-            panel.add(mergeCloseNodesTolerance, cRight);
-
-            panel.add(removeSmallObjectsCheck, cLeft);
-            panel.add(new JLabel(tr("Tolerance:"),SwingConstants.RIGHT), cMiddle);
-            panel.add(removeSmallObjectsSize, cRight);
-
-            panel.add(removeLargeObjectsCheck, cLeft);
-            panel.add(new JLabel(tr("Tolerance:"),SwingConstants.RIGHT), cMiddle);
-            panel.add(removeLargeObjectsSize, cRight);
-
-            panel.add(removeParallelSegmentsCheck, cLeft);
-            panel.add(new JLabel(tr("Max distance:"),SwingConstants.RIGHT), cMiddle);
-            panel.add(removeParallelSegmentsTolerance, cRight);
-
-            panel.add(limitPathCountCheck, cLeft);
-            panel.add(limitPathCount, cRight);
-
-            panel.add(colorFilterCheck, cLeft);
-            panel.add(colorFilterColor, cRight);
-
-            panel.add(debugModeCheck, cLeft);
-
-            cLeft.gridy = 8; panel.add(new JLabel(tr("Introduce separate layers for:")), cLeft);
-            cMiddle.gridy = 8; panel.add(splitOnShapeClosedCheck, cMiddle);
-            cRight.gridy = 8; panel.add(splitOnSingleSegmentCheck, cRight);
-            cMiddle.gridy = 9; panel.add(splitOnColorChangeCheck, cMiddle);
-            cRight.gridy = 9;panel.add(splitOnOrthogonalCheck, cRight);
-        }
-    }
-
     static class LoadProgressRenderer implements ProgressRenderer {
         private final JProgressBar pBar;
         private String title = "";
@@ -238,7 +106,6 @@ public class LoadPdfDialog extends JFrame {
             this.pBar.setMaximum(1);
             this.pBar.setString("");
             this.pBar.setStringPainted(true);
-
         }
 
         @Override
@@ -271,14 +138,12 @@ public class LoadPdfDialog extends JFrame {
             this.pBar.setString(tr("Finished"));
             this.pBar.setValue(this.pBar.getMaximum());
         }
-
     }
 
     private File pdfFile;
     private final FilePlacement18 placement = new FilePlacement18();
 
     private PathOptimizer pdfData;
-//    private OsmDataLayer dataLayer;
 
     private final JButton loadFileButton = new JButton(tr("Load preview ..."));
 
@@ -293,7 +158,7 @@ public class LoadPdfDialog extends JFrame {
         removeLayer();
         if (Preferences.getGuiMode() == Preferences.GuiMode.Simple) {
             loadFileButton.setVisible(false);
-            configPanel.panel.setVisible(false);
+            configPanel.getComponent().setVisible(false);
             actionPanel.saveButton.setVisible(false);
             actionPanel.showButton.setVisible(false);
             setSize(new Dimension(380, 350));
@@ -310,7 +175,7 @@ public class LoadPdfDialog extends JFrame {
 
     Component placementPanel = placement.getGui();
     MainButtons actionPanel = new MainButtons();
-    Config configPanel = new Config();
+    PathOptimizerConfig configPanel = new PathOptimizerConfig();
 
     private void buildGUI() {
         /*
@@ -358,7 +223,7 @@ public class LoadPdfDialog extends JFrame {
         /*
          * TODO: Make okButton to default Button of Dialog, make cancelButton to react on ESC-Key
          */
-//        SwingUtilities.getRootPane(panel).setDefaultButton(actionPanel.okButton);
+//		SwingUtilities.getRootPane(panel).setDefaultButton(actionPanel.okButton);
     }
 
      private boolean loadAction() {
@@ -536,6 +401,7 @@ public class LoadPdfDialog extends JFrame {
                 }
             });
         } else {
+            loadChooser.setSelectedFile(null);
             loadChooser.rescanCurrentDirectory();
         }
         int result = loadChooser.showDialog(this, tr("Import PDF"));
@@ -711,11 +577,11 @@ public class LoadPdfDialog extends JFrame {
         /*
          * remove preview layer
          */
-//        if (dataLayer != null) {
-//            MainApplication.getLayerManager().removeLayer(dataLayer);
-//            dataLayer.data.clear(); // saves memory
-//            dataLayer = null;
-//        }
+//		if (dataLayer != null) {
+//			MainApplication.getLayerManager().removeLayer(dataLayer);
+//			dataLayer.data.clear(); // saves memory
+//			dataLayer = null;
+//		}
         Preview.clear();
         // No layer ==> no actions
         actionPanel.showButton.setEnabled(false);
