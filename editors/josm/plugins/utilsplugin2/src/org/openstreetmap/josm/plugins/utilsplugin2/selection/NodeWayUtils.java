@@ -469,13 +469,13 @@ public final class NodeWayUtils {
         // select nodes and ways inside selected ways and multipolygons
         for (OsmPrimitive p: selected) {
             if (p instanceof Way) {
-                addAllInsideWay(dataset, (Way)p, newWays, newNodes);
+                addAllInsideWay(dataset, (Way) p, newWays, newNodes);
             }
         }
         for (OsmPrimitive p: selected) {
-            if (!(p instanceof Relation) || !p.isMultipolygon())
-                continue;
-            addAllInsideMultipolygon(dataset, (Relation) p, newWays, newNodes);
+            if ((p instanceof Relation) && p.isMultipolygon()) {
+                addAllInsideMultipolygon(dataset, (Relation) p, newWays, newNodes);
+            }
         }
         if (ignoreNodesOfFoundWays) {
             for (Way w : newWays) {

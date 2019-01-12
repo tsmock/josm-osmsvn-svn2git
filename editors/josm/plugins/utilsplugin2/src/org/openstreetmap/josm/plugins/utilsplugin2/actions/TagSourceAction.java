@@ -43,6 +43,7 @@ public class TagSourceAction extends JosmAction {
 
         UndoRedoHandler.getInstance().add(new ChangePropertyCommand(selection, "source", source));
     }
+
     @Override
     protected void updateEnabledState() {
         if (getLayerManager().getEditDataSet() == null) {
@@ -51,7 +52,6 @@ public class TagSourceAction extends JosmAction {
         } else
             updateEnabledState(getLayerManager().getEditDataSet().getSelected());
     }
-
 
     @Override
     protected void updateEnabledState(Collection<? extends OsmPrimitive> selection) {
