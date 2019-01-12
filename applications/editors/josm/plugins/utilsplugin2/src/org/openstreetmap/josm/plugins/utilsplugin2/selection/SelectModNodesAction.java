@@ -44,8 +44,8 @@ public class SelectModNodesAction extends JosmAction {
             int num = UndoRedoHandler.getInstance().commands.size();
             if (num == 0) return;
             int k = 0, idx;
-         // check if executed again, we cycle through all available commands
-            if (lastCmd != null && !selection.isEmpty() ) {
+            // check if executed again, we cycle through all available commands
+            if (lastCmd != null && !selection.isEmpty()) {
                 idx = UndoRedoHandler.getInstance().commands.lastIndexOf(lastCmd);
             } else {
                 idx = num;

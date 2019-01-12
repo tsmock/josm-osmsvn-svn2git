@@ -44,7 +44,7 @@ public class SelectModWaysAction extends JosmAction {
             if (num == 0) return;
             int k = 0, idx;
             // check if executed again, we cycle through all available commands
-            if (lastCmd != null && !ds.getSelectedWays().isEmpty() ) {
+            if (lastCmd != null && !ds.getSelectedWays().isEmpty()) {
                 idx = UndoRedoHandler.getInstance().commands.lastIndexOf(lastCmd);
             } else {
                 idx = num;
