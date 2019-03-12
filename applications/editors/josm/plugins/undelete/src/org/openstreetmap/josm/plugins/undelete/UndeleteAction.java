@@ -205,8 +205,10 @@ public class UndeleteAction extends JosmAction {
                 ((Way) parent).setNodes(nodes);
             }
             if (!restored.isEmpty()) {
-                layer.data.setSelected(restored);
-                GuiHelper.runInEDT(() -> AutoScaleAction.autoScale(AutoScaleMode.SELECTION));
+                GuiHelper.runInEDT(() -> {
+                    layer.data.setSelected(restored);
+                    AutoScaleAction.autoScale(AutoScaleMode.SELECTION);
+                });
             }
         }
     }
