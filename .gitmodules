@@ -198,6 +198,10 @@
   path = applications/editors/josm/plugins/gson
   url = ../gson
   branch = master
+[submodule "applications/editors/josm/plugins/http2"]
+  path = applications/editors/josm/plugins/http2
+  url = ../http2
+  branch = master
 [submodule "applications/editors/josm/plugins/imagery-xml-bounds"]
   path = applications/editors/josm/plugins/imagery-xml-bounds
   url = ../imagery-xml-bounds
