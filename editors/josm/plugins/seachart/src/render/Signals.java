@@ -207,12 +207,17 @@ public class Signals extends Rules {
             String bstr = "";
             CatRTB cat = (CatRTB) getAttEnum(Obj.RTPBCN, Att.CATRTB);
             String wal = getAttStr(Obj.RTPBCN, Att.RADWAL);
-            switch (cat) {
-            case RTB_RAMK:
-                bstr += " Ramark";
-                break;
-            case RTB_RACN:
-                bstr += " Racon";
+            if ((cat == CatRTB.RTB_RAMK) || (cat == CatRTB.RTB_RACN)) {
+                switch (cat) {
+                case RTB_RAMK:
+                    bstr += " Ramark";
+                    break;
+                case RTB_RACN:
+                    bstr += " Racon";
+                    break;
+                default:
+                    break;
+                }
                 String astr = getAttStr(Obj.RTPBCN, Att.SIGGRP);
                 if (!astr.isEmpty()) {
                     bstr += "(" + astr + ")";
@@ -226,9 +231,6 @@ public class Signals extends Rules {
                     if (mxr != null)
                         bstr += (mxr != 0) ? mxr.toString() + "M" : "";
                 }
-                break;
-            default:
-                break;
             }
             if (!wal.isEmpty()) {
                 switch (wal) {
