@@ -310,10 +310,6 @@
   path = applications/editors/josm/plugins/osm-obj-info
   url = ../osm-obj-info
   branch = master
-[submodule "applications/editors/josm/plugins/osmarender"]
-  path = applications/editors/josm/plugins/osmarender
-  url = ../osmarender
-  branch = master
 [submodule "applications/editors/josm/plugins/pbf"]
   path = applications/editors/josm/plugins/pbf
   url = ../pbf
