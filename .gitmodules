@@ -130,6 +130,10 @@
   path = applications/editors/josm/plugins/colorscheme
   url = ../colorscheme
   branch = master
+[submodule "applications/editors/josm/plugins/comfort0"]
+  path = applications/editors/josm/plugins/comfort0
+  url = ../comfort0
+  branch = master
 [submodule "applications/editors/josm/plugins/configuration"]
   path = applications/editors/josm/plugins/configuration
   url = ../configuration
