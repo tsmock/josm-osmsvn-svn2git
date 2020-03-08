@@ -78,6 +78,10 @@
   path = applications/editors/josm/plugins/OsmInspectorPlugin
   url = ../OsmInspectorPlugin
   branch = master
+[submodule "applications/editors/josm/plugins/SaudiNationalAddress"]
+  path = applications/editors/josm/plugins/SaudiNationalAddress
+  url = ../SaudiNationalAddress
+  branch = master
 [submodule "applications/editors/josm/plugins/addrinterpolation"]
   path = applications/editors/josm/plugins/addrinterpolation
   url = ../addrinterpolation
