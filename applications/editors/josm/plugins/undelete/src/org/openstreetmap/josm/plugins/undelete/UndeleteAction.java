@@ -236,7 +236,9 @@ public class UndeleteAction extends JosmAction {
      */
     public UndeleteAction() {
         super(tr("Undelete object..."), "undelete", tr("Undelete object by id"),
-                Shortcut.registerShortcut("tools:undelete", tr("File: {0}", tr("Undelete object...")), KeyEvent.VK_U, Shortcut.ALT_SHIFT), true);
+                Shortcut.registerShortcut("tools:undelete", tr("File: {0}", tr("Undelete object...")), KeyEvent.VK_U,
+                        Shortcut.ALT_SHIFT),
+                true, false);
     }
 
     @Override
