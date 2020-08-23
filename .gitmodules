@@ -334,10 +334,6 @@
   path = applications/editors/josm/plugins/photoadjust
   url = ../photoadjust
   branch = master
-[submodule "applications/editors/josm/plugins/piclayer"]
-  path = applications/editors/josm/plugins/piclayer
-  url = ../PicLayer
-  branch = master
 [submodule "applications/editors/josm/plugins/pointInfo"]
   path = applications/editors/josm/plugins/pointInfo
   url = ../pointInfo
