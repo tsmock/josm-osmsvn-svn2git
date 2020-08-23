@@ -42,6 +42,10 @@
   path = editors/josm/plugins/geojson
   url = ../geojson.git
   branch = master
+[submodule "editors/josm/plugins/indoorhelper"]
+  path = editors/josm/plugins/indoorhelper
+  url = ../indoorhelper.git
+  branch = master
 [submodule "editors/josm/plugins/improve-way"]
   path = editors/josm/plugins/improve-way
   url = ../improve-way.git
