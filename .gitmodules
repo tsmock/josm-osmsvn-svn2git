@@ -62,6 +62,10 @@
   path = editors/josm/plugins/osm-obj-info
   url = ../osm-obj-info.git
   branch = master
+[submodule "editors/josm/plugins/PicLayer"]
+  path = editors/josm/plugins/PicLayer
+  url = ../PicLayer.git
+  branch = master
 [submodule "editors/josm/plugins/pt_assistant"]
   path = editors/josm/plugins/pt_assistant
   url = ../pt_assistant.git
