@@ -85,6 +85,10 @@
   path = editors/josm/plugins/turnlanes-tagging
   url = ../turnlanes-tagging.git
   branch = master
+[submodule "editors/josm/plugins/validations_testing"]
+  path = editors/josm/plugins/validations_testing
+  url = ../validations_testing.git
+  branch = master
 [submodule "editors/josm/plugins/wikipedia"]
   path = editors/josm/plugins/wikipedia
   url = ../wikipedia.git
