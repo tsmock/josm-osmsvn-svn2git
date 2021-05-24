@@ -474,6 +474,10 @@
   path = applications/editors/josm/plugins/utilsplugin2
   url = ../utilsplugin2
   branch = master
+[submodule "applications/editors/josm/plugins/validations_testing"]
+  path = applications/editors/josm/plugins/validations_testing
+  url = ../validations_testing.git
+  branch = master
 [submodule "applications/editors/josm/plugins/waydownloader"]
   path = applications/editors/josm/plugins/waydownloader
   url = ../waydownloader
