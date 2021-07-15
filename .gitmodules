@@ -38,10 +38,6 @@
   path = applications/editors/josm/plugins/Dxf-Import
   url = ../Dxf-Import.git
   branch = master
-[submodule "applications/editors/josm/plugins/geojson"]
-  path = applications/editors/josm/plugins/geojson
-  url = ../geojson.git
-  branch = master
 [submodule "applications/editors/josm/plugins/indoorhelper"]
   path = applications/editors/josm/plugins/indoorhelper
   url = ../indoorhelper.git
