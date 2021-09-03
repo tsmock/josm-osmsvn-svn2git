@@ -1,6 +1,4 @@
-/**
- * License: GPL. For details, see LICENSE file.
- */
+// License: GPL. For details, see LICENSE file.
 package org.openstreetmap.josm.plugins.pdfimport;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
@@ -16,13 +14,9 @@ import javax.swing.JPanel;
 
 import org.openstreetmap.josm.tools.GBC;
 
-/**
- * @author Nzara
- *
- */
 public class PreferenceSettingsGui {
 
-    private class ModeChoice {
+    private static class ModeChoice {
         public Preferences.GuiMode guiMode;
         public String name;
 
@@ -31,12 +25,13 @@ public class PreferenceSettingsGui {
             this.name = name;
         }
 
+        @Override
         public String toString() {
             return name;
         }
     }
 
-    private ModeChoice[] choices = { 
+    private ModeChoice[] choices = {
             new ModeChoice(Preferences.GuiMode.Auto, tr("Auto")),
             new ModeChoice(Preferences.GuiMode.Simple, tr("Basic")),
             new ModeChoice(Preferences.GuiMode.Expert, tr("Extended"))
@@ -45,7 +40,7 @@ public class PreferenceSettingsGui {
     private final String guiAuto = tr("Auto");
     private final String guiBasic = tr("Basic");
     private final String guiExtended = tr("Extended");
-            
+
     private String[] guiPrefs = {guiAuto, guiBasic, guiExtended};
     private JComboBox<String> guiPrefsCombo = new JComboBox<>(guiPrefs);
     private JPanel panel;
@@ -61,16 +56,15 @@ public class PreferenceSettingsGui {
 
     public boolean save() {
         String s = (String) guiPrefsCombo.getSelectedItem();
-        if (s==guiAuto) Preferences.setGuiCode(0);
-        if (s==guiBasic) Preferences.setGuiCode(2);
-        if (s==guiExtended) Preferences.setGuiCode(1);
-        
+        if (s == guiAuto) Preferences.setGuiCode(0);
+        if (s == guiBasic) Preferences.setGuiCode(2);
+        if (s == guiExtended) Preferences.setGuiCode(1);
+
         return true;
     }
 
     private void build() {
         panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-//		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.setBorder(BorderFactory.createTitledBorder(tr("User Interface")));
         JLabel l = new JLabel(tr("Interactions:"));
         panel.add(l, GBC.std());
@@ -78,5 +72,4 @@ public class PreferenceSettingsGui {
         guiPrefsCombo.setBackground(Color.red);
         guiPrefsCombo.setAlignmentX(Component.RIGHT_ALIGNMENT);
     }
-
 }
