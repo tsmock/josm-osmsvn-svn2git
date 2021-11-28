@@ -139,7 +139,7 @@ public class RevertChangesetTask extends PleaseWaitRunnable {
         }
         if (progressMonitor.isCanceled())
             throw new UserCancelException();
-
+        int numOldConflicts = oldDataSet == null ? 0 : oldDataSet.getConflicts().size();
         // Check missing objects
         rev.checkMissingCreated();
         rev.checkMissingUpdated();
@@ -152,6 +152,13 @@ public class RevertChangesetTask extends PleaseWaitRunnable {
             // Don't ask user to download primitives going to be undeleted
             rev.checkMissingDeleted();
             rev.downloadMissingPrimitives(progressMonitor.createSubTaskMonitor(ProgressMonitor.ALL_TICKS, false));
+        }
+        int numConflicts = oldDataSet == null ? 0 : oldDataSet.getConflicts().size();
+        if (numConflicts > numOldConflicts) {
+            GuiHelper.runInEDT(() -> new Notification(tr("Please solve conflicts and maybe try again to revert."))
+            .setIcon(JOptionPane.ERROR_MESSAGE)
+            .show());
+            return null;
         }
 
         if (progressMonitor.isCanceled())
