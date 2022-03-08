@@ -278,6 +278,10 @@
   path = applications/editors/josm/plugins/log4j
   url = ../log4j
   branch = master
+[submodule "applications/editors/josm/plugins/lwjgl"]
+  path = applications/editors/josm/plugins/lwjgl
+  url = ../lwjgl
+  branch = master
 [submodule "applications/editors/josm/plugins/measurement"]
   path = applications/editors/josm/plugins/measurement
   url = ../measurement
