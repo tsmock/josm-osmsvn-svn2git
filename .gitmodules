@@ -246,6 +246,10 @@
   path = applications/editors/josm/plugins/infomode
   url = ../infomode
   branch = master
+[submodule "applications/editors/josm/plugins/jackson"]
+  path = applications/editors/josm/plugins/jackson
+  url = ../jackson
+  branch = master
 [submodule "applications/editors/josm/plugins/javafx"]
   path = applications/editors/josm/plugins/javafx
   url = ../javafx
