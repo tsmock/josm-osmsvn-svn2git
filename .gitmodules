@@ -22,6 +22,10 @@
   path = applications/editors/josm/plugins/changeset-viewer
   url = ../changeset-viewer.git
   branch = master
+[submodule "applications/editors/josm/plugins/Color"]
+  path = applications/editors/josm/plugins/Color
+  url = ../Color.git
+  branch = master
 [submodule "applications/editors/josm/plugins/configuration"]
   path = applications/editors/josm/plugins/configuration
   url = ../configuration.git
