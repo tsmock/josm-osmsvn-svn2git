@@ -58,6 +58,10 @@
   path = editors/josm/plugins/Mapillary
   url = ../mapillary.git
   branch = master
+[submodule "editors/josm/plugins/maproulette"]
+  path = editors/josm/plugins/maproulette
+  url = ../MapRoulette.git
+  branch = master
 [submodule "editors/josm/plugins/osm-obj-info"]
   path = editors/josm/plugins/osm-obj-info
   url = ../osm-obj-info.git
