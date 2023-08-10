@@ -350,6 +350,10 @@
   path = applications/editors/josm/plugins/photoadjust
   url = ../photoadjust
   branch = master
+[submodule "applications/editors/josm/plugins/pmtiles"]
+  path = applications/editors/josm/plugins/pmtiles
+  url = ../pmtiles
+  branch = master
 [submodule "applications/editors/josm/plugins/pointInfo"]
   path = applications/editors/josm/plugins/pointInfo
   url = ../pointInfo
