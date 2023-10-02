@@ -182,6 +182,10 @@
   path = applications/editors/josm/plugins/ext_tools
   url = ../ext_tools
   branch = master
+[submodule "applications/editors/josm/plugins/fit"]
+  path = applications/editors/josm/plugins/fit
+  url = ../FIT
+  branch = master
 [submodule "applications/editors/josm/plugins/flatlaf"]
   path = applications/editors/josm/plugins/flatlaf
   url = ../flatlaf
