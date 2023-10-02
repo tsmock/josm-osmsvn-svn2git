@@ -46,6 +46,10 @@
   path = applications/editors/josm/plugins/ElevationProfile
   url = ../ElevationProfile
   branch = master
+[submodule "applications/editors/josm/plugins/FIT"]
+  path = applications/editors/josm/plugins/FIT
+  url = ../FIT
+  branch = master
 [submodule "applications/editors/josm/plugins/FastDraw"]
   path = applications/editors/josm/plugins/FastDraw
   url = ../FastDraw
@@ -181,10 +185,6 @@
 [submodule "applications/editors/josm/plugins/ext_tools"]
   path = applications/editors/josm/plugins/ext_tools
   url = ../ext_tools
-  branch = master
-[submodule "applications/editors/josm/plugins/fit"]
-  path = applications/editors/josm/plugins/fit
-  url = ../FIT
   branch = master
 [submodule "applications/editors/josm/plugins/flatlaf"]
   path = applications/editors/josm/plugins/flatlaf
