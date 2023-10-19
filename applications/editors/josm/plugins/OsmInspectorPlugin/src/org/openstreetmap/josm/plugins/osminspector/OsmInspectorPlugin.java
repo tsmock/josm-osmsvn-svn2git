@@ -39,7 +39,7 @@ MouseListener, PreferenceChangedListener, DownloadSelection{
         userIdentityManager = UserIdentityManager.getInstance();
         initializePlugin();
     }
-    
+
     /**
      * Initialize the <code>OsmInspectorPlugin</code> object. Creates the
      * <code>OsmInspectorGUI</code> and initializes the following variables with
@@ -84,7 +84,7 @@ MouseListener, PreferenceChangedListener, DownloadSelection{
 
     @Override
     public void zoomChanged() {
-        
+
     }
 
     @Override
@@ -99,27 +99,27 @@ MouseListener, PreferenceChangedListener, DownloadSelection{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        
+
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+
     }
 
     @Override
     public void preferenceChanged(PreferenceChangeEvent e) {
-        
+
     }
 
     public OsmInspectorLayer getLayer()
