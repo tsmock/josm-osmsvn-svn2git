@@ -3,12 +3,11 @@ package org.openstreetmap.josm.plugins.osminspector.gui;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.JTextPane;
 
 import org.openstreetmap.josm.gui.MainApplication;
-import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.plugins.osminspector.OsmInspectorLayer;
 import org.openstreetmap.josm.plugins.osminspector.OsmInspectorLayer.BugInfo;
@@ -23,9 +22,9 @@ public class OsmInspectorBugInfoDialog extends ToggleDialog {
      */
     protected void buildContentPanel() {
         MainApplication.getMap().addToggleDialog(this, true);
-        
+
         bugTextArea = new JTextPane();
-        createLayout(bugTextArea, true, Arrays.asList(new SideButton[] {}));
+        createLayout(bugTextArea, true, Collections.emptyList());
         bugTextArea.setText("This is a demo");
         this.add(bugTextArea);
     }
@@ -44,11 +43,11 @@ public class OsmInspectorBugInfoDialog extends ToggleDialog {
 
     public void updateDialog(OsmInspectorLayer l) {
     }
-    
+
     public void setBugDescription(BugInfo i){
         bugTextArea.setText(i.getContentString());
     }
-    
+
     @Override
     public void hideNotify() {
         if (dialogsPanel != null) {

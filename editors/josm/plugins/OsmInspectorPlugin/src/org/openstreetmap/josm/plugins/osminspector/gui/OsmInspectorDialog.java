@@ -3,7 +3,6 @@ package org.openstreetmap.josm.plugins.osminspector.gui;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
@@ -13,9 +12,9 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.SideButton;
@@ -31,9 +30,6 @@ import org.openstreetmap.josm.plugins.osminspector.OsmInspectorLayer;
 import org.openstreetmap.josm.plugins.osminspector.OsmInspectorLayer.BugInfo;
 import org.openstreetmap.josm.tools.Shortcut;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Point;
-
 public class OsmInspectorDialog extends ToggleDialog implements LayerChangeListener, ActiveLayerChangeListener {
 
     private OsmInspectorLayer layer;
@@ -42,13 +38,13 @@ public class OsmInspectorDialog extends ToggleDialog implements LayerChangeListe
     private OsmInspectorPrevAction actPrev;
     private DefaultListModel<String> model;
 
-    private OsmInspectorBugInfoDialog bugInfoDialog;
-    
+    private final OsmInspectorBugInfoDialog bugInfoDialog;
+
     public void updateNextPrevAction(OsmInspectorLayer l) {
         this.actNext.inspectlayer = l;
         this.actPrev.inspectlayer = l;
     }
-    
+
     /**
      * Builds the content panel for this dialog
      */
@@ -60,55 +56,44 @@ public class OsmInspectorDialog extends ToggleDialog implements LayerChangeListe
         bugsList = new JList<>(model);
         bugsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         bugsList.setLayoutOrientation(JList.VERTICAL_WRAP);
-        
+
         bugsList.setVisibleRowCount(-1);
         JScrollPane scroll = new JScrollPane(bugsList,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        
-        bugsList.addListSelectionListener(new ListSelectionListener() {
-            
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                layer.setOsmiIndex(e.getFirstIndex());
-                BugInfo next = layer.getOsmiIndex().getItemPointedByNext();
-                layer.setOsmiIndex((e.getFirstIndex() + 1) % layer.getOsmiBugInfo().size());
-                Geometry geom = next.getGeom();
-                Point centroid = geom.getCentroid();
-                LatLon center = new LatLon(centroid.getY(), centroid.getX());
-                MainApplication.getMap().mapView.zoomTo(center);
-                layer.selectFeatures(center);
-                bugInfoDialog.setBugDescription(next);
-            }
+
+        bugsList.addListSelectionListener(e -> {
+            layer.setOsmiIndex(e.getFirstIndex());
+            BugInfo next = layer.getOsmiIndex().getItemPointedByNext();
+            layer.setOsmiIndex((e.getFirstIndex() + 1) % layer.getOsmiBugInfo().size());
+            Geometry geom = next.getGeom();
+            Point centroid = geom.getCentroid();
+            LatLon center = new LatLon(centroid.getY(), centroid.getX());
+            MainApplication.getMap().mapView.zoomTo(center);
+            layer.selectFeatures(center);
+            bugInfoDialog.setBugDescription(next);
         });
-        
+
         // refreshBugList();
         // the next action
         final SideButton nextButton = new SideButton(
                 actNext = new OsmInspectorNextAction(layer));
-        nextButton.createArrow(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int index = bugsList.getSelectedIndex();
-                Geometry geom = layer.getOsmBugGeometry(index);
-                Point centroid = geom.getCentroid();
-                LatLon center = new LatLon(centroid.getY(), centroid.getX());
-                MainApplication.getMap().mapView.zoomTo(center);
-                layer.selectFeatures(center);
-            }
+        nextButton.createArrow(e -> {
+            int index = bugsList.getSelectedIndex();
+            Geometry geom = layer.getOsmBugGeometry(index);
+            Point centroid = geom.getCentroid();
+            LatLon center = new LatLon(centroid.getY(), centroid.getX());
+            MainApplication.getMap().mapView.zoomTo(center);
+            layer.selectFeatures(center);
         });
 
         // the previous button
-        final SideButton prevButton = new SideButton(
-                actPrev = new OsmInspectorPrevAction(layer));
-        prevButton.createArrow(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        actPrev = new OsmInspectorPrevAction(layer);
+        final SideButton prevButton = new SideButton(actPrev);
+        prevButton.createArrow(e -> { });
 
         createLayout(scroll, true,
-                Arrays.asList(new SideButton[] { nextButton, prevButton }));
+                Arrays.asList(nextButton, prevButton));
         this.add(scroll);
 
         Shortcut sprev = Shortcut.registerShortcut("osmi:prev", tr("Prev OSMI bug"),
@@ -149,7 +134,7 @@ public class OsmInspectorDialog extends ToggleDialog implements LayerChangeListe
         refreshModel();
         refreshBugList();
     }
-    
+
     @Override
     public void showNotify() {
         super.showNotify();

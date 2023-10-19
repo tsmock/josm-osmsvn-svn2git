@@ -7,21 +7,21 @@ import java.util.Map;
 
 import javax.swing.ProgressMonitor;
 
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.gui.MainApplication;
@@ -31,7 +31,7 @@ public class GeoFabrikWFSClient {
 
     //private Bounds bbox;
     private DataStore data;
-    private boolean bInitialized = false;
+    private boolean bInitialized;
 
     public GeoFabrikWFSClient(Bounds bounds) {
         //bbox = bounds;
@@ -46,7 +46,7 @@ public class GeoFabrikWFSClient {
         // Step 3 - discovery; enhance to iterate over all types with bounds
         SimpleFeatureType schema = data.getSchema(typeName);
         progressMonitor.setProgress(30);
-        
+
         // Step 4 - target
         FeatureSource<SimpleFeatureType, SimpleFeature> source = data
                 .getFeatureSource(typeName);
@@ -54,7 +54,7 @@ public class GeoFabrikWFSClient {
         Logging.info("Source schema: " + source.getSchema());
 
         progressMonitor.setProgress(40);
-        
+
         // Step 5 - query
         List<AttributeDescriptor> listAttrs = schema.getAttributeDescriptors();
         String geomName = listAttrs.get(0).getLocalName();
@@ -78,7 +78,7 @@ public class GeoFabrikWFSClient {
         //
         // Ask WFS service for typeName data constrained by bboxRef
         //
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filterBB = ff.bbox(ff.property(geomName), bboxRef);
         FeatureCollection<SimpleFeatureType, SimpleFeature> features = source
                 .getFeatures(filterBB);
@@ -88,7 +88,7 @@ public class GeoFabrikWFSClient {
     }
 
     public void initializeDataStore() throws IOException {
-        if (bInitialized == true)
+        if (bInitialized)
             return;
 
         String getCapabilities = "http://tools.geofabrik.de/osmi/view/routing_non_eu/wxs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetCapabilities";

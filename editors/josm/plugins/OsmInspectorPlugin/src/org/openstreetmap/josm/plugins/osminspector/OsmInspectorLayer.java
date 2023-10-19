@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
@@ -19,8 +19,27 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ProgressMonitor;
 
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -29,25 +48,9 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.data.osm.visitor.BoundingXYVisitor;
@@ -59,27 +62,23 @@ import org.openstreetmap.josm.plugins.osminspector.gui.OsmInspectorDialog;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.Logging;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.ParseException;
-
 public class OsmInspectorLayer extends Layer {
 
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-    private StreamingRenderer renderer;
-    private CoordinateReferenceSystem crsOSMI;
+    private final StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    private final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    private final StreamingRenderer renderer;
+    private final CoordinateReferenceSystem crsOSMI;
     private GeomType geometryType;
     private String geometryAttributeName;
 
     private SimpleFeatureSource featureSource;
-    private MapContent content;
+    private final MapContent content;
     private boolean bIsChanged;
 
-    private int layerOffset = 1;
+    private final int layerOffset = 1;
 
-    private ArrayList<GeomType> selectGeomType;
-    private Color[] featureFills = { new Color(255, 0, 0),
+    private final ArrayList<GeomType> selectGeomType;
+    private final Color[] featureFills = { new Color(255, 0, 0),
             new Color(0, 0, 255), // duplicate ways
             new Color(204, 204, 0), // minor 5
             new Color(255, 230, 128), // minor 2
@@ -93,15 +92,15 @@ public class OsmInspectorLayer extends Layer {
     /**
      * dialog showing the bug info
      */
-    private OsmInspectorDialog dialog;
+    private final OsmInspectorDialog dialog;
 
     /**
      * supported actions
      */
 
     // Container for bugs from Osmi
-    private ArrayList<OSMIFeatureTracker> arrFeatures;
-    private LinkedHashMap<BugInfo, Long> osmiBugInfo;
+    private List<OSMIFeatureTracker> arrFeatures;
+    private final LinkedHashMap<BugInfo, Long> osmiBugInfo;
 
     public Geometry getOsmBugGeometry(int index) {
         BugInfo[] array = new BugInfo[osmiBugInfo.keySet().size()];
@@ -129,11 +128,11 @@ public class OsmInspectorLayer extends Layer {
         this.bIsChanged = bIsChanged;
     }
 
-    public ArrayList<OSMIFeatureTracker> getArrFeatures() {
+    public List<OSMIFeatureTracker> getArrFeatures() {
         return arrFeatures;
     }
 
-    public void setArrFeatures(ArrayList<OSMIFeatureTracker> arrFeatures) {
+    public void setArrFeatures(List<OSMIFeatureTracker> arrFeatures) {
         this.arrFeatures = arrFeatures;
     }
 
@@ -142,14 +141,14 @@ public class OsmInspectorLayer extends Layer {
     }
 
     // Pointer to prev and next osmi bugs
-    private BugIndex osmiIndex;
+    private final BugIndex osmiIndex;
 
     /**
-     * 
+     *
      * The Bug attribute class: hold geom, id and description for that bug
-     * 
+     *
      * @author snikhil
-     * 
+     *
      */
     public static class BugInfo implements Comparable<BugInfo>{
 
@@ -176,11 +175,11 @@ public class OsmInspectorLayer extends Layer {
         public boolean equals(Object obj) {
             String fid = attributes.get("FID");
             String hash =  (fid == null || fid.isEmpty()) ? attributes.get("problem_id") : fid;
-            
-            
+
+
             if (obj instanceof BugInfo) {
                 BugInfo b = (BugInfo) obj;
-                
+
                 String bfid = b.attributes.get("FID");
                 String bhash =  (bfid == null || bfid.isEmpty()) ? b.attributes.get("problem_id") : bfid;
                 return hash.equals(bhash);
@@ -202,9 +201,7 @@ public class OsmInspectorLayer extends Layer {
             bugId = idx;
             attributes = new HashMap<>();
             Collection<Property> properties = next.getProperties();
-            Iterator<Property> it = properties.iterator();
-            while (it.hasNext()) {
-                Property p = it.next();
+            for (Property p : properties) {
                 attributes.put(p.getName().toString(), p.getValue().toString());
             }
             this.geom = (Geometry) next.getAttribute(0);
@@ -215,18 +212,13 @@ public class OsmInspectorLayer extends Layer {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("BugId_").append(String.valueOf(bugId)).append("\n");
-            return sb.toString();
+            return "BugId_" + bugId + "\n";
         }
 
         public String getContentString() {
             StringBuilder sb = new StringBuilder();
             sb.append("Layer:").append(name.getLocalPart()).append("\n");
-            Iterator<Entry<String, String>> it = attributes.entrySet()
-                    .iterator();
-            while (it.hasNext()) {
-                Entry<String, String> next = it.next();
+            for (Entry<String, String> next : attributes.entrySet()) {
                 sb.append(next.getKey()).append(":").append(next.getValue())
                         .append("\n");
             }
@@ -241,7 +233,7 @@ public class OsmInspectorLayer extends Layer {
         public int compareTo(BugInfo o) {
             String fid = attributes.get("FID");
             String hash =  (fid == null || fid.isEmpty()) ? attributes.get("problem_id") : fid;
-            
+
             String ofid = o.attributes.get("FID");
             String ohash =  (ofid == null || ofid.isEmpty()) ? o.attributes.get("problem_id") : ofid;
             return hash.compareTo(ohash);
@@ -251,14 +243,14 @@ public class OsmInspectorLayer extends Layer {
     /**
      * Helper class that stores the bug next and prev pointers and can navigate
      * the entire bug list
-     * 
+     *
      * @author snikhil
-     * 
+     *
      */
     public static class BugIndex {
         private int nextIndex;
         private int previousIndex;
-        private ArrayList<BugInfo> osmBugs;
+        private final ArrayList<BugInfo> osmBugs;
 
         public BugIndex(Map<BugInfo, Long> bugs) {
             osmBugs = new ArrayList<>(bugs.keySet());
@@ -305,15 +297,13 @@ public class OsmInspectorLayer extends Layer {
             return osmBugs.get(nextIndex);
         }
 
-        public ArrayList<BugInfo> getBugs() {
+        public List<BugInfo> getBugs() {
             return osmBugs;
         }
 
-        public void append(LinkedHashMap<BugInfo, Long> osmiBugInfo) {
-            Iterator<BugInfo> it = osmiBugInfo.keySet().iterator();
-            while(it.hasNext()){
-                BugInfo next = it.next();
-                if(!osmBugs.contains(next)){
+        public void append(Map<BugInfo, Long> osmiBugInfo) {
+            for (BugInfo next : osmiBugInfo.keySet()) {
+                if (!osmBugs.contains(next)) {
                     this.osmBugs.add(next);
                 }
             }
@@ -342,7 +332,7 @@ public class OsmInspectorLayer extends Layer {
 
         // Step 3 - discovery; enhance to iterate over all types with bounds
 
-        String typeNames[] = wfsClient.getTypeNames();
+        String[] typeNames = wfsClient.getTypeNames();
         renderer = new StreamingRenderer();
         CRS.decode(ProjectionRegistry.getProjection().toCode());
         crsOSMI = CRS.decode("EPSG:4326");
@@ -386,7 +376,7 @@ public class OsmInspectorLayer extends Layer {
     public void loadFeatures(GeoFabrikWFSClient wfsClient)
             throws NoSuchAuthorityCodeException, FactoryException, IOException,
             IndexOutOfBoundsException, NoSuchElementException, ParseException {
-        String typeNames[] = wfsClient.getTypeNames();
+        String[] typeNames = wfsClient.getTypeNames();
 
         content.layers().clear();
         selectGeomType.clear();
@@ -413,7 +403,7 @@ public class OsmInspectorLayer extends Layer {
 
             while (it.hasNext()) {
                 BugInfo theInfo = new BugInfo(it.next(), osmiBugInfo.size());
-                if (!osmiBugInfo.keySet().contains(theInfo)) {
+                if (!osmiBugInfo.containsKey(theInfo)) {
                     osmiBugInfo.put(theInfo, theInfo.bugId);
                 }
             }
@@ -423,15 +413,15 @@ public class OsmInspectorLayer extends Layer {
         }
 
         osmiIndex.append(osmiBugInfo);
-        
-        
+
+
         monitor.setProgress(100);
         monitor.close();
         bIsChanged = true;
         //dialog.updateDialog(this);
         dialog.refreshModel();
         //dialog.updateNextPrevAction(this);
-        
+
         this.updateView();
     }
 
@@ -628,5 +618,4 @@ public class OsmInspectorLayer extends Layer {
         osmiIndex.previousIndex = firstIndex - 1 >= 0 ? firstIndex - 1
                 : osmiBugInfo.size() - 1;
     }
-
 }

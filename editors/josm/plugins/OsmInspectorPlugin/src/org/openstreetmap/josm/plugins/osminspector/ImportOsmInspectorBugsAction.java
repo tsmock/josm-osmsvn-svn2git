@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 
 import javax.swing.ProgressMonitor;
 
-import org.opengis.referencing.FactoryException;
+import org.geotools.api.referencing.FactoryException;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.gui.MainApplication;
@@ -23,7 +23,7 @@ import org.locationtech.jts.io.ParseException;
 public class ImportOsmInspectorBugsAction extends JosmAction {
     OsmInspectorPlugin plugin;
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -6484182416189079287L;
 
@@ -51,15 +51,13 @@ public class ImportOsmInspectorBugsAction extends JosmAction {
                 monitor.setProgress(10);
 
                 OsmInspectorLayer inspector = plugin.getLayer();
+                GeoFabrikWFSClient wfs = new GeoFabrikWFSClient(bounds);
+                wfs.initializeDataStore();
                 if (inspector == null) {
-                    GeoFabrikWFSClient wfs = new GeoFabrikWFSClient(bounds);
-                    wfs.initializeDataStore();
                     inspector = new OsmInspectorLayer(wfs, monitor);
                     MainApplication.getLayerManager().addLayer(inspector);
                     plugin.setLayer(inspector);
                 } else {
-                    GeoFabrikWFSClient wfs = new GeoFabrikWFSClient(bounds);
-                    wfs.initializeDataStore();
                     inspector.loadFeatures(wfs);
 
                 }
