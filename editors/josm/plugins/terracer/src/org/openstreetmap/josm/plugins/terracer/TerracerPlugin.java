@@ -25,7 +25,7 @@ import org.openstreetmap.josm.tools.Destroyable;
  * @author zere - Copyright 2009 CloudMade Ltd
  */
 public class TerracerPlugin extends Plugin implements Destroyable {
-    private List<JosmAction> actions = Arrays.asList(new TerracerAction(), new ReverseTerraceAction());
+    private final List<JosmAction> actions = Arrays.asList(new TerracerAction(), new ReverseTerraceAction());
 
     public TerracerPlugin(PluginInformation info) {
         super(info);
@@ -37,7 +37,7 @@ public class TerracerPlugin extends Plugin implements Destroyable {
     @Override
     public void destroy() {
         final JMenu moreToolsMenu = MainApplication.getMenu().moreToolsMenu;
-        final Map<Action, Component> actionsMap = Arrays.asList(moreToolsMenu.getMenuComponents()).stream()
+        final Map<Action, Component> actionsMap = Arrays.stream(moreToolsMenu.getMenuComponents())
                 .filter(JMenuItem.class::isInstance).map(JMenuItem.class::cast)
                 .collect(Collectors.toMap(JMenuItem::getAction, component -> component));
 
